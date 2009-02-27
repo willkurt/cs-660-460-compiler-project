@@ -4,7 +4,12 @@
 #ifndef BINARY_T_NODE_H
 #define BINARY_T_NODE_H
 
+#include <iostream>
+using namespace std;
+
+
 class Node{
+
   //value by which nodes are compared
   string const value; 
 
@@ -14,31 +19,30 @@ class Node{
    */
   int const content;
 
-  /*const point to another node
-   *the value of the node can change,
-   *but not the value of the pointer itself
-   *each tree can have at most 2 child nodes
-   */
-  
-  Node * const left_child;
+  Node *left_child;
 
-  Node * const right_child;
+  Node *right_child;
   
 public:
   //node is built from a value and content
   Node (string, int);
   
   //method for adding left child
-  void add_lchild(Node);
+  void add_lchild(Node&);
 
   //method for adding right child
-  void add_rchild(Node);
+  void add_rchild(Node&);
+
+  //makes l or r child null
+  void null_lchild();
+
+  void null_rchild();
   
   bool lchild_null() const;
 
   bool rchild_null() const;
 
-}
+};
 
 
 #endif /* BINARY_T_NODE_H */
