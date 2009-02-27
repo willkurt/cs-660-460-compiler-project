@@ -18,6 +18,7 @@ class Node{
    *project progresses
    */
   int const content;
+  
 
   Node *left_child;
 
@@ -35,7 +36,7 @@ public:
 
   //makes l or r child null
   void null_lchild();
-
+  
   void null_rchild();
   
   bool lchild_null() const;

@@ -18,15 +18,15 @@ void Node::add_rchild(Node& c_node)
   right_child = &c_node;
 }
 
-void Node::null_lchild()
-{
-  left_child = 0;
-}
+//void Node::null_lchild()
+//{
+//  left_child = 0;
+//}
 
-void Node::null_rchild()
-{
-  right_child = 0;
-}
+//void Node::null_rchild()
+//{
+//  right_child = 0;
+//}
 
 
 //remove this later
