@@ -1,7 +1,8 @@
 /* binary_t_node.hpp
  * basic class for a binary tree node
  */
-
+#ifndef BINARY_T_NODE_H
+#define BINARY_T_NODE_H
 
 class Node{
   //value by which nodes are compared
@@ -32,7 +33,12 @@ public:
 
   //method for adding right child
   void add_rchild(Node);
-
   
+  bool lchild_null() const;
+
+  bool rchild_null() const;
 
 }
+
+
+#endif /* BINARY_T_NODE_H */
