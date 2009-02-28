@@ -1,0 +1,12 @@
+This just a collection of userful links for the project
+
+
+good article on stl stacks:
+http://www.sgi.com/tech/stl/stack.html
+
+
+documentation on map (balanedkey value pairs)
+http://www.sgi.com/tech/stl/Map.html
+
+info on void pointers:
+http://www.learncpp.com/cpp-tutorial/613-void-pointers/
