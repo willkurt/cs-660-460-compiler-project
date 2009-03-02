@@ -64,6 +64,12 @@ void SymbolTable::Push()
 }
 
 
+//not much here, mostly an accessor
+void SymbolTable::Pop()
+{
+  st.pop();
+}
+
 
 
 //searches only the top layer, returns a pointer to 
