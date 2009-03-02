@@ -12,8 +12,9 @@
 
 class SymbolTable{
   std::stack<std::map<std:: string, SymbolContent> > st;
-
- 
+  
+  //used for const references to the actual top
+  // stack.top() should be used for mutable access
 public:
  
   SymbolTable();
@@ -27,9 +28,9 @@ public:
   //if the k does NOT exist 
   bool Update(std::string,SymbolContent);
 
-  SymbolContent* SearchTop(std::string);
+  SymbolContent SearchTop(std::string);
 
-  SymbolContent* SearchAll(std::string);
+  SymbolContent SearchAll(std::string);
   
   bool Shadowing(std::string) const;
 
