@@ -11,7 +11,9 @@
 #include "symbol_content.hpp"
 
 class SymbolTable{
-  std::stack<std::map<std:: string, SymbolContent> > st;
+  std::stack<std::map<std::string, SymbolContent> > st;
+
+
   
   //used for const references to the actual top
   // stack.top() should be used for mutable access
@@ -34,6 +36,11 @@ public:
   
   bool Shadowing(std::string) const;
 
+  //if no map is given, we'll just create an empty one
+  void Push();
+
+  //in case we want to build the symbol table first
+  void Push(std::map<std::string,SymbolContent>);
   //need to implement Dump() but not sure exactly what we want
 
 };

@@ -52,6 +52,20 @@ bool SymbolTable::Update(std::string k, SymbolContent v)
 }
 
 
+void SymbolTable::Push(std::map<std::string,SymbolContent> symbolMap)
+{
+  st.push(symbolMap);
+}
+
+void SymbolTable::Push()
+{
+  std::map<std::string,SymbolContent> newMap;
+  st.push(newMap);
+}
+
+
+
+
 //searches only the top layer, returns a pointer to 
 //SymbolContent or 0 if none is found
 //obviously only the top layer
@@ -60,3 +74,6 @@ SymbolContent SymbolTable::SearchTop(std::string k)
   std::map<std::string,SymbolContent> top = st.top();
   return top[k];
 }
+
+
+
