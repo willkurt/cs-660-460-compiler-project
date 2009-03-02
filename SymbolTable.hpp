@@ -12,18 +12,28 @@
 
 class SymbolTable{
   std::stack<std::map<std:: string, SymbolContent> > st;
+
+ 
 public:
+ 
   SymbolTable();
-
-  void Add(std::string,SymbolContent){};
-
-  SymbolContent* SearchTop(std::string){};
-
-  SymbolContent* SearchAll(std::string){};
   
-  bool Shadowing(std::string){};
+  //returns false if the add failed due to 
+  //a conflict of the same value existing
+  bool Add(std::string,SymbolContent);
 
-  //need to implement Dump() but not sure exactly wat we ant
+  //like add this one will update an existing value for a k
+  //however it will fail and return false 
+  //if the k does NOT exist 
+  bool Update(std::string,SymbolContent);
+
+  SymbolContent* SearchTop(std::string);
+
+  SymbolContent* SearchAll(std::string);
+  
+  bool Shadowing(std::string) const;
+
+  //need to implement Dump() but not sure exactly what we want
 
 };
 
