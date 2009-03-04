@@ -36,7 +36,8 @@ public:
 
   SymbolContent *SearchAll(std::string);
   
-  bool Shadowing(std::string) const;
+  //tells whether or not a sybmol is shawoded in the st
+  bool Shadowing(std::string);
 
   //if no map is given, we'll just create an empty one
   void Push();

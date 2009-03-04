@@ -114,6 +114,38 @@ SymbolContent *SymbolTable::SearchAll(std::string k)
 }
 
 
+//returns true if the item is being shadowed
+bool SymbolTable::Shadowing(std::string k)
+{
+  bool returnValue = false;
+  std::stack<std::map<std::string, SymbolContent> > tmp;
+  //we don't care if the symbol is in the current top
+  tmp.push(st.top());
+  //st minus current top
+  st.pop();
+  while(!st.empty())
+    {
+      std::map<std::string, SymbolContent> current;
+      current = st.top();
+      if(current.find(k) != current.end())
+	{
+	  returnValue =  true;
+	  break;
+	}
+      tmp.push(st.top());
+      st.pop();
+    }
+  
+  //put everything back on stack
+  while(!tmp.empty())
+    {
+      st.push(tmp.top());
+      tmp.pop();
+    }
+  return returnValue;
+}
+
+
 void SymbolTable::OutputToFile()
 {
     std::stack<std::map<std::string, SymbolContent> > tmp;
