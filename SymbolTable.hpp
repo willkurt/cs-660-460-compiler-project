@@ -9,6 +9,7 @@
 #include <stack>
 #include <map>
 #include <fstream>
+#include <iostream>
 #include "symbol_content.hpp"
 
 class SymbolTable{

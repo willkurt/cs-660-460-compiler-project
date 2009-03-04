@@ -84,7 +84,6 @@ SymbolContent *SymbolTable::SearchTop(std::string k)
       returnValue = &top[k];
     }
   return returnValue;
-  
 }
 
 
@@ -112,7 +111,36 @@ SymbolContent *SymbolTable::SearchAll(std::string k)
       tmp.pop();
     }
   return returnValue;
-  
-  
 }
 
+
+void SymbolTable::OutputToFile()
+{
+    std::stack<std::map<std::string, SymbolContent> > tmp;
+    std::ofstream outFile;
+    outFile.open("stout.txt");
+    int level = 0;
+    while(!st.empty())
+      {
+	std::map<std::string,SymbolContent> current = st.top();
+	std::map<std::string,SymbolContent>::iterator mapIter;
+	outFile << level++ << " from top\n";
+	outFile << "-----------\n";
+	for(mapIter = current.begin(); mapIter != current.end(); mapIter++)
+	  {
+	    outFile << "Symbol: " << mapIter->first << " type:"<<mapIter->second.type << " ptr-address:"<<mapIter->second.ptr <<"\n";
+	  }
+	outFile << "\n";
+
+	tmp.push(st.top());
+	st.pop();
+      }
+
+      //push it all back on the original stack
+      while(!tmp.empty())
+	{
+	  st.push(tmp.top());
+	  tmp.pop();
+	}
+      outFile.close();
+}
