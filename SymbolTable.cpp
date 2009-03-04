@@ -75,11 +75,44 @@ void SymbolTable::Pop()
 //searches only the top layer, returns a pointer to 
 //SymbolContent or 0 if none is found
 //obviously only the top layer
-SymbolContent SymbolTable::SearchTop(std::string k)
+SymbolContent *SymbolTable::SearchTop(std::string k)
 {
-  std::map<std::string,SymbolContent> top = st.top();
-  return top[k];
+  std::map<std::string,SymbolContent> top = st.top(); 
+  SymbolContent * returnValue = 0;
+  if(top.find(k) != top.end())
+    {
+      returnValue = &top[k];
+    }
+  return returnValue;
+  
 }
 
 
+SymbolContent *SymbolTable::SearchAll(std::string k)
+{
+  //store stack contents in a temp stack
+  std::stack<std::map<std::string, SymbolContent> > tmp;
+  SymbolContent * returnValue = 0;
+  while(!st.empty())
+    {
+      std::map<std::string, SymbolContent> currentTop = st.top();
+      if(currentTop.find(k) != currentTop.end())
+	{
+	  returnValue = &currentTop[k];
+	  break;
+	}
+      tmp.push(currentTop);
+      st.pop();
+    }
+
+  //okay now we just have to put what we popped back on the table
+  while(!tmp.empty())
+    {
+      st.push(tmp.top());
+      tmp.pop();
+    }
+  return returnValue;
+  
+  
+}
 

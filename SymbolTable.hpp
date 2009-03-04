@@ -8,6 +8,7 @@
 #include <string>
 #include <stack>
 #include <map>
+#include <fstream>
 #include "symbol_content.hpp"
 
 class SymbolTable{
@@ -30,9 +31,9 @@ public:
   //if the k does NOT exist 
   bool Update(std::string,SymbolContent);
 
-  SymbolContent SearchTop(std::string);
+  SymbolContent *SearchTop(std::string);
 
-  SymbolContent SearchAll(std::string);
+  SymbolContent *SearchAll(std::string);
   
   bool Shadowing(std::string) const;
 
@@ -42,7 +43,9 @@ public:
   //in case we want to build the symbol table first
   void Push(std::map<std::string,SymbolContent>);
   //need to implement Dump() but not sure exactly what we want
-
+  void OutputToFile();
+  //just a way to access to private pop method on the st
+  void Pop(); 
 };
 
 #endif
