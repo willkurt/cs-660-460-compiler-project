@@ -25,29 +25,29 @@ public:
   
   //returns false if the add failed due to 
   //a conflict of the same value existing
-  bool Add(std::string,SymbolContent);
+  bool add(std::string,SymbolContent);
 
   //like add this one will update an existing value for a k
   //however it will fail and return false 
   //if the k does NOT exist 
-  bool Update(std::string,SymbolContent);
+  bool update(std::string,SymbolContent);
 
-  SymbolContent *SearchTop(std::string);
+  SymbolContent *searchTop(std::string);
 
-  SymbolContent *SearchAll(std::string);
+  SymbolContent *searchAll(std::string);
   
   //tells whether or not a sybmol is shawoded in the st
-  bool Shadowing(std::string);
+  bool shadowing(std::string);
 
   //if no map is given, we'll just create an empty one
-  void Push();
+  void push();
 
   //in case we want to build the symbol table first
-  void Push(std::map<std::string,SymbolContent>);
+  void push(std::map<std::string,SymbolContent>);
   //need to implement Dump() but not sure exactly what we want
-  void OutputToFile();
+  void outputToFile();
   //just a way to access to private pop method on the st
-  void Pop(); 
+  void pop(); 
 };
 
 #endif

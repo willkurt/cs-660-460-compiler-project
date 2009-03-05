@@ -8,7 +8,7 @@ SymbolTable::SymbolTable()
 
 
 //this method will only add if the item doesn't already exist 
-bool SymbolTable::Add(std::string k, SymbolContent v)
+bool SymbolTable::add(std::string k, SymbolContent v)
 {
   //current map
   std::map<std::string,SymbolContent> currentMap = st.top();
@@ -31,7 +31,7 @@ bool SymbolTable::Add(std::string k, SymbolContent v)
 
 
 //this method will only update if the item DOES already exist 
-bool SymbolTable::Update(std::string k, SymbolContent v)
+bool SymbolTable::update(std::string k, SymbolContent v)
 {
   //current map
   std::map<std::string,SymbolContent> currentMap = st.top();
@@ -52,12 +52,12 @@ bool SymbolTable::Update(std::string k, SymbolContent v)
 }
 
 
-void SymbolTable::Push(std::map<std::string,SymbolContent> symbolMap)
+void SymbolTable::push(std::map<std::string,SymbolContent> symbolMap)
 {
   st.push(symbolMap);
 }
 
-void SymbolTable::Push()
+void SymbolTable::push()
 {
   std::map<std::string,SymbolContent> newMap;
   st.push(newMap);
@@ -65,7 +65,7 @@ void SymbolTable::Push()
 
 
 //not much here, mostly an accessor
-void SymbolTable::Pop()
+void SymbolTable::pop()
 {
   st.pop();
 }
@@ -75,7 +75,7 @@ void SymbolTable::Pop()
 //searches only the top layer, returns a pointer to 
 //SymbolContent or 0 if none is found
 //obviously only the top layer
-SymbolContent *SymbolTable::SearchTop(std::string k)
+SymbolContent *SymbolTable::searchTop(std::string k)
 {
   std::map<std::string,SymbolContent> top = st.top(); 
   SymbolContent * returnValue = 0;
@@ -87,7 +87,7 @@ SymbolContent *SymbolTable::SearchTop(std::string k)
 }
 
 
-SymbolContent *SymbolTable::SearchAll(std::string k)
+SymbolContent *SymbolTable::searchAll(std::string k)
 {
   //store stack contents in a temp stack
   std::stack<std::map<std::string, SymbolContent> > tmp;
@@ -115,7 +115,7 @@ SymbolContent *SymbolTable::SearchAll(std::string k)
 
 
 //returns true if the item is being shadowed
-bool SymbolTable::Shadowing(std::string k)
+bool SymbolTable::shadowing(std::string k)
 {
   bool returnValue = false;
   std::stack<std::map<std::string, SymbolContent> > tmp;
@@ -146,7 +146,7 @@ bool SymbolTable::Shadowing(std::string k)
 }
 
 
-void SymbolTable::OutputToFile()
+void SymbolTable::outputToFile()
 {
     std::stack<std::map<std::string, SymbolContent> > tmp;
     std::ofstream outFile;
