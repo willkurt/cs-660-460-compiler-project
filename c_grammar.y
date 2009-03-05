@@ -1,3 +1,13 @@
+%{
+
+#include <iostream>
+#include <fstream>
+#include "SymbolTable.hpp"
+
+
+ %}
+
+
 %token IDENTIFIER 
 %token INTEGER_CONSTANT FLOATING_CONSTANT CHARACTER_CONSTANT ENUMERATION_CONSTANT 
 %token STRING_LITERAL 
