@@ -1,11 +1,14 @@
 
 /* Text to be copied into lex.yy.c
  * May not be necessary, following Harris' convention
+ * TODO:  enum_consts'?, make sure string_lits and char_consts
+ * can contain \n
  */
 %{
-#include <iostream>
-#include "y.tab.c"
+#include <stdio.h>
+#include "y.tab.h"
 %}
+
 
 /* Definitions to save a little time */
 
@@ -13,12 +16,23 @@ delim	{ \t\n}
 ws	{delim}+
 letter	[A-Za-z]
 digit	[0-9]
-id	{letter}({letter}|{digit})* 
-		/*need to handle special chars*/
+id	{letter}({letter}|{digit}|'_')* 
 		/* this was here- typedef_name  not sure what to do with it*/	
-number	{digit}+
-	       /*also need to handle floats*/
+integer_const	(+|-)?{digit}+
+float_const     (+|-)?{digit)+'.'{digit}+('e'(+|-){digit}+)?  
+     
+  /* this doesn't include newlines need to fix*/
+char_const   \'.\'
+string_lit   \".*\"
 
+	      
+ /* %token  ENUMERATION_CONSTANT */
+
+
+
+ /*Hmm...
+ letter?\"(\\.|[^\\"])*\	{return(STRING_LITERAL); }
+ */
 
 
  /*Token definitions and related actions
@@ -42,7 +56,7 @@ ws 		{/* Do nothing for whitespace */}
 "for"		{return (FOR);}
 "goto"		{return (GOTO);}
 "if"		{return (IF);}
-"int"		{return (INT;}
+"int"		{return (INT);}
 "long"		{return (LONG);}
 "register"	{return (REGISTER);}
 "return"	{return (RETURN);}
@@ -58,18 +72,11 @@ ws 		{/* Do nothing for whitespace */}
 "void"		{return (VOID);}
 "volatile"	{return (VOLATILE);}
 "while"		{return (WHILE);}
-
-{digit}*"."{digit}+	{return (FLOATING_CONSTANT);}
-{digit}+"."{digit}*	{return (FLOATING_CONSTANT);}
-{digit}*	{return (INTEGER_CONSTANT);}
- /* %token  FLOATING_CONSTANT CHARACTER_CONSTANT ENUMERATION_CONSTANT */
-
-
-
- /*Hmm...
- letter?\"(\\.|[^\\"])*\	{return(STRING_LITERAL); }
- */
-
+ /*place stuff for floats etc*/
+float_const     {return (FLOATING_CONSTANT); }
+integer_const   {return (INTEGER_CONSTANT); }
+char_const      {return (CHARACTER_CONSTANT); }
+string_lit      {return (STRING_LITERAL); }
 
 "..."		{return (ELIPSIS);}
 "*"		{return (PTR_OP);}
@@ -96,36 +103,39 @@ ws 		{/* Do nothing for whitespace */}
 
 
  /* Single character tokens 
-    let's add tokens for these later on*/
+    let's add tokens for these later on
+ also, I don't understand all the 'count()'s so
+ I'm removing them...*/
 
-";"		{ count(); return(';'); }
-"{"		{ count(); return('{'); }
-"}"		{ count(); return('}'); }
-","		{ count(); return(','); }
-":"		{ count(); return(':'); }
-"="		{ count(); return('='); }
-"("		{ count(); return('('); }
-")"		{ count(); return(')'); }
-"["		{ count(); return('['); }
-"]"		{ count(); return(']'); }
-"."		{ count(); return('.'); }
-"&"		{ count(); return('&'); }
-"!"		{ count(); return('!'); }
-"~"		{ count(); return('~'); }
-"-"		{ count(); return('-'); }
-"+"		{ count(); return('+'); }
+";"		{ return(';'); }
+"{"		{ return('{'); }
+"}"		{ return('}'); }
+","		{ return(','); }
+":"		{ return(':'); }
+"="		{ return('='); }
+"("		{ return('('); }
+")"		{ return(')'); }
+"["		{ return('['); }
+"]"		{ return(']'); }
+"."		{ return('.'); }
+"&"		{ return('&'); }
+"!"		{ return('!'); }
+"~"		{ return('~'); }
+"-"		{ return('-'); }
+"+"		{ return('+'); }
  /* for reasons unknown right now, single quotes work, not double quotes */
-'*'		{ count(); return('*'); }
-"/"		{ count(); return('/'); }
-"%"		{ count(); return('%'); }
-"<"		{ count(); return('<'); }
-">"		{ count(); return('>'); }
-"^"		{ count(); return('^'); }
-"|"		{ count(); return('|'); }
-"?"		{ count(); return('?'); }
+'*'		{ return('*'); }
+"/"		{ return('/'); }
+"%"		{ return('%'); }
+"<"		{ return('<'); }
+">"		{ return('>'); }
+"^"		{ return('^'); }
+"|"		{ return('|'); }
+"?"		{ return('?'); }
+
 {id}            { return (IDENTIFIER); }
- /*All else would be an error*/
-.		{return (ERROR);}
+ /*All else would be an error-note error token not working*/
+.		{}
 
  /*I have no idea if this works*/
  /*

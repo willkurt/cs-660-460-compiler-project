@@ -1,10 +1,7 @@
 %{
 
-#include <iostream>
-#include <fstream>
-#include "SymbolTable.hpp"
-
-
+#include <stdio.h>
+  /* #include "SymbolTable.hpp" */
  %}
 
 
@@ -457,10 +454,13 @@ identifier
 extern char yytext[];
 extern int column;
 
+
+
+/*
 yyerror(s)
 char *s;
 {
 	fflush(stdout);
 	printf("\n%*s\n%*s\n", column, "^", column, s);
 }
-
+*/
