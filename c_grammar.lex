@@ -1,31 +1,31 @@
 
-// Text to be copied into lex.yy.c
-// May not be necessary, following Harris' convention
+/* Text to be copied into lex.yy.c
+ * May not be necessary, following Harris' convention
+ */
 %{
 #include <iostream>
-#include <fstream>
-#include "SymbolTable.hpp"
+#include "y.tab.c"
 %}
 
-// Definitions to save a little time
+/* Definitions to save a little time */
 
-delim	[ \t\n]
+delim	{ \t\n}
 ws	{delim}+
 letter	[A-Za-z]
 digit	[0-9]
-id	{letter}({letter}|{digit})*
-typedef_name	
+id	{letter}({letter}|{digit})* 
+		/*need to handle special chars*/
+		/* this was here- typedef_name  not sure what to do with it*/	
 number	{digit}+
+	       /*also need to handle floats*/
 
 
 
-// Token definitions and related actions
-// Defined in the order given in the c_grammar.y file
-// Questionable definitions marked with ?
+ /*Token definitions and related actions
+ Defined in the order given in the c_grammar.y file
+ Questionable definitions marked with ? */
 %%
-
-{ws} 		{/* Do nothing for whitespace */}
-//Reserved words
+ws 		{/* Do nothing for whitespace */}
 "auto"		{return (AUTO);}
 "break"		{return (BREAK);}
 "case"		{return (CASE);}
@@ -62,9 +62,14 @@ number	{digit}+
 {digit}*"."{digit}+	{return (FLOATING_CONSTANT);}
 {digit}+"."{digit}*	{return (FLOATING_CONSTANT);}
 {digit}*	{return (INTEGER_CONSTANT);}
-//%token  FLOATING_CONSTANT CHARACTER_CONSTANT ENUMERATION_CONSTANT 
+ /* %token  FLOATING_CONSTANT CHARACTER_CONSTANT ENUMERATION_CONSTANT */
 
-letter?\"(\\.|[^\\"])*\	{return(STRING_LITERAL); }
+
+
+ /*Hmm...
+ letter?\"(\\.|[^\\"])*\	{return(STRING_LITERAL); }
+ */
+
 
 "..."		{return (ELIPSIS);}
 "*"		{return (PTR_OP);}
@@ -89,7 +94,10 @@ letter?\"(\\.|[^\\"])*\	{return(STRING_LITERAL); }
 "^="		{return (XOR_ASSIGN);}
 "|="		{return (OR_ASSIGN);}
 
-//Single character tokens
+
+ /* Single character tokens 
+    let's add tokens for these later on*/
+
 ";"		{ count(); return(';'); }
 "{"		{ count(); return('{'); }
 "}"		{ count(); return('}'); }
@@ -106,7 +114,8 @@ letter?\"(\\.|[^\\"])*\	{return(STRING_LITERAL); }
 "~"		{ count(); return('~'); }
 "-"		{ count(); return('-'); }
 "+"		{ count(); return('+'); }
-"*"		{ count(); return('*'); }
+ /* for reasons unknown right now, single quotes work, not double quotes */
+'*'		{ count(); return('*'); }
 "/"		{ count(); return('/'); }
 "%"		{ count(); return('%'); }
 "<"		{ count(); return('<'); }
@@ -114,10 +123,13 @@ letter?\"(\\.|[^\\"])*\	{return(STRING_LITERAL); }
 "^"		{ count(); return('^'); }
 "|"		{ count(); return('|'); }
 "?"		{ count(); return('?'); }
-//I have no idea if this works
-//"typedef"{ws}{letter}+	{return (TYPEDEF_NAME);}
-
-
-{id}	 	{return (IDENTIFIER);}
-//All else would be an error
+{id}            { return (IDENTIFIER); }
+ /*All else would be an error*/
 .		{return (ERROR);}
+
+ /*I have no idea if this works*/
+ /*
+"typedef"{ws}{letter}+	{return (TYPEDEF_NAME);}
+ */
+
+%%
