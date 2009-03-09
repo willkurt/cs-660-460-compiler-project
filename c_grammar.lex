@@ -5,6 +5,7 @@
  * can contain \n
  */
 %{
+#include "c_grammar.h"
 #include <stdio.h>
 #include "y.tab.h"
 %}

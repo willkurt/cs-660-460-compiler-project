@@ -200,7 +200,7 @@
 /* Copy the first part of user declarations.  */
 #line 1 "c_grammar.y"
 
-
+#include "c_grammar.h"
 #include <stdio.h>
   /* #include "SymbolTable.hpp" */
  

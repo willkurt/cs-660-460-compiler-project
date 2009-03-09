@@ -1,5 +1,5 @@
 %{
-
+#include "c_grammar.h"
 #include <stdio.h>
   /* #include "SymbolTable.hpp" */
  %}
