@@ -5,6 +5,7 @@
 #ifndef C_GRAMMAR_H
 #define C_GRAMMAR_H
 #include <stdio.h>
+#include "SymbolTable.hpp"
 
 extern "C"{
 int yyparse();
