@@ -8,6 +8,7 @@
 #include "c_grammar.h"
 #include <stdio.h>
 #include "y.tab.h"
+extern bool lexDebug;
 %}
 
 
@@ -57,7 +58,10 @@ ws 		{/* Do nothing for whitespace */}
 "for"		{return (FOR);}
 "goto"		{return (GOTO);}
 "if"		{return (IF);}
-"int"		{return (INT);}
+"int"		{
+  if(lexDebug)
+    {printf("hello will!");}
+ return (INT);}
 "long"		{return (LONG);}
 "register"	{return (REGISTER);}
 "return"	{return (RETURN);}
@@ -73,6 +77,7 @@ ws 		{/* Do nothing for whitespace */}
 "void"		{return (VOID);}
 "volatile"	{return (VOLATILE);}
 "while"		{return (WHILE);}
+
  /*place stuff for floats etc*/
 float_const     {return (FLOATING_CONSTANT); }
 integer_const   {return (INTEGER_CONSTANT); }

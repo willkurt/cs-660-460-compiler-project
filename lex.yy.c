@@ -628,6 +628,7 @@ char *yytext;
 #include "c_grammar.h"
 #include <stdio.h>
 #include "y.tab.h"
+extern bool lexDebug;
 /* Definitions to save a little time */
 /* this was here- typedef_name  not sure what to do with it*/	
 /* this doesn't include newlines need to fix*/
@@ -638,7 +639,7 @@ letter?\"(\\.|[^\\"])*\	{return(STRING_LITERAL); }
 /*Token definitions and related actions
 Defined in the order given in the c_grammar.y file
 Questionable definitions marked with ? */
-#line 642 "lex.yy.c"
+#line 643 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -820,9 +821,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 42 "c_grammar.lex"
+#line 43 "c_grammar.lex"
 
-#line 826 "lex.yy.c"
+#line 827 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -907,298 +908,301 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 43 "c_grammar.lex"
+#line 44 "c_grammar.lex"
 {/* Do nothing for whitespace */}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 44 "c_grammar.lex"
+#line 45 "c_grammar.lex"
 {return (AUTO);}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 45 "c_grammar.lex"
+#line 46 "c_grammar.lex"
 {return (BREAK);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 46 "c_grammar.lex"
+#line 47 "c_grammar.lex"
 {return (CASE);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 47 "c_grammar.lex"
+#line 48 "c_grammar.lex"
 {return (CHAR);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 48 "c_grammar.lex"
+#line 49 "c_grammar.lex"
 {return (CONST);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 49 "c_grammar.lex"
+#line 50 "c_grammar.lex"
 {return (CONTINUE);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 50 "c_grammar.lex"
+#line 51 "c_grammar.lex"
 {return (DEFAULT);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 51 "c_grammar.lex"
+#line 52 "c_grammar.lex"
 {return (DO);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 52 "c_grammar.lex"
+#line 53 "c_grammar.lex"
 {return (DOUBLE);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 53 "c_grammar.lex"
+#line 54 "c_grammar.lex"
 {return (ELSE);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 54 "c_grammar.lex"
+#line 55 "c_grammar.lex"
 {return (ENUM);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 55 "c_grammar.lex"
+#line 56 "c_grammar.lex"
 {return (EXTERN);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 56 "c_grammar.lex"
+#line 57 "c_grammar.lex"
 {return (FLOAT);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 57 "c_grammar.lex"
+#line 58 "c_grammar.lex"
 {return (FOR);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 58 "c_grammar.lex"
+#line 59 "c_grammar.lex"
 {return (GOTO);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 59 "c_grammar.lex"
+#line 60 "c_grammar.lex"
 {return (IF);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 60 "c_grammar.lex"
-{return (INT);}
+#line 61 "c_grammar.lex"
+{
+  if(lexDebug)
+    {printf("hello will!");}
+ return (INT);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 61 "c_grammar.lex"
+#line 65 "c_grammar.lex"
 {return (LONG);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 62 "c_grammar.lex"
+#line 66 "c_grammar.lex"
 {return (REGISTER);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 63 "c_grammar.lex"
+#line 67 "c_grammar.lex"
 {return (RETURN);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 64 "c_grammar.lex"
+#line 68 "c_grammar.lex"
 {return (SHORT);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 65 "c_grammar.lex"
+#line 69 "c_grammar.lex"
 {return (SIGNED);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 66 "c_grammar.lex"
+#line 70 "c_grammar.lex"
 {return (SIZEOF);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 67 "c_grammar.lex"
+#line 71 "c_grammar.lex"
 {return (STATIC);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 68 "c_grammar.lex"
+#line 72 "c_grammar.lex"
 {return (STRUCT);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 69 "c_grammar.lex"
+#line 73 "c_grammar.lex"
 {return (SWITCH);}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 70 "c_grammar.lex"
+#line 74 "c_grammar.lex"
 {return (TYPEDEF);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 71 "c_grammar.lex"
+#line 75 "c_grammar.lex"
 {return (UNION);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 72 "c_grammar.lex"
+#line 76 "c_grammar.lex"
 {return (UNSIGNED);}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 73 "c_grammar.lex"
+#line 77 "c_grammar.lex"
 {return (VOID);}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 74 "c_grammar.lex"
+#line 78 "c_grammar.lex"
 {return (VOLATILE);}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 75 "c_grammar.lex"
+#line 79 "c_grammar.lex"
 {return (WHILE);}
 	YY_BREAK
 /*place stuff for floats etc*/
 case 34:
 YY_RULE_SETUP
-#line 77 "c_grammar.lex"
+#line 82 "c_grammar.lex"
 {return (FLOATING_CONSTANT); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 78 "c_grammar.lex"
+#line 83 "c_grammar.lex"
 {return (INTEGER_CONSTANT); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 79 "c_grammar.lex"
+#line 84 "c_grammar.lex"
 {return (CHARACTER_CONSTANT); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 80 "c_grammar.lex"
+#line 85 "c_grammar.lex"
 {return (STRING_LITERAL); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 82 "c_grammar.lex"
+#line 87 "c_grammar.lex"
 {return (ELIPSIS);}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 83 "c_grammar.lex"
+#line 88 "c_grammar.lex"
 {return (PTR_OP);}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 84 "c_grammar.lex"
+#line 89 "c_grammar.lex"
 {return (INC_OP);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 85 "c_grammar.lex"
+#line 90 "c_grammar.lex"
 {return (DEC_OP);}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 86 "c_grammar.lex"
+#line 91 "c_grammar.lex"
 {return (LEFT_OP);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 87 "c_grammar.lex"
+#line 92 "c_grammar.lex"
 {return (RIGHT_OP);}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 88 "c_grammar.lex"
+#line 93 "c_grammar.lex"
 {return (LE_OP);}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 89 "c_grammar.lex"
+#line 94 "c_grammar.lex"
 {return (GE_OP);}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 90 "c_grammar.lex"
+#line 95 "c_grammar.lex"
 {return (EQ_OP);}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 91 "c_grammar.lex"
+#line 96 "c_grammar.lex"
 {return (NE_OP);}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 92 "c_grammar.lex"
+#line 97 "c_grammar.lex"
 {return (AND_OP);}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 93 "c_grammar.lex"
+#line 98 "c_grammar.lex"
 {return (OR_OP);}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 94 "c_grammar.lex"
+#line 99 "c_grammar.lex"
 {return (MUL_ASSIGN);}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 95 "c_grammar.lex"
+#line 100 "c_grammar.lex"
 {return (DIV_ASSIGN);}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 96 "c_grammar.lex"
+#line 101 "c_grammar.lex"
 {return (MOD_ASSIGN);}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 97 "c_grammar.lex"
+#line 102 "c_grammar.lex"
 {return (ADD_ASSIGN);}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 98 "c_grammar.lex"
+#line 103 "c_grammar.lex"
 {return (SUB_ASSIGN);}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 99 "c_grammar.lex"
+#line 104 "c_grammar.lex"
 {return (LEFT_ASSIGN);}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 100 "c_grammar.lex"
+#line 105 "c_grammar.lex"
 {return (RIGHT_ASSIGN);}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 101 "c_grammar.lex"
+#line 106 "c_grammar.lex"
 {return (AND_ASSIGN);}
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 102 "c_grammar.lex"
+#line 107 "c_grammar.lex"
 {return (XOR_ASSIGN);}
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 103 "c_grammar.lex"
+#line 108 "c_grammar.lex"
 {return (OR_ASSIGN);}
 	YY_BREAK
 /* Single character tokens 
@@ -1207,134 +1211,134 @@ YY_RULE_SETUP
  I'm removing them...*/
 case 60:
 YY_RULE_SETUP
-#line 111 "c_grammar.lex"
+#line 116 "c_grammar.lex"
 { return(';'); }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 112 "c_grammar.lex"
+#line 117 "c_grammar.lex"
 { return('{'); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 113 "c_grammar.lex"
+#line 118 "c_grammar.lex"
 { return('}'); }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 114 "c_grammar.lex"
+#line 119 "c_grammar.lex"
 { return(','); }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 115 "c_grammar.lex"
+#line 120 "c_grammar.lex"
 { return(':'); }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 116 "c_grammar.lex"
+#line 121 "c_grammar.lex"
 { return('='); }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 117 "c_grammar.lex"
+#line 122 "c_grammar.lex"
 { return('('); }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 118 "c_grammar.lex"
+#line 123 "c_grammar.lex"
 { return(')'); }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 119 "c_grammar.lex"
+#line 124 "c_grammar.lex"
 { return('['); }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 120 "c_grammar.lex"
+#line 125 "c_grammar.lex"
 { return(']'); }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 121 "c_grammar.lex"
+#line 126 "c_grammar.lex"
 { return('.'); }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 122 "c_grammar.lex"
+#line 127 "c_grammar.lex"
 { return('&'); }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 123 "c_grammar.lex"
+#line 128 "c_grammar.lex"
 { return('!'); }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 124 "c_grammar.lex"
+#line 129 "c_grammar.lex"
 { return('~'); }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 125 "c_grammar.lex"
+#line 130 "c_grammar.lex"
 { return('-'); }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 126 "c_grammar.lex"
+#line 131 "c_grammar.lex"
 { return('+'); }
 	YY_BREAK
 /* for reasons unknown right now, single quotes work, not double quotes */
 case 76:
 YY_RULE_SETUP
-#line 128 "c_grammar.lex"
+#line 133 "c_grammar.lex"
 { return('*'); }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 129 "c_grammar.lex"
+#line 134 "c_grammar.lex"
 { return('/'); }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 130 "c_grammar.lex"
+#line 135 "c_grammar.lex"
 { return('%'); }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 131 "c_grammar.lex"
+#line 136 "c_grammar.lex"
 { return('<'); }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 132 "c_grammar.lex"
+#line 137 "c_grammar.lex"
 { return('>'); }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 133 "c_grammar.lex"
+#line 138 "c_grammar.lex"
 { return('^'); }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 134 "c_grammar.lex"
+#line 139 "c_grammar.lex"
 { return('|'); }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 135 "c_grammar.lex"
+#line 140 "c_grammar.lex"
 { return('?'); }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 137 "c_grammar.lex"
+#line 142 "c_grammar.lex"
 { return (IDENTIFIER); }
 	YY_BREAK
 /*All else would be an error-note error token not working*/
 case 85:
 YY_RULE_SETUP
-#line 139 "c_grammar.lex"
+#line 144 "c_grammar.lex"
 {}
 	YY_BREAK
 /*I have no idea if this works*/
@@ -1343,10 +1347,10 @@ YY_RULE_SETUP
  */
 case 86:
 YY_RULE_SETUP
-#line 146 "c_grammar.lex"
+#line 151 "c_grammar.lex"
 ECHO;
 	YY_BREAK
-#line 1350 "lex.yy.c"
+#line 1354 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2344,7 +2348,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 146 "c_grammar.lex"
+#line 151 "c_grammar.lex"
 
 
 
