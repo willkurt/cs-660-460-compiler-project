@@ -7,7 +7,7 @@
 #include <iostream>
 bool lexDebug;
 bool stDebug;
-
+std::ofstream lexDebugOut;
 /*debug outputs we're worried about initially are:
  * -d with l or s (for lexer or symboltable)
  *
@@ -19,6 +19,8 @@ int main(int argc, char* argv[])
   lexDebug = false;
   stDebug = false; 
   
+  //for now we'll create this even if we don't use it
+  lexDebugOut.open("lexdebug.log");
   //evaluate the debug arguments
   //debug must be the first argument
   //also more error check would certainly not hurt
@@ -41,6 +43,9 @@ int main(int argc, char* argv[])
   //I actually just put this here to make sure it would compile
   SymbolTable st();
   yyparse();
+
+  //after parse close everything up
+  lexDebugOut.close();
 }
 
 int yywrap()
