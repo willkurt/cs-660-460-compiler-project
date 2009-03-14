@@ -627,7 +627,7 @@ char *yytext;
 #include "y.tab.h"
 extern bool lexDebug;
 extern std::ofstream lexDebugOut;
-
+ int lineCount = 0;
 
 /* Definitions to save a little time */
 /*this is wrong*/
@@ -909,7 +909,7 @@ case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
 #line 53 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "NEWLINE\n ";}}
+{if(lexDebug){lexDebugOut << "NEWLINE("<< lineCount <<")\n ";} lineCount++;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP

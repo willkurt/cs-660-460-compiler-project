@@ -17,7 +17,7 @@
 #include "y.tab.h"
 extern bool lexDebug;
 extern std::ofstream lexDebugOut;
-
+ int lineCount = 0;
 
 %}
 
@@ -50,7 +50,7 @@ _LITERAL ";}return (STRING_LITERAL); }
  Defined in the order given in the c_grammar.y file
  Questionable definitions marked with ? */
 %%
-"\n"            {if(lexDebug){lexDebugOut << "NEWLINE\n ";}}
+"\n"            {if(lexDebug){lexDebugOut << "NEWLINE("<< lineCount <<")\n ";} lineCount++;}
 [ \t]+ 		{if(lexDebug){lexDebugOut << "ws  ";}/* Do nothing for whitespace */}
 "auto"		{if(lexDebug){lexDebugOut << "AUTO ";}return (AUTO);}
 "break"		{if(lexDebug){lexDebugOut << "BREAK ";}return (BREAK);}
