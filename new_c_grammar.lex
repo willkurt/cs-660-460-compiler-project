@@ -1,3 +1,11 @@
+/*
+ *Known problems with lexer:
+ * pointer declarations not working (int* x)
+ * FLOAT of the literals are working
+ * it's not really chewing up whitespace
+ */
+
+
 
 /* Text to be copied into lex.yy.c
  * May not be necessary, following Harris' convention
@@ -21,14 +29,12 @@ delim	{ \t\n}
 ws	{delim}+
 letter	[A-Za-z]
 digit	[0-9]
-id	{letter}({letter}|{digit}|'_')* 
-		/* this was here- typedef_name  not sure what to do with it*/	
-integer_const	(+|-)?{digit}+
-float_const     (+|-)?{digit)+'.'{digit}+('e'(+|-){digit}+)?  
-     
-  /* this doesn't include newlines need to fix*/
-char_const   \'.\'
-string_lit   \".*\" 
+id	{letter}({letter}|{digit}|'_')* 	
+integer	[+-]?{digit}+
+		    /*this is wrong*/
+floating     [+-]?{digit)+'.'{digit}+('e'[+|-]?{digit}+)?  
+character   \'.\'
+string   \".*\" 
 
 	      
  /* %token  ENUMERATION_CONSTANT */
@@ -80,11 +86,6 @@ ws 		{/* Do nothing for whitespace */}
 "volatile"	{if(lexDebug){lexDebugOut << "VOLATILE ";}return (VOLATILE);}
 "while"		{if(lexDebug){lexDebugOut << "WHILE ";}return (WHILE);}
 
- /*place stuff for floats etc*/
-float_const     {if(lexDebug){lexDebugOut << "FLOATING_CONSTANT ";}return (FLOATING_CONSTANT); }
-integer_const   {if(lexDebug){lexDebugOut << "INTEGER_CONSTANT ";}return (INTEGER_CONSTANT); }
-char_const      {if(lexDebug){lexDebugOut << "CHARACTER_CONSTANT ";}return (CHARACTER_CONSTANT); }
-string_lit      {if(lexDebug){lexDebugOut << "STRING_LITERAL ";}return (STRING_LITERAL); }
 
 "..."		{if(lexDebug){lexDebugOut << "ELIPSIS ";}return (ELIPSIS);}
 "*"		{if(lexDebug){lexDebugOut << "PTR_OP ";}return (PTR_OP);}
@@ -141,9 +142,16 @@ string_lit      {if(lexDebug){lexDebugOut << "STRING_LITERAL ";}return (STRING_L
 "|"		{if(lexDebug){lexDebugOut << "'|' ";}return ('|'); }
 "?"		{if(lexDebug){lexDebugOut << "'?' ";}return ('?'); }
 
+ /*place stuff for floats etc*/
+ /*{floating}     {if(lexDebug){lexDebugOut << "FLOATING_CONSTANT ";}return (FLOATING_CONSTANT); } */
+{integer}   {if(lexDebug){lexDebugOut << "INTEGER_CONSTANT ";}return (INTEGER_CONSTANT); }
+{character}      {if(lexDebug){lexDebugOut << "CHARACTER_CONSTANT ";}return (CHARACTER_CONSTANT); }
+{string}      {if(lexDebug){lexDebugOut << "STRING_LITERAL ";}return (STRING_LITERAL); }
+
+
 {id}            {if(lexDebug){lexDebugOut << "IDENTIFIER ";}return (IDENTIFIER); }
  /*All else would be an error-note error token not working*/
-.		{}
+.		{if(lexDebug){lexDebugOut << "UNIDENTIFIEDTOKEN!!!! ";}}
 
  /*I have no idea if this works*/
 
