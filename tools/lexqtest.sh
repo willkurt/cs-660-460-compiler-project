@@ -1,3 +1,4 @@
+#!/bin/bash
 #runs a string in a.out with lex debugging on
 #then cats the output
 echo "enter test string"
