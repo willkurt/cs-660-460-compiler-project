@@ -17,7 +17,7 @@ extern std::ofstream lexDebugOut;
 
 /* Definitions to save a little time */
 
-delim	{ \t\n}
+delim	{ \t\n}  
 ws	{delim}+
 letter	[A-Za-z]
 digit	[0-9]
@@ -45,6 +45,7 @@ _LITERAL ";}return (STRING_LITERAL); }
  Defined in the order given in the c_grammar.y file
  Questionable definitions marked with ? */
 %%
+"\n"            {if(lexDebug){lexDebugOut << "NEWLINE\n ";}}
 ws 		{/* Do nothing for whitespace */}
 "auto"		{if(lexDebug){lexDebugOut << "AUTO ";}return (AUTO);}
 "break"		{if(lexDebug){lexDebugOut << "BREAK ";}return (BREAK);}
