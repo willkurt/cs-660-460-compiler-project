@@ -28,7 +28,7 @@ float_const     (+|-)?{digit)+'.'{digit}+('e'(+|-){digit}+)?
      
   /* this doesn't include newlines need to fix*/
 char_const   \'.\'
-string_lit   \".*\"
+string_lit   \".*\" 
 
 	      
  /* %token  ENUMERATION_CONSTANT */
@@ -36,7 +36,8 @@ string_lit   \".*\"
 
 
  /*Hmm...
- letter?\"(\\.|[^\\"])*\	{if(lexDebug){lexDebugOut << "STRING_LITERAL ";}return (STRING_LITERAL); }
+ letter?\"(\\.|[^\\"])*\	{if(lexDebug){lexDebugOut << "STRING
+_LITERAL ";}return (STRING_LITERAL); }
  */
 
 
@@ -120,7 +121,7 @@ string_lit      {if(lexDebug){lexDebugOut << "STRING_LITERAL ";}return (STRING_L
 ":"		{if(lexDebug){lexDebugOut << "':' ";}return (':'); }
 "="		{if(lexDebug){lexDebugOut << "'=' ";}return ('='); }
 "("		{if(lexDebug){lexDebugOut << "'(' ";}return ('('); }
-")"		{if(lexDebug){lexDebugOut << "' ";}return (')'); }
+")"		{if(lexDebug){lexDebugOut << ") ";}return (')'); }
 "["		{if(lexDebug){lexDebugOut << "'[' ";}return ('['); }
 "]"		{if(lexDebug){lexDebugOut << "']' ";}return (']'); }
 "."		{if(lexDebug){lexDebugOut << "'.' ";}return ('.'); }
