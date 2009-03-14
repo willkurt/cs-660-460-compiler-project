@@ -2,7 +2,6 @@
  *Known problems with lexer:
  * pointer declarations not working (int* x)
  * FLOAT of the literals are working
- * it's not really chewing up whitespace
  */
 
 
@@ -25,8 +24,8 @@ extern std::ofstream lexDebugOut;
 
 /* Definitions to save a little time */
 
-delim	{ \t\n}  
-ws	{delim}+
+
+ws	[\t]+
 letter	[A-Za-z]
 digit	[0-9]
 id	{letter}({letter}|{digit}|'_')* 	
@@ -52,7 +51,7 @@ _LITERAL ";}return (STRING_LITERAL); }
  Questionable definitions marked with ? */
 %%
 "\n"            {if(lexDebug){lexDebugOut << "NEWLINE\n ";}}
-ws 		{/* Do nothing for whitespace */}
+[ \t]+ 		{if(lexDebug){lexDebugOut << "ws  ";}/* Do nothing for whitespace */}
 "auto"		{if(lexDebug){lexDebugOut << "AUTO ";}return (AUTO);}
 "break"		{if(lexDebug){lexDebugOut << "BREAK ";}return (BREAK);}
 "case"		{if(lexDebug){lexDebugOut << "CASE ";}return (CASE);}
