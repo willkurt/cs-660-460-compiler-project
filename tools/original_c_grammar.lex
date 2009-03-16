@@ -1,3 +1,10 @@
+/*
+ *Known problems with lexer:
+ * pointer declarations not working (int* x)
+ * FLOAT of the literals are working
+ */
+
+
 
 /* Text to be copied into lex.yy.c
  * May not be necessary, following Harris' convention
@@ -10,41 +17,35 @@
 #include "y.tab.h"
 extern bool lexDebug;
 extern std::ofstream lexDebugOut;
-
+int lineCount = 0;
+/*this increments so that we now where on the line we are*/
+int currentCharDept = 0;
 
 %}
 
 
 /* Definitions to save a little time */
 
-delim	{ \t\n}
-ws	{delim}+
+
+ws	[\t]+
 letter	[A-Za-z]
 digit	[0-9]
-id	{letter}({letter}|{digit}|'_')* 
-		/* this was here- typedef_name  not sure what to do with it*/	
-integer_const	(+|-)?{digit}+
-float_const     (+|-)?{digit)+'.'{digit}+('e'(+|-){digit}+)?  
-     
-  /* this doesn't include newlines need to fix*/
-char_const   \'.\'
-string_lit   \".*\"
+id	{letter}({letter}|{digit}|'_')* 	
+integer	[+-]?{digit}+
+float_const [+-]?{digit}+"."{digit}+("e"[+-]?{digit}+)?
+character   \'.\'
+string   \".*\" 
 
 	      
  /* %token  ENUMERATION_CONSTANT */
-
-
-
- /*Hmm...
- letter?\"(\\.|[^\\"])*\	{return (STRING_LITERAL); }
- */
 
 
  /*Token definitions and related actions
  Defined in the order given in the c_grammar.y file
  Questionable definitions marked with ? */
 %%
-ws 		{/* Do nothing for whitespace */}
+"\n"            {lineCount++;}
+[ \t]+ 		{/* Do nothing for whitespace */}
 "auto"		{return (AUTO);}
 "break"		{return (BREAK);}
 "case"		{return (CASE);}
@@ -78,14 +79,12 @@ ws 		{/* Do nothing for whitespace */}
 "volatile"	{return (VOLATILE);}
 "while"		{return (WHILE);}
 
- /*place stuff for floats etc*/
-float_const     {return (FLOATING_CONSTANT); }
-integer_const   {return (INTEGER_CONSTANT); }
-char_const      {return (CHARACTER_CONSTANT); }
-string_lit      {return (STRING_LITERAL); }
 
 "..."		{return (ELIPSIS);}
-"*"		{return (PTR_OP);}
+ /* this also need to be returned as a literal for some cases
+    I'm not 100% sure what a ptr_opp in this case...
+  "*"		{return (PTR_OP);}
+ */
 "++"		{return (INC_OP);}
 "--"		{return (DEC_OP);}
 "<<"		{return (LEFT_OP);}
@@ -129,8 +128,7 @@ string_lit      {return (STRING_LITERAL); }
 "~"		{return ('~'); }
 "-"		{return ('-'); }
 "+"		{return ('+'); }
- /* for reasons unknown right now, single quotes work, not double quotes */
-'*'		{return ('*'); }
+"*"		{return ('*'); }
 "/"		{return ('/'); }
 "%"		{return ('%'); }
 "<"		{return ('<'); }
@@ -138,6 +136,15 @@ string_lit      {return (STRING_LITERAL); }
 "^"		{return ('^'); }
 "|"		{return ('|'); }
 "?"		{return ('?'); }
+
+ /*place stuff for floats etc*/
+
+
+{float_const}    {return (FLOATING_CONSTANT); } 
+{integer}        {return (INTEGER_CONSTANT); }
+{character}      {return (CHARACTER_CONSTANT); }
+{string}         {return (STRING_LITERAL); }
+
 
 {id}            {return (IDENTIFIER); }
  /*All else would be an error-note error token not working*/

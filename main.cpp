@@ -7,10 +7,13 @@
 #include <iostream>
 bool lexDebug;
 bool stDebug;
+bool parseDebug;
 std::ofstream lexDebugOut;
+std::ofstream parseDebugOut;
 /*debug outputs we're worried about initially are:
- * -d with l or s (for lexer or symboltable)
+ * -d with l or s or p (for lexer, symboltable, parser)
  *
+ * debug for symbol table and parser not implemented ... yet :)
  */
 
 int main(int argc, char* argv[])
@@ -18,9 +21,11 @@ int main(int argc, char* argv[])
   //default values for thse
   lexDebug = false;
   stDebug = false; 
+  parseDebug = false;
   
-  //for now we'll create this even if we don't use it
+  //for now we'll create these even if we don't use it
   lexDebugOut.open("lexdebug.log");
+  parseDebugOut.open("parsedebug.log");
   //evaluate the debug arguments
   //debug must be the first argument
   //also more error check would certainly not hurt
@@ -29,13 +34,18 @@ int main(int argc, char* argv[])
       std::string darg = argv[1];
       int locL = darg.find('l');
       int locS = darg.find('s');
-      if(locL == 2 || locL == 3) //valid locations of 'l'
+      int locP = darg.find('p');
+      if(locL == 2 || locL == 3 || locL == 4) //valid locations of 'l'
 	{
 	  lexDebug = true;
 	}
-      if(locS == 2 || locS == 3)
+      if(locS == 2 || locS == 3 || locS == 4)
 	{
 	  stDebug = true;
+	}
+      if(locP == 2 || locP == 3 || locP == 4)
+	{
+	  parseDebug = true;
 	}
     }   
 
@@ -46,6 +56,7 @@ int main(int argc, char* argv[])
 
   //after parse close everything up
   lexDebugOut.close();
+  parseDebugOut.close();
 }
 
 int yywrap()
