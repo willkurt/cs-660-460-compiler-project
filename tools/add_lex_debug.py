@@ -9,10 +9,11 @@ for line in original:
         token = line.split(' (')[1].split(')')[0]
         #our debug string
         debug_string = "if(lexDebug){lexDebugOut << \"%s \";}" % (token)
+        char_cnt_string = "currentCharDepth += yyleng;"
         #let's split the line and insert our new debug string
         #the '{r' is just because we use the literal '{' in our code
         first, second = line.split("{r",1);
-        line = first+"{"+debug_string+'r'+second
+        line = first+"{"+debug_string+char_cnt_string+'r'+second
     new_lex.write(line)
 
 

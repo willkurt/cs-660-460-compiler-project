@@ -19,7 +19,7 @@ extern bool lexDebug;
 extern std::ofstream lexDebugOut;
 int lineCount = 0;
 /*this increments so that we now where on the line we are*/
-int currentCharDept = 0;
+int currentCharDepth = 0;
 
 %}
 

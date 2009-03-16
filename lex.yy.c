@@ -632,7 +632,7 @@ extern bool lexDebug;
 extern std::ofstream lexDebugOut;
 int lineCount = 0;
 /*this increments so that we now where on the line we are*/
-int currentCharDept = 0;
+int currentCharDepth = 0;
 
 /* Definitions to save a little time */
 /* %token  ENUMERATION_CONSTANT */
@@ -910,281 +910,281 @@ case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
 #line 47 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "NEWLINE("<< lineCount <<")\n ";} lineCount++;}
+{if(lexDebug){lexDebugOut << "NEWLINE "<<currentCharDepth<<" - "<<lineCount<<"\n";}lineCount++;currentCharDepth = 0;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 48 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "ws  ";}/* Do nothing for whitespace */}
+{currentCharDepth += yyleng;/* Do nothing for whitspace other than increment char counter */}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 49 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "AUTO ";}return (AUTO);}
+{if(lexDebug){lexDebugOut << "AUTO ";}currentCharDepth += yyleng;return (AUTO);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 50 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "BREAK ";}return (BREAK);}
+{if(lexDebug){lexDebugOut << "BREAK ";}currentCharDepth += yyleng;return (BREAK);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 51 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "CASE ";}return (CASE);}
+{if(lexDebug){lexDebugOut << "CASE ";}currentCharDepth += yyleng;return (CASE);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 52 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "CHAR ";}return (CHAR);}
+{if(lexDebug){lexDebugOut << "CHAR ";}currentCharDepth += yyleng;return (CHAR);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 53 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "CONST ";}return (CONST);}
+{if(lexDebug){lexDebugOut << "CONST ";}currentCharDepth += yyleng;return (CONST);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 54 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "CONTINUE ";}return (CONTINUE);}
+{if(lexDebug){lexDebugOut << "CONTINUE ";}currentCharDepth += yyleng;return (CONTINUE);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 55 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "DEFAULT ";}return (DEFAULT);}
+{if(lexDebug){lexDebugOut << "DEFAULT ";}currentCharDepth += yyleng;return (DEFAULT);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 56 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "DO ";}return (DO);}
+{if(lexDebug){lexDebugOut << "DO ";}currentCharDepth += yyleng;return (DO);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 57 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "DOUBLE ";}return (DOUBLE);}
+{if(lexDebug){lexDebugOut << "DOUBLE ";}currentCharDepth += yyleng;return (DOUBLE);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 58 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "ELSE ";}return (ELSE);}
+{if(lexDebug){lexDebugOut << "ELSE ";}currentCharDepth += yyleng;return (ELSE);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 59 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "ENUM ";}return (ENUM);}
+{if(lexDebug){lexDebugOut << "ENUM ";}currentCharDepth += yyleng;return (ENUM);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 60 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "EXTERN ";}return (EXTERN);}
+{if(lexDebug){lexDebugOut << "EXTERN ";}currentCharDepth += yyleng;return (EXTERN);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 61 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "FLOAT ";}return (FLOAT);}
+{if(lexDebug){lexDebugOut << "FLOAT ";}currentCharDepth += yyleng;return (FLOAT);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 62 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "FOR ";}return (FOR);}
+{if(lexDebug){lexDebugOut << "FOR ";}currentCharDepth += yyleng;return (FOR);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 63 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "GOTO ";}return (GOTO);}
+{if(lexDebug){lexDebugOut << "GOTO ";}currentCharDepth += yyleng;return (GOTO);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 64 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "IF ";}return (IF);}
+{if(lexDebug){lexDebugOut << "IF ";}currentCharDepth += yyleng;return (IF);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 65 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "INT ";}return (INT);}
+{if(lexDebug){lexDebugOut << "INT ";}currentCharDepth += yyleng;return (INT);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 66 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "LONG ";}return (LONG);}
+{if(lexDebug){lexDebugOut << "LONG ";}currentCharDepth += yyleng;return (LONG);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 67 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "REGISTER ";}return (REGISTER);}
+{if(lexDebug){lexDebugOut << "REGISTER ";}currentCharDepth += yyleng;return (REGISTER);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 68 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "RETURN ";}return (RETURN);}
+{if(lexDebug){lexDebugOut << "RETURN ";}currentCharDepth += yyleng;return (RETURN);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 69 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "SHORT ";}return (SHORT);}
+{if(lexDebug){lexDebugOut << "SHORT ";}currentCharDepth += yyleng;return (SHORT);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 70 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "SIGNED ";}return (SIGNED);}
+{if(lexDebug){lexDebugOut << "SIGNED ";}currentCharDepth += yyleng;return (SIGNED);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 71 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "SIZEOF ";}return (SIZEOF);}
+{if(lexDebug){lexDebugOut << "SIZEOF ";}currentCharDepth += yyleng;return (SIZEOF);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 72 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "STATIC ";}return (STATIC);}
+{if(lexDebug){lexDebugOut << "STATIC ";}currentCharDepth += yyleng;return (STATIC);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 73 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "STRUCT ";}return (STRUCT);}
+{if(lexDebug){lexDebugOut << "STRUCT ";}currentCharDepth += yyleng;return (STRUCT);}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 74 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "SWITCH ";}return (SWITCH);}
+{if(lexDebug){lexDebugOut << "SWITCH ";}currentCharDepth += yyleng;return (SWITCH);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 75 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "TYPEDEF ";}return (TYPEDEF);}
+{if(lexDebug){lexDebugOut << "TYPEDEF ";}currentCharDepth += yyleng;return (TYPEDEF);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 76 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "UNION ";}return (UNION);}
+{if(lexDebug){lexDebugOut << "UNION ";}currentCharDepth += yyleng;return (UNION);}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 77 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "UNSIGNED ";}return (UNSIGNED);}
+{if(lexDebug){lexDebugOut << "UNSIGNED ";}currentCharDepth += yyleng;return (UNSIGNED);}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 78 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "VOID ";}return (VOID);}
+{if(lexDebug){lexDebugOut << "VOID ";}currentCharDepth += yyleng;return (VOID);}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 79 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "VOLATILE ";}return (VOLATILE);}
+{if(lexDebug){lexDebugOut << "VOLATILE ";}currentCharDepth += yyleng;return (VOLATILE);}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 80 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "WHILE ";}return (WHILE);}
+{if(lexDebug){lexDebugOut << "WHILE ";}currentCharDepth += yyleng;return (WHILE);}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 83 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "ELIPSIS ";}return (ELIPSIS);}
+{if(lexDebug){lexDebugOut << "ELIPSIS ";}currentCharDepth += yyleng;return (ELIPSIS);}
 	YY_BREAK
 /* this also need to be returned as a literal for some cases
     I'm not 100% sure what a ptr_opp in this case...
-  "*"		{if(lexDebug){lexDebugOut << "PTR_OP ";}return (PTR_OP);}
+  "*"		{if(lexDebug){lexDebugOut << "PTR_OP ";}currentCharDepth += yyleng;return (PTR_OP);}
  */
 case 36:
 YY_RULE_SETUP
 #line 88 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "INC_OP ";}return (INC_OP);}
+{if(lexDebug){lexDebugOut << "INC_OP ";}currentCharDepth += yyleng;return (INC_OP);}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 89 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "DEC_OP ";}return (DEC_OP);}
+{if(lexDebug){lexDebugOut << "DEC_OP ";}currentCharDepth += yyleng;return (DEC_OP);}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 90 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "LEFT_OP ";}return (LEFT_OP);}
+{if(lexDebug){lexDebugOut << "LEFT_OP ";}currentCharDepth += yyleng;return (LEFT_OP);}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 91 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "RIGHT_OP ";}return (RIGHT_OP);}
+{if(lexDebug){lexDebugOut << "RIGHT_OP ";}currentCharDepth += yyleng;return (RIGHT_OP);}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 92 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "LE_OP ";}return (LE_OP);}
+{if(lexDebug){lexDebugOut << "LE_OP ";}currentCharDepth += yyleng;return (LE_OP);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 93 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "GE_OP ";}return (GE_OP);}
+{if(lexDebug){lexDebugOut << "GE_OP ";}currentCharDepth += yyleng;return (GE_OP);}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 94 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "EQ_OP ";}return (EQ_OP);}
+{if(lexDebug){lexDebugOut << "EQ_OP ";}currentCharDepth += yyleng;return (EQ_OP);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 95 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "NE_OP ";}return (NE_OP);}
+{if(lexDebug){lexDebugOut << "NE_OP ";}currentCharDepth += yyleng;return (NE_OP);}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 96 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "AND_OP ";}return (AND_OP);}
+{if(lexDebug){lexDebugOut << "AND_OP ";}currentCharDepth += yyleng;return (AND_OP);}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
 #line 97 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "OR_OP ";}return (OR_OP);}
+{if(lexDebug){lexDebugOut << "OR_OP ";}currentCharDepth += yyleng;return (OR_OP);}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
 #line 98 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "MUL_ASSIGN ";}return (MUL_ASSIGN);}
+{if(lexDebug){lexDebugOut << "MUL_ASSIGN ";}currentCharDepth += yyleng;return (MUL_ASSIGN);}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
 #line 99 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "DIV_ASSIGN ";}return (DIV_ASSIGN);}
+{if(lexDebug){lexDebugOut << "DIV_ASSIGN ";}currentCharDepth += yyleng;return (DIV_ASSIGN);}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
 #line 100 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "MOD_ASSIGN ";}return (MOD_ASSIGN);}
+{if(lexDebug){lexDebugOut << "MOD_ASSIGN ";}currentCharDepth += yyleng;return (MOD_ASSIGN);}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
 #line 101 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "ADD_ASSIGN ";}return (ADD_ASSIGN);}
+{if(lexDebug){lexDebugOut << "ADD_ASSIGN ";}currentCharDepth += yyleng;return (ADD_ASSIGN);}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
 #line 102 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "SUB_ASSIGN ";}return (SUB_ASSIGN);}
+{if(lexDebug){lexDebugOut << "SUB_ASSIGN ";}currentCharDepth += yyleng;return (SUB_ASSIGN);}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
 #line 103 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "LEFT_ASSIGN ";}return (LEFT_ASSIGN);}
+{if(lexDebug){lexDebugOut << "LEFT_ASSIGN ";}currentCharDepth += yyleng;return (LEFT_ASSIGN);}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
 #line 104 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "RIGHT_ASSIGN ";}return (RIGHT_ASSIGN);}
+{if(lexDebug){lexDebugOut << "RIGHT_ASSIGN ";}currentCharDepth += yyleng;return (RIGHT_ASSIGN);}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
 #line 105 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "AND_ASSIGN ";}return (AND_ASSIGN);}
+{if(lexDebug){lexDebugOut << "AND_ASSIGN ";}currentCharDepth += yyleng;return (AND_ASSIGN);}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
 #line 106 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "XOR_ASSIGN ";}return (XOR_ASSIGN);}
+{if(lexDebug){lexDebugOut << "XOR_ASSIGN ";}currentCharDepth += yyleng;return (XOR_ASSIGN);}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
 #line 107 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "OR_ASSIGN ";}return (OR_ASSIGN);}
+{if(lexDebug){lexDebugOut << "OR_ASSIGN ";}currentCharDepth += yyleng;return (OR_ASSIGN);}
 	YY_BREAK
 /* Single character tokens 
     let's add tokens for these later on
@@ -1193,154 +1193,154 @@ YY_RULE_SETUP
 case 56:
 YY_RULE_SETUP
 #line 115 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "';' ";}return (';'); }
+{if(lexDebug){lexDebugOut << "';' ";}currentCharDepth += yyleng;return (';'); }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
 #line 116 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'{' ";}return ('{'); }
+{if(lexDebug){lexDebugOut << "'{' ";}currentCharDepth += yyleng;return ('{'); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
 #line 117 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'}' ";}return ('}'); }
+{if(lexDebug){lexDebugOut << "'}' ";}currentCharDepth += yyleng;return ('}'); }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
 #line 118 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "',' ";}return (','); }
+{if(lexDebug){lexDebugOut << "',' ";}currentCharDepth += yyleng;return (','); }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
 #line 119 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "':' ";}return (':'); }
+{if(lexDebug){lexDebugOut << "':' ";}currentCharDepth += yyleng;return (':'); }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
 #line 120 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'=' ";}return ('='); }
+{if(lexDebug){lexDebugOut << "'=' ";}currentCharDepth += yyleng;return ('='); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
 #line 121 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'(' ";}return ('('); }
+{if(lexDebug){lexDebugOut << "'(' ";}currentCharDepth += yyleng;return ('('); }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
 #line 122 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << ") ";}return (')'); }
+{if(lexDebug){lexDebugOut << ") ";}currentCharDepth += yyleng;return (')'); }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
 #line 123 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'[' ";}return ('['); }
+{if(lexDebug){lexDebugOut << "'[' ";}currentCharDepth += yyleng;return ('['); }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
 #line 124 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "']' ";}return (']'); }
+{if(lexDebug){lexDebugOut << "']' ";}currentCharDepth += yyleng;return (']'); }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
 #line 125 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'.' ";}return ('.'); }
+{if(lexDebug){lexDebugOut << "'.' ";}currentCharDepth += yyleng;return ('.'); }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
 #line 126 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'&' ";}return ('&'); }
+{if(lexDebug){lexDebugOut << "'&' ";}currentCharDepth += yyleng;return ('&'); }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
 #line 127 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'!' ";}return ('!'); }
+{if(lexDebug){lexDebugOut << "'!' ";}currentCharDepth += yyleng;return ('!'); }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
 #line 128 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'~' ";}return ('~'); }
+{if(lexDebug){lexDebugOut << "'~' ";}currentCharDepth += yyleng;return ('~'); }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
 #line 129 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'-' ";}return ('-'); }
+{if(lexDebug){lexDebugOut << "'-' ";}currentCharDepth += yyleng;return ('-'); }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
 #line 130 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'+' ";}return ('+'); }
+{if(lexDebug){lexDebugOut << "'+' ";}currentCharDepth += yyleng;return ('+'); }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
 #line 131 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'*' ";}return ('*'); }
+{if(lexDebug){lexDebugOut << "'*' ";}currentCharDepth += yyleng;return ('*'); }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
 #line 132 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'/' ";}return ('/'); }
+{if(lexDebug){lexDebugOut << "'/' ";}currentCharDepth += yyleng;return ('/'); }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
 #line 133 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'%' ";}return ('%'); }
+{if(lexDebug){lexDebugOut << "'%' ";}currentCharDepth += yyleng;return ('%'); }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
 #line 134 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'<' ";}return ('<'); }
+{if(lexDebug){lexDebugOut << "'<' ";}currentCharDepth += yyleng;return ('<'); }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
 #line 135 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'>' ";}return ('>'); }
+{if(lexDebug){lexDebugOut << "'>' ";}currentCharDepth += yyleng;return ('>'); }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
 #line 136 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'^' ";}return ('^'); }
+{if(lexDebug){lexDebugOut << "'^' ";}currentCharDepth += yyleng;return ('^'); }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
 #line 137 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'|' ";}return ('|'); }
+{if(lexDebug){lexDebugOut << "'|' ";}currentCharDepth += yyleng;return ('|'); }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
 #line 138 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "'?' ";}return ('?'); }
+{if(lexDebug){lexDebugOut << "'?' ";}currentCharDepth += yyleng;return ('?'); }
 	YY_BREAK
 /*place stuff for floats etc*/
 case 80:
 YY_RULE_SETUP
 #line 143 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "FLOATING_CONSTANT ";}return (FLOATING_CONSTANT); } 
+{if(lexDebug){lexDebugOut << "FLOATING_CONSTANT ";}currentCharDepth += yyleng;return (FLOATING_CONSTANT); } 
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
 #line 144 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "INTEGER_CONSTANT ";}return (INTEGER_CONSTANT); }
+{if(lexDebug){lexDebugOut << "INTEGER_CONSTANT ";}currentCharDepth += yyleng;return (INTEGER_CONSTANT); }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
 #line 145 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "CHARACTER_CONSTANT ";}return (CHARACTER_CONSTANT); }
+{if(lexDebug){lexDebugOut << "CHARACTER_CONSTANT ";}currentCharDepth += yyleng;return (CHARACTER_CONSTANT); }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
 #line 146 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "STRING_LITERAL ";}return (STRING_LITERAL); }
+{if(lexDebug){lexDebugOut << "STRING_LITERAL ";}currentCharDepth += yyleng;return (STRING_LITERAL); }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
 #line 149 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "IDENTIFIER ";}return (IDENTIFIER); }
+{if(lexDebug){lexDebugOut << "IDENTIFIER ";}currentCharDepth += yyleng;return (IDENTIFIER); }
 	YY_BREAK
 /*All else would be an error-note error token not working*/
 case 85:
 YY_RULE_SETUP
 #line 151 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "UNIDENTIFIEDTOKEN!!!! ";}}
+{}
 	YY_BREAK
 /*I have no idea if this works*/
 case 86:
