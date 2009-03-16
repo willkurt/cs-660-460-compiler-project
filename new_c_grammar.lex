@@ -30,20 +30,12 @@ letter	[A-Za-z]
 digit	[0-9]
 id	{letter}({letter}|{digit}|'_')* 	
 integer	[+-]?{digit}+
-		    /*this is wrong*/
-floating     [+-]?{digit)+'.'{digit}+('e'[+|-]?{digit}+)?  
+float_const [+-]?{digit}+"."{digit}+("e"[+-]?{digit}+)?
 character   \'.\'
 string   \".*\" 
 
 	      
  /* %token  ENUMERATION_CONSTANT */
-
-
-
- /*Hmm...
- letter?\"(\\.|[^\\"])*\	{if(lexDebug){lexDebugOut << "STRING
-_LITERAL ";}return (STRING_LITERAL); }
- */
 
 
  /*Token definitions and related actions
@@ -142,10 +134,12 @@ _LITERAL ";}return (STRING_LITERAL); }
 "?"		{if(lexDebug){lexDebugOut << "'?' ";}return ('?'); }
 
  /*place stuff for floats etc*/
- /*{floating}     {if(lexDebug){lexDebugOut << "FLOATING_CONSTANT ";}return (FLOATING_CONSTANT); } */
-{integer}   {if(lexDebug){lexDebugOut << "INTEGER_CONSTANT ";}return (INTEGER_CONSTANT); }
+
+
+{float_const}    {if(lexDebug){lexDebugOut << "FLOATING_CONSTANT ";}return (FLOATING_CONSTANT); } 
+{integer}        {if(lexDebug){lexDebugOut << "INTEGER_CONSTANT ";}return (INTEGER_CONSTANT); }
 {character}      {if(lexDebug){lexDebugOut << "CHARACTER_CONSTANT ";}return (CHARACTER_CONSTANT); }
-{string}      {if(lexDebug){lexDebugOut << "STRING_LITERAL ";}return (STRING_LITERAL); }
+{string}         {if(lexDebug){lexDebugOut << "STRING_LITERAL ";}return (STRING_LITERAL); }
 
 
 {id}            {if(lexDebug){lexDebugOut << "IDENTIFIER ";}return (IDENTIFIER); }
