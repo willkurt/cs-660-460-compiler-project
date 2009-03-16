@@ -79,7 +79,10 @@ string   \".*\"
 
 
 "..."		{if(lexDebug){lexDebugOut << "ELIPSIS ";}return (ELIPSIS);}
-"*"		{if(lexDebug){lexDebugOut << "PTR_OP ";}return (PTR_OP);}
+ /* this also need to be returned as a literal for some cases
+    I'm not 100% sure what a ptr_opp in this case...
+  "*"		{if(lexDebug){lexDebugOut << "PTR_OP ";}return (PTR_OP);}
+ */
 "++"		{if(lexDebug){lexDebugOut << "INC_OP ";}return (INC_OP);}
 "--"		{if(lexDebug){lexDebugOut << "DEC_OP ";}return (DEC_OP);}
 "<<"		{if(lexDebug){lexDebugOut << "LEFT_OP ";}return (LEFT_OP);}
@@ -123,8 +126,7 @@ string   \".*\"
 "~"		{if(lexDebug){lexDebugOut << "'~' ";}return ('~'); }
 "-"		{if(lexDebug){lexDebugOut << "'-' ";}return ('-'); }
 "+"		{if(lexDebug){lexDebugOut << "'+' ";}return ('+'); }
- /* for reasons unknown right now, single quotes work, not double quotes */
-'*'		{if(lexDebug){lexDebugOut << "'*' ";}return ('*'); }
+"*"		{if(lexDebug){lexDebugOut << "'*' ";}return ('*'); }
 "/"		{if(lexDebug){lexDebugOut << "'/' ";}return ('/'); }
 "%"		{if(lexDebug){lexDebugOut << "'%' ";}return ('%'); }
 "<"		{if(lexDebug){lexDebugOut << "'<' ";}return ('<'); }
