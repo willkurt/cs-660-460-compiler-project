@@ -14,7 +14,9 @@
 #include <stdio.h>
 #include "y.tab.h"
 extern bool lexDebug;
+extern bool parseDebug;
 extern std::ofstream lexDebugOut;
+extern std::ofstream parseDebugOut;
 int lineCount = 0;
 /*this increments so that we now where on the line we are*/
 int currentCharDepth = 0;
@@ -41,8 +43,16 @@ string   \".*\"
  /*Token definitions and related actions
  Defined in the order given in the c_grammar.y file
  Questionable definitions marked with ? */
+
 %%
-"\n"            {if(lexDebug){lexDebugOut << "NEWLINE "<<currentCharDepth<<"-"<<lineCount<<"\n";}lineCount++;currentCharDepth = 0;}
+"\n"            {if(lexDebug)
+			{
+			  lexDebugOut << "NEWLINE "<<currentCharDepth<<"-"<<lineCount<<"\n";
+			}
+                  if(parseDebug){
+		                   parseDebugOut<<"***end ln: "<<lineCount<<"*****\n";
+		                }
+                  lineCount++;currentCharDepth = 0;}
 [ \t]+ 		{currentCharDepth += yyleng;/* Do nothing for whitspace other than increment char counter */}
 "auto"		{if(lexDebug){lexDebugOut << "AUTO ";}currentCharDepth += yyleng;return (AUTO);}
 "break"		{if(lexDebug){lexDebugOut << "BREAK ";}currentCharDepth += yyleng;return (BREAK);}
