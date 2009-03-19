@@ -10,6 +10,8 @@ bool stDebug;
 bool parseDebug;
 std::ofstream lexDebugOut;
 std::ofstream parseDebugOut;
+extern int lineCount;
+extern int currentCharDepth;
 /*debug outputs we're worried about initially are:
  * -d with l or s or p (for lexer, symboltable, parser)
  *
@@ -66,5 +68,5 @@ int yywrap()
 
 void yyerror(const char *msg)
 {
-  std::cout<< "Arrrrrg!!!!\n";
+  std::cout<< "the error at line: "<< lineCount <<" around the "<< currentCharDepth  <<" char makes me go Arrrrrg!!!!\n";
 }
