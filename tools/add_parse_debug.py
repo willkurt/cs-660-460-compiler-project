@@ -65,7 +65,7 @@ def process(middle_list):
             #or statment, same as after |
             tmp = line.split(":",1)
             stmt = tmp[1].strip().replace("\"","\\\"") #get ride of white space and qutoes
-            newline = "%s : %s {if(parseDebug)\n{parseDebugOut << \"%s <- %s\\n\";}}" % (tmp[0],tmp[1],production,stmt)
+            newline = "%s : %s {if(parseDebug)\n{parseDebugOut << \"%s <- %s\\n\";}}\n" % (tmp[0],tmp[1],production,stmt)
             new_middle_list.append(newline)
         else:
             production = line.strip("\n")
