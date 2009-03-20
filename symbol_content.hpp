@@ -11,14 +11,13 @@
 struct SymbolContent
 {
   /*
-   * my thought for now is to store type info
-   * as a string, and point to the object with
-   * a void point... I think there is
-   * probably a better way
+   *
    */
-
+  
+  //things like const, enum etc can go here
+  std::list<std::string> modifiers;
   std::string type;
-  void* ptr;
+  int lineno;
 };
 
 
