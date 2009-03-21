@@ -7,6 +7,7 @@
 #ifndef SYMBOL_CONTENT_H
 #define SYMBOL_CONTENT_H
 #include <string>
+#include <list>
 
 struct SymbolContent
 {
@@ -15,7 +16,7 @@ struct SymbolContent
    */
   
   //things like const, enum etc can go here
-  //  std::list<std::string> modifiers;
+  std::list<std::string> modifiers;
   std::string type;
   int lineno;
 };
