@@ -110,16 +110,38 @@ string   \".*\"
 "!="		{if(lexDebug){lexDebugOut << "NE_OP ";}currentCharDepth += yyleng;return (NE_OP);}
 "&&"		{if(lexDebug){lexDebugOut << "AND_OP ";}currentCharDepth += yyleng;return (AND_OP);}
 "||"		{if(lexDebug){lexDebugOut << "OR_OP ";}currentCharDepth += yyleng;return (OR_OP);}
-"*="		{if(lexDebug){lexDebugOut << "MUL_ASSIGN ";}currentCharDepth += yyleng;return (MUL_ASSIGN);}
-"/="		{if(lexDebug){lexDebugOut << "DIV_ASSIGN ";}currentCharDepth += yyleng;return (DIV_ASSIGN);}
-"%="		{if(lexDebug){lexDebugOut << "MOD_ASSIGN ";}currentCharDepth += yyleng;return (MOD_ASSIGN);}
-"+="		{if(lexDebug){lexDebugOut << "ADD_ASSIGN ";}currentCharDepth += yyleng;return (ADD_ASSIGN);}
-"-="		{if(lexDebug){lexDebugOut << "SUB_ASSIGN ";}currentCharDepth += yyleng;return (SUB_ASSIGN);}
-"<<="		{if(lexDebug){lexDebugOut << "LEFT_ASSIGN ";}currentCharDepth += yyleng;return (LEFT_ASSIGN);}
-">>="		{if(lexDebug){lexDebugOut << "RIGHT_ASSIGN ";}currentCharDepth += yyleng;return (RIGHT_ASSIGN);}
-"&="		{if(lexDebug){lexDebugOut << "AND_ASSIGN ";}currentCharDepth += yyleng;return (AND_ASSIGN);}
-"^="		{if(lexDebug){lexDebugOut << "XOR_ASSIGN ";}currentCharDepth += yyleng;return (XOR_ASSIGN);}
-"|="		{if(lexDebug){lexDebugOut << "OR_ASSIGN ";}currentCharDepth += yyleng;return (OR_ASSIGN);}
+
+ 
+"*="		{
+if(lexDebug){lexDebugOut << "MUL_ASSIGN ";}currentCharDepth += yyleng;return (MUL_ASSIGN);}
+"/="		{
+if(lexDebug){lexDebugOut << "DIV_ASSIGN ";}currentCharDepth += yyleng;return (DIV_ASSIGN);}
+"%="		{
+if(lexDebug){lexDebugOut << "MOD_ASSIGN ";}currentCharDepth += yyleng;return (MOD_ASSIGN);}
+"+="		{
+if(lexDebug){lexDebugOut << "ADD_ASSIGN ";}
+currentCharDepth += yyleng;return (ADD_ASSIGN);}
+"-="		{
+if(lexDebug){lexDebugOut << "SUB_ASSIGN ";}
+currentCharDepth += yyleng;return (SUB_ASSIGN);}
+"<<="		{
+if(lexDebug)
+{lexDebugOut << "LEFT_ASSIGN ";}
+currentCharDepth += yyleng;return (LEFT_ASSIGN);}
+">>="		{
+if(lexDebug){lexDebugOut << "RIGHT_ASSIGN ";}
+currentCharDepth += yyleng;return (RIGHT_ASSIGN);}
+"&="		{if(lexDebug)
+{lexDebugOut << "AND_ASSIGN ";}
+currentCharDepth += yyleng;return (AND_ASSIGN);}
+"^="		{
+if(lexDebug)
+{lexDebugOut << "XOR_ASSIGN ";}
+currentCharDepth += yyleng;return (XOR_ASSIGN);}
+"|="		{
+if(lexDebug)
+{lexDebugOut << "OR_ASSIGN ";}
+currentCharDepth += yyleng;return (OR_ASSIGN);}
 
 
  /* Single character tokens 

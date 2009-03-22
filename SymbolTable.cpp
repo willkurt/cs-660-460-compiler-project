@@ -159,7 +159,7 @@ void SymbolTable::outputToFile()
 	outFile << "-----------\n";
 	for(mapIter = current.begin(); mapIter != current.end(); mapIter++)
 	  {
-	    outFile << "Symbol: " << mapIter->first << " type:"<<mapIter->second.type << "lineno: " << mapIter->second.lineno << std::endl;
+	    outFile << "Symbol: " << mapIter->first << " type: "<<mapIter->second.type << " lineno: " << mapIter->second.lineno << std::endl;
 	  }
 	outFile << "\n";
 
