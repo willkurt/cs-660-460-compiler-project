@@ -149,7 +149,7 @@ currentCharDepth += yyleng;return (OR_ASSIGN);}
  also, I don't understand all the 'count()'s so
  I'm removing them...*/
 
-";"		{if(lexDebug){lexDebugOut << "';' ";}currentCharDepth += yyleng;return (';'); }
+";"		{std::cout<<declMode;if(lexDebug){lexDebugOut << "';' ";}currentCharDepth += yyleng;return (';'); }
 "{"		{if(lexDebug){lexDebugOut << "'{' ";}currentCharDepth += yyleng;return ('{'); }
 "}"		{if(lexDebug){lexDebugOut << "'}' ";}currentCharDepth += yyleng;return ('}'); }
 ","		{if(lexDebug){lexDebugOut << "',' ";}currentCharDepth += yyleng;return (','); }

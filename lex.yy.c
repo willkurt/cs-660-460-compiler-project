@@ -1229,7 +1229,7 @@ currentCharDepth += yyleng;return (OR_ASSIGN);}
 case 57:
 YY_RULE_SETUP
 #line 152 "new_c_grammar.lex"
-{if(lexDebug){lexDebugOut << "';' ";}currentCharDepth += yyleng;return (';'); }
+{std::cout<<declMode;if(lexDebug){lexDebugOut << "';' ";}currentCharDepth += yyleng;return (';'); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP

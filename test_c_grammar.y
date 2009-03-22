@@ -69,8 +69,9 @@ function_definition
 	| declaration_specifiers declarator declaration_list compound_statement
 	;
 
+
 declaration
-	: declaration_specifiers ';'
+        : declaration_specifiers ';'
 	| declaration_specifiers init_declarator_list ';'
 	;
 
@@ -79,41 +80,42 @@ declaration_list
 	| declaration_list declaration
 	;
 
+//these should all singnal that we're indecle mode
 declaration_specifiers
-	: storage_class_specifier
+        : storage_class_specifier 
 	| storage_class_specifier declaration_specifiers
 	| type_specifier
 	| type_specifier declaration_specifiers
-	| type_qualifier 
+	| type_qualifier
 	| type_qualifier declaration_specifiers
 	;
 
 storage_class_specifier
-	: AUTO
-	| REGISTER
-	| STATIC
-	| EXTERN
-	| TYPEDEF
+: AUTO {declMode = true;}
+	| REGISTER {declMode = true;}
+	| STATIC {declMode = true;}
+	| EXTERN {declMode = true;}
+	| TYPEDEF {declMode = true;}
 	;
 
 type_specifier
-	: VOID
-	| CHAR
-	| SHORT
-	| INT
-	| LONG
-	| FLOAT 
-	| DOUBLE
-	| SIGNED
-	| UNSIGNED
-	| struct_or_union_specifier
-	| enum_specifier
-	| TYPEDEF_NAME
+	: VOID {declMode = true;}
+	| CHAR {declMode = true;}
+	| SHORT {declMode = true;}
+	| INT {declMode = true;}
+	| LONG {declMode = true;}
+	| FLOAT {declMode = true;}
+	| DOUBLE {declMode = true;}
+	| SIGNED {declMode = true;}
+	| UNSIGNED {declMode = true;}
+	| struct_or_union_specifier {declMode = true;}
+	| enum_specifier {declMode = true;}
+	| TYPEDEF_NAME {declMode = true;}
 	;
 
 type_qualifier
-	: CONST
-	| VOLATILE
+	: CONST {declMode = true;}
+	| VOLATILE {declMode = true;}
 	;
 
 struct_or_union_specifier

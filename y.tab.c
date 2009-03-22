@@ -638,28 +638,28 @@ static const yytype_int16 yyrhs[] =
 static const yytype_uint16 yyrline[] =
 {
        0,    56,    56,    57,    61,    62,    66,    67,    68,    69,
-      73,    74,    78,    79,    83,    84,    85,    86,    87,    88,
-      92,    93,    94,    95,    96,   100,   101,   102,   103,   104,
-     105,   106,   107,   108,   109,   110,   111,   115,   116,   120,
-     121,   122,   126,   127,   131,   132,   136,   137,   142,   143,
-     143,   147,   151,   152,   153,   154,   158,   159,   163,   164,
-     165,   169,   170,   171,   175,   176,   180,   181,   181,   185,
-     186,   190,   191,   192,   193,   194,   195,   196,   200,   201,
-     202,   203,   207,   208,   212,   213,   217,   218,   222,   223,
-     224,   228,   229,   233,   234,   235,   239,   240,   244,   245,
-     249,   250,   251,   255,   256,   257,   258,   259,   260,   261,
-     262,   263,   267,   268,   269,   270,   271,   272,   276,   277,
-     278,   282,   283,   287,   288,   289,   290,   294,   295,   299,
-     300,   301,   305,   306,   307,   308,   309,   310,   311,   312,
-     313,   314,   318,   319,   320,   321,   322,   326,   327,   331,
-     332,   337,   338,   339,   340,   341,   342,   343,   344,   345,
-     346,   347,   351,   352,   356,   360,   361,   365,   366,   370,
-     371,   375,   376,   380,   381,   385,   386,   387,   391,   392,
-     393,   394,   395,   399,   400,   401,   405,   406,   407,   411,
-     412,   413,   414,   418,   419,   423,   424,   425,   426,   427,
-     428,   432,   433,   434,   435,   436,   437,   441,   442,   443,
-     444,   445,   446,   447,   448,   452,   453,   454,   455,   459,
-     460,   464,   465,   466,   467,   471,   475
+      74,    75,    79,    80,    85,    86,    87,    88,    89,    90,
+      94,    95,    96,    97,    98,   102,   103,   104,   105,   106,
+     107,   108,   109,   110,   111,   112,   113,   117,   118,   122,
+     123,   124,   128,   129,   133,   134,   138,   139,   144,   145,
+     145,   149,   153,   154,   155,   156,   160,   161,   165,   166,
+     167,   171,   172,   173,   177,   178,   182,   183,   183,   187,
+     188,   192,   193,   194,   195,   196,   197,   198,   202,   203,
+     204,   205,   209,   210,   214,   215,   219,   220,   224,   225,
+     226,   230,   231,   235,   236,   237,   241,   242,   246,   247,
+     251,   252,   253,   257,   258,   259,   260,   261,   262,   263,
+     264,   265,   269,   270,   271,   272,   273,   274,   278,   279,
+     280,   284,   285,   289,   290,   291,   292,   296,   297,   301,
+     302,   303,   307,   308,   309,   310,   311,   312,   313,   314,
+     315,   316,   320,   321,   322,   323,   324,   328,   329,   333,
+     334,   339,   340,   341,   342,   343,   344,   345,   346,   347,
+     348,   349,   353,   354,   358,   362,   363,   367,   368,   372,
+     373,   377,   378,   382,   383,   387,   388,   389,   393,   394,
+     395,   396,   397,   401,   402,   403,   407,   408,   409,   413,
+     414,   415,   416,   420,   421,   425,   426,   427,   428,   429,
+     430,   434,   435,   436,   437,   438,   439,   443,   444,   445,
+     446,   447,   448,   449,   450,   454,   455,   456,   457,   461,
+     462,   466,   467,   468,   469,   473,   477
 };
 #endif
 
@@ -2083,73 +2083,168 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 49:
-#line 143 "test_c_grammar.y"
+        case 20:
+#line 94 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 21:
+#line 95 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 22:
+#line 96 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 23:
+#line 97 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 24:
+#line 98 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 25:
+#line 102 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 26:
+#line 103 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 27:
+#line 104 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 28:
+#line 105 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 29:
+#line 106 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 30:
+#line 107 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 31:
+#line 108 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 32:
+#line 109 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 33:
+#line 110 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 34:
+#line 111 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 35:
+#line 112 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 36:
+#line 113 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 37:
+#line 117 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 38:
+#line 118 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 49:
+#line 145 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 67:
-#line 181 "test_c_grammar.y"
+#line 183 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 151:
-#line 337 "test_c_grammar.y"
-    {declMode = false;}
-    break;
-
-  case 152:
-#line 338 "test_c_grammar.y"
-    {declMode = false;}
-    break;
-
-  case 153:
 #line 339 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 154:
+  case 152:
 #line 340 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 155:
+  case 153:
 #line 341 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 156:
+  case 154:
 #line 342 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 157:
+  case 155:
 #line 343 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 158:
+  case 156:
 #line 344 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 159:
+  case 157:
 #line 345 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 160:
+  case 158:
 #line 346 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 161:
+  case 159:
 #line 347 "test_c_grammar.y"
     {declMode = false;}
     break;
 
+  case 160:
+#line 348 "test_c_grammar.y"
+    {declMode = false;}
+    break;
+
+  case 161:
+#line 349 "test_c_grammar.y"
+    {declMode = false;}
+    break;
+
   case 226:
-#line 475 "test_c_grammar.y"
+#line 477 "test_c_grammar.y"
     {
   /* the case of declMode is handled by the lexer */
   if(!declMode)
@@ -2160,7 +2255,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 2164 "y.tab.c"
+#line 2259 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2374,7 +2469,7 @@ yyreturn:
 }
 
 
-#line 482 "test_c_grammar.y"
+#line 484 "test_c_grammar.y"
 
 
 #include <stdio.h>
