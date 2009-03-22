@@ -2,14 +2,27 @@
 #include "c_grammar.h"
 #include <stdio.h>
   /* #include "SymbolTable.hpp" */
+
+extern SymbolTable st;
 extern bool parseDebug;
 extern std::ofstream parseDebugOut;
  %}
 
+%union{
+  char* sval;
+  float dval;
+  int ival;
+  char cval;
+ }
 
-%token IDENTIFIER 
-%token INTEGER_CONSTANT FLOATING_CONSTANT CHARACTER_CONSTANT ENUMERATION_CONSTANT 
-%token STRING_LITERAL 
+
+
+%token <sval> IDENTIFIER 
+%token <ival> INTEGER_CONSTANT 
+%token <dval> FLOATING_CONSTANT 
+%token <cval> CHARACTER_CONSTANT 
+%token ENUMERATION_CONSTANT 
+%token <sval> STRING_LITERAL 
 %token SIZEOF
 %token PTR_OP 
 %token INC_OP DEC_OP 

@@ -13,6 +13,7 @@
 #include "c_grammar.h"
 #include <stdio.h>
 #include "y.tab.h"
+
 extern bool lexDebug;
 extern bool parseDebug;
 extern std::ofstream lexDebugOut;
@@ -22,6 +23,8 @@ int lineCount = 0;
 int currentCharDepth = 0;
 
 %}
+
+
 
 
 /* Definitions to save a little time */
@@ -148,13 +151,28 @@ string   \".*\"
  /*place stuff for floats etc*/
 
 
-{float_const}    {if(lexDebug){lexDebugOut << "FLOATING_CONSTANT ";}currentCharDepth += yyleng;return (FLOATING_CONSTANT); } 
-{integer}        {if(lexDebug){lexDebugOut << "INTEGER_CONSTANT ";}currentCharDepth += yyleng;return (INTEGER_CONSTANT); }
-{character}      {if(lexDebug){lexDebugOut << "CHARACTER_CONSTANT ";}currentCharDepth += yyleng;return (CHARACTER_CONSTANT); }
-{string}         {if(lexDebug){lexDebugOut << "STRING_LITERAL ";}currentCharDepth += yyleng;return (STRING_LITERAL); }
+{float_const}    {
+  yylval.dval = atof(yytext);
+  if(lexDebug){lexDebugOut << "FLOATING_CONSTANT("<<yylval.dval<<")";}
+  currentCharDepth += yyleng;return (FLOATING_CONSTANT); } 
+{integer}        {
+  yylval.ival = atoi(yytext);
+  if(lexDebug){lexDebugOut << "INTEGER_CONSTANT("<<yylval.ival<<")";}
+  currentCharDepth += yyleng;return (INTEGER_CONSTANT); }
+{character}      {
+  yylval.cval = yytext[1];
+  if(lexDebug){lexDebugOut << "CHARACTER_CONSTANT("<<yylval.cval<<")";}
+  currentCharDepth += yyleng;return (CHARACTER_CONSTANT); }
+ /*retains the quotes... might not be desired behavoir */
+{string}         {
+  yylval.sval = yytext;
+  if(lexDebug){lexDebugOut << "STRING_LITERAL("<<yylval.sval<<")";}
+  currentCharDepth += yyleng;return (STRING_LITERAL); }
 
 
-{id}            {if(lexDebug){lexDebugOut << "IDENTIFIER ";}currentCharDepth += yyleng;return (IDENTIFIER); }
+{id}            {yylval.sval = yytext;
+  if(lexDebug){lexDebugOut << "IDENTIFIER("<<yylval.sval<<")";}
+  currentCharDepth += yyleng;return (IDENTIFIER); }
  /*All else would be an error-note error token not working*/
 .		{}
 

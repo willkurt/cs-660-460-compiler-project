@@ -10,9 +10,9 @@
 
 
 extern "C"{
-int yyparse();
-void yyerror(const char *);
-int yywrap(); 
-int yylex();
+  int yyparse();
+  void yyerror(const char *);
+  int yywrap(); 
+  int yylex();
 }
 #endif

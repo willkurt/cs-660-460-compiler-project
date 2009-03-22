@@ -160,7 +160,7 @@ void SymbolTable::outputToFile()
 	outFile << "-----------\n";
 	for(mapIter = current.begin(); mapIter != current.end(); mapIter++)
 	  {
-	    outFile << "Symbol: " << mapIter->first << " type:"<<mapIter->second.type << " ptr-address:"<<mapIter->second.ptr <<"\n";
+	    outFile << "Symbol: " << mapIter->first << " type:"<<mapIter->second.type << "\n";
 	  }
 	outFile << "\n";
 

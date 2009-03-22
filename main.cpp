@@ -4,7 +4,10 @@
  */
 
 #include "c_grammar.h"
+#include "SymbolTable.hpp"
 #include <iostream>
+
+SymbolTable st;
 bool lexDebug;
 bool stDebug;
 bool parseDebug;
@@ -54,8 +57,14 @@ int main(int argc, char* argv[])
 
   //some more testing
   //I actually just put this here to make sure it would compile
-  SymbolTable st();
+  
   yyparse();
+
+  //print symbol table if necessary
+  if(stDebug)
+    {
+      st.outputToFile();
+    }
 
   //after parse close everything up
   lexDebugOut.close();

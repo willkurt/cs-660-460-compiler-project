@@ -171,7 +171,17 @@
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+#line 11 "new_c_grammar.y"
+{
+  char* sval;
+  float dval;
+  int ival;
+  char cval;
+ }
+/* Line 1489 of yacc.c.  */
+#line 184 "y.tab.h"
+	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
