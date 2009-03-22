@@ -15,13 +15,13 @@
 class SymbolTable{
   std::stack<std::map<std::string, SymbolContent> > st;
 
-
   
   //used for const references to the actual top
   // stack.top() should be used for mutable access
 public:
- 
+
   SymbolTable();
+
   
   //returns false if the add failed due to 
   //a conflict of the same value existing

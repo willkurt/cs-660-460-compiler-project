@@ -14,6 +14,8 @@
 #include <stdio.h>
 #include "y.tab.h"
 
+extern bool declMode;
+extern SymbolTable st;
 extern bool lexDebug;
 extern bool parseDebug;
 extern std::ofstream lexDebugOut;
@@ -48,6 +50,8 @@ string   \".*\"
  Questionable definitions marked with ? */
 
 %%
+
+"!!!ST"         {st.outputToFile();}
 "\n"            {if(lexDebug)
 			{
 			  lexDebugOut << "NEWLINE "<<currentCharDepth<<"-"<<lineCount<<"\n";
@@ -171,6 +175,23 @@ string   \".*\"
 
 
 {id}            {yylval.sval = yytext;
+  if(declMode){
+    SymbolContent sc;
+    sc.lineno = lineCount;
+    if(st.shadowing(yytext))
+      {
+	std::cout<<"warning: "<<yytext<<" is shadowing an earlier declaration"<<std::endl;
+      }
+    /*actually I might want to call an error, but for now this is allowed*/
+    if(!st.add(yytext,sc))
+      {
+	std::cout<<"warning: "<<yytext<<" is already defined in current scope"<< std::endl;
+      }
+    else
+      {
+	st.update(yytext,sc);
+      }
+  }
   if(lexDebug){lexDebugOut << "IDENTIFIER("<<yylval.sval<<")";}
   currentCharDepth += yyleng;return (IDENTIFIER); }
  /*All else would be an error-note error token not working*/

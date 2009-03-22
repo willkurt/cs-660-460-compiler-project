@@ -11,6 +11,7 @@ SymbolTable st;
 bool lexDebug;
 bool stDebug;
 bool parseDebug;
+bool declMode = true;
 std::ofstream lexDebugOut;
 std::ofstream parseDebugOut;
 extern int lineCount;

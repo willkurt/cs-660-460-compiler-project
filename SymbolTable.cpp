@@ -6,7 +6,6 @@ SymbolTable::SymbolTable()
   st.push(firstMap);
 }
 
-
 //this method will only add if the item doesn't already exist 
 bool SymbolTable::add(std::string k, SymbolContent v)
 {
@@ -160,7 +159,7 @@ void SymbolTable::outputToFile()
 	outFile << "-----------\n";
 	for(mapIter = current.begin(); mapIter != current.end(); mapIter++)
 	  {
-	    outFile << "Symbol: " << mapIter->first << " type:"<<mapIter->second.type << "\n";
+	    outFile << "Symbol: " << mapIter->first << " type:"<<mapIter->second.type << "lineno: " << mapIter->second.lineno << std::endl;
 	  }
 	outFile << "\n";
 

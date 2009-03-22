@@ -172,15 +172,17 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 11 "new_c_grammar.y"
+#line 16 "test_c_grammar.y"
 {
   char* sval;
   float dval;
   int ival;
   char cval;
+  /*right now I don't know how to put structs in, so we'll fake it*/
+  SymbolContent* scptrval;
  }
 /* Line 1489 of yacc.c.  */
-#line 184 "y.tab.h"
+#line 186 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

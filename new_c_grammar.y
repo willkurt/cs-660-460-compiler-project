@@ -3,6 +3,9 @@
 #include <stdio.h>
   /* #include "SymbolTable.hpp" */
 
+
+
+
 extern SymbolTable st;
 extern bool parseDebug;
 extern std::ofstream parseDebugOut;
@@ -13,8 +16,9 @@ extern std::ofstream parseDebugOut;
   float dval;
   int ival;
   char cval;
+  /*right now I don't know how to put structs in, so we'll fake it*/
+  SymbolContent* scptrval;
  }
-
 
 
 %token <sval> IDENTIFIER 
@@ -32,12 +36,16 @@ extern std::ofstream parseDebugOut;
 %token MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN 
 %token LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN 
 %token TYPEDEF_NAME
-
 %token TYPEDEF EXTERN STATIC AUTO REGISTER
 %token CHAR SHORT INT LONG SIGNED UNSIGNED FLOAT DOUBLE CONST VOLATILE VOID
 %token STRUCT UNION ENUM ELIPSIS RANGE
 
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
+
+
+%type <scptrval> declaration_specifiers
+%type <sval> identifier type_specifier 
+
 
 %start translation_unit
 %%
@@ -67,48 +75,74 @@ function_definition
 
 declaration
 	 :  declaration_specifiers ';'
- {if(parseDebug)
-{parseDebugOut << "declaration <- declaration_specifiers ';'\n";}}
+	 {if(parseDebug)
+	     {parseDebugOut << "declaration <- declaration_specifiers ';'\n";}}
 	 |  declaration_specifiers init_declarator_list ';'
- {if(parseDebug){parseDebugOut << "declaration <- declaration_specifiers init_declarator_list ';'\n";}}	;
+	 {if(parseDebug)
+	     {parseDebugOut << "declaration <- declaration_specifiers init_declarator_list ';'\n";}}	;
 
 declaration_list
 	 :  declaration
- {if(parseDebug)
-{parseDebugOut << "declaration_list <- declaration\n";}}
+	 {if(parseDebug)
+	     {parseDebugOut << "declaration_list <- declaration\n";}}
 	 |  declaration_list declaration
- {if(parseDebug){parseDebugOut << "declaration_list <- declaration_list declaration\n";}}	;
+	 {if(parseDebug)
+	     {parseDebugOut << "declaration_list <- declaration_list declaration\n";}}	;
 
 declaration_specifiers
 	 :  storage_class_specifier
- {if(parseDebug)
-{parseDebugOut << "declaration_specifiers <- storage_class_specifier\n";}}
+	 {if(parseDebug)
+	     {parseDebugOut << "declaration_specifiers <- storage_class_specifier\n";}}
 	 |  storage_class_specifier declaration_specifiers
- {if(parseDebug){parseDebugOut << "declaration_specifiers <- storage_class_specifier declaration_specifiers\n";}}	 |  type_specifier
- {if(parseDebug){parseDebugOut << "declaration_specifiers <- type_specifier\n";}}	 |  type_specifier declaration_specifiers
- {if(parseDebug){parseDebugOut << "declaration_specifiers <- type_specifier declaration_specifiers\n";}}	 |  type_qualifier 
- {if(parseDebug){parseDebugOut << "declaration_specifiers <- type_qualifier\n";}}	 |  type_qualifier declaration_specifiers
- {if(parseDebug){parseDebugOut << "declaration_specifiers <- type_qualifier declaration_specifiers\n";}}	;
+	 {if(parseDebug)
+	     {parseDebugOut << "declaration_specifiers <- storage_class_specifier declaration_specifiers\n";}}	 
+|  type_specifier 
+{
+
+  if(parseDebug)
+	     {parseDebugOut << "declaration_specifiers <- type_specifier\n";}}	 
+         |  type_specifier declaration_specifiers  
+	 {if(parseDebug)
+	     {parseDebugOut << "declaration_specifiers <- type_specifier declaration_specifiers\n";}}	 
+         |  type_qualifier 
+	 {if(parseDebug)
+	     {parseDebugOut << "declaration_specifiers <- type_qualifier\n";}}	 
+         |  type_qualifier declaration_specifiers
+	 {if(parseDebug)
+	     {parseDebugOut << "declaration_specifiers <- type_qualifier declaration_specifiers\n";}}	;
 
 storage_class_specifier
 	 :  AUTO
- {if(parseDebug)
-{parseDebugOut << "storage_class_specifier <- AUTO\n";}}
+	 {if(parseDebug)
+	     {parseDebugOut << "storage_class_specifier <- AUTO\n";}}
 	 |  REGISTER
- {if(parseDebug){parseDebugOut << "storage_class_specifier <- REGISTER\n";}}	 |  STATIC
- {if(parseDebug){parseDebugOut << "storage_class_specifier <- STATIC\n";}}	 |  EXTERN
- {if(parseDebug){parseDebugOut << "storage_class_specifier <- EXTERN\n";}}	 |  TYPEDEF
- {if(parseDebug){parseDebugOut << "storage_class_specifier <- TYPEDEF\n";}}	;
+	 {if(parseDebug)
+	     {parseDebugOut << "storage_class_specifier <- REGISTER\n";}}	 
+         |  STATIC
+	 {if(parseDebug)
+	     {parseDebugOut << "storage_class_specifier <- STATIC\n";}}	 
+         |  EXTERN
+	 {if(parseDebug)
+	     {parseDebugOut << "storage_class_specifier <- EXTERN\n";}}	 
+         |  TYPEDEF
+	 {if(parseDebug)
+	     {parseDebugOut << "storage_class_specifier <- TYPEDEF\n";}}	;
 
 type_specifier
-	 :  VOID
- {if(parseDebug)
-{parseDebugOut << "type_specifier <- VOID\n";}}
-	 |  CHAR
- {if(parseDebug){parseDebugOut << "type_specifier <- CHAR\n";}}	 |  SHORT
- {if(parseDebug){parseDebugOut << "type_specifier <- SHORT\n";}}	 |  INT
- {if(parseDebug){parseDebugOut << "type_specifier <- INT\n";}}	 |  LONG
- {if(parseDebug){parseDebugOut << "type_specifier <- LONG\n";}}	 |  FLOAT 
+:  VOID  
+{$$ = "VOID";if(parseDebug)
+	    {parseDebugOut << "type_specifier <- VOID\n";}}
+         |  CHAR
+	 {if(parseDebug)
+	      {parseDebugOut << "type_specifier <- CHAR\n";}}	 
+         |  SHORT
+	 {if(parseDebug)
+	      {parseDebugOut << "type_specifier <- SHORT\n";}}	 
+         |  INT
+	 {if(parseDebug)
+	     {parseDebugOut << "type_specifier <- INT\n";}}	 
+         |  LONG
+	 {if(parseDebug){parseDebugOut << "type_specifier <- LONG\n";}}	 |  FLOAT 
  {if(parseDebug){parseDebugOut << "type_specifier <- FLOAT\n";}}	 |  DOUBLE
  {if(parseDebug){parseDebugOut << "type_specifier <- DOUBLE\n";}}	 |  SIGNED
  {if(parseDebug){parseDebugOut << "type_specifier <- SIGNED\n";}}	 |  UNSIGNED
@@ -591,8 +625,9 @@ string
 
 identifier 
 	 :  IDENTIFIER 
- {if(parseDebug)
-{parseDebugOut << "identifier  <- IDENTIFIER\n";}}
+	 {$$ = $1;
+	   if(parseDebug)
+	     {parseDebugOut << "identifier  <- IDENTIFIER\n";}}
 	;
 %%
 
