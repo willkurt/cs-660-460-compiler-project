@@ -234,15 +234,17 @@ extern bool declMode;
 typedef union YYSTYPE
 #line 16 "test_c_grammar.y"
 {
-  char* sval;
+  //consider making this a string pointer
+  std::string* sval;
   float dval;
   int ival;
   char cval;
+  std::list<std::string>* slistval;
   /*right now I don't know how to put structs in, so we'll fake it*/
   SymbolContent* scptrval;
  }
 /* Line 187 of yacc.c.  */
-#line 246 "y.tab.c"
+#line 248 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -255,7 +257,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 259 "y.tab.c"
+#line 261 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -637,29 +639,29 @@ static const yytype_int16 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    56,    56,    57,    61,    62,    66,    67,    68,    69,
-      74,    75,    79,    80,    85,    86,    87,    88,    89,    90,
-      94,    95,    96,    97,    98,   102,   103,   104,   105,   106,
-     107,   108,   109,   110,   111,   112,   113,   117,   118,   122,
-     123,   124,   128,   129,   133,   134,   138,   139,   144,   145,
-     145,   149,   153,   154,   155,   156,   160,   161,   165,   166,
-     167,   171,   172,   173,   177,   178,   182,   183,   183,   187,
-     188,   192,   193,   194,   195,   196,   197,   198,   202,   203,
-     204,   205,   209,   210,   214,   215,   219,   220,   224,   225,
-     226,   230,   231,   235,   236,   237,   241,   242,   246,   247,
-     251,   252,   253,   257,   258,   259,   260,   261,   262,   263,
-     264,   265,   269,   270,   271,   272,   273,   274,   278,   279,
-     280,   284,   285,   289,   290,   291,   292,   296,   297,   301,
-     302,   303,   307,   308,   309,   310,   311,   312,   313,   314,
-     315,   316,   320,   321,   322,   323,   324,   328,   329,   333,
-     334,   339,   340,   341,   342,   343,   344,   345,   346,   347,
-     348,   349,   353,   354,   358,   362,   363,   367,   368,   372,
-     373,   377,   378,   382,   383,   387,   388,   389,   393,   394,
-     395,   396,   397,   401,   402,   403,   407,   408,   409,   413,
-     414,   415,   416,   420,   421,   425,   426,   427,   428,   429,
-     430,   434,   435,   436,   437,   438,   439,   443,   444,   445,
-     446,   447,   448,   449,   450,   454,   455,   456,   457,   461,
-     462,   466,   467,   468,   469,   473,   477
+       0,    58,    58,    59,    63,    64,    68,    69,    70,    71,
+      76,    77,    81,    82,    87,    88,    89,    90,    91,    92,
+      96,    97,    98,    99,   100,   104,   105,   106,   107,   108,
+     109,   110,   111,   112,   113,   114,   115,   119,   120,   124,
+     125,   126,   130,   131,   135,   136,   140,   141,   146,   147,
+     147,   151,   155,   156,   157,   158,   162,   163,   167,   168,
+     169,   173,   174,   175,   179,   180,   184,   185,   185,   189,
+     190,   194,   195,   196,   197,   198,   199,   200,   204,   205,
+     206,   207,   211,   212,   216,   217,   221,   222,   226,   227,
+     228,   232,   233,   237,   238,   239,   243,   244,   248,   249,
+     253,   254,   255,   259,   260,   261,   262,   263,   264,   265,
+     266,   267,   271,   272,   273,   274,   275,   276,   280,   281,
+     282,   286,   287,   291,   292,   293,   294,   298,   299,   303,
+     304,   305,   309,   310,   311,   312,   313,   314,   315,   316,
+     317,   318,   322,   323,   324,   325,   326,   330,   331,   335,
+     336,   341,   342,   343,   344,   345,   346,   347,   348,   349,
+     350,   351,   355,   356,   360,   364,   365,   369,   370,   374,
+     375,   379,   380,   384,   385,   389,   390,   391,   395,   396,
+     397,   398,   399,   403,   404,   405,   409,   410,   411,   415,
+     416,   417,   418,   422,   423,   427,   428,   429,   430,   431,
+     432,   436,   437,   438,   439,   440,   441,   445,   446,   447,
+     448,   449,   450,   451,   452,   456,   457,   458,   459,   463,
+     464,   468,   469,   470,   471,   475,   479
 };
 #endif
 
@@ -2084,178 +2086,173 @@ yyreduce:
   switch (yyn)
     {
         case 20:
-#line 94 "test_c_grammar.y"
-    {declMode = true;}
+#line 96 "test_c_grammar.y"
+    {declMode = true; *(yyval.sval) = "AUTO";}
     break;
 
   case 21:
-#line 95 "test_c_grammar.y"
-    {declMode = true;}
+#line 97 "test_c_grammar.y"
+    {declMode = true; *(yyval.sval) = "REGISTER";}
     break;
 
   case 22:
-#line 96 "test_c_grammar.y"
-    {declMode = true;}
+#line 98 "test_c_grammar.y"
+    {declMode = true; *(yyval.sval) = "STATIC";}
     break;
 
   case 23:
-#line 97 "test_c_grammar.y"
-    {declMode = true;}
+#line 99 "test_c_grammar.y"
+    {declMode = true;*(yyval.sval) = "EXTERN";}
     break;
 
   case 24:
-#line 98 "test_c_grammar.y"
-    {declMode = true;}
+#line 100 "test_c_grammar.y"
+    {declMode = true;*(yyval.sval) = "TYPEDEF";}
     break;
 
   case 25:
-#line 102 "test_c_grammar.y"
-    {declMode = true;}
-    break;
-
-  case 26:
-#line 103 "test_c_grammar.y"
-    {declMode = true;}
-    break;
-
-  case 27:
 #line 104 "test_c_grammar.y"
     {declMode = true;}
     break;
 
-  case 28:
+  case 26:
 #line 105 "test_c_grammar.y"
     {declMode = true;}
     break;
 
-  case 29:
+  case 27:
 #line 106 "test_c_grammar.y"
     {declMode = true;}
     break;
 
-  case 30:
+  case 28:
 #line 107 "test_c_grammar.y"
     {declMode = true;}
     break;
 
-  case 31:
+  case 29:
 #line 108 "test_c_grammar.y"
     {declMode = true;}
     break;
 
-  case 32:
+  case 30:
 #line 109 "test_c_grammar.y"
     {declMode = true;}
     break;
 
-  case 33:
+  case 31:
 #line 110 "test_c_grammar.y"
     {declMode = true;}
     break;
 
-  case 34:
+  case 32:
 #line 111 "test_c_grammar.y"
     {declMode = true;}
     break;
 
-  case 35:
+  case 33:
 #line 112 "test_c_grammar.y"
     {declMode = true;}
     break;
 
-  case 36:
+  case 34:
 #line 113 "test_c_grammar.y"
     {declMode = true;}
     break;
 
+  case 35:
+#line 114 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
+  case 36:
+#line 115 "test_c_grammar.y"
+    {declMode = true;}
+    break;
+
   case 37:
-#line 117 "test_c_grammar.y"
+#line 119 "test_c_grammar.y"
     {declMode = true;}
     break;
 
   case 38:
-#line 118 "test_c_grammar.y"
+#line 120 "test_c_grammar.y"
     {declMode = true;}
     break;
 
   case 49:
-#line 145 "test_c_grammar.y"
+#line 147 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 67:
-#line 183 "test_c_grammar.y"
+#line 185 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 151:
-#line 339 "test_c_grammar.y"
-    {declMode = false;}
-    break;
-
-  case 152:
-#line 340 "test_c_grammar.y"
-    {declMode = false;}
-    break;
-
-  case 153:
 #line 341 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 154:
+  case 152:
 #line 342 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 155:
+  case 153:
 #line 343 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 156:
+  case 154:
 #line 344 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 157:
+  case 155:
 #line 345 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 158:
+  case 156:
 #line 346 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 159:
+  case 157:
 #line 347 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 160:
+  case 158:
 #line 348 "test_c_grammar.y"
     {declMode = false;}
     break;
 
-  case 161:
+  case 159:
 #line 349 "test_c_grammar.y"
     {declMode = false;}
     break;
 
+  case 160:
+#line 350 "test_c_grammar.y"
+    {declMode = false;}
+    break;
+
+  case 161:
+#line 351 "test_c_grammar.y"
+    {declMode = false;}
+    break;
+
   case 226:
-#line 477 "test_c_grammar.y"
-    {
-  /* the case of declMode is handled by the lexer */
-  if(!declMode)
-    {
-      (yyval.scptrval) = st.searchAll((yyvsp[(1) - (1)].sval));
-    }}
+#line 479 "test_c_grammar.y"
+    {(yyval.sval) = (yyvsp[(1) - (1)].sval);}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2259 "y.tab.c"
+#line 2256 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2469,7 +2466,7 @@ yyreturn:
 }
 
 
-#line 484 "test_c_grammar.y"
+#line 481 "test_c_grammar.y"
 
 
 #include <stdio.h>

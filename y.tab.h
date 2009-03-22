@@ -174,15 +174,17 @@
 typedef union YYSTYPE
 #line 16 "test_c_grammar.y"
 {
-  char* sval;
+  //consider making this a string pointer
+  std::string* sval;
   float dval;
   int ival;
   char cval;
+  std::list<std::string>* slistval;
   /*right now I don't know how to put structs in, so we'll fake it*/
   SymbolContent* scptrval;
  }
 /* Line 1489 of yacc.c.  */
-#line 186 "y.tab.h"
+#line 188 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

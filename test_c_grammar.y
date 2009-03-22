@@ -14,10 +14,12 @@ extern bool declMode;
  %}
 
 %union{
-  char* sval;
+  //consider making this a string pointer
+  std::string* sval;
   float dval;
   int ival;
   char cval;
+  std::list<std::string>* slistval;
   /*right now I don't know how to put structs in, so we'll fake it*/
   SymbolContent* scptrval;
  }
@@ -45,8 +47,8 @@ extern bool declMode;
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
 
-%type <scptrval> identifier
-%type <sval> type_specifier 
+%type <sval> identifier
+%type <sval> type_specifier storage_class_specifier
 
 
 %start translation_unit
@@ -91,11 +93,11 @@ declaration_specifiers
 	;
 
 storage_class_specifier
-: AUTO {declMode = true;}
-	| REGISTER {declMode = true;}
-	| STATIC {declMode = true;}
-	| EXTERN {declMode = true;}
-	| TYPEDEF {declMode = true;}
+: AUTO {declMode = true; *$$ = "AUTO";}
+| REGISTER {declMode = true; *$$ = "REGISTER";}
+| STATIC {declMode = true; *$$ = "STATIC";}
+| EXTERN {declMode = true;*$$ = "EXTERN";}
+| TYPEDEF {declMode = true;*$$ = "TYPEDEF";}
 	;
 
 type_specifier
@@ -474,12 +476,7 @@ string
 	;
 
 identifier 
-: IDENTIFIER {
-  /* the case of declMode is handled by the lexer */
-  if(!declMode)
-    {
-      $$ = st.searchAll($1);
-    }}
+: IDENTIFIER {$$ = $1;}
   ;
 %%
 
