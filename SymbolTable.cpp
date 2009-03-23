@@ -160,7 +160,7 @@ void SymbolTable::outputToFile()
 	outFile << "-----------\n";
 	for(mapIter = current.begin(); mapIter != current.end(); mapIter++)
 	  {
-	    outFile << "Symbol: " << mapIter->first << " type: "<<mapIter->second.type << " lineno: " << mapIter->second.lineno << std::endl;
+	    outFile << "Symbol: " << mapIter->first << " lineno: " << mapIter->second.lineno <<"specifiers: "<<mapIter->second.specifiers<<std::endl;
 	  }
 	outFile << "\n";
 
@@ -175,4 +175,103 @@ void SymbolTable::outputToFile()
 	  tmp.pop();
 	}
       outFile.close();
+}
+
+
+//not quite ready
+//reades the specifications bool array into human readable form
+std::string SymbolTable::readSpecifiers(bool *specs)
+{
+  std::string specsReadable;
+  specsReadable += "storage: ";
+  if(specs[0])
+    {
+      specsReadable += "auto ";
+    }
+  if(specs[1])
+    {
+      specsReadable += "register ";
+    }
+  if(specs[2])
+    {
+      specsReadable += "static ";
+    }
+ if(specs[3])
+    {
+      specsReadable += "extern ";
+    }
+ if(specs[4])
+    {
+      specsReadable += "type_def ";
+    }
+ specsReadable += "type: ";
+ if(specs[5])
+    {
+      specsReadable += "void ";
+    }
+ if(specs[6])
+    {
+      specsReadable += "char";
+    }
+ if(specs[7])
+    {
+      specsReadable += "short ";
+    }
+ if(specs[8])
+    {
+      specsReadable += "int ";
+    }
+ if(specs[9])
+    {
+      specsReadable += "long ";
+    }
+ if(specs[10])
+    {
+      specsReadable += "float ";
+    }
+ if(specs[11])
+    {
+      specsReadable += "double ";
+    }
+ if(specs[12])
+    {
+      specsReadable += "signed ";
+    }
+ if(specs[13])
+    {
+      specsReadable += "unsigned ";
+    }
+ if(specs[14])
+    {
+      specsReadable += "struct ";
+    }
+
+ if(specs[15])
+    {
+      specsReadable += "union ";
+    }
+
+ if(specs[16])
+    {
+      specsReadable += "enum ";
+    }
+
+ if(specs[17])
+    {
+      specsReadable += "typedef_name ";
+    }
+
+ specsReadable += "type-qualifiers: ";
+ if(specs[18])
+    {
+      specsReadable += "const ";
+    }
+
+ if(specs[19])
+    {
+      specsReadable += "volatile ";
+    }
+
+ return specsReadable;
+
 }

@@ -206,12 +206,10 @@ typedef union YYSTYPE
      *19-VOLATILE
    */
   bool barrayval[20];
-  std::list<std::string>* slistval;
-  /*right now I don't know how to put structs in, so we'll fake it*/
-  SymbolContent* scptrval;
+
  }
 /* Line 1489 of yacc.c.  */
-#line 215 "y.tab.h"
+#line 213 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

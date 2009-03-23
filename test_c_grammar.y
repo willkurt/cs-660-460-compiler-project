@@ -46,9 +46,7 @@ extern bool declMode;
      *19-VOLATILE
    */
   bool barrayval[20];
-  std::list<std::string>* slistval;
-  /*right now I don't know how to put structs in, so we'll fake it*/
-  SymbolContent* scptrval;
+
  }
 
 
@@ -109,15 +107,18 @@ declaration
 	  //for right now I'm just assuming no list, just a declator
 	| declaration_specifiers init_declarator_list ';' 
 {
-  st.push();
-  SymbolContent sp;
-  st.add($2,sp);
-  st.outputToFile();
-  std::string key = $2;
   SymbolContent * sc = st.searchAll($2);
-
+  if(sc == 0)
+    {
+      //make this an error later
+      std::cout<<"Warning! trying to use a variable not declared"<<std::endl;
+    }
+  else
+    {
+      (*sc).specifiers = &$1[0];
+    }
   std::cout << $2 << std::endl;
-  std::cout << sc << std::endl;
+  std::cout <<"oooo:"<< (*sc).specifiers[8] << std::endl;
 
 }
 	;
@@ -435,12 +436,12 @@ declarator
 //for now I'm just passing up the id string
 direct_declarator
 : identifier {$$ = $1; std::cout << "id at dd =>" << $1 <<std::endl;}
-	| '(' declarator ')' {$$ = $2;}
+| '(' declarator ')' {$$ = $2;}//not quite sure what this is for
 	| direct_declarator '[' ']' {$$ = $1;}
 | direct_declarator '[' constant_expression ']' {$$ = $1;}
 	| direct_declarator '(' ')' {$$ = $1;}
-	| direct_declarator '(' parameter_type_list ')' {$$ = $1;}
-	| direct_declarator '(' identifier_list ')' {$$ = $1;}
+	| direct_declarator '(' parameter_type_list ')' {$$ = $1;std::cout<<"I think I should push";}
+| direct_declarator '(' identifier_list ')' {$$ = $1;}
 	;
 
 pointer

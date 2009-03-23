@@ -47,7 +47,10 @@ public:
   //need to implement Dump() but not sure exactly what we want
   void outputToFile();
   //just a way to access to private pop method on the st
-  void pop(); 
+  void pop();
+
+  //to interprest symbol content types bool array
+  std::string readSpecifiers(bool* );
 };
 
 #endif

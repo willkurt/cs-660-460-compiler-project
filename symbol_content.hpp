@@ -18,7 +18,7 @@ struct SymbolContent
   //things like const, enum etc can go here
   std::list<std::string> modifiers;
   std::string type;
-  bool specifiers[];
+  bool *specifiers;
   int lineno;
 };
 

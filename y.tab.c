@@ -266,12 +266,10 @@ typedef union YYSTYPE
      *19-VOLATILE
    */
   bool barrayval[20];
-  std::list<std::string>* slistval;
-  /*right now I don't know how to put structs in, so we'll fake it*/
-  SymbolContent* scptrval;
+
  }
 /* Line 187 of yacc.c.  */
-#line 275 "y.tab.c"
+#line 273 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -284,7 +282,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 288 "y.tab.c"
+#line 286 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -666,8 +664,8 @@ static const yytype_int16 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    90,    90,    91,    95,    96,   100,   101,   102,   103,
-     108,   110,   126,   127,   132,   155,   186,   241,   302,   314,
+       0,    88,    88,    89,    93,    94,    98,    99,   100,   101,
+     106,   108,   127,   128,   133,   155,   186,   241,   302,   314,
      335,   336,   337,   338,   339,   343,   344,   345,   346,   347,
      348,   349,   350,   351,   353,   354,   355,   359,   360,   364,
      365,   366,   370,   371,   375,   376,   381,   382,   387,   388,
@@ -2113,30 +2111,32 @@ yyreduce:
   switch (yyn)
     {
         case 11:
-#line 111 "test_c_grammar.y"
+#line 109 "test_c_grammar.y"
     {
-  st.push();
-  SymbolContent sp;
-  st.add((yyvsp[(2) - (3)].sval),sp);
-  st.outputToFile();
-  std::string key = (yyvsp[(2) - (3)].sval);
   SymbolContent * sc = st.searchAll((yyvsp[(2) - (3)].sval));
-
+  if(sc == 0)
+    {
+      //make this an error later
+      std::cout<<"Warning! trying to use a variable not declared"<<std::endl;
+    }
+  else
+    {
+      (*sc).specifiers = &(yyvsp[(1) - (3)].barrayval)[0];
+    }
   std::cout << (yyvsp[(2) - (3)].sval) << std::endl;
-  std::cout << sc << std::endl;
+  std::cout <<"oooo:"<< (*sc).specifiers[8] << std::endl;
 
 }
     break;
 
   case 12:
-#line 126 "test_c_grammar.y"
+#line 127 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (1)].sval);}
     break;
 
   case 14:
-#line 132 "test_c_grammar.y"
+#line 133 "test_c_grammar.y"
     {
-  std::cout<<"SCS HERE YO!"<<std::endl;
   if((yyvsp[(1) - (1)].sval)=="AUTO")
     {
       (yyval.barrayval)[0] = true;
@@ -2524,7 +2524,7 @@ yyreduce:
 
   case 76:
 #line 443 "test_c_grammar.y"
-    {(yyval.sval) = (yyvsp[(1) - (4)].sval);}
+    {(yyval.sval) = (yyvsp[(1) - (4)].sval);std::cout<<"I think I should push";}
     break;
 
   case 77:
