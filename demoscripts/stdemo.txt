@@ -1,0 +1,25 @@
+Script started on Mon 23 Mar 2009 08:13:21 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./a.out
+int myfunctio   { (int x, int y)
+{
+it nt q;
+!!!ST
+}
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ cat stou t.txt
+0 from top
+-----------
+Symbol: q lineno: 2specifiers: 0
+
+1 from top
+-----------
+Symbol: x lineno: 0specifiers: 0
+Symbol: y lineno: 0specifiers: 0
+
+2 from top
+-----------
+Symbol: myfunc lineno: 0specifiers: 0
+
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+
+Script done on Mon 23 Mar 2009 08:14:04 AM PDT

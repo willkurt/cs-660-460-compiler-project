@@ -1,0 +1,15 @@
+Script started on Mon 23 Mar 2009 08:18:58 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./a.out  [A
+int x;
+int myfunc()
+{
+int x;
+warning: x is shadowing an earlier declaration
+int x;
+warning: x is shadowing an earlier declaration
+warning: x is already defined in current scope
+}
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+
+Script done on Mon 23 Mar 2009 08:19:22 AM PDT

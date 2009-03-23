@@ -1,0 +1,49 @@
+Script started on Mon 23 Mar 2009 08:15:53 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./a.out  -dp
+int myfunction(int x, int y)
+{
+char q;
+}
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ cat pars edebug.log 
+type_specifier <- INT
+declaration_specifiers <- type_specifier
+identifier  <- IDENTIFIER
+direct_declarator <- identifier
+type_specifier <- INT
+declaration_specifiers <- type_specifier
+identifier  <- IDENTIFIER
+direct_declarator <- identifier
+declarator <- direct_declarator
+parameter_declaration <- declaration_specifiers declarator
+parameter_list <- parameter_declaration
+type_specifier <- INT
+declaration_specifiers <- type_specifier
+identifier  <- IDENTIFIER
+direct_declarator <- identifier
+declarator <- direct_declarator
+parameter_declaration <- declaration_specifiers declarator
+parameter_list <- parameter_list ',' parameter_declaration
+parameter_type_list <- parameter_list
+direct_declarator <- direct_declarator '(' parameter_type_list ')'
+***end ln: 0*****
+declarator <- direct_declarator
+***end ln: 1*****
+type_specifier <- CHAR
+declaration_specifiers <- type_specifier
+identifier  <- IDENTIFIER
+direct_declarator <- identifier
+declarator <- direct_declarator
+init_declarator <- declarator
+init_declarator_list <- init_declarator
+declaration <- declaration_specifiers init_declarator_list ';'
+declaration_list <- declaration
+***end ln: 2*****
+compound_statement <- '{' declaration_list '}'
+function_definition <- declaration_specifiers declarator compound_statement
+external_declaration <- function_definition
+translation_unit <- external_declaration
+***end ln: 3*****
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+
+Script done on Mon 23 Mar 2009 08:16:27 AM PDT
