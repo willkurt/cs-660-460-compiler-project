@@ -10,15 +10,41 @@ extern std::ofstream parseDebugOut;
 extern int lineCount;
 /*for declaration or not*/
 extern bool declMode;
-
  %}
 
 %union{
   //consider making this a string pointer
-  std::string* sval;
+  char* sval;
   float dval;
   int ival;
   char cval;
+  /* barrayval is for all the possible specifies
+     here is the key:
+     * --storage
+     * 0-AUTO
+     * 1-REGISTER
+     * 2-STATIC
+     * 3-EXTERN
+     * 4-TYPEDEF
+     * --Types
+     * 5-VOID
+     * 6-CHAR
+     * 7-SHORT
+     * 8-INT
+     * 9-LONG
+     *10-FLOAT
+     *11-DOUBLE
+     *12-SIGNED
+     *13-UNSIGNED
+     *14-STRUCT
+     *15-UNION
+     *16-ENUM no idea what I'm doing with this!
+     *17-TYPEDEF_NAME
+     *---type qualifiers
+     *18-CONST
+     *19-VOLATILE
+   */
+  bool barrayval[20];
   std::list<std::string>* slistval;
   /*right now I don't know how to put structs in, so we'll fake it*/
   SymbolContent* scptrval;
@@ -49,7 +75,9 @@ extern bool declMode;
 
 %type <sval> identifier
 %type <sval> type_specifier storage_class_specifier
+%type <sval> type_qualifier struct_or_union
 
+%type <barrayval> declaration_specifiers
 
 %start translation_unit
 %%
@@ -84,40 +112,235 @@ declaration_list
 
 //these should all singnal that we're indecle mode
 declaration_specifiers
-        : storage_class_specifier 
-	| storage_class_specifier declaration_specifiers
-	| type_specifier
-	| type_specifier declaration_specifiers
-	| type_qualifier
-	| type_qualifier declaration_specifiers
+: storage_class_specifier {
+  std::cout<<"SCS HERE YO!"<<std::endl;
+  if($1=="AUTO")
+    {
+      $$[0] = true;
+    }
+  else if($1 == "REGISTER")
+    {
+      $$[1] = true;
+    }
+  else if($1 ==  "STATIC")
+    {
+      $$[2] = true;
+    }
+  else if($1 == "EXTERN")
+    {
+      $$[3] = true;
+    }
+  else if($1 ==  "TYPEDEF")
+    {   
+      $$[4] = true;
+    }
+}
+| storage_class_specifier declaration_specifiers
+{
+
+  int asize = sizeof($$)/sizeof($$[0]);
+  int i;
+  for(i = 0;i < asize;i++)
+    {
+      $$[i] = $2[i];
+    }
+  if($1=="AUTO")
+    {
+      $$[0] = true;
+    }
+  else if($1 == "REGISTER")
+    {
+      $$[1] = true;
+    }
+  else if($1 ==  "STATIC")
+    {
+      $$[2] = true;
+    }
+  else if($1 == "EXTERN")
+    {
+      $$[3] = true;
+    }
+  else if($1 ==  "TYPEDEF")
+    {   
+      $$[4] = true;
+    }
+  std::cout<<"this should be 11-> "<<$$[0]<<$$[8]<<std::endl;
+}
+| type_specifier
+{std::cout<<"YO TS HERE!\n";
+  if($1 == "VOID")
+    {
+      $$[5] = true;
+    }
+  else if($1 == "CHAR")
+    {
+      $$[6] = true;
+    }
+  else if($1 == "SHORT")
+    {
+      $$[7] = true;
+    }
+  else if($1 == "INT")
+    {
+      $$[8] = true;
+    }
+  else if($1 == "LONG")
+    {
+      $$[9] = true;
+    }
+  else if($1 == "FLOAT")
+    {
+      $$[10] = true;
+    }
+  else if($1 == "DOUBLE")
+    {
+      $$[11] = true;
+    }
+  else if($1 == "SIGNED")
+    {
+      $$[12] = true;
+    }
+  else if($1 == "UNSIGNED")
+    {
+      $$[13] = true; 
+    }
+  else if($1 == "STRUCT")
+    {
+      $$[14] = true;
+    }
+  else if($1 == "UNION" )
+    {
+      $$[15] = true;
+    }
+  else if($1 ==  "ENUM")
+    {
+      $$[16] = true;
+    }
+  else if($1 == "TYPEDEF_NAME")
+    {
+      $$[17] =  true;
+    }
+}
+| type_specifier declaration_specifiers 
+{
+  int asize = sizeof($$)/sizeof($$[0]);
+  int i;
+  for(i = 0;i < asize;i++)
+    {
+      $$[i] = $2[i];
+    }
+ if($1 == "VOID")
+    {
+      $$[5] = true;
+    }
+  else if($1 == "CHAR")
+    {
+      $$[6] = true;
+    }
+  else if($1 == "SHORT")
+    {
+      $$[7] = true;
+    }
+  else if($1 == "INT")
+    {
+      $$[8] = true;
+    }
+  else if($1 == "LONG")
+    {
+      $$[9] = true;
+    }
+  else if($1 == "FLOAT")
+    {
+      $$[10] = true;
+    }
+  else if($1 == "DOUBLE")
+    {
+      $$[11] = true;
+    }
+  else if($1 == "SIGNED")
+    {
+      $$[12] = true;
+    }
+  else if($1 == "UNSIGNED")
+    {
+      $$[13] = true; 
+    }
+  else if($1 == "STRUCT")
+    {
+      $$[14] = true;
+    }
+  else if($1 == "UNION" )
+    {
+      $$[15] = true;
+    }
+  else if($1 ==  "ENUM")
+    {
+      $$[16] = true;
+    }
+  else if($1 == "TYPEDEF_NAME")
+    {
+      $$[17] =  true;
+    }
+}
+| type_qualifier
+{
+  if($1 == "CONST")
+    {
+      $$[18] = true;
+    }
+  else if($1 == "VOLATILE")
+    {
+      $$[19] = true;
+    }
+
+}
+| type_qualifier declaration_specifiers
+{
+  int asize = sizeof($$)/sizeof($$[0]);
+  int i;
+  for(i = 0;i < asize;i++)
+    {
+      $$[i] = $2[i];
+    }
+ if($1 == "CONST")
+    {
+      $$[18] = true;
+    }
+  else if($1 == "VOLATILE")
+    {
+      $$[19] = true;
+    }
+
+}
 	;
 
 storage_class_specifier
-: AUTO {declMode = true; *$$ = "AUTO";}
-| REGISTER {declMode = true; *$$ = "REGISTER";}
-| STATIC {declMode = true; *$$ = "STATIC";}
-| EXTERN {declMode = true;*$$ = "EXTERN";}
-| TYPEDEF {declMode = true;*$$ = "TYPEDEF";}
+: AUTO {declMode = true; $$ = "AUTO";}
+| REGISTER {declMode = true; $$ = "REGISTER";}
+| STATIC {declMode = true; $$ = "STATIC";}
+| EXTERN {declMode = true;$$ = "EXTERN";}
+| TYPEDEF {declMode = true;$$ = "TYPEDEF";}
 	;
 
 type_specifier
-	: VOID {declMode = true;}
-	| CHAR {declMode = true;}
-	| SHORT {declMode = true;}
-	| INT {declMode = true;}
-	| LONG {declMode = true;}
-	| FLOAT {declMode = true;}
-	| DOUBLE {declMode = true;}
-	| SIGNED {declMode = true;}
-	| UNSIGNED {declMode = true;}
-	| struct_or_union_specifier {declMode = true;}
-	| enum_specifier {declMode = true;}
-	| TYPEDEF_NAME {declMode = true;}
+: VOID {declMode = true; $$ = "VOID";}
+| CHAR {declMode = true; $$ = "CHAR";}
+| SHORT {declMode = true; $$ = "SHORT";}
+| INT {declMode = true; $$ = "INT";}
+| LONG {declMode = true; $$ = "LONG";}
+| FLOAT {declMode = true; $$ = "FLOAT";}
+| DOUBLE {declMode = true; $$ = "DOUBLE";}
+| SIGNED {declMode = true; $$ = "SIGNED";}
+| UNSIGNED {declMode = true; $$ = "UNSIGNED";}
+//this \/ I'm not so sure about
+| struct_or_union_specifier {declMode = true; $$ = "NEED TO FIGURE OUT";}
+| enum_specifier {declMode = true; $$ = "Same!";}
+| TYPEDEF_NAME {declMode = true; $$ = "TYPEDEF_NAME";}
 	;
 
 type_qualifier
-	: CONST {declMode = true;}
-	| VOLATILE {declMode = true;}
+: CONST {declMode = true; $$ = "CONST";}
+| VOLATILE {declMode = true; $$ = "VOLATILE";}
 	;
 
 struct_or_union_specifier
@@ -127,8 +350,8 @@ struct_or_union_specifier
 	;
 
 struct_or_union
-	: STRUCT
-	| UNION
+: STRUCT {$$ = "STRUCT";}
+| UNION {$$ = "UNION";}
 	;
 
 struct_declaration_list

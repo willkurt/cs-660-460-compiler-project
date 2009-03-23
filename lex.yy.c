@@ -1376,14 +1376,14 @@ case 84:
 YY_RULE_SETUP
 #line 193 "new_c_grammar.lex"
 {
-  *yylval.sval = yytext;
+  yylval.sval = yytext;
   if(lexDebug){lexDebugOut << "STRING_LITERAL("<<yylval.sval<<")";}
   currentCharDepth += yyleng;return (STRING_LITERAL); }
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
 #line 199 "new_c_grammar.lex"
-{*yylval.sval = yytext;
+{yylval.sval = yytext;
   if(declMode){
     SymbolContent sc;
     sc.lineno = lineCount;

@@ -209,7 +209,6 @@ extern std::ofstream parseDebugOut;
 extern int lineCount;
 /*for declaration or not*/
 extern bool declMode;
-
  
 
 /* Enabling traces.  */
@@ -232,19 +231,46 @@ extern bool declMode;
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 16 "test_c_grammar.y"
+#line 15 "test_c_grammar.y"
 {
   //consider making this a string pointer
-  std::string* sval;
+  char* sval;
   float dval;
   int ival;
   char cval;
+  /* barrayval is for all the possible specifies
+     here is the key:
+     * --storage
+     * 0-AUTO
+     * 1-REGISTER
+     * 2-STATIC
+     * 3-EXTERN
+     * 4-TYPEDEF
+     * --Types
+     * 5-VOID
+     * 6-CHAR
+     * 7-SHORT
+     * 8-INT
+     * 9-LONG
+     *10-FLOAT
+     *11-DOUBLE
+     *12-SIGNED
+     *13-UNSIGNED
+     *14-STRUCT
+     *15-UNION
+     *16-ENUM no idea what I'm doing with this!
+     *17-TYPEDEF_NAME
+     *---type qualifiers
+     *18-CONST
+     *19-VOLATILE
+   */
+  bool barrayval[20];
   std::list<std::string>* slistval;
   /*right now I don't know how to put structs in, so we'll fake it*/
   SymbolContent* scptrval;
  }
 /* Line 187 of yacc.c.  */
-#line 248 "y.tab.c"
+#line 274 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -257,7 +283,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 261 "y.tab.c"
+#line 287 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -639,29 +665,29 @@ static const yytype_int16 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    58,    58,    59,    63,    64,    68,    69,    70,    71,
-      76,    77,    81,    82,    87,    88,    89,    90,    91,    92,
-      96,    97,    98,    99,   100,   104,   105,   106,   107,   108,
-     109,   110,   111,   112,   113,   114,   115,   119,   120,   124,
-     125,   126,   130,   131,   135,   136,   140,   141,   146,   147,
-     147,   151,   155,   156,   157,   158,   162,   163,   167,   168,
-     169,   173,   174,   175,   179,   180,   184,   185,   185,   189,
-     190,   194,   195,   196,   197,   198,   199,   200,   204,   205,
-     206,   207,   211,   212,   216,   217,   221,   222,   226,   227,
-     228,   232,   233,   237,   238,   239,   243,   244,   248,   249,
-     253,   254,   255,   259,   260,   261,   262,   263,   264,   265,
-     266,   267,   271,   272,   273,   274,   275,   276,   280,   281,
-     282,   286,   287,   291,   292,   293,   294,   298,   299,   303,
-     304,   305,   309,   310,   311,   312,   313,   314,   315,   316,
-     317,   318,   322,   323,   324,   325,   326,   330,   331,   335,
-     336,   341,   342,   343,   344,   345,   346,   347,   348,   349,
-     350,   351,   355,   356,   360,   364,   365,   369,   370,   374,
-     375,   379,   380,   384,   385,   389,   390,   391,   395,   396,
-     397,   398,   399,   403,   404,   405,   409,   410,   411,   415,
-     416,   417,   418,   422,   423,   427,   428,   429,   430,   431,
-     432,   436,   437,   438,   439,   440,   441,   445,   446,   447,
-     448,   449,   450,   451,   452,   456,   457,   458,   459,   463,
-     464,   468,   469,   470,   471,   475,   479
+       0,    86,    86,    87,    91,    92,    96,    97,    98,    99,
+     104,   105,   109,   110,   115,   138,   169,   224,   285,   297,
+     318,   319,   320,   321,   322,   326,   327,   328,   329,   330,
+     331,   332,   333,   334,   336,   337,   338,   342,   343,   347,
+     348,   349,   353,   354,   358,   359,   363,   364,   369,   370,
+     370,   374,   378,   379,   380,   381,   385,   386,   390,   391,
+     392,   396,   397,   398,   402,   403,   407,   408,   408,   412,
+     413,   417,   418,   419,   420,   421,   422,   423,   427,   428,
+     429,   430,   434,   435,   439,   440,   444,   445,   449,   450,
+     451,   455,   456,   460,   461,   462,   466,   467,   471,   472,
+     476,   477,   478,   482,   483,   484,   485,   486,   487,   488,
+     489,   490,   494,   495,   496,   497,   498,   499,   503,   504,
+     505,   509,   510,   514,   515,   516,   517,   521,   522,   526,
+     527,   528,   532,   533,   534,   535,   536,   537,   538,   539,
+     540,   541,   545,   546,   547,   548,   549,   553,   554,   558,
+     559,   564,   565,   566,   567,   568,   569,   570,   571,   572,
+     573,   574,   578,   579,   583,   587,   588,   592,   593,   597,
+     598,   602,   603,   607,   608,   612,   613,   614,   618,   619,
+     620,   621,   622,   626,   627,   628,   632,   633,   634,   638,
+     639,   640,   641,   645,   646,   650,   651,   652,   653,   654,
+     655,   659,   660,   661,   662,   663,   664,   668,   669,   670,
+     671,   672,   673,   674,   675,   679,   680,   681,   682,   686,
+     687,   691,   692,   693,   694,   698,   702
 };
 #endif
 
@@ -2085,174 +2111,403 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 20:
-#line 96 "test_c_grammar.y"
-    {declMode = true; *(yyval.sval) = "AUTO";}
+        case 14:
+#line 115 "test_c_grammar.y"
+    {
+  std::cout<<"SCS HERE YO!"<<std::endl;
+  if((yyvsp[(1) - (1)].sval)=="AUTO")
+    {
+      (yyval.barrayval)[0] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "REGISTER")
+    {
+      (yyval.barrayval)[1] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) ==  "STATIC")
+    {
+      (yyval.barrayval)[2] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "EXTERN")
+    {
+      (yyval.barrayval)[3] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) ==  "TYPEDEF")
+    {   
+      (yyval.barrayval)[4] = true;
+    }
+}
+    break;
+
+  case 15:
+#line 139 "test_c_grammar.y"
+    {
+
+  int asize = sizeof((yyval.barrayval))/sizeof((yyval.barrayval)[0]);
+  int i;
+  for(i = 0;i < asize;i++)
+    {
+      (yyval.barrayval)[i] = (yyvsp[(2) - (2)].barrayval)[i];
+    }
+  if((yyvsp[(1) - (2)].sval)=="AUTO")
+    {
+      (yyval.barrayval)[0] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "REGISTER")
+    {
+      (yyval.barrayval)[1] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) ==  "STATIC")
+    {
+      (yyval.barrayval)[2] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "EXTERN")
+    {
+      (yyval.barrayval)[3] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) ==  "TYPEDEF")
+    {   
+      (yyval.barrayval)[4] = true;
+    }
+  std::cout<<"this should be 11-> "<<(yyval.barrayval)[0]<<(yyval.barrayval)[8]<<std::endl;
+}
+    break;
+
+  case 16:
+#line 170 "test_c_grammar.y"
+    {std::cout<<"YO TS HERE!\n";
+  if((yyvsp[(1) - (1)].sval) == "VOID")
+    {
+      (yyval.barrayval)[5] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "CHAR")
+    {
+      (yyval.barrayval)[6] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "SHORT")
+    {
+      (yyval.barrayval)[7] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "INT")
+    {
+      (yyval.barrayval)[8] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "LONG")
+    {
+      (yyval.barrayval)[9] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "FLOAT")
+    {
+      (yyval.barrayval)[10] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "DOUBLE")
+    {
+      (yyval.barrayval)[11] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "SIGNED")
+    {
+      (yyval.barrayval)[12] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "UNSIGNED")
+    {
+      (yyval.barrayval)[13] = true; 
+    }
+  else if((yyvsp[(1) - (1)].sval) == "STRUCT")
+    {
+      (yyval.barrayval)[14] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "UNION" )
+    {
+      (yyval.barrayval)[15] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) ==  "ENUM")
+    {
+      (yyval.barrayval)[16] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "TYPEDEF_NAME")
+    {
+      (yyval.barrayval)[17] =  true;
+    }
+}
+    break;
+
+  case 17:
+#line 225 "test_c_grammar.y"
+    {
+  int asize = sizeof((yyval.barrayval))/sizeof((yyval.barrayval)[0]);
+  int i;
+  for(i = 0;i < asize;i++)
+    {
+      (yyval.barrayval)[i] = (yyvsp[(2) - (2)].barrayval)[i];
+    }
+ if((yyvsp[(1) - (2)].sval) == "VOID")
+    {
+      (yyval.barrayval)[5] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "CHAR")
+    {
+      (yyval.barrayval)[6] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "SHORT")
+    {
+      (yyval.barrayval)[7] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "INT")
+    {
+      (yyval.barrayval)[8] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "LONG")
+    {
+      (yyval.barrayval)[9] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "FLOAT")
+    {
+      (yyval.barrayval)[10] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "DOUBLE")
+    {
+      (yyval.barrayval)[11] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "SIGNED")
+    {
+      (yyval.barrayval)[12] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "UNSIGNED")
+    {
+      (yyval.barrayval)[13] = true; 
+    }
+  else if((yyvsp[(1) - (2)].sval) == "STRUCT")
+    {
+      (yyval.barrayval)[14] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "UNION" )
+    {
+      (yyval.barrayval)[15] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) ==  "ENUM")
+    {
+      (yyval.barrayval)[16] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "TYPEDEF_NAME")
+    {
+      (yyval.barrayval)[17] =  true;
+    }
+}
+    break;
+
+  case 18:
+#line 286 "test_c_grammar.y"
+    {
+  if((yyvsp[(1) - (1)].sval) == "CONST")
+    {
+      (yyval.barrayval)[18] = true;
+    }
+  else if((yyvsp[(1) - (1)].sval) == "VOLATILE")
+    {
+      (yyval.barrayval)[19] = true;
+    }
+
+}
+    break;
+
+  case 19:
+#line 298 "test_c_grammar.y"
+    {
+  int asize = sizeof((yyval.barrayval))/sizeof((yyval.barrayval)[0]);
+  int i;
+  for(i = 0;i < asize;i++)
+    {
+      (yyval.barrayval)[i] = (yyvsp[(2) - (2)].barrayval)[i];
+    }
+ if((yyvsp[(1) - (2)].sval) == "CONST")
+    {
+      (yyval.barrayval)[18] = true;
+    }
+  else if((yyvsp[(1) - (2)].sval) == "VOLATILE")
+    {
+      (yyval.barrayval)[19] = true;
+    }
+
+}
+    break;
+
+  case 20:
+#line 318 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "AUTO";}
     break;
 
   case 21:
-#line 97 "test_c_grammar.y"
-    {declMode = true; *(yyval.sval) = "REGISTER";}
+#line 319 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "REGISTER";}
     break;
 
   case 22:
-#line 98 "test_c_grammar.y"
-    {declMode = true; *(yyval.sval) = "STATIC";}
+#line 320 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "STATIC";}
     break;
 
   case 23:
-#line 99 "test_c_grammar.y"
-    {declMode = true;*(yyval.sval) = "EXTERN";}
+#line 321 "test_c_grammar.y"
+    {declMode = true;(yyval.sval) = "EXTERN";}
     break;
 
   case 24:
-#line 100 "test_c_grammar.y"
-    {declMode = true;*(yyval.sval) = "TYPEDEF";}
+#line 322 "test_c_grammar.y"
+    {declMode = true;(yyval.sval) = "TYPEDEF";}
     break;
 
   case 25:
-#line 104 "test_c_grammar.y"
-    {declMode = true;}
+#line 326 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "VOID";}
     break;
 
   case 26:
-#line 105 "test_c_grammar.y"
-    {declMode = true;}
+#line 327 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "CHAR";}
     break;
 
   case 27:
-#line 106 "test_c_grammar.y"
-    {declMode = true;}
+#line 328 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "SHORT";}
     break;
 
   case 28:
-#line 107 "test_c_grammar.y"
-    {declMode = true;}
+#line 329 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "INT";}
     break;
 
   case 29:
-#line 108 "test_c_grammar.y"
-    {declMode = true;}
+#line 330 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "LONG";}
     break;
 
   case 30:
-#line 109 "test_c_grammar.y"
-    {declMode = true;}
+#line 331 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "FLOAT";}
     break;
 
   case 31:
-#line 110 "test_c_grammar.y"
-    {declMode = true;}
+#line 332 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "DOUBLE";}
     break;
 
   case 32:
-#line 111 "test_c_grammar.y"
-    {declMode = true;}
+#line 333 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "SIGNED";}
     break;
 
   case 33:
-#line 112 "test_c_grammar.y"
-    {declMode = true;}
+#line 334 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "UNSIGNED";}
     break;
 
   case 34:
-#line 113 "test_c_grammar.y"
-    {declMode = true;}
+#line 336 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "NEED TO FIGURE OUT";}
     break;
 
   case 35:
-#line 114 "test_c_grammar.y"
-    {declMode = true;}
+#line 337 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "Same!";}
     break;
 
   case 36:
-#line 115 "test_c_grammar.y"
-    {declMode = true;}
+#line 338 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "TYPEDEF_NAME";}
     break;
 
   case 37:
-#line 119 "test_c_grammar.y"
-    {declMode = true;}
+#line 342 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "CONST";}
     break;
 
   case 38:
-#line 120 "test_c_grammar.y"
-    {declMode = true;}
+#line 343 "test_c_grammar.y"
+    {declMode = true; (yyval.sval) = "VOLATILE";}
+    break;
+
+  case 42:
+#line 353 "test_c_grammar.y"
+    {(yyval.sval) = "STRUCT";}
+    break;
+
+  case 43:
+#line 354 "test_c_grammar.y"
+    {(yyval.sval) = "UNION";}
     break;
 
   case 49:
-#line 147 "test_c_grammar.y"
+#line 370 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 67:
-#line 185 "test_c_grammar.y"
+#line 408 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 151:
-#line 341 "test_c_grammar.y"
+#line 564 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 152:
-#line 342 "test_c_grammar.y"
+#line 565 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 153:
-#line 343 "test_c_grammar.y"
+#line 566 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 154:
-#line 344 "test_c_grammar.y"
+#line 567 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 155:
-#line 345 "test_c_grammar.y"
+#line 568 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 156:
-#line 346 "test_c_grammar.y"
+#line 569 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 157:
-#line 347 "test_c_grammar.y"
+#line 570 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 158:
-#line 348 "test_c_grammar.y"
+#line 571 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 159:
-#line 349 "test_c_grammar.y"
+#line 572 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 160:
-#line 350 "test_c_grammar.y"
+#line 573 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 161:
-#line 351 "test_c_grammar.y"
+#line 574 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 226:
-#line 479 "test_c_grammar.y"
+#line 702 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (1)].sval);}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2256 "y.tab.c"
+#line 2511 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2466,7 +2721,7 @@ yyreturn:
 }
 
 
-#line 481 "test_c_grammar.y"
+#line 704 "test_c_grammar.y"
 
 
 #include <stdio.h>

@@ -191,12 +191,12 @@ currentCharDepth += yyleng;return (OR_ASSIGN);}
   currentCharDepth += yyleng;return (CHARACTER_CONSTANT); }
  /*retains the quotes... might not be desired behavoir */
 {string}         {
-  *yylval.sval = yytext;
+  yylval.sval = yytext;
   if(lexDebug){lexDebugOut << "STRING_LITERAL("<<yylval.sval<<")";}
   currentCharDepth += yyleng;return (STRING_LITERAL); }
 
 
-{id}            {*yylval.sval = yytext;
+{id}            {yylval.sval = yytext;
   if(declMode){
     SymbolContent sc;
     sc.lineno = lineCount;
