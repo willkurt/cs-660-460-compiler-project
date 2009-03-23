@@ -94,11 +94,12 @@ external_declaration
 	| declaration
 	;
 
+//I'll rest easier tonight if I can at least get the pushing and popping right
 function_definition
-	: declarator compound_statement
-	| declarator declaration_list compound_statement
-	| declaration_specifiers declarator compound_statement
-	| declaration_specifiers declarator declaration_list compound_statement
+: declarator {st.push();} compound_statement {st.pop();st.pop();}
+| declarator declaration_list {st.push();} compound_statement {st.pop();st.pop();}
+| declaration_specifiers declarator {st.push();} compound_statement {st.pop();st.pop();}
+| declaration_specifiers declarator declaration_list {st.push();}compound_statement {st.pop();st.pop();}
 	;
 
 
@@ -439,8 +440,8 @@ direct_declarator
 | '(' declarator ')' {$$ = $2;}//not quite sure what this is for
 	| direct_declarator '[' ']' {$$ = $1;}
 | direct_declarator '[' constant_expression ']' {$$ = $1;}
-	| direct_declarator '(' ')' {$$ = $1;}
-	| direct_declarator '(' parameter_type_list ')' {$$ = $1;std::cout<<"I think I should push";}
+| direct_declarator '('')' {$$ = $1;st.push();}//though empty all funcs wil pop 2x
+| direct_declarator '('{st.push();} parameter_type_list ')' {$$ = $1;std::cout<<"I think I should push";}
 | direct_declarator '(' identifier_list ')' {$$ = $1;}
 	;
 
@@ -532,10 +533,10 @@ expression_statement
 	;
 
 compound_statement
-	: '{' '}'
-	| '{' statement_list '}'
-	| '{' declaration_list '}'
-	| '{' declaration_list statement_list '}'
+: '{' '}'
+| '{'statement_list '}'
+| '{' declaration_list '}'
+| '{' declaration_list statement_list '}'
 	;
 
 statement_list
