@@ -1,0 +1,35 @@
+Script started on Mon 23 Mar 2009 09:34:41 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./parsetest4.sh 
+int x = 5
+the error at line 1 around char 0 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw 
+type_specifier <- INT
+declaration_specifiers <- type_specifier
+identifier  <- IDENTIFIER
+direct_declarator <- identifier
+declarator <- direct_declarator
+constant <- INTEGER_CONSTANT
+primary_expression <- constant
+postfix_expression <- primary_expression
+***end ln: 0*****
+unary_expression <- postfix_expression
+cast_expression <- unary_expression
+multiplicative_expression <- cast_expression
+additive_expression <- multiplicative_expression
+shift_expression <- additive_expression
+relational_expression <- shift_expression
+equality_expression <- relational_expression
+and_expression <- equality_expression
+exclusive_or_expression <- and_expression
+inclusive_or_expression <- exclusive_or_expression
+logical_and_expression <- inclusive_or_expression
+logical_or_expression <- logical_and_expression
+conditional_expression <- logical_or_expression
+assignment_expression <- conditional_expression
+initializer <- assignment_expression
+init_declarator <- declarator '=' initializer
+init_declarator_list <- init_declarator
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+
+Script done on Mon 23 Mar 2009 09:34:57 AM PDT

@@ -1,0 +1,168 @@
+Script started on Mon 23 Mar 2009 09:25:29 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest3.sh 
+float foo(){ 
+float x = 5.6;
+return x;
+}
+int main(){
+foo();
+}
+warning: x is already defined in current scope
+warning: foo is already defined in current scope
+FLOAT IDENTIFIER(foo)'(' ) '{' NEWLINE 13-0
+FLOAT IDENTIFIER(x)'=' FLOATING_CONSTANT(5.6)';' NEWLINE 14-1
+RETURN IDENTIFIER(x)';' NEWLINE 9-2
+'}' NEWLINE 1-3
+INT IDENTIFIER(main)'(' ) '{' NEWLINE 11-4
+IDENTIFIER(foo)'(' ) ';' NEWLINE 6-5
+'}' NEWLINE 1-6
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest3.sh exit[K./lextest2.sh exit[K./lextest1.sh [6Pa.out[C[10@tools/lexqtest.sh[C[10P./a.out[C[11@tools/parseonly.sh[C[K[3P./a.out tools/parseonly.sh [11P./a.out[C[10@tools/lexqtest.sh[C[10P./a.out[C[6@lextest1.sh[Cexit[K./lextest2.sh exit[K./lextest2.sh exit[K./lextest1.sh [6Pa.out[C[10@tools/lexqtest.sh[C[10P./a.out[C[11@tools/parseonly.sh[C[K[3P./a.out git push origin mastercommit -a -m "added ssome demoscripts for st and parser"[A]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ [C[C[C[C[1Padd demoscripts/*.*
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccommit -a -m "added ssome demoscripts for st and parser"[A]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ [C[C[C[C[2Ppush origin master
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[14P./a.out tools/parseonly.sh [11P./a.out[C[10@tools/lexqtest.sh[C[10P./a.out[C[6@lextest1.sh[Cexit[K./lextest2.sh exit[K./lextest3.sh [Kscript demoscripts/lextteext4.txt
+Script started, file is demoscripts/lexttext4.txt
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest4.sh 
+int x = 5
+the error at line 1 around char 0 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw 
+INT IDENTIFIER(x)'=' INTEGER_CONSTANT(5)NEWLINE 9-0
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+Script done, file is demoscripts/lexttext4.txt
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ls
+[00m[01;32ma.out[00m           [01;32mlextest7.sh[00m         [01;32mparsetest2.sh[00m           [00mSymbolTable.cpp[00m
+[00mc_grammar.h[00m     [01;32mlextest8.sh[00m         [01;32mparsetest3.sh[00m           [00m#SymbolTable.hpp#[00m
+[00mc_grammar.h~[00m    [00mlex.yy.c[00m            [01;32mparsetest4.sh[00m           [00mSymbolTable.hpp[00m
+[00mc_grammar.lex[00m   [00mlex.yy.cc[00m           [01;32mparsetest5.sh[00m           [00mSymbolTable.hpp.gch[00m
+[00mc_grammar.y[00m     [00mlex.yy.o[00m            [01;32mparsetest6.sh[00m           [00mSymbolTable.o[00m
+[00m#Debugger.hpp#[00m  [00mmain.c[00m              [01;32mparsetest7.sh[00m           [00mtest_c_grammar.y[00m
+[01;34mdemoscripts[00m     [00mmain.cpp[00m            [01;32mparsetest8.sh[00m           [00mtest_c_grammar.y~[00m
+[00mgits.txt[00m        [00mmain.cpp~[00m           [00mREADME[00m                  [00mtest.txt[00m
+[00mgits.txt~[00m       [00mnew_c_grammar.lex[00m   [00mstltest.cpp[00m             [01;34mtools[00m
+[00mlexdebug.log[00m    [00mnew_c_grammar.lex~[00m  [00mstltest.cpp~[00m            [00musefullinks.txt[00m
+[01;32mlextest1.sh[00m     [00mnew_c_grammar.y[00m     [00mstMain.cpp[00m              [00musefullinks.txt~[00m
+[01;32mlextest2.sh[00m     [00mnewMainSt.cpp[00m       [00mstMain.cpp~[00m             [00my.output[00m
+[01;32mlextest3.sh[00m     [00mnewMainSt.cpp~[00m      [00mstout.txt[00m               [00my.tab.c[00m
+[01;32mlextest4.sh[00m     [00mout.txt[00m             [00msymbol_content.hpp[00m      [00my.tab.h[00m
+[01;32mlextest5.sh[00m     [00mparsedebug.log[00m      [00msymbol_content.hpp~[00m
+[01;32mlextest6.sh[00m     [01;32mparsetest1.sh[00m       [00msymbol_content.hpp.gch[00m
+[m]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ lsscript demoscripts/lextteext4.txt[1P.txt5.txt[1Pt5.txt[Cst5.txt[C[C
+Script started, file is demoscripts/lexttest5.txt
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest5.sh 
+int x; 
+int y = x +5;
+int main(){
+int y = x + 5;
+}
+warning: x is already defined in current scope
+the error at line 1 around char 12 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw +5
+INT IDENTIFIER(x)';' NEWLINE 7-0
+INT IDENTIFIER(y)'=' IDENTIFIER(x)INTEGER_CONSTANT(5)]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+Script done, file is demoscripts/lexttest5.txt
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ t[K/[Ktools/testparse.sh 
+test_c_grammar.y:107.3-28: warning: type clash on default action: <sval> != <barrayval>
+conflicts: 1 shift/reduce
+test_c_grammar.y: In function ‘int yyparse()’:
+test_c_grammar.y:336: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:337: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:338: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:339: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:340: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:344: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:345: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:346: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:347: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:348: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:349: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:350: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:351: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:352: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:354: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:355: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:356: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:360: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:361: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:371: warning: deprecated conversion from string constant to ‘char*’
+test_c_grammar.y:372: warning: deprecated conversion from string constant to ‘char*’
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./te[K[Klextest.sh[K[K[K5.sh 
+int x; 
+int y = x +5;
+int main(){
+int y = x + 5;
+}
+the error at line 1 around char 12 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw +5
+INT IDENTIFIER(x)';' NEWLINE 7-0
+INT IDENTIFIER(y)'=' IDENTIFIER(x)INTEGER_CONSTANT(5)]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest6.sh 
+int main(){
+int test[5] = {0};
+test[0] = 5;
+}
+INT IDENTIFIER(main)'(' ) '{' NEWLINE 11-0
+INT IDENTIFIER(test)'[' INTEGER_CONSTANT(5)']' '=' '{' INTEGER_CONSTANT(0)'}' ';' NEWLINE 18-1
+IDENTIFIER(test)'[' INTEGER_CONSTANT(0)']' '=' INTEGER_CONSTANT(5)';' NEWLINE 12-2
+'}' NEWLINE 1-3
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest6.sh 5[C[C[C[C[5@tools/testparse[C[C[C[Cscript demoscripts/lextteest5.txt[1P.txt6.txt
+Script started, file is demoscripts/lexttest6.txt
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./s[Klextest6.sh 
+int main(){
+int test[5] = {0};
+test[0] = 5;
+}
+INT IDENTIFIER(main)'(' ) '{' NEWLINE 11-0
+INT IDENTIFIER(test)'[' INTEGER_CONSTANT(5)']' '=' '{' INTEGER_CONSTANT(0)'}' ';' NEWLINE 18-1
+IDENTIFIER(test)'[' INTEGER_CONSTANT(0)']' '=' INTEGER_CONSTANT(5)';' NEWLINE 12-2
+'}' NEWLINE 1-3
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+Script done, file is demoscripts/lexttest6.txt
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ls
+[00m[01;32ma.out[00m           [01;32mlextest7.sh[00m         [01;32mparsetest2.sh[00m           [00mSymbolTable.cpp[00m
+[00mc_grammar.h[00m     [01;32mlextest8.sh[00m         [01;32mparsetest3.sh[00m           [00m#SymbolTable.hpp#[00m
+[00mc_grammar.h~[00m    [00mlex.yy.c[00m            [01;32mparsetest4.sh[00m           [00mSymbolTable.hpp[00m
+[00mc_grammar.lex[00m   [00mlex.yy.cc[00m           [01;32mparsetest5.sh[00m           [00mSymbolTable.hpp.gch[00m
+[00mc_grammar.y[00m     [00mlex.yy.o[00m            [01;32mparsetest6.sh[00m           [00mSymbolTable.o[00m
+[00m#Debugger.hpp#[00m  [00mmain.c[00m              [01;32mparsetest7.sh[00m           [00mtest_c_grammar.y[00m
+[01;34mdemoscripts[00m     [00mmain.cpp[00m            [01;32mparsetest8.sh[00m           [00mtest_c_grammar.y~[00m
+[00mgits.txt[00m        [00mmain.cpp~[00m           [00mREADME[00m                  [00mtest.txt[00m
+[00mgits.txt~[00m       [00mnew_c_grammar.lex[00m   [00mstltest.cpp[00m             [01;34mtools[00m
+[00mlexdebug.log[00m    [00mnew_c_grammar.lex~[00m  [00mstltest.cpp~[00m            [00musefullinks.txt[00m
+[01;32mlextest1.sh[00m     [00mnew_c_grammar.y[00m     [00mstMain.cpp[00m              [00musefullinks.txt~[00m
+[01;32mlextest2.sh[00m     [00mnewMainSt.cpp[00m       [00mstMain.cpp~[00m             [00my.output[00m
+[01;32mlextest3.sh[00m     [00mnewMainSt.cpp~[00m      [00mstout.txt[00m               [00my.tab.c[00m
+[01;32mlextest4.sh[00m     [00mout.txt[00m             [00msymbol_content.hpp[00m      [00my.tab.h[00m
+[01;32mlextest5.sh[00m     [00mparsedebug.log[00m      [00msymbol_content.hpp~[00m
+[01;32mlextest6.sh[00m     [01;32mparsetest1.sh[00m       [00msymbol_content.hpp.gch[00m
+[m]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ cd lext[K[K[K[K[K[K[Klsscript demoscripts/lextteest6.txt[1P.txt7.txt
+Script started, file is demoscripts/lexttest7.txt
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest7.sh 
+int x = 0;
+for ( int x = 0; x < 5; x++ )
+{
+cout<< x;
+}
+the error at line 0 around char 3 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw for
+FOR ]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest7.sh exit[K./lextest6.sh exit[K
+exit
+Script done, file is demoscripts/lexttest7.txt
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ script demoscripts/lextteest7.txt[A]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ls[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cscript demoscripts/lextteest7.txt[1P.txt8.txt
+Script started, file is demoscripts/lexttest8.txt
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./s[Klextestt[K8.sh 
+int x = 0;
+while ( 1 )
+{
+cout<< x;
+}
+the error at line 1 around char 5 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw while
+INT IDENTIFIER(x)'=' INTEGER_CONSTANT(0)';' NEWLINE 10-0
+WHILE ]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ .[Kexit
+exit
+Script done, file is demoscripts/lexttest8.txt
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+
+Script done on Mon 23 Mar 2009 09:33:02 AM PDT

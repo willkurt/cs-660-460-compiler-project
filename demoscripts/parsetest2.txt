@@ -1,0 +1,28 @@
+Script started on Mon 23 Mar 2009 09:34:08 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ par[K[K[K./parsetest2.sh 
+int x; 
+x = 5;
+int main(){
+char y = 'a';
+}
+warning: x is already defined in current scope
+the error at line 1 around char 3 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw =
+type_specifier <- INT
+declaration_specifiers <- type_specifier
+identifier  <- IDENTIFIER
+direct_declarator <- identifier
+declarator <- direct_declarator
+init_declarator <- declarator
+init_declarator_list <- init_declarator
+declaration <- declaration_specifiers init_declarator_list ';'
+external_declaration <- declaration
+translation_unit <- external_declaration
+***end ln: 0*****
+identifier  <- IDENTIFIER
+direct_declarator <- identifier
+declarator <- direct_declarator
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./parsetest2.sh exit[K./parsetest2.sh exit[K
+exit
+
+Script done on Mon 23 Mar 2009 09:34:24 AM PDT

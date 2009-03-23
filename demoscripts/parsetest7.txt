@@ -1,0 +1,13 @@
+Script started on Mon 23 Mar 2009 09:35:42 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./parsetest7.sh 
+int x = 0;
+for ( int x = 0; x < 5; x++ )
+{
+cout<< x;
+}
+the error at line 0 around char 3 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw for
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ s[K/[K./parsetest7.sh exit[K./parsetest6.sh exit[K
+exit
+
+Script done on Mon 23 Mar 2009 09:36:29 AM PDT

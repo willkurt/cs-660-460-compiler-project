@@ -1,0 +1,15 @@
+Script started on Mon 23 Mar 2009 09:27:21 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest5.sh 
+int x; 
+int y = x +5;
+int main(){
+int y = x + 5;
+}
+warning: x is already defined in current scope
+the error at line 1 around char 12 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw +5
+INT IDENTIFIER(x)';' NEWLINE 7-0
+INT IDENTIFIER(y)'=' IDENTIFIER(x)INTEGER_CONSTANT(5)]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+
+Script done on Mon 23 Mar 2009 09:28:01 AM PDT

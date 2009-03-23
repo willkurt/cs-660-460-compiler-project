@@ -1,0 +1,10 @@
+Script started on Mon 23 Mar 2009 09:26:30 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest4.sh 
+int x = 5
+the error at line 1 around char 0 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw 
+INT IDENTIFIER(x)'=' INTEGER_CONSTANT(5)NEWLINE 9-0
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+
+Script done on Mon 23 Mar 2009 09:26:50 AM PDT

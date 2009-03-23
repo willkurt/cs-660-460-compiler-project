@@ -1,0 +1,15 @@
+Script started on Mon 23 Mar 2009 09:24:43 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit./lextest1.sh [1P[1@2
+int x; 
+x = 5;
+int main(){
+char y = 'a';
+}
+warning: x is already defined in current scope
+the error at line 1 around char 3 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw =
+INT IDENTIFIER(x)';' NEWLINE 7-0
+IDENTIFIER(x)'=' ]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest2.sh exit[K./lextest2.sh [Kexit
+exit
+
+Script done on Mon 23 Mar 2009 09:25:20 AM PDT

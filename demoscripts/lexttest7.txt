@@ -1,0 +1,13 @@
+Script started on Mon 23 Mar 2009 09:30:14 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest7.sh 
+int x = 0;
+for ( int x = 0; x < 5; x++ )
+{
+cout<< x;
+}
+the error at line 0 around char 3 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw for
+FOR ]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest7.sh exit[K./lextest6.sh exit[K
+exit
+
+Script done on Mon 23 Mar 2009 09:31:40 AM PDT

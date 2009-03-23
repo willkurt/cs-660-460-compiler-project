@@ -1,0 +1,8 @@
+Script started on Mon 23 Mar 2009 09:24:20 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./lextest.[K1.sh 
+int x = 5;
+INT IDENTIFIER(x)'=' INTEGER_CONSTANT(5)';' NEWLINE 10-0
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+
+Script done on Mon 23 Mar 2009 09:24:32 AM PDT

@@ -1,0 +1,50 @@
+Script started on Mon 23 Mar 2009 09:35:01 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./a[Kparsetest5.sh 
+int x; 
+int y = x +5;
+int main(){
+int y = x + 5;
+}
+warning: x is already defined in current scope
+the error at line 1 around char 12 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw +5
+type_specifier <- INT
+declaration_specifiers <- type_specifier
+identifier  <- IDENTIFIER
+direct_declarator <- identifier
+declarator <- direct_declarator
+init_declarator <- declarator
+init_declarator_list <- init_declarator
+declaration <- declaration_specifiers init_declarator_list ';'
+external_declaration <- declaration
+translation_unit <- external_declaration
+***end ln: 0*****
+type_specifier <- INT
+declaration_specifiers <- type_specifier
+identifier  <- IDENTIFIER
+direct_declarator <- identifier
+declarator <- direct_declarator
+identifier  <- IDENTIFIER
+primary_expression <- identifier
+postfix_expression <- primary_expression
+unary_expression <- postfix_expression
+cast_expression <- unary_expression
+multiplicative_expression <- cast_expression
+additive_expression <- multiplicative_expression
+shift_expression <- additive_expression
+relational_expression <- shift_expression
+equality_expression <- relational_expression
+and_expression <- equality_expression
+exclusive_or_expression <- and_expression
+inclusive_or_expression <- exclusive_or_expression
+logical_and_expression <- inclusive_or_expression
+logical_or_expression <- logical_and_expression
+conditional_expression <- logical_or_expression
+assignment_expression <- conditional_expression
+initializer <- assignment_expression
+init_declarator <- declarator '=' initializer
+init_declarator_list <- init_declarator
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ exit
+exit
+
+Script done on Mon 23 Mar 2009 09:35:10 AM PDT

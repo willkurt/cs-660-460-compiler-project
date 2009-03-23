@@ -1,0 +1,14 @@
+Script started on Mon 23 Mar 2009 09:31:46 AM PDT
+]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ ./s[Klextestt[K8.sh 
+int x = 0;
+while ( 1 )
+{
+cout<< x;
+}
+the error at line 1 around char 5 makes me go Arrrrrg!!!!
+I couldn't take it any more once I saw while
+INT IDENTIFIER(x)'=' INTEGER_CONSTANT(0)';' NEWLINE 10-0
+WHILE ]0;will@ubuntu-8: ~/cs660_proj/cs-660-460-compiler-projectwill@ubuntu-8:~/cs660_proj/cs-660-460-compiler-project$ .[Kexit
+exit
+
+Script done on Mon 23 Mar 2009 09:32:02 AM PDT
