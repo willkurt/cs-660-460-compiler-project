@@ -96,6 +96,7 @@ SymbolContent *SymbolTable::searchAll(std::string k)
       std::map<std::string, SymbolContent> currentTop = st.top();
       if(currentTop.find(k) != currentTop.end())
 	{
+	  
 	  returnValue = &currentTop[k];
 	  break;
 	}

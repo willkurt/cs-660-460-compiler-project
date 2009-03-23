@@ -191,12 +191,12 @@ currentCharDepth += yyleng;return (OR_ASSIGN);}
   currentCharDepth += yyleng;return (CHARACTER_CONSTANT); }
  /*retains the quotes... might not be desired behavoir */
 {string}         {
-  yylval.sval = yytext;
+  yylval.sval = strdup(yytext);
   if(lexDebug){lexDebugOut << "STRING_LITERAL("<<yylval.sval<<")";}
   currentCharDepth += yyleng;return (STRING_LITERAL); }
 
 
-{id}            {yylval.sval = yytext;
+{id}            {yylval.sval = strdup(yytext);
   if(declMode){
     SymbolContent sc;
     sc.lineno = lineCount;
@@ -213,6 +213,7 @@ currentCharDepth += yyleng;return (OR_ASSIGN);}
       {
 	st.update(yytext,sc);
       }
+    std::cout << "I'm added!!!"<<std::endl;
   }
   if(lexDebug){lexDebugOut << "IDENTIFIER("<<yylval.sval<<")";}
   currentCharDepth += yyleng;return (IDENTIFIER); }

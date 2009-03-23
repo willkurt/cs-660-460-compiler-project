@@ -172,7 +172,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 15 "test_c_grammar.y"
+#line 16 "test_c_grammar.y"
 {
   //consider making this a string pointer
   char* sval;

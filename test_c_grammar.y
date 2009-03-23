@@ -10,6 +10,7 @@ extern std::ofstream parseDebugOut;
 extern int lineCount;
 /*for declaration or not*/
 extern bool declMode;
+
  %}
 
 %union{
@@ -76,6 +77,9 @@ extern bool declMode;
 %type <sval> identifier
 %type <sval> type_specifier storage_class_specifier
 %type <sval> type_qualifier struct_or_union
+%type <sval> declarator direct_declarator
+%type <sval> init_declarator init_declarator_list
+%type <sval> declaration declaration_list
 
 %type <barrayval> declaration_specifiers
 
@@ -101,19 +105,31 @@ function_definition
 
 
 declaration
-        : declaration_specifiers ';'
-	| declaration_specifiers init_declarator_list ';'
+: declaration_specifiers ';'
+	  //for right now I'm just assuming no list, just a declator
+	| declaration_specifiers init_declarator_list ';' 
+{
+  st.push();
+  SymbolContent sp;
+  st.add($2,sp);
+  st.outputToFile();
+  std::string key = $2;
+  SymbolContent * sc = st.searchAll($2);
+
+  std::cout << $2 << std::endl;
+  std::cout << sc << std::endl;
+
+}
 	;
 
 declaration_list
-	: declaration
+: declaration {$$ = $1;}
 	| declaration_list declaration
 	;
 
 //these should all singnal that we're indecle mode
 declaration_specifiers
 : storage_class_specifier {
-  std::cout<<"SCS HERE YO!"<<std::endl;
   if($1=="AUTO")
     {
       $$[0] = true;
@@ -359,15 +375,16 @@ struct_declaration_list
 	| struct_declaration_list struct_declaration
 	;
 
+//I'll worry about lists of declators later
 init_declarator_list
-	: init_declarator
-	| init_declarator_list ',' init_declarator
+: init_declarator {$$ = $1;}
+| init_declarator_list ',' init_declarator {$$ = $3;}
 	;
 
-//all declators assiment should set declMode to false
+//all declators assignment should set declMode to false
 init_declarator
-	: declarator
-	| declarator '='{declMode = false;} initializer
+: declarator {$$ = $1 ;}
+| declarator '='{declMode = false;} initializer {$$ = $1;}
 	;
 
 struct_declaration
@@ -408,19 +425,22 @@ enumerator
 	| identifier '='{declMode = false;} constant_expression
 	;
 
+
+//for this second, not worried about pointers.. figure out later
 declarator
-	: direct_declarator
-	| pointer direct_declarator
+	: direct_declarator {std::cout << "id at dec =>" << $1 <<std::endl;}
+	| pointer direct_declarator {$$ = $2;}
 	;
 
+//for now I'm just passing up the id string
 direct_declarator
-	: identifier
-	| '(' declarator ')'
-	| direct_declarator '[' ']'
-	| direct_declarator '[' constant_expression ']'
-	| direct_declarator '(' ')'
-	| direct_declarator '(' parameter_type_list ')'
-	| direct_declarator '(' identifier_list ')'
+: identifier {$$ = $1; std::cout << "id at dd =>" << $1 <<std::endl;}
+	| '(' declarator ')' {$$ = $2;}
+	| direct_declarator '[' ']' {$$ = $1;}
+| direct_declarator '[' constant_expression ']' {$$ = $1;}
+	| direct_declarator '(' ')' {$$ = $1;}
+	| direct_declarator '(' parameter_type_list ')' {$$ = $1;}
+	| direct_declarator '(' identifier_list ')' {$$ = $1;}
 	;
 
 pointer
@@ -452,7 +472,7 @@ parameter_declaration
 	;
 
 identifier_list
-	: identifier
+: identifier 
 	| identifier_list ',' identifier
 	;
 
@@ -707,7 +727,6 @@ identifier
 
 extern char yytext[];
 extern int column;
-
 
 
 /*
