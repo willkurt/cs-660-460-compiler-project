@@ -2161,8 +2161,8 @@ yyreduce:
     {
       (*sc).specifiers = &(yyvsp[(1) - (3)].barrayval)[0];
     }
-  std::cout << (yyvsp[(2) - (3)].sval) << std::endl;
-  std::cout <<"oooo:"<< (*sc).specifiers[8] << std::endl;
+ 
+ 
 
 }
     break;
@@ -2228,13 +2228,13 @@ yyreduce:
     {   
       (yyval.barrayval)[4] = true;
     }
-  std::cout<<"this should be 11-> "<<(yyval.barrayval)[0]<<(yyval.barrayval)[8]<<std::endl;
+ 
 }
     break;
 
   case 20:
 #line 188 "test_c_grammar.y"
-    {std::cout<<"YO TS HERE!\n";
+    {
   if((yyvsp[(1) - (1)].sval) == "VOID")
     {
       (yyval.barrayval)[5] = true;
@@ -2525,11 +2525,6 @@ yyreduce:
     {declMode = false;}
     break;
 
-  case 73:
-#line 433 "test_c_grammar.y"
-    {std::cout << "id at dec =>" << (yyvsp[(1) - (1)].sval) <<std::endl;}
-    break;
-
   case 74:
 #line 434 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(2) - (2)].sval);}
@@ -2537,7 +2532,7 @@ yyreduce:
 
   case 75:
 #line 439 "test_c_grammar.y"
-    {(yyval.sval) = (yyvsp[(1) - (1)].sval); std::cout << "id at dd =>" << (yyvsp[(1) - (1)].sval) <<std::endl;}
+    {(yyval.sval) = (yyvsp[(1) - (1)].sval);}
     break;
 
   case 76:
@@ -2567,7 +2562,7 @@ yyreduce:
 
   case 81:
 #line 444 "test_c_grammar.y"
-    {(yyval.sval) = (yyvsp[(1) - (5)].sval);std::cout<<"I think I should push";}
+    {(yyval.sval) = (yyvsp[(1) - (5)].sval);}
     break;
 
   case 82:
@@ -2637,7 +2632,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 2641 "y.tab.c"
+#line 2636 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);

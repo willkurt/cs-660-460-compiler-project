@@ -118,8 +118,8 @@ declaration
     {
       (*sc).specifiers = &$1[0];
     }
-  std::cout << $2 << std::endl;
-  std::cout <<"oooo:"<< (*sc).specifiers[8] << std::endl;
+ 
+ 
 
 }
 	;
@@ -182,10 +182,10 @@ declaration_specifiers
     {   
       $$[4] = true;
     }
-  std::cout<<"this should be 11-> "<<$$[0]<<$$[8]<<std::endl;
+ 
 }
 | type_specifier
-{std::cout<<"YO TS HERE!\n";
+{
   if($1 == "VOID")
     {
       $$[5] = true;
@@ -430,18 +430,18 @@ enumerator
 
 //for this second, not worried about pointers.. figure out later
 declarator
-	: direct_declarator {std::cout << "id at dec =>" << $1 <<std::endl;}
+	: direct_declarator 
 	| pointer direct_declarator {$$ = $2;}
 	;
 
 //for now I'm just passing up the id string
 direct_declarator
-: identifier {$$ = $1; std::cout << "id at dd =>" << $1 <<std::endl;}
+: identifier {$$ = $1;} 
 | '(' declarator ')' {$$ = $2;}//not quite sure what this is for
 	| direct_declarator '[' ']' {$$ = $1;}
 | direct_declarator '[' constant_expression ']' {$$ = $1;}
 | direct_declarator '('')' {$$ = $1;st.push();}//though empty all funcs wil pop 2x
-| direct_declarator '('{st.push();} parameter_type_list ')' {$$ = $1;std::cout<<"I think I should push";}
+| direct_declarator '('{st.push();} parameter_type_list ')' {$$ = $1;}
 | direct_declarator '(' identifier_list ')' {$$ = $1;}
 	;
 

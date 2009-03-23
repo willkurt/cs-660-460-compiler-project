@@ -1229,7 +1229,7 @@ currentCharDepth += yyleng;return (OR_ASSIGN);}
 case 57:
 YY_RULE_SETUP
 #line 152 "new_c_grammar.lex"
-{std::cout<<declMode;if(lexDebug){lexDebugOut << "';' ";}currentCharDepth += yyleng;return (';'); }
+{if(lexDebug){lexDebugOut << "';' ";}currentCharDepth += yyleng;return (';'); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
@@ -1400,7 +1400,6 @@ YY_RULE_SETUP
       {
 	st.update(yytext,sc);
       }
-    std::cout << "I'm added!!!"<<std::endl;
   }
   if(lexDebug){lexDebugOut << "IDENTIFIER("<<yylval.sval<<")";}
   currentCharDepth += yyleng;return (IDENTIFIER); }
@@ -1408,16 +1407,16 @@ YY_RULE_SETUP
 /*All else would be an error-note error token not working*/
 case 86:
 YY_RULE_SETUP
-#line 221 "new_c_grammar.lex"
+#line 220 "new_c_grammar.lex"
 {}
 	YY_BREAK
 /*I have no idea if this works*/
 case 87:
 YY_RULE_SETUP
-#line 226 "new_c_grammar.lex"
+#line 225 "new_c_grammar.lex"
 ECHO;
 	YY_BREAK
-#line 1421 "lex.yy.c"
+#line 1420 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2415,7 +2414,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 226 "new_c_grammar.lex"
+#line 225 "new_c_grammar.lex"
 
 
 

@@ -149,7 +149,7 @@ currentCharDepth += yyleng;return (OR_ASSIGN);}
  also, I don't understand all the 'count()'s so
  I'm removing them...*/
 
-";"		{std::cout<<declMode;if(lexDebug){lexDebugOut << "';' ";}currentCharDepth += yyleng;return (';'); }
+";"		{if(lexDebug){lexDebugOut << "';' ";}currentCharDepth += yyleng;return (';'); }
 "{"		{if(lexDebug){lexDebugOut << "'{' ";}currentCharDepth += yyleng;return ('{'); }
 "}"		{if(lexDebug){lexDebugOut << "'}' ";}currentCharDepth += yyleng;return ('}'); }
 ","		{if(lexDebug){lexDebugOut << "',' ";}currentCharDepth += yyleng;return (','); }
@@ -213,7 +213,6 @@ currentCharDepth += yyleng;return (OR_ASSIGN);}
       {
 	st.update(yytext,sc);
       }
-    std::cout << "I'm added!!!"<<std::endl;
   }
   if(lexDebug){lexDebugOut << "IDENTIFIER("<<yylval.sval<<")";}
   currentCharDepth += yyleng;return (IDENTIFIER); }
