@@ -97,7 +97,7 @@ external_declaration
 //I'll rest easier tonight if I can at least get the pushing and popping right
 function_definition
 : declarator {st.push();} compound_statement {st.pop();st.pop();}
-| declarator declaration_list {st.push();} compound_statement {st.pop();st.pop();}
+| declarator declaration_list {st.push();} compound_statement {st.pop();}
 | declaration_specifiers declarator {st.push();} compound_statement {st.pop();st.pop();}
 | declaration_specifiers declarator declaration_list {st.push();}compound_statement {st.pop();st.pop();}
 	;
@@ -514,7 +514,7 @@ direct_abstract_declarator
 
 statement
 	: labeled_statement
-	| compound_statement
+	| {st.push();}compound_statement {st.pop();}
 	| expression_statement
 	| selection_statement
 	| iteration_statement
