@@ -202,7 +202,8 @@ currentCharDepth += yyleng;return (OR_ASSIGN);}
     sc.lineno = lineCount;
     if(st.shadowing(yytext))
       {
-	std::cout<<"warning: "<<yytext<<" is shadowing an earlier declaration"<<std::endl;
+	SymbolContent* shadowsc = st.searchAll(yytext);
+	std::cout<<"warning: "<<yytext<<" is shadowing an earlier declaration at line: "<<(*shadowsc).lineno<<std::endl;
       }
     /*actually I might want to call an error, but for now this is allowed*/
     if(!st.add(yytext,sc))

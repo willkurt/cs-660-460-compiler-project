@@ -1389,7 +1389,8 @@ YY_RULE_SETUP
     sc.lineno = lineCount;
     if(st.shadowing(yytext))
       {
-	std::cout<<"warning: "<<yytext<<" is shadowing an earlier declaration"<<std::endl;
+	SymbolContent* shadowsc = st.searchAll(yytext);
+	std::cout<<"warning: "<<yytext<<" is shadowing an earlier declaration at line: "<<(*shadowsc).lineno<<std::endl;
       }
     /*actually I might want to call an error, but for now this is allowed*/
     if(!st.add(yytext,sc))
@@ -1407,16 +1408,16 @@ YY_RULE_SETUP
 /*All else would be an error-note error token not working*/
 case 86:
 YY_RULE_SETUP
-#line 220 "new_c_grammar.lex"
+#line 221 "new_c_grammar.lex"
 {}
 	YY_BREAK
 /*I have no idea if this works*/
 case 87:
 YY_RULE_SETUP
-#line 225 "new_c_grammar.lex"
+#line 226 "new_c_grammar.lex"
 ECHO;
 	YY_BREAK
-#line 1420 "lex.yy.c"
+#line 1421 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2414,7 +2415,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 225 "new_c_grammar.lex"
+#line 226 "new_c_grammar.lex"
 
 
 
