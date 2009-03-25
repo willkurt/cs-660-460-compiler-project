@@ -13,10 +13,7 @@
 #include "symbol_content.hpp"
 
 class SymbolTable{
-  std::stack<std::map<std::string, SymbolContent> > st;
-
-  
-  //used for const references to the actual top
+  std::stack<std::map<std::string, SymbolContent> > st;  
   // stack.top() should be used for mutable access
 public:
 

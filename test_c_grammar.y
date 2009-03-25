@@ -79,7 +79,7 @@ extern bool declMode;
 %type <sval> init_declarator init_declarator_list
 %type <sval> declaration declaration_list
 
-%type <barrayval> declaration_specifiers
+%type <ival> declaration_specifiers
 
 %start translation_unit
 %%
@@ -116,7 +116,7 @@ declaration
     }
   else
     {
-      (*sc).specifiers = &$1[0];
+      (*sc).specs = $1;
     }
  
  
@@ -132,55 +132,50 @@ declaration_list
 //these should all singnal that we're indecle mode
 declaration_specifiers
 : storage_class_specifier {
+  int x = 0;
   if($1=="AUTO")
     {
-      $$[0] = true;
+      x |= xAUTO;
     }
   else if($1 == "REGISTER")
     {
-      $$[1] = true;
+      $$ |= xREGISTER;
     }
   else if($1 ==  "STATIC")
     {
-      $$[2] = true;
+      $$ |= xSTATIC;
     }
   else if($1 == "EXTERN")
     {
-      $$[3] = true;
+      $$ |= xEXTERN;
     }
   else if($1 ==  "TYPEDEF")
     {   
-      $$[4] = true;
+      $$ |= xTYPEDEF;
     }
-}
+ }
 | storage_class_specifier declaration_specifiers
 {
-
-  int asize = sizeof($$)/sizeof($$[0]);
-  int i;
-  for(i = 0;i < asize;i++)
-    {
-      $$[i] = $2[i];
-    }
+  $$ = $2;
   if($1=="AUTO")
     {
-      $$[0] = true;
+      $$ |= xAUTO;
     }
   else if($1 == "REGISTER")
     {
-      $$[1] = true;
+      $$ |= xREGISTER;
     }
   else if($1 ==  "STATIC")
     {
-      $$[2] = true;
+      $$ |= xREGISTER;
     }
   else if($1 == "EXTERN")
     {
-      $$[3] = true;
+      $$ |= xEXTERN;
     }
   else if($1 ==  "TYPEDEF")
     {   
-      $$[4] = true;
+      $$ |= xTYPEDEF;
     }
  
 }
@@ -188,145 +183,135 @@ declaration_specifiers
 {
   if($1 == "VOID")
     {
-      $$[5] = true;
+      $$ |= xVOID;
     }
   else if($1 == "CHAR")
     {
-      $$[6] = true;
+      $$ |= xCHAR;
     }
   else if($1 == "SHORT")
     {
-      $$[7] = true;
+      $$ |= xSHORT;
     }
   else if($1 == "INT")
     {
-      $$[8] = true;
-    }
+      $$ |= xINT;
+      }
   else if($1 == "LONG")
     {
-      $$[9] = true;
+      $$ |= xLONG;
     }
   else if($1 == "FLOAT")
     {
-      $$[10] = true;
+      $$ |= xFLOAT;
     }
   else if($1 == "DOUBLE")
     {
-      $$[11] = true;
+      $$ |= xDOUBLE;
     }
   else if($1 == "SIGNED")
     {
-      $$[12] = true;
+      $$  |= xSIGNED;
     }
   else if($1 == "UNSIGNED")
     {
-      $$[13] = true; 
+      $$ |= xUNSIGNED; 
     }
   else if($1 == "STRUCT")
     {
-      $$[14] = true;
+      $$ |= xSTRUCT;
     }
   else if($1 == "UNION" )
     {
-      $$[15] = true;
+      $$ |= xUNION;
     }
   else if($1 ==  "ENUM")
     {
-      $$[16] = true;
+      $$  |= xENUM;
     }
   else if($1 == "TYPEDEF_NAME")
     {
-      $$[17] =  true;
+      $$ |=  xTYPEDEF_NAME;
     }
 }
 | type_specifier declaration_specifiers 
 {
-  int asize = sizeof($$)/sizeof($$[0]);
-  int i;
-  for(i = 0;i < asize;i++)
-    {
-      $$[i] = $2[i];
-    }
+     $$ = $2;
  if($1 == "VOID")
     {
-      $$[5] = true;
+      $$ |= xVOID;
     }
   else if($1 == "CHAR")
     {
-      $$[6] = true;
+      $$ |= xCHAR;
     }
   else if($1 == "SHORT")
     {
-      $$[7] = true;
+      $$ |= xSHORT;
     }
   else if($1 == "INT")
     {
-      $$[8] = true;
+      $$ |= xINT;
     }
   else if($1 == "LONG")
     {
-      $$[9] = true;
+      $$ |= xLONG;
     }
   else if($1 == "FLOAT")
     {
-      $$[10] = true;
+      $$ |= xFLOAT;
     }
   else if($1 == "DOUBLE")
     {
-      $$[11] = true;
+      $$ |= xDOUBLE;
     }
   else if($1 == "SIGNED")
     {
-      $$[12] = true;
+      $$  |= xSIGNED;
     }
   else if($1 == "UNSIGNED")
     {
-      $$[13] = true; 
+      $$ |= xUNSIGNED; 
     }
   else if($1 == "STRUCT")
     {
-      $$[14] = true;
+      $$ |= xSTRUCT;
     }
   else if($1 == "UNION" )
     {
-      $$[15] = true;
+      $$ |= xUNION;
     }
   else if($1 ==  "ENUM")
     {
-      $$[16] = true;
+      $$  |= xENUM;
     }
   else if($1 == "TYPEDEF_NAME")
     {
-      $$[17] =  true;
+      $$ |=  xTYPEDEF_NAME;
     }
 }
 | type_qualifier
 {
   if($1 == "CONST")
     {
-      $$[18] = true;
+      $$ = xCONST;
     }
   else if($1 == "VOLATILE")
     {
-      $$[19] = true;
+      $$ = xVOLATILE;
     }
 
 }
 | type_qualifier declaration_specifiers
 {
-  int asize = sizeof($$)/sizeof($$[0]);
-  int i;
-  for(i = 0;i < asize;i++)
+  $$ = $2;
+  if($1 == "CONST")
     {
-      $$[i] = $2[i];
-    }
- if($1 == "CONST")
-    {
-      $$[18] = true;
+      $$  |= xCONST;
     }
   else if($1 == "VOLATILE")
     {
-      $$[19] = true;
+      $$ |= xVOLATILE;
     }
 
 }

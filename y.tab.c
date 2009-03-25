@@ -667,29 +667,29 @@ static const yytype_int16 yyrhs[] =
 static const yytype_uint16 yyrline[] =
 {
        0,    88,    88,    89,    93,    94,    99,    99,   100,   100,
-     101,   101,   102,   102,   107,   109,   128,   129,   134,   156,
-     187,   242,   303,   315,   336,   337,   338,   339,   340,   344,
-     345,   346,   347,   348,   349,   350,   351,   352,   354,   355,
-     356,   360,   361,   365,   366,   367,   371,   372,   376,   377,
-     382,   383,   388,   389,   389,   393,   397,   398,   399,   400,
-     404,   405,   409,   410,   411,   415,   416,   417,   421,   422,
-     426,   427,   427,   433,   434,   439,   440,   441,   442,   443,
-     444,   444,   445,   449,   450,   451,   452,   456,   457,   461,
-     462,   466,   467,   471,   472,   473,   477,   478,   482,   483,
-     484,   488,   489,   493,   494,   498,   499,   500,   504,   505,
-     506,   507,   508,   509,   510,   511,   512,   516,   517,   517,
-     518,   519,   520,   521,   525,   526,   527,   531,   532,   536,
-     537,   538,   539,   543,   544,   548,   549,   550,   554,   555,
-     556,   557,   558,   559,   560,   561,   562,   563,   567,   568,
-     569,   570,   571,   575,   576,   580,   581,   586,   587,   588,
-     589,   590,   591,   592,   593,   594,   595,   596,   600,   601,
-     605,   609,   610,   614,   615,   619,   620,   624,   625,   629,
-     630,   634,   635,   636,   640,   641,   642,   643,   644,   648,
-     649,   650,   654,   655,   656,   660,   661,   662,   663,   667,
-     668,   672,   673,   674,   675,   676,   677,   681,   682,   683,
-     684,   685,   686,   690,   691,   692,   693,   694,   695,   696,
-     697,   701,   702,   703,   704,   708,   709,   713,   714,   715,
-     716,   720,   724
+     101,   101,   102,   102,   107,   109,   128,   129,   134,   157,
+     182,   237,   293,   305,   321,   322,   323,   324,   325,   329,
+     330,   331,   332,   333,   334,   335,   336,   337,   339,   340,
+     341,   345,   346,   350,   351,   352,   356,   357,   361,   362,
+     367,   368,   373,   374,   374,   378,   382,   383,   384,   385,
+     389,   390,   394,   395,   396,   400,   401,   402,   406,   407,
+     411,   412,   412,   418,   419,   424,   425,   426,   427,   428,
+     429,   429,   430,   434,   435,   436,   437,   441,   442,   446,
+     447,   451,   452,   456,   457,   458,   462,   463,   467,   468,
+     469,   473,   474,   478,   479,   483,   484,   485,   489,   490,
+     491,   492,   493,   494,   495,   496,   497,   501,   502,   502,
+     503,   504,   505,   506,   510,   511,   512,   516,   517,   521,
+     522,   523,   524,   528,   529,   533,   534,   535,   539,   540,
+     541,   542,   543,   544,   545,   546,   547,   548,   552,   553,
+     554,   555,   556,   560,   561,   565,   566,   571,   572,   573,
+     574,   575,   576,   577,   578,   579,   580,   581,   585,   586,
+     590,   594,   595,   599,   600,   604,   605,   609,   610,   614,
+     615,   619,   620,   621,   625,   626,   627,   628,   629,   633,
+     634,   635,   639,   640,   641,   645,   646,   647,   648,   652,
+     653,   657,   658,   659,   660,   661,   662,   666,   667,   668,
+     669,   670,   671,   675,   676,   677,   678,   679,   680,   681,
+     682,   686,   687,   688,   689,   693,   694,   698,   699,   700,
+     701,   705,   709
 };
 #endif
 
@@ -2159,7 +2159,7 @@ yyreduce:
     }
   else
     {
-      (*sc).specifiers = &(yyvsp[(1) - (3)].barrayval)[0];
+      (*sc).specs = (yyvsp[(1) - (3)].ival);
     }
  
  
@@ -2175,474 +2175,459 @@ yyreduce:
   case 18:
 #line 134 "test_c_grammar.y"
     {
+  int x = 0;
   if((yyvsp[(1) - (1)].sval)=="AUTO")
     {
-      (yyval.barrayval)[0] = true;
+      x |= xAUTO;
     }
   else if((yyvsp[(1) - (1)].sval) == "REGISTER")
     {
-      (yyval.barrayval)[1] = true;
+      (yyval.ival) |= xREGISTER;
     }
   else if((yyvsp[(1) - (1)].sval) ==  "STATIC")
     {
-      (yyval.barrayval)[2] = true;
+      (yyval.ival) |= xSTATIC;
     }
   else if((yyvsp[(1) - (1)].sval) == "EXTERN")
     {
-      (yyval.barrayval)[3] = true;
+      (yyval.ival) |= xEXTERN;
     }
   else if((yyvsp[(1) - (1)].sval) ==  "TYPEDEF")
     {   
-      (yyval.barrayval)[4] = true;
+      (yyval.ival) |= xTYPEDEF;
     }
-}
+ }
     break;
 
   case 19:
-#line 157 "test_c_grammar.y"
+#line 158 "test_c_grammar.y"
     {
-
-  int asize = sizeof((yyval.barrayval))/sizeof((yyval.barrayval)[0]);
-  int i;
-  for(i = 0;i < asize;i++)
-    {
-      (yyval.barrayval)[i] = (yyvsp[(2) - (2)].barrayval)[i];
-    }
+  (yyval.ival) = (yyvsp[(2) - (2)].ival);
   if((yyvsp[(1) - (2)].sval)=="AUTO")
     {
-      (yyval.barrayval)[0] = true;
+      (yyval.ival) |= xAUTO;
     }
   else if((yyvsp[(1) - (2)].sval) == "REGISTER")
     {
-      (yyval.barrayval)[1] = true;
+      (yyval.ival) |= xREGISTER;
     }
   else if((yyvsp[(1) - (2)].sval) ==  "STATIC")
     {
-      (yyval.barrayval)[2] = true;
+      (yyval.ival) |= xREGISTER;
     }
   else if((yyvsp[(1) - (2)].sval) == "EXTERN")
     {
-      (yyval.barrayval)[3] = true;
+      (yyval.ival) |= xEXTERN;
     }
   else if((yyvsp[(1) - (2)].sval) ==  "TYPEDEF")
     {   
-      (yyval.barrayval)[4] = true;
+      (yyval.ival) |= xTYPEDEF;
     }
  
 }
     break;
 
   case 20:
-#line 188 "test_c_grammar.y"
+#line 183 "test_c_grammar.y"
     {
   if((yyvsp[(1) - (1)].sval) == "VOID")
     {
-      (yyval.barrayval)[5] = true;
+      (yyval.ival) |= xVOID;
     }
   else if((yyvsp[(1) - (1)].sval) == "CHAR")
     {
-      (yyval.barrayval)[6] = true;
+      (yyval.ival) |= xCHAR;
     }
   else if((yyvsp[(1) - (1)].sval) == "SHORT")
     {
-      (yyval.barrayval)[7] = true;
+      (yyval.ival) |= xSHORT;
     }
   else if((yyvsp[(1) - (1)].sval) == "INT")
     {
-      (yyval.barrayval)[8] = true;
-    }
+      (yyval.ival) |= xINT;
+      }
   else if((yyvsp[(1) - (1)].sval) == "LONG")
     {
-      (yyval.barrayval)[9] = true;
+      (yyval.ival) |= xLONG;
     }
   else if((yyvsp[(1) - (1)].sval) == "FLOAT")
     {
-      (yyval.barrayval)[10] = true;
+      (yyval.ival) |= xFLOAT;
     }
   else if((yyvsp[(1) - (1)].sval) == "DOUBLE")
     {
-      (yyval.barrayval)[11] = true;
+      (yyval.ival) |= xDOUBLE;
     }
   else if((yyvsp[(1) - (1)].sval) == "SIGNED")
     {
-      (yyval.barrayval)[12] = true;
+      (yyval.ival)  |= xSIGNED;
     }
   else if((yyvsp[(1) - (1)].sval) == "UNSIGNED")
     {
-      (yyval.barrayval)[13] = true; 
+      (yyval.ival) |= xUNSIGNED; 
     }
   else if((yyvsp[(1) - (1)].sval) == "STRUCT")
     {
-      (yyval.barrayval)[14] = true;
+      (yyval.ival) |= xSTRUCT;
     }
   else if((yyvsp[(1) - (1)].sval) == "UNION" )
     {
-      (yyval.barrayval)[15] = true;
+      (yyval.ival) |= xUNION;
     }
   else if((yyvsp[(1) - (1)].sval) ==  "ENUM")
     {
-      (yyval.barrayval)[16] = true;
+      (yyval.ival)  |= xENUM;
     }
   else if((yyvsp[(1) - (1)].sval) == "TYPEDEF_NAME")
     {
-      (yyval.barrayval)[17] =  true;
+      (yyval.ival) |=  xTYPEDEF_NAME;
     }
 }
     break;
 
   case 21:
-#line 243 "test_c_grammar.y"
+#line 238 "test_c_grammar.y"
     {
-  int asize = sizeof((yyval.barrayval))/sizeof((yyval.barrayval)[0]);
-  int i;
-  for(i = 0;i < asize;i++)
-    {
-      (yyval.barrayval)[i] = (yyvsp[(2) - (2)].barrayval)[i];
-    }
+     (yyval.ival) = (yyvsp[(2) - (2)].ival);
  if((yyvsp[(1) - (2)].sval) == "VOID")
     {
-      (yyval.barrayval)[5] = true;
+      (yyval.ival) |= xVOID;
     }
   else if((yyvsp[(1) - (2)].sval) == "CHAR")
     {
-      (yyval.barrayval)[6] = true;
+      (yyval.ival) |= xCHAR;
     }
   else if((yyvsp[(1) - (2)].sval) == "SHORT")
     {
-      (yyval.barrayval)[7] = true;
+      (yyval.ival) |= xSHORT;
     }
   else if((yyvsp[(1) - (2)].sval) == "INT")
     {
-      (yyval.barrayval)[8] = true;
+      (yyval.ival) |= xINT;
     }
   else if((yyvsp[(1) - (2)].sval) == "LONG")
     {
-      (yyval.barrayval)[9] = true;
+      (yyval.ival) |= xLONG;
     }
   else if((yyvsp[(1) - (2)].sval) == "FLOAT")
     {
-      (yyval.barrayval)[10] = true;
+      (yyval.ival) |= xFLOAT;
     }
   else if((yyvsp[(1) - (2)].sval) == "DOUBLE")
     {
-      (yyval.barrayval)[11] = true;
+      (yyval.ival) |= xDOUBLE;
     }
   else if((yyvsp[(1) - (2)].sval) == "SIGNED")
     {
-      (yyval.barrayval)[12] = true;
+      (yyval.ival)  |= xSIGNED;
     }
   else if((yyvsp[(1) - (2)].sval) == "UNSIGNED")
     {
-      (yyval.barrayval)[13] = true; 
+      (yyval.ival) |= xUNSIGNED; 
     }
   else if((yyvsp[(1) - (2)].sval) == "STRUCT")
     {
-      (yyval.barrayval)[14] = true;
+      (yyval.ival) |= xSTRUCT;
     }
   else if((yyvsp[(1) - (2)].sval) == "UNION" )
     {
-      (yyval.barrayval)[15] = true;
+      (yyval.ival) |= xUNION;
     }
   else if((yyvsp[(1) - (2)].sval) ==  "ENUM")
     {
-      (yyval.barrayval)[16] = true;
+      (yyval.ival)  |= xENUM;
     }
   else if((yyvsp[(1) - (2)].sval) == "TYPEDEF_NAME")
     {
-      (yyval.barrayval)[17] =  true;
+      (yyval.ival) |=  xTYPEDEF_NAME;
     }
 }
     break;
 
   case 22:
-#line 304 "test_c_grammar.y"
+#line 294 "test_c_grammar.y"
     {
   if((yyvsp[(1) - (1)].sval) == "CONST")
     {
-      (yyval.barrayval)[18] = true;
+      (yyval.ival) = xCONST;
     }
   else if((yyvsp[(1) - (1)].sval) == "VOLATILE")
     {
-      (yyval.barrayval)[19] = true;
+      (yyval.ival) = xVOLATILE;
     }
 
 }
     break;
 
   case 23:
-#line 316 "test_c_grammar.y"
+#line 306 "test_c_grammar.y"
     {
-  int asize = sizeof((yyval.barrayval))/sizeof((yyval.barrayval)[0]);
-  int i;
-  for(i = 0;i < asize;i++)
+  (yyval.ival) = (yyvsp[(2) - (2)].ival);
+  if((yyvsp[(1) - (2)].sval) == "CONST")
     {
-      (yyval.barrayval)[i] = (yyvsp[(2) - (2)].barrayval)[i];
-    }
- if((yyvsp[(1) - (2)].sval) == "CONST")
-    {
-      (yyval.barrayval)[18] = true;
+      (yyval.ival)  |= xCONST;
     }
   else if((yyvsp[(1) - (2)].sval) == "VOLATILE")
     {
-      (yyval.barrayval)[19] = true;
+      (yyval.ival) |= xVOLATILE;
     }
 
 }
     break;
 
   case 24:
-#line 336 "test_c_grammar.y"
+#line 321 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "AUTO";}
     break;
 
   case 25:
-#line 337 "test_c_grammar.y"
+#line 322 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "REGISTER";}
     break;
 
   case 26:
-#line 338 "test_c_grammar.y"
+#line 323 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "STATIC";}
     break;
 
   case 27:
-#line 339 "test_c_grammar.y"
+#line 324 "test_c_grammar.y"
     {declMode = true;(yyval.sval) = "EXTERN";}
     break;
 
   case 28:
-#line 340 "test_c_grammar.y"
+#line 325 "test_c_grammar.y"
     {declMode = true;(yyval.sval) = "TYPEDEF";}
     break;
 
   case 29:
-#line 344 "test_c_grammar.y"
+#line 329 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "VOID";}
     break;
 
   case 30:
-#line 345 "test_c_grammar.y"
+#line 330 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "CHAR";}
     break;
 
   case 31:
-#line 346 "test_c_grammar.y"
+#line 331 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "SHORT";}
     break;
 
   case 32:
-#line 347 "test_c_grammar.y"
+#line 332 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "INT";}
     break;
 
   case 33:
-#line 348 "test_c_grammar.y"
+#line 333 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "LONG";}
     break;
 
   case 34:
-#line 349 "test_c_grammar.y"
+#line 334 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "FLOAT";}
     break;
 
   case 35:
-#line 350 "test_c_grammar.y"
+#line 335 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "DOUBLE";}
     break;
 
   case 36:
-#line 351 "test_c_grammar.y"
+#line 336 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "SIGNED";}
     break;
 
   case 37:
-#line 352 "test_c_grammar.y"
+#line 337 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "UNSIGNED";}
     break;
 
   case 38:
-#line 354 "test_c_grammar.y"
+#line 339 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "NEED TO FIGURE OUT";}
     break;
 
   case 39:
-#line 355 "test_c_grammar.y"
+#line 340 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "Same!";}
     break;
 
   case 40:
-#line 356 "test_c_grammar.y"
+#line 341 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "TYPEDEF_NAME";}
     break;
 
   case 41:
-#line 360 "test_c_grammar.y"
+#line 345 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "CONST";}
     break;
 
   case 42:
-#line 361 "test_c_grammar.y"
+#line 346 "test_c_grammar.y"
     {declMode = true; (yyval.sval) = "VOLATILE";}
     break;
 
   case 46:
-#line 371 "test_c_grammar.y"
+#line 356 "test_c_grammar.y"
     {(yyval.sval) = "STRUCT";}
     break;
 
   case 47:
-#line 372 "test_c_grammar.y"
+#line 357 "test_c_grammar.y"
     {(yyval.sval) = "UNION";}
     break;
 
   case 50:
-#line 382 "test_c_grammar.y"
+#line 367 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (1)].sval);}
     break;
 
   case 51:
-#line 383 "test_c_grammar.y"
+#line 368 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(3) - (3)].sval);}
     break;
 
   case 52:
-#line 388 "test_c_grammar.y"
+#line 373 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (1)].sval) ;}
     break;
 
   case 53:
-#line 389 "test_c_grammar.y"
+#line 374 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 54:
-#line 389 "test_c_grammar.y"
+#line 374 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (4)].sval);}
     break;
 
   case 71:
-#line 427 "test_c_grammar.y"
+#line 412 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 74:
-#line 434 "test_c_grammar.y"
+#line 419 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(2) - (2)].sval);}
     break;
 
   case 75:
-#line 439 "test_c_grammar.y"
+#line 424 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (1)].sval);}
     break;
 
   case 76:
-#line 440 "test_c_grammar.y"
+#line 425 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(2) - (3)].sval);}
     break;
 
   case 77:
-#line 441 "test_c_grammar.y"
+#line 426 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (3)].sval);}
     break;
 
   case 78:
-#line 442 "test_c_grammar.y"
+#line 427 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (4)].sval);}
     break;
 
   case 79:
-#line 443 "test_c_grammar.y"
+#line 428 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (3)].sval);st.push();}
     break;
 
   case 80:
-#line 444 "test_c_grammar.y"
+#line 429 "test_c_grammar.y"
     {st.push();}
     break;
 
   case 81:
-#line 444 "test_c_grammar.y"
+#line 429 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (5)].sval);}
     break;
 
   case 82:
-#line 445 "test_c_grammar.y"
+#line 430 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (4)].sval);}
     break;
 
   case 118:
-#line 517 "test_c_grammar.y"
+#line 502 "test_c_grammar.y"
     {st.push();}
     break;
 
   case 119:
-#line 517 "test_c_grammar.y"
+#line 502 "test_c_grammar.y"
     {st.pop();}
     break;
 
   case 157:
-#line 586 "test_c_grammar.y"
+#line 571 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 158:
-#line 587 "test_c_grammar.y"
+#line 572 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 159:
-#line 588 "test_c_grammar.y"
+#line 573 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 160:
-#line 589 "test_c_grammar.y"
+#line 574 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 161:
-#line 590 "test_c_grammar.y"
+#line 575 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 162:
-#line 591 "test_c_grammar.y"
+#line 576 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 163:
-#line 592 "test_c_grammar.y"
+#line 577 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 164:
-#line 593 "test_c_grammar.y"
+#line 578 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 165:
-#line 594 "test_c_grammar.y"
+#line 579 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 166:
-#line 595 "test_c_grammar.y"
+#line 580 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 167:
-#line 596 "test_c_grammar.y"
+#line 581 "test_c_grammar.y"
     {declMode = false;}
     break;
 
   case 232:
-#line 724 "test_c_grammar.y"
+#line 709 "test_c_grammar.y"
     {(yyval.sval) = (yyvsp[(1) - (1)].sval);}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2646 "y.tab.c"
+#line 2631 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2856,7 +2841,7 @@ yyreturn:
 }
 
 
-#line 726 "test_c_grammar.y"
+#line 711 "test_c_grammar.y"
 
 
 #include <stdio.h>

@@ -196,8 +196,9 @@ currentCharDepth += yyleng;return (OR_ASSIGN);}
   currentCharDepth += yyleng;return (STRING_LITERAL); }
 
 
-{id}            {yylval.sval = strdup(yytext);
-  if(declMode){
+{id}            {  
+yylval.sval = strdup(yytext);
+if(declMode){
     SymbolContent sc;
     sc.lineno = lineCount;
     if(st.shadowing(yytext))
@@ -216,7 +217,8 @@ currentCharDepth += yyleng;return (OR_ASSIGN);}
       }
   }
   if(lexDebug){lexDebugOut << "IDENTIFIER("<<yylval.sval<<")";}
-  currentCharDepth += yyleng;return (IDENTIFIER); }
+  currentCharDepth += yyleng;return (IDENTIFIER); 
+}
  /*All else would be an error-note error token not working*/
 .		{}
 

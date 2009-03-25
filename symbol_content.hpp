@@ -10,43 +10,16 @@
 
 /*these are all def'd else where hence the need for an x*/
 //storage
-#define xAUTO = 01
-#define xREGISTER = 02
-#define xSTATIC = 04
-#define xEXTERN = 16
-#define xTYPEDEF = 32
-//Types 
-#define xVOID = 64
-#define xCHAR = 128 
-#define xSHORT = 256
-#define xINT = 512
-#define xLONG = 1024
-#define xFLOAT = 2048
-#define xDOUBLE = 4096
-#define xSIGNED = 8192
-#define xUNSIGNED = 16384
-#define xSTRUCT = 32768
-#define xUNION = 65536
-#define xENUM = 131072
-#define xTYPEDEF_NAME = 262144
-     //type qualifiers
-#define xCONST = 524288
-#define xVOLATILE = 1048576
-//other posibilies
-#define xPOINTER = 2097152
-#define xFUNCTION = 4194304
+enum specDefs {xAUTO = 01,xREGISTER = 02, xSTATIC = 04,xEXTERN = 16,
+	      xTYPEDEF = 32,xVOID = 64,xCHAR = 128, xSHORT = 256,
+	      xINT = 512,xLONG = 1024,xFLOAT = 2048,xDOUBLE = 4096,
+	      xSIGNED = 8192, xUNSIGNED = 16384,xSTRUCT = 32768,
+	      xUNION = 65536, xENUM = 131072,xTYPEDEF_NAME = 262144,
+	      xCONST = 524288,xVOLATILE = 1048576,xPOINTER = 2097152,
+	       xFUNCTION = 4194304,xARRAY = 8388608};
 
 struct SymbolContent
 {
-  /*
-   *
-   */
-  
-  //this bool array will change to a bit field
-  bool *specifiers;
-  
-  //bit field
-
   int specs;
   int lineno;
 };

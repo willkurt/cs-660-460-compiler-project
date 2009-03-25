@@ -6,6 +6,7 @@
 #define C_GRAMMAR_H
 #include <stdio.h>
 #include "SymbolTable.hpp"
+#include "symbol_content.hpp"
 #include <fstream>
 
 

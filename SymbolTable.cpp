@@ -11,6 +11,7 @@ bool SymbolTable::add(std::string k, SymbolContent v)
 {
   //current map
   std::map<std::string,SymbolContent> currentMap = st.top();
+
   //if the key(k) is found before the end...
   if(currentMap.find(k) != currentMap.end())
     {
@@ -19,6 +20,7 @@ bool SymbolTable::add(std::string k, SymbolContent v)
     }
   else
     {
+       currentMap["socks"] = v; 
       //otherwise we can go ahead and set the value(v)
       currentMap[k] = v;
       st.pop();
@@ -160,7 +162,7 @@ void SymbolTable::outputToFile()
 	outFile << "-----------\n";
 	for(mapIter = current.begin(); mapIter != current.end(); mapIter++)
 	  {
-	    outFile << "Symbol: " << mapIter->first << " lineno: " << mapIter->second.lineno <<"specifiers: "<<mapIter->second.specifiers<<std::endl;
+	    outFile << "Symbol: " << mapIter->first << " lineno: " << mapIter->second.lineno <<"specifiers: "<<std::endl;
 	  }
 	outFile << "\n";
 
