@@ -19,8 +19,7 @@ bool SymbolTable::add(std::string k, SymbolContent v)
       return false;
     }
   else
-    {
-       currentMap["socks"] = v; 
+    { 
       //otherwise we can go ahead and set the value(v)
       currentMap[k] = v;
       st.pop();

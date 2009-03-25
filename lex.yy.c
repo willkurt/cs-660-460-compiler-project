@@ -1388,6 +1388,7 @@ yylval.sval = strdup(yytext);
 if(declMode){
     SymbolContent sc;
     sc.lineno = lineCount;
+    sc.specs = 0;
     if(st.shadowing(yytext))
       {
 	SymbolContent* shadowsc = st.searchAll(yytext);
@@ -1410,16 +1411,16 @@ if(declMode){
 /*All else would be an error-note error token not working*/
 case 86:
 YY_RULE_SETUP
-#line 223 "new_c_grammar.lex"
+#line 224 "new_c_grammar.lex"
 {}
 	YY_BREAK
 /*I have no idea if this works*/
 case 87:
 YY_RULE_SETUP
-#line 228 "new_c_grammar.lex"
+#line 229 "new_c_grammar.lex"
 ECHO;
 	YY_BREAK
-#line 1423 "lex.yy.c"
+#line 1424 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2417,7 +2418,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 228 "new_c_grammar.lex"
+#line 229 "new_c_grammar.lex"
 
 
 

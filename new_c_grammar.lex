@@ -201,6 +201,7 @@ yylval.sval = strdup(yytext);
 if(declMode){
     SymbolContent sc;
     sc.lineno = lineCount;
+    sc.specs = 0;
     if(st.shadowing(yytext))
       {
 	SymbolContent* shadowsc = st.searchAll(yytext);
