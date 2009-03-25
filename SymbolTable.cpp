@@ -162,7 +162,7 @@ void SymbolTable::outputToFile()
 	outFile << "-----------\n";
 	for(mapIter = current.begin(); mapIter != current.end(); mapIter++)
 	  {
-	    outFile << "Symbol: " << mapIter->first << " lineno: " << mapIter->second.lineno <<"specifiers: "<<std::endl;
+	    outFile << "Symbol: " << mapIter->first << " lineno: " << mapIter->second.lineno <<"specifiers"<<mapIter->second.specs<<": "<<readSpecifiers(mapIter->second.specs)<<std::endl;
 	  }
 	outFile << "\n";
 
@@ -182,94 +182,91 @@ void SymbolTable::outputToFile()
 
 //not quite ready
 //reades the specifications bool array into human readable form
-std::string SymbolTable::readSpecifiers(bool *specs)
+std::string SymbolTable::readSpecifiers(int specs)
 {
   std::string specsReadable;
   specsReadable += "storage: ";
-  if(specs[0])
+  if(specs & xAUTO)
     {
       specsReadable += "auto ";
     }
-  if(specs[1])
+  if(specs & xREGISTER)
     {
       specsReadable += "register ";
     }
-  if(specs[2])
+  if(specs & xSTATIC)
     {
       specsReadable += "static ";
     }
- if(specs[3])
+ if(specs & xEXTERN)
     {
       specsReadable += "extern ";
     }
- if(specs[4])
-    {
-      specsReadable += "type_def ";
-    }
+
  specsReadable += "type: ";
- if(specs[5])
+ if(specs & xVOID)
     {
       specsReadable += "void ";
     }
- if(specs[6])
+ if(specs & xCHAR)
     {
       specsReadable += "char";
     }
- if(specs[7])
+ if(specs & xSHORT)
     {
       specsReadable += "short ";
     }
- if(specs[8])
+ if(specs & xINT)
     {
       specsReadable += "int ";
     }
- if(specs[9])
+ if(specs & xLONG)
     {
       specsReadable += "long ";
     }
- if(specs[10])
+ if(specs & xFLOAT)
     {
       specsReadable += "float ";
     }
- if(specs[11])
+ if(specs & xDOUBLE)
     {
       specsReadable += "double ";
     }
- if(specs[12])
+ if(specs & xSIGNED)
     {
       specsReadable += "signed ";
     }
- if(specs[13])
+ if(specs & xUNSIGNED)
     {
       specsReadable += "unsigned ";
     }
- if(specs[14])
+ if(specs & xSTRUCT)
     {
       specsReadable += "struct ";
     }
 
- if(specs[15])
+ if(specs & xUNION)
     {
       specsReadable += "union ";
     }
 
- if(specs[16])
+ if(specs & xENUM)
     {
       specsReadable += "enum ";
     }
 
- if(specs[17])
+ if(specs & xTYPEDEF_NAME)
     {
       specsReadable += "typedef_name ";
     }
 
  specsReadable += "type-qualifiers: ";
- if(specs[18])
+ if(specs & xCONST)
     {
       specsReadable += "const ";
     }
 
- if(specs[19])
+ if(specs & xVOLATILE)
     {
       specsReadable += "volatile ";
     }

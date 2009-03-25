@@ -116,7 +116,10 @@ declaration
     }
   else
     {
+
       (*sc).specs = $1;
+      int q = $1^$1;
+      std::cout<<q;
     }
  
  
@@ -132,10 +135,9 @@ declaration_list
 //these should all singnal that we're indecle mode
 declaration_specifiers
 : storage_class_specifier {
-  int x = 0;
   if($1=="AUTO")
     {
-      x |= xAUTO;
+      $$ |= xAUTO;
     }
   else if($1 == "REGISTER")
     {

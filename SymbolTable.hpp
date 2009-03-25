@@ -47,7 +47,7 @@ public:
   void pop();
 
   //to interprest symbol content types bool array
-  std::string readSpecifiers(bool* );
+  std::string readSpecifiers(int );
 };
 
 #endif
