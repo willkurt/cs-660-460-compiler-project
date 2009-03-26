@@ -18,34 +18,8 @@ extern bool declMode;
   char* sval;
   float dval;
   int ival;
+  long lval;
   char cval;
-  /* barrayval is for all the possible specifies
-     here is the key:
-     * --storage
-     * 0-AUTO
-     * 1-REGISTER
-     * 2-STATIC
-     * 3-EXTERN
-     * 4-TYPEDEF
-     * --Types
-     * 5-VOID
-     * 6-CHAR
-     * 7-SHORT
-     * 8-INT
-     * 9-LONG
-     *10-FLOAT
-     *11-DOUBLE
-     *12-SIGNED
-     *13-UNSIGNED
-     *14-STRUCT
-     *15-UNION
-     *16-ENUM no idea what I'm doing with this!
-     *17-TYPEDEF_NAME
-     *---type qualifiers
-     *18-CONST
-     *19-VOLATILE
-   */
-  bool barrayval[20];
 
  }
 
@@ -118,8 +92,7 @@ declaration
     {
 
       (*sc).specs = $1;
-      int q = $1^$1;
-      std::cout<<q;
+      std::cout<<$1;
     }
  
  
@@ -183,6 +156,8 @@ declaration_specifiers
 }
 | type_specifier
 {
+  $$ = 0;
+  std::cout<<$$<<std::endl;
   if($1 == "VOID")
     {
       $$ |= xVOID;
@@ -197,7 +172,10 @@ declaration_specifiers
     }
   else if($1 == "INT")
     {
+      std::cout<<"y homes!\n";
+      std::cout<<$$<<std::endl;
       $$ |= xINT;
+      std::cout<<$$<<std::endl;
       }
   else if($1 == "LONG")
     {

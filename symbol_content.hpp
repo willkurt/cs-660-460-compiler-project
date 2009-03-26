@@ -20,7 +20,7 @@ enum specDefs {xAUTO = 01,xREGISTER = 02, xSTATIC = 04,xEXTERN = 16,
 
 struct SymbolContent
 {
-  int specs;
+  unsigned int specs;
   int lineno;
 };
 
