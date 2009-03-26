@@ -87,199 +87,205 @@ function_definition
 declaration
 : declaration_specifiers ';'
 	  //for right now I'm just assuming no list, just a declator
-	| declaration_specifiers init_declarator_list ';' 
+| declaration_specifiers init_declarator_list ';' 
 {
-  std::cout<<(*$1).specs;
-  /*
-   SymbolContent * sc = st.searchAll($2);
-   if(sc == 0)
+  declNode dn = *$2;
+  SymbolContent *sc = st.searchAll((*$2).id);
+  if(sc == 0)
     {
       //make this an error later
       std::cout<<"Warning! trying to use a variable not declared"<<std::endl;
     }
   else
     {
-
-    (*sc).specs = $1;
-    std::cout<<$1;
+      SymbolContent newsc;
+      
+      newsc.specs = dn.specs;
+      newsc.lineno = lineCount;
+      std::cout<<dn.next<<std::endl;
+      st.update((*$2).id,newsc);
     }
- 
-  */
-
-}
+  SymbolContent *sn = st.searchAll((*$2).id);
+ }
 	;
 
 declaration_list
 : declaration {$$ = $1;}
-	| declaration_list declaration
+| declaration_list declaration {
+  declNode dn = *$2;
+  dn.next = $1;
+  $$ = &dn;
+}
 	;
 
 //these should all singnal that we're indecle mode
 declaration_specifiers
 : storage_class_specifier {
-  /*
+  declNode dn;
+  dn.specs = 0;
   if($1=="AUTO")
     {
-      $$ |= xAUTO;
+      dn.specs |= xAUTO;
     }
   else if($1 == "REGISTER")
     {
-      $$ |= xREGISTER;
+      dn.specs |= xREGISTER;
     }
   else if($1 ==  "STATIC")
     {
-      $$ |= xSTATIC;
+      dn.specs |= xSTATIC;
     }
   else if($1 == "EXTERN")
     {
-      $$ |= xEXTERN;
+      dn.specs |= xEXTERN;
     }
   else if($1 ==  "TYPEDEF")
     {   
-      $$ |= xTYPEDEF;
+      dn.specs |= xTYPEDEF;
     }
-  */}
+    $$ = &dn;
+ }
 | storage_class_specifier declaration_specifiers
-{/*
-  $$ = $2;
+{
+  declNode dn = *$2;
   if($1=="AUTO")
     {
-      $$ |= xAUTO;
+      dn.specs |= xAUTO;
     }
   else if($1 == "REGISTER")
     {
-      $$ |= xREGISTER;
+      dn.specs |= xREGISTER;
     }
   else if($1 ==  "STATIC")
     {
-      $$ |= xREGISTER;
+      dn.specs |= xSTATIC;
     }
   else if($1 == "EXTERN")
     {
-      $$ |= xEXTERN;
+      dn.specs |= xEXTERN;
     }
   else if($1 ==  "TYPEDEF")
     {   
-      $$ |= xTYPEDEF;
+      dn.specs |= xTYPEDEF;
     }
- */
+    $$ = &dn;
+ 
 }
 | type_specifier
-{/*
-  $$ = 0;
-  std::cout<<$$<<std::endl;
+{
+  declNode dn;
+  dn.specs = 0;
   if($1 == "VOID")
     {
-      $$ |= xVOID;
+      dn.specs |= xVOID;
     }
   else if($1 == "CHAR")
     {
-      $$ |= xCHAR;
+      dn.specs |= xCHAR;
     }
   else if($1 == "SHORT")
     {
-      $$ |= xSHORT;
+      dn.specs |= xSHORT;
     }
   else if($1 == "INT")
     {
-      std::cout<<"y homes!\n";
-      std::cout<<$$<<std::endl;
-      $$ |= xINT;
-      std::cout<<$$<<std::endl;
+      dn.specs |= xINT;
       }
   else if($1 == "LONG")
     {
-      $$ |= xLONG;
+      dn.specs |= xLONG;
     }
   else if($1 == "FLOAT")
     {
-      $$ |= xFLOAT;
+      dn.specs |= xFLOAT;
     }
   else if($1 == "DOUBLE")
     {
-      $$ |= xDOUBLE;
+      dn.specs |= xDOUBLE;
     }
   else if($1 == "SIGNED")
     {
-      $$  |= xSIGNED;
+      dn.specs  |= xSIGNED;
     }
   else if($1 == "UNSIGNED")
     {
-      $$ |= xUNSIGNED; 
+      dn.specs |= xUNSIGNED; 
     }
   else if($1 == "STRUCT")
     {
-      $$ |= xSTRUCT;
+      dn.specs |= xSTRUCT;
     }
   else if($1 == "UNION" )
     {
-      $$ |= xUNION;
+      dn.specs |= xUNION;
     }
   else if($1 ==  "ENUM")
     {
-      $$  |= xENUM;
+      dn.specs  |= xENUM;
     }
   else if($1 == "TYPEDEF_NAME")
     {
-      $$ |=  xTYPEDEF_NAME;
-      }*/
+      dn.specs |=  xTYPEDEF_NAME;
+      }
+$$=&dn;
 }
 | type_specifier declaration_specifiers 
-{/*
-     $$ = $2;
+{
+     declNode dn = *$2;
  if($1 == "VOID")
     {
-      $$ |= xVOID;
+      dn.specs |= xVOID;
     }
   else if($1 == "CHAR")
     {
-      $$ |= xCHAR;
+      dn.specs |= xCHAR;
     }
   else if($1 == "SHORT")
     {
-      $$ |= xSHORT;
+      dn.specs |= xSHORT;
     }
   else if($1 == "INT")
     {
-      $$ |= xINT;
+      dn.specs |= xINT;
     }
   else if($1 == "LONG")
     {
-      $$ |= xLONG;
+      dn.specs |= xLONG;
     }
   else if($1 == "FLOAT")
     {
-      $$ |= xFLOAT;
+      dn.specs |= xFLOAT;
     }
   else if($1 == "DOUBLE")
     {
-      $$ |= xDOUBLE;
+      dn.specs |= xDOUBLE;
     }
   else if($1 == "SIGNED")
     {
-      $$  |= xSIGNED;
+      dn.specs  |= xSIGNED;
     }
   else if($1 == "UNSIGNED")
     {
-      $$ |= xUNSIGNED; 
+      dn.specs |= xUNSIGNED; 
     }
   else if($1 == "STRUCT")
     {
-      $$ |= xSTRUCT;
+      dn.specs |= xSTRUCT;
     }
   else if($1 == "UNION" )
     {
-      $$ |= xUNION;
+      dn.specs |= xUNION;
     }
   else if($1 ==  "ENUM")
     {
-      $$  |= xENUM;
+      dn.specs  |= xENUM;
     }
   else if($1 == "TYPEDEF_NAME")
     {
-      $$ |=  xTYPEDEF_NAME;
+      dn.specs |=  xTYPEDEF_NAME;
     }
- */}
+ $$ = &dn;
+ }
 | type_qualifier
 {
   declNode dn;
@@ -296,16 +302,16 @@ declaration_specifiers
 }
 | type_qualifier declaration_specifiers
 {
-  /*
-  $$ = $2;
+  declNode dn  = *$2;
   if($1 == "CONST")
     {
-      $$  |= xCONST;
+      dn.specs  |= xCONST;
     }
   else if($1 == "VOLATILE")
     {
-      $$ |= xVOLATILE;
-      }*/
+      dn.specs |= xVOLATILE;
+      }
+  $$ = &dn;
 
 }
 	;
@@ -421,7 +427,9 @@ declarator
 //for now I'm just passing up the id string
 direct_declarator
 : identifier { 
-  $$ = $1;
+  declNode dn = *$1;
+  dn.next = 0;
+  $$ = &dn;
  } 
 | '(' declarator ')' {
   $$ = $2;}//not quite sure what this is for
@@ -483,7 +491,10 @@ parameter_declaration
 	;
 
 identifier_list
-: identifier {$$ = $1;}
+: identifier {
+  declNode dn = *$1;
+  $$ = &dn;
+ }
 | identifier_list ',' identifier
 {
   declNode dn = *$1;

@@ -161,7 +161,8 @@ void SymbolTable::outputToFile()
 	outFile << "-----------\n";
 	for(mapIter = current.begin(); mapIter != current.end(); mapIter++)
 	  {
-	    outFile << "Symbol: " << mapIter->first << " lineno: " << mapIter->second.lineno <<"specifiers"<<mapIter->second.specs<<": "<<readSpecifiers(mapIter->second.specs)<<std::endl;
+	    
+	    outFile << "Symbol: " << mapIter->first << " lineno: " << mapIter->second.lineno <<" specifiers: "<< readSpecifiers(mapIter->second.specs)<<std::endl;
 	  }
 	outFile << "\n";
 
@@ -184,6 +185,18 @@ void SymbolTable::outputToFile()
 std::string SymbolTable::readSpecifiers(int specs)
 {
   std::string specsReadable;
+  if(specs & xFUNCTION)
+    {
+      specsReadable += " function ";
+    }
+  if(specs & xARRAY)
+    {
+      specsReadable += " array ";
+    }
+  if(specs & xPOINTER)
+    {
+      specsReadable += " ptr ";
+    }
   specsReadable += "storage: ";
   if(specs & xAUTO)
     {
