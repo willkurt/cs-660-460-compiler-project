@@ -11,6 +11,13 @@ extern int lineCount;
 /*for declaration or not*/
 extern bool declMode;
 
+struct declNode{
+  char* id;
+  unsigned int specs;
+  int lineno;
+  declNode* next;
+};
+
  %}
 
 %union{
@@ -20,7 +27,7 @@ extern bool declMode;
   int ival;
   long lval;
   char cval;
-
+  struct declNode *declval;
  }
 
 
@@ -46,14 +53,14 @@ extern bool declMode;
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
 
-%type <sval> identifier
+%type <declval> identifier identifier_list
 %type <sval> type_specifier storage_class_specifier
 %type <sval> type_qualifier struct_or_union
-%type <sval> declarator direct_declarator
-%type <sval> init_declarator init_declarator_list
-%type <sval> declaration declaration_list
+%type <declval> declarator direct_declarator
+%type <declval> init_declarator init_declarator_list
+%type <declval> declaration declaration_list
 
-%type <ival> declaration_specifiers
+%type <declval> declaration_specifiers
 
 %start translation_unit
 %%
@@ -82,8 +89,10 @@ declaration
 	  //for right now I'm just assuming no list, just a declator
 	| declaration_specifiers init_declarator_list ';' 
 {
-  SymbolContent * sc = st.searchAll($2);
-  if(sc == 0)
+  std::cout<<(*$1).specs;
+  /*
+   SymbolContent * sc = st.searchAll($2);
+   if(sc == 0)
     {
       //make this an error later
       std::cout<<"Warning! trying to use a variable not declared"<<std::endl;
@@ -91,11 +100,11 @@ declaration
   else
     {
 
-      (*sc).specs = $1;
-      std::cout<<$1;
+    (*sc).specs = $1;
+    std::cout<<$1;
     }
  
- 
+  */
 
 }
 	;
@@ -108,6 +117,7 @@ declaration_list
 //these should all singnal that we're indecle mode
 declaration_specifiers
 : storage_class_specifier {
+  /*
   if($1=="AUTO")
     {
       $$ |= xAUTO;
@@ -128,9 +138,9 @@ declaration_specifiers
     {   
       $$ |= xTYPEDEF;
     }
- }
+  */}
 | storage_class_specifier declaration_specifiers
-{
+{/*
   $$ = $2;
   if($1=="AUTO")
     {
@@ -152,10 +162,10 @@ declaration_specifiers
     {   
       $$ |= xTYPEDEF;
     }
- 
+ */
 }
 | type_specifier
-{
+{/*
   $$ = 0;
   std::cout<<$$<<std::endl;
   if($1 == "VOID")
@@ -212,10 +222,10 @@ declaration_specifiers
   else if($1 == "TYPEDEF_NAME")
     {
       $$ |=  xTYPEDEF_NAME;
-    }
+      }*/
 }
 | type_specifier declaration_specifiers 
-{
+{/*
      $$ = $2;
  if($1 == "VOID")
     {
@@ -269,21 +279,24 @@ declaration_specifiers
     {
       $$ |=  xTYPEDEF_NAME;
     }
-}
+ */}
 | type_qualifier
 {
+  declNode dn;
+  dn.specs = 0;
   if($1 == "CONST")
     {
-      $$ = xCONST;
+      dn.specs |= xCONST;
     }
   else if($1 == "VOLATILE")
     {
-      $$ = xVOLATILE;
+      dn.specs |= xVOLATILE;
     }
-
+  $$ = &dn;
 }
 | type_qualifier declaration_specifiers
 {
+  /*
   $$ = $2;
   if($1 == "CONST")
     {
@@ -292,7 +305,7 @@ declaration_specifiers
   else if($1 == "VOLATILE")
     {
       $$ |= xVOLATILE;
-    }
+      }*/
 
 }
 	;
@@ -326,6 +339,8 @@ type_qualifier
 | VOLATILE {declMode = true; $$ = "VOLATILE";}
 	;
 
+
+//right now we're not worried about this
 struct_or_union_specifier
 	: struct_or_union identifier '{' struct_declaration_list '}'
 	| struct_or_union '{' struct_declaration_list '}'
@@ -395,23 +410,52 @@ enumerator
 
 //for this second, not worried about pointers.. figure out later
 declarator
-	: direct_declarator 
-	| pointer direct_declarator {$$ = $2;}
+: direct_declarator {$$ = $1;}
+| pointer direct_declarator {
+  declNode dn = *$2;
+  dn.specs |= xPOINTER;
+  $$ = &dn;
+ }
 	;
 
 //for now I'm just passing up the id string
 direct_declarator
-: identifier {$$ = $1;} 
-| '(' declarator ')' {$$ = $2;}//not quite sure what this is for
-	| direct_declarator '[' ']' {$$ = $1;}
-| direct_declarator '[' constant_expression ']' {$$ = $1;}
-| direct_declarator '('')' {$$ = $1;st.push();}//though empty all funcs wil pop 2x
-| direct_declarator '('{st.push();} parameter_type_list ')' {$$ = $1;}
-| direct_declarator '(' identifier_list ')' {$$ = $1;}
+: identifier { 
+  $$ = $1;
+ } 
+| '(' declarator ')' {
+  $$ = $2;}//not quite sure what this is for
+//array
+| direct_declarator '[' ']' {
+  declNode dn = *$1;
+  dn.specs |= xARRAY;
+  $$=&dn;}
+//array
+| direct_declarator '[' constant_expression ']' { 
+  declNode dn = *$1;
+  dn.specs |= xARRAY;
+  $$=&dn;}
+| direct_declarator '('')' { 
+  declNode dn = *$1;
+  dn.specs |= xFUNCTION;
+  $$=&dn;
+st.push();}//though empty all funcs wil pop 2x
+| direct_declarator '('{st.push();} parameter_type_list ')' 
+{
+ declNode dn = *$1;
+ dn.specs |= xFUNCTION;
+ $$=&dn;
+}
+| direct_declarator '(' identifier_list ')' 
+{
+  declNode dn = *$1;
+  dn.specs |= xFUNCTION;
+  $$=&dn;
+}
 	;
 
 pointer
-	: '*'
+: '*'
 	| '*' type_qualifier_list
 	| '*' pointer
 	| '*' type_qualifier_list pointer
@@ -439,8 +483,13 @@ parameter_declaration
 	;
 
 identifier_list
-: identifier 
-	| identifier_list ',' identifier
+: identifier {$$ = $1;}
+| identifier_list ',' identifier
+{
+  declNode dn = *$1;
+  dn.next = $3;
+  $$ = &dn;
+}
 	;
 
 initializer
@@ -686,7 +735,11 @@ string
 	;
 
 identifier 
-: IDENTIFIER {$$ = $1;}
+: IDENTIFIER {
+  declNode dn;
+  dn.id = $1;
+  $$ = &dn;
+ }
   ;
 %%
 
