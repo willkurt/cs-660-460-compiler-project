@@ -71,11 +71,10 @@ translation_unit
 	;
 
 external_declaration
-	: function_definition
+: function_definition
 	| declaration
 	;
 
-//I'll rest easier tonight if I can at least get the pushing and popping right
 function_definition
 : declarator {st.push();} compound_statement {st.pop();st.pop();}
 | declarator declaration_list {st.push();} compound_statement {st.pop();}
@@ -84,9 +83,10 @@ function_definition
 	;
 
 
+
 declaration
 : declaration_specifiers ';'
-	  //for right now I'm just assuming no list, just a declator
+  //hmmm..
 | declaration_specifiers init_declarator_list ';' 
 {
   declNode dn = *$2;
@@ -102,7 +102,6 @@ declaration
       
       newsc.specs = dn.specs;
       newsc.lineno = lineCount;
-      std::cout<<dn.next<<std::endl;
       st.update((*$2).id,newsc);
     }
   SymbolContent *sn = st.searchAll((*$2).id);
@@ -365,8 +364,13 @@ struct_declaration_list
 
 //I'll worry about lists of declators later
 init_declarator_list
-: init_declarator {$$ = $1;}
-| init_declarator_list ',' init_declarator {$$ = $3;}
+: init_declarator {$$ = $1;
+  }
+| init_declarator_list ',' init_declarator {
+  //to do!
+  
+  std::cout <<(*$1).id<<"->"<< (*$3).id <<std::endl;
+  }
 	;
 
 //all declators assignment should set declMode to false
@@ -432,7 +436,8 @@ direct_declarator
   $$ = &dn;
  } 
 | '(' declarator ')' {
-  $$ = $2;}//not quite sure what this is for
+  declNode dn = *$2;
+  $$ = &dn;}
 //array
 | direct_declarator '[' ']' {
   declNode dn = *$1;
@@ -497,6 +502,7 @@ identifier_list
  }
 | identifier_list ',' identifier
 {
+
   declNode dn = *$1;
   dn.next = $3;
   $$ = &dn;
