@@ -1,23 +1,33 @@
+ /* test version of the grammar, with debuging code removed for less clutter */
+
 %{
 #include "c_grammar.h"
 #include <stdio.h>
   /* #include "SymbolTable.hpp" */
-
-
-
-
 extern SymbolTable st;
 extern bool parseDebug;
 extern std::ofstream parseDebugOut;
+extern int lineCount;
+/*for declaration or not*/
+extern bool declMode;
+
+struct declNode{
+  char* id;
+  unsigned int specs;
+  int lineno;
+  declNode* next;
+};
+
  %}
 
 %union{
+  //consider making this a string pointer
   char* sval;
   float dval;
   int ival;
+  long lval;
   char cval;
-  /*right now I don't know how to put structs in, so we'll fake it*/
-  SymbolContent* scptrval;
+  struct declNode *declval;
  }
 
 
@@ -43,599 +53,717 @@ extern std::ofstream parseDebugOut;
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
 
-%type <scptrval> declaration_specifiers
-%type <sval> identifier type_specifier 
+%type <declval> identifier identifier_list
+%type <sval> type_specifier storage_class_specifier
+%type <sval> type_qualifier struct_or_union
+%type <declval> declarator direct_declarator
+%type <declval> init_declarator init_declarator_list
+%type <declval> declaration declaration_list
 
+%type <declval> declaration_specifiers
 
 %start translation_unit
 %%
 
 translation_unit
-	 :  external_declaration
- {if(parseDebug)
-{parseDebugOut << "translation_unit <- external_declaration\n";}}
-	 |  translation_unit external_declaration
- {if(parseDebug){parseDebugOut << "translation_unit <- translation_unit external_declaration\n";}}	;
+	: external_declaration
+	| translation_unit external_declaration
+	;
 
 external_declaration
-	 :  function_definition
- {if(parseDebug)
-{parseDebugOut << "external_declaration <- function_definition\n";}}
-	 |  declaration
- {if(parseDebug){parseDebugOut << "external_declaration <- declaration\n";}}	;
+: function_definition
+	| declaration
+	;
 
 function_definition
-	 :  declarator compound_statement
- {if(parseDebug)
-{parseDebugOut << "function_definition <- declarator compound_statement\n";}}
-	 |  declarator declaration_list compound_statement
- {if(parseDebug){parseDebugOut << "function_definition <- declarator declaration_list compound_statement\n";}}	 |  declaration_specifiers declarator compound_statement
- {if(parseDebug){parseDebugOut << "function_definition <- declaration_specifiers declarator compound_statement\n";}}	 |  declaration_specifiers declarator declaration_list compound_statement
- {if(parseDebug){parseDebugOut << "function_definition <- declaration_specifiers declarator declaration_list compound_statement\n";}}	;
+: declarator {st.push();} compound_statement {st.pop();st.pop();}
+| declarator declaration_list {st.push();} compound_statement {st.pop();}
+| declaration_specifiers declarator {st.push();} compound_statement {st.pop();st.pop();}
+| declaration_specifiers declarator declaration_list {st.push();}compound_statement {st.pop();st.pop();}
+	;
+
+
 
 declaration
-	 :  declaration_specifiers ';'
-	 {if(parseDebug)
-	     {parseDebugOut << "declaration <- declaration_specifiers ';'\n";}}
-	 |  declaration_specifiers init_declarator_list ';'
-	 {if(parseDebug)
-	     {parseDebugOut << "declaration <- declaration_specifiers init_declarator_list ';'\n";}}	;
+: declaration_specifiers ';'
+  //hmmm..
+| declaration_specifiers init_declarator_list ';' 
+{
+  declNode dn = *$2;
+  SymbolContent *sc = st.searchAll((*$2).id);
+  if(sc == 0)
+    {
+      //make this an error later
+      std::cout<<"Warning! trying to use a variable not declared"<<std::endl;
+    }
+  else
+    {
+      SymbolContent newsc;
+      
+      newsc.specs = dn.specs;
+      newsc.lineno = lineCount;
+      st.update((*$2).id,newsc);
+    }
+  SymbolContent *sn = st.searchAll((*$2).id);
+ }
+	;
 
 declaration_list
-	 :  declaration
-	 {if(parseDebug)
-	     {parseDebugOut << "declaration_list <- declaration\n";}}
-	 |  declaration_list declaration
-	 {if(parseDebug)
-	     {parseDebugOut << "declaration_list <- declaration_list declaration\n";}}	;
+: declaration {$$ = $1;}
+| declaration_list declaration {
+  declNode dn = *$2;
+  dn.next = $1;
+  $$ = &dn;
+}
+	;
 
+//these should all singnal that we're indecle mode
 declaration_specifiers
-	 :  storage_class_specifier
-	 {if(parseDebug)
-	     {parseDebugOut << "declaration_specifiers <- storage_class_specifier\n";}}
-	 |  storage_class_specifier declaration_specifiers
-	 {if(parseDebug)
-	     {parseDebugOut << "declaration_specifiers <- storage_class_specifier declaration_specifiers\n";}}	 
-|  type_specifier 
+: storage_class_specifier {
+  declNode dn;
+  dn.specs = 0;
+  if($1=="AUTO")
+    {
+      dn.specs |= xAUTO;
+    }
+  else if($1 == "REGISTER")
+    {
+      dn.specs |= xREGISTER;
+    }
+  else if($1 ==  "STATIC")
+    {
+      dn.specs |= xSTATIC;
+    }
+  else if($1 == "EXTERN")
+    {
+      dn.specs |= xEXTERN;
+    }
+  else if($1 ==  "TYPEDEF")
+    {   
+      dn.specs |= xTYPEDEF;
+    }
+    $$ = &dn;
+ }
+| storage_class_specifier declaration_specifiers
 {
+  declNode dn = *$2;
+  if($1=="AUTO")
+    {
+      dn.specs |= xAUTO;
+    }
+  else if($1 == "REGISTER")
+    {
+      dn.specs |= xREGISTER;
+    }
+  else if($1 ==  "STATIC")
+    {
+      dn.specs |= xSTATIC;
+    }
+  else if($1 == "EXTERN")
+    {
+      dn.specs |= xEXTERN;
+    }
+  else if($1 ==  "TYPEDEF")
+    {   
+      dn.specs |= xTYPEDEF;
+    }
+    $$ = &dn;
+ 
+}
+| type_specifier
+{
+  declNode dn;
+  dn.specs = 0;
+  if($1 == "VOID")
+    {
+      dn.specs |= xVOID;
+    }
+  else if($1 == "CHAR")
+    {
+      dn.specs |= xCHAR;
+    }
+  else if($1 == "SHORT")
+    {
+      dn.specs |= xSHORT;
+    }
+  else if($1 == "INT")
+    {
+      dn.specs |= xINT;
+      }
+  else if($1 == "LONG")
+    {
+      dn.specs |= xLONG;
+    }
+  else if($1 == "FLOAT")
+    {
+      dn.specs |= xFLOAT;
+    }
+  else if($1 == "DOUBLE")
+    {
+      dn.specs |= xDOUBLE;
+    }
+  else if($1 == "SIGNED")
+    {
+      dn.specs  |= xSIGNED;
+    }
+  else if($1 == "UNSIGNED")
+    {
+      dn.specs |= xUNSIGNED; 
+    }
+  else if($1 == "STRUCT")
+    {
+      dn.specs |= xSTRUCT;
+    }
+  else if($1 == "UNION" )
+    {
+      dn.specs |= xUNION;
+    }
+  else if($1 ==  "ENUM")
+    {
+      dn.specs  |= xENUM;
+    }
+  else if($1 == "TYPEDEF_NAME")
+    {
+      dn.specs |=  xTYPEDEF_NAME;
+      }
+$$=&dn;
+}
+| type_specifier declaration_specifiers 
+{
+     declNode dn = *$2;
+ if($1 == "VOID")
+    {
+      dn.specs |= xVOID;
+    }
+  else if($1 == "CHAR")
+    {
+      dn.specs |= xCHAR;
+    }
+  else if($1 == "SHORT")
+    {
+      dn.specs |= xSHORT;
+    }
+  else if($1 == "INT")
+    {
+      dn.specs |= xINT;
+    }
+  else if($1 == "LONG")
+    {
+      dn.specs |= xLONG;
+    }
+  else if($1 == "FLOAT")
+    {
+      dn.specs |= xFLOAT;
+    }
+  else if($1 == "DOUBLE")
+    {
+      dn.specs |= xDOUBLE;
+    }
+  else if($1 == "SIGNED")
+    {
+      dn.specs  |= xSIGNED;
+    }
+  else if($1 == "UNSIGNED")
+    {
+      dn.specs |= xUNSIGNED; 
+    }
+  else if($1 == "STRUCT")
+    {
+      dn.specs |= xSTRUCT;
+    }
+  else if($1 == "UNION" )
+    {
+      dn.specs |= xUNION;
+    }
+  else if($1 ==  "ENUM")
+    {
+      dn.specs  |= xENUM;
+    }
+  else if($1 == "TYPEDEF_NAME")
+    {
+      dn.specs |=  xTYPEDEF_NAME;
+    }
+ $$ = &dn;
+ }
+| type_qualifier
+{
+  declNode dn;
+  dn.specs = 0;
+  if($1 == "CONST")
+    {
+      dn.specs |= xCONST;
+    }
+  else if($1 == "VOLATILE")
+    {
+      dn.specs |= xVOLATILE;
+    }
+  $$ = &dn;
+}
+| type_qualifier declaration_specifiers
+{
+  declNode dn  = *$2;
+  if($1 == "CONST")
+    {
+      dn.specs  |= xCONST;
+    }
+  else if($1 == "VOLATILE")
+    {
+      dn.specs |= xVOLATILE;
+      }
+  $$ = &dn;
 
-  if(parseDebug)
-	     {parseDebugOut << "declaration_specifiers <- type_specifier\n";}}	 
-         |  type_specifier declaration_specifiers  
-	 {if(parseDebug)
-	     {parseDebugOut << "declaration_specifiers <- type_specifier declaration_specifiers\n";}}	 
-         |  type_qualifier 
-	 {if(parseDebug)
-	     {parseDebugOut << "declaration_specifiers <- type_qualifier\n";}}	 
-         |  type_qualifier declaration_specifiers
-	 {if(parseDebug)
-	     {parseDebugOut << "declaration_specifiers <- type_qualifier declaration_specifiers\n";}}	;
+}
+	;
 
 storage_class_specifier
-	 :  AUTO
-	 {if(parseDebug)
-	     {parseDebugOut << "storage_class_specifier <- AUTO\n";}}
-	 |  REGISTER
-	 {if(parseDebug)
-	     {parseDebugOut << "storage_class_specifier <- REGISTER\n";}}	 
-         |  STATIC
-	 {if(parseDebug)
-	     {parseDebugOut << "storage_class_specifier <- STATIC\n";}}	 
-         |  EXTERN
-	 {if(parseDebug)
-	     {parseDebugOut << "storage_class_specifier <- EXTERN\n";}}	 
-         |  TYPEDEF
-	 {if(parseDebug)
-	     {parseDebugOut << "storage_class_specifier <- TYPEDEF\n";}}	;
+: AUTO {declMode = true; $$ = "AUTO";}
+| REGISTER {declMode = true; $$ = "REGISTER";}
+| STATIC {declMode = true; $$ = "STATIC";}
+| EXTERN {declMode = true;$$ = "EXTERN";}
+| TYPEDEF {declMode = true;$$ = "TYPEDEF";}
+	;
 
 type_specifier
-:  VOID  
-{$$ = "VOID";if(parseDebug)
-	    {parseDebugOut << "type_specifier <- VOID\n";}}
-         |  CHAR
-	 {if(parseDebug)
-	      {parseDebugOut << "type_specifier <- CHAR\n";}}	 
-         |  SHORT
-	 {if(parseDebug)
-	      {parseDebugOut << "type_specifier <- SHORT\n";}}	 
-         |  INT
-	 {if(parseDebug)
-	     {parseDebugOut << "type_specifier <- INT\n";}}	 
-         |  LONG
-	 {if(parseDebug){parseDebugOut << "type_specifier <- LONG\n";}}	 |  FLOAT 
- {if(parseDebug){parseDebugOut << "type_specifier <- FLOAT\n";}}	 |  DOUBLE
- {if(parseDebug){parseDebugOut << "type_specifier <- DOUBLE\n";}}	 |  SIGNED
- {if(parseDebug){parseDebugOut << "type_specifier <- SIGNED\n";}}	 |  UNSIGNED
- {if(parseDebug){parseDebugOut << "type_specifier <- UNSIGNED\n";}}	 |  struct_or_union_specifier
- {if(parseDebug){parseDebugOut << "type_specifier <- struct_or_union_specifier\n";}}	 |  enum_specifier
- {if(parseDebug){parseDebugOut << "type_specifier <- enum_specifier\n";}}	 |  TYPEDEF_NAME
- {if(parseDebug){parseDebugOut << "type_specifier <- TYPEDEF_NAME\n";}}	;
+: VOID {declMode = true; $$ = "VOID";}
+| CHAR {declMode = true; $$ = "CHAR";}
+| SHORT {declMode = true; $$ = "SHORT";}
+| INT {declMode = true; $$ = "INT";}
+| LONG {declMode = true; $$ = "LONG";}
+| FLOAT {declMode = true; $$ = "FLOAT";}
+| DOUBLE {declMode = true; $$ = "DOUBLE";}
+| SIGNED {declMode = true; $$ = "SIGNED";}
+| UNSIGNED {declMode = true; $$ = "UNSIGNED";}
+//this \/ I'm not so sure about
+| struct_or_union_specifier {declMode = true; $$ = "NEED TO FIGURE OUT";}
+| enum_specifier {declMode = true; $$ = "Same!";}
+| TYPEDEF_NAME {declMode = true; $$ = "TYPEDEF_NAME";}
+	;
 
 type_qualifier
-	 :  CONST
- {if(parseDebug)
-{parseDebugOut << "type_qualifier <- CONST\n";}}
-	 |  VOLATILE
- {if(parseDebug){parseDebugOut << "type_qualifier <- VOLATILE\n";}}	;
+: CONST {declMode = true; $$ = "CONST";}
+| VOLATILE {declMode = true; $$ = "VOLATILE";}
+	;
 
+
+//right now we're not worried about this
 struct_or_union_specifier
-	 :  struct_or_union identifier '{' struct_declaration_list '}'
- {if(parseDebug)
-{parseDebugOut << "struct_or_union_specifier <- struct_or_union identifier '{' struct_declaration_list '}'\n";}}
-	 |  struct_or_union '{' struct_declaration_list '}'
- {if(parseDebug){parseDebugOut << "struct_or_union_specifier <- struct_or_union '{' struct_declaration_list '}'\n";}}	 |  struct_or_union identifier
- {if(parseDebug){parseDebugOut << "struct_or_union_specifier <- struct_or_union identifier\n";}}	;
+	: struct_or_union identifier '{' struct_declaration_list '}'
+	| struct_or_union '{' struct_declaration_list '}'
+	| struct_or_union identifier
+	;
 
 struct_or_union
-	 :  STRUCT
- {if(parseDebug)
-{parseDebugOut << "struct_or_union <- STRUCT\n";}}
-	 |  UNION
- {if(parseDebug){parseDebugOut << "struct_or_union <- UNION\n";}}	;
+: STRUCT {$$ = "STRUCT";}
+| UNION {$$ = "UNION";}
+	;
 
 struct_declaration_list
-	 :  struct_declaration
- {if(parseDebug)
-{parseDebugOut << "struct_declaration_list <- struct_declaration\n";}}
-	 |  struct_declaration_list struct_declaration
- {if(parseDebug){parseDebugOut << "struct_declaration_list <- struct_declaration_list struct_declaration\n";}}	;
+	: struct_declaration
+	| struct_declaration_list struct_declaration
+	;
 
+//I'll worry about lists of declators later
 init_declarator_list
-	 :  init_declarator
- {if(parseDebug)
-{parseDebugOut << "init_declarator_list <- init_declarator\n";}}
-	 |  init_declarator_list ',' init_declarator
- {if(parseDebug){parseDebugOut << "init_declarator_list <- init_declarator_list ',' init_declarator\n";}}	;
+: init_declarator {$$ = $1;
+  }
+| init_declarator_list ',' init_declarator {
+  //to do!
+  
+  std::cout <<(*$1).id<<"->"<< (*$3).id <<std::endl;
+  }
+	;
 
+//all declators assignment should set declMode to false
 init_declarator
-	 :  declarator
- {if(parseDebug)
-{parseDebugOut << "init_declarator <- declarator\n";}}
-	 |  declarator '=' initializer
- {if(parseDebug){parseDebugOut << "init_declarator <- declarator '=' initializer\n";}}	;
+: declarator {$$ = $1 ;}
+| declarator '='{declMode = false;} initializer {$$ = $1;}
+	;
 
 struct_declaration
-	 :  specifier_qualifier_list struct_declarator_list ';'
- {if(parseDebug)
-{parseDebugOut << "struct_declaration <- specifier_qualifier_list struct_declarator_list ';'\n";}}
+	: specifier_qualifier_list struct_declarator_list ';'
 	;
 
 specifier_qualifier_list
-	 :  type_specifier
- {if(parseDebug)
-{parseDebugOut << "specifier_qualifier_list <- type_specifier\n";}}
-	 |  type_specifier specifier_qualifier_list
- {if(parseDebug){parseDebugOut << "specifier_qualifier_list <- type_specifier specifier_qualifier_list\n";}}	 |  type_qualifier
- {if(parseDebug){parseDebugOut << "specifier_qualifier_list <- type_qualifier\n";}}	 |  type_qualifier specifier_qualifier_list
- {if(parseDebug){parseDebugOut << "specifier_qualifier_list <- type_qualifier specifier_qualifier_list\n";}}	;
+	: type_specifier
+	| type_specifier specifier_qualifier_list
+	| type_qualifier
+	| type_qualifier specifier_qualifier_list
+	;
 
 struct_declarator_list
-	 :  struct_declarator
- {if(parseDebug)
-{parseDebugOut << "struct_declarator_list <- struct_declarator\n";}}
-	 |  struct_declarator_list ',' struct_declarator
- {if(parseDebug){parseDebugOut << "struct_declarator_list <- struct_declarator_list ',' struct_declarator\n";}}	;
+	: struct_declarator
+	| struct_declarator_list ',' struct_declarator
+	;
 
 struct_declarator
-	 :  declarator
- {if(parseDebug)
-{parseDebugOut << "struct_declarator <- declarator\n";}}
-	 |  ':' constant_expression
- {if(parseDebug){parseDebugOut << "struct_declarator <- ':' constant_expression\n";}}	 |  declarator ':' constant_expression
- {if(parseDebug){parseDebugOut << "struct_declarator <- declarator ':' constant_expression\n";}}	;
+	: declarator
+	| ':' constant_expression
+	| declarator ':' constant_expression
+	;
 
 enum_specifier
-	 :  ENUM '{' enumerator_list '}'
- {if(parseDebug)
-{parseDebugOut << "enum_specifier <- ENUM '{' enumerator_list '}'\n";}}
-	 |  ENUM identifier '{' enumerator_list '}'
- {if(parseDebug){parseDebugOut << "enum_specifier <- ENUM identifier '{' enumerator_list '}'\n";}}	 |  ENUM identifier
- {if(parseDebug){parseDebugOut << "enum_specifier <- ENUM identifier\n";}}	;
+	: ENUM '{' enumerator_list '}'
+	| ENUM identifier '{' enumerator_list '}'
+	| ENUM identifier
+	;
 
 enumerator_list
-	 :  enumerator
- {if(parseDebug)
-{parseDebugOut << "enumerator_list <- enumerator\n";}}
-	 |  enumerator_list ',' enumerator
- {if(parseDebug){parseDebugOut << "enumerator_list <- enumerator_list ',' enumerator\n";}}	;
+	: enumerator
+	| enumerator_list ',' enumerator
+	;
 
 enumerator
-	 :  identifier
- {if(parseDebug)
-{parseDebugOut << "enumerator <- identifier\n";}}
-	 |  identifier '=' constant_expression
- {if(parseDebug){parseDebugOut << "enumerator <- identifier '=' constant_expression\n";}}	;
+	: identifier
+	| identifier '='{declMode = false;} constant_expression
+	;
 
+
+//for this second, not worried about pointers.. figure out later
 declarator
-	 :  direct_declarator
- {if(parseDebug)
-{parseDebugOut << "declarator <- direct_declarator\n";}}
-	 |  pointer direct_declarator
- {if(parseDebug){parseDebugOut << "declarator <- pointer direct_declarator\n";}}	;
+: direct_declarator {$$ = $1;}
+| pointer direct_declarator {
+  declNode dn = *$2;
+  dn.specs |= xPOINTER;
+  $$ = &dn;
+ }
+	;
 
+//for now I'm just passing up the id string
 direct_declarator
-	 :  identifier
- {if(parseDebug)
-{parseDebugOut << "direct_declarator <- identifier\n";}}
-	 |  '(' declarator ')'
- {if(parseDebug){parseDebugOut << "direct_declarator <- '(' declarator ')'\n";}}	 |  direct_declarator '[' ']'
- {if(parseDebug){parseDebugOut << "direct_declarator <- direct_declarator '[' ']'\n";}}	 |  direct_declarator '[' constant_expression ']'
- {if(parseDebug){parseDebugOut << "direct_declarator <- direct_declarator '[' constant_expression ']'\n";}}	 |  direct_declarator '(' ')'
- {if(parseDebug){parseDebugOut << "direct_declarator <- direct_declarator '(' ')'\n";}}	 |  direct_declarator '(' parameter_type_list ')'
- {if(parseDebug){parseDebugOut << "direct_declarator <- direct_declarator '(' parameter_type_list ')'\n";}}	 |  direct_declarator '(' identifier_list ')'
- {if(parseDebug){parseDebugOut << "direct_declarator <- direct_declarator '(' identifier_list ')'\n";}}	;
+: identifier { 
+  declNode dn = *$1;
+  dn.next = 0;
+  $$ = &dn;
+ } 
+| '(' declarator ')' {
+  declNode dn = *$2;
+  $$ = &dn;}
+//array
+| direct_declarator '[' ']' {
+  declNode dn = *$1;
+  dn.specs |= xARRAY;
+  $$=&dn;}
+//array
+| direct_declarator '[' constant_expression ']' { 
+  declNode dn = *$1;
+  dn.specs |= xARRAY;
+  $$=&dn;}
+| direct_declarator '('')' { 
+  declNode dn = *$1;
+  dn.specs |= xFUNCTION;
+  $$=&dn;
+st.push();}//though empty all funcs wil pop 2x
+| direct_declarator '('{st.push();} parameter_type_list ')' 
+{
+ declNode dn = *$1;
+ dn.specs |= xFUNCTION;
+ $$=&dn;
+}
+| direct_declarator '(' identifier_list ')' 
+{
+  declNode dn = *$1;
+  dn.specs |= xFUNCTION;
+  $$=&dn;
+}
+	;
 
 pointer
-	 :  '*'
- {if(parseDebug)
-{parseDebugOut << "pointer <- '*'\n";}}
-	 |  '*' type_qualifier_list
- {if(parseDebug){parseDebugOut << "pointer <- '*' type_qualifier_list\n";}}	 |  '*' pointer
- {if(parseDebug){parseDebugOut << "pointer <- '*' pointer\n";}}	 |  '*' type_qualifier_list pointer
- {if(parseDebug){parseDebugOut << "pointer <- '*' type_qualifier_list pointer\n";}}	;
+: '*'
+	| '*' type_qualifier_list
+	| '*' pointer
+	| '*' type_qualifier_list pointer
+	;
 
 type_qualifier_list
-	 :  type_qualifier
- {if(parseDebug)
-{parseDebugOut << "type_qualifier_list <- type_qualifier\n";}}
-	 |  type_qualifier_list type_qualifier
- {if(parseDebug){parseDebugOut << "type_qualifier_list <- type_qualifier_list type_qualifier\n";}}	;
+	: type_qualifier
+	| type_qualifier_list type_qualifier
+	;
 
 parameter_type_list
-	 :  parameter_list
- {if(parseDebug)
-{parseDebugOut << "parameter_type_list <- parameter_list\n";}}
-	 |  parameter_list ',' ELIPSIS
- {if(parseDebug){parseDebugOut << "parameter_type_list <- parameter_list ',' ELIPSIS\n";}}	;
+	: parameter_list
+	| parameter_list ',' ELIPSIS
+	;
 
 parameter_list
-	 :  parameter_declaration
- {if(parseDebug)
-{parseDebugOut << "parameter_list <- parameter_declaration\n";}}
-	 |  parameter_list ',' parameter_declaration
- {if(parseDebug){parseDebugOut << "parameter_list <- parameter_list ',' parameter_declaration\n";}}	;
+	: parameter_declaration
+	| parameter_list ',' parameter_declaration
+	;
 
 parameter_declaration
-	 :  declaration_specifiers declarator
- {if(parseDebug)
-{parseDebugOut << "parameter_declaration <- declaration_specifiers declarator\n";}}
-	 |  declaration_specifiers
- {if(parseDebug){parseDebugOut << "parameter_declaration <- declaration_specifiers\n";}}	 |  declaration_specifiers abstract_declarator
- {if(parseDebug){parseDebugOut << "parameter_declaration <- declaration_specifiers abstract_declarator\n";}}	;
+	: declaration_specifiers declarator
+	| declaration_specifiers
+	| declaration_specifiers abstract_declarator
+	;
 
 identifier_list
-	 :  identifier
- {if(parseDebug)
-{parseDebugOut << "identifier_list <- identifier\n";}}
-	 |  identifier_list ',' identifier
- {if(parseDebug){parseDebugOut << "identifier_list <- identifier_list ',' identifier\n";}}	;
+: identifier {
+  declNode dn = *$1;
+  $$ = &dn;
+ }
+| identifier_list ',' identifier
+{
+
+  declNode dn = *$1;
+  dn.next = $3;
+  $$ = &dn;
+}
+	;
 
 initializer
-	 :  assignment_expression
- {if(parseDebug)
-{parseDebugOut << "initializer <- assignment_expression\n";}}
-	 |  '{' initializer_list '}'
- {if(parseDebug){parseDebugOut << "initializer <- '{' initializer_list '}'\n";}}	 |  '{' initializer_list ',' '}'
- {if(parseDebug){parseDebugOut << "initializer <- '{' initializer_list ',' '}'\n";}}	;
+	: assignment_expression
+	| '{' initializer_list '}'
+	| '{' initializer_list ',' '}'
+	;
 
 initializer_list
-	 :  initializer
- {if(parseDebug)
-{parseDebugOut << "initializer_list <- initializer\n";}}
-	 |  initializer_list ',' initializer
- {if(parseDebug){parseDebugOut << "initializer_list <- initializer_list ',' initializer\n";}}	;
+	: initializer
+	| initializer_list ',' initializer
+	;
 
 type_name
-	 :  specifier_qualifier_list
- {if(parseDebug)
-{parseDebugOut << "type_name <- specifier_qualifier_list\n";}}
-	 |  specifier_qualifier_list abstract_declarator
- {if(parseDebug){parseDebugOut << "type_name <- specifier_qualifier_list abstract_declarator\n";}}	;
+	: specifier_qualifier_list
+	| specifier_qualifier_list abstract_declarator
+	;
 
 abstract_declarator
-	 :  pointer
- {if(parseDebug)
-{parseDebugOut << "abstract_declarator <- pointer\n";}}
-	 |  direct_abstract_declarator
- {if(parseDebug){parseDebugOut << "abstract_declarator <- direct_abstract_declarator\n";}}	 |  pointer direct_abstract_declarator
- {if(parseDebug){parseDebugOut << "abstract_declarator <- pointer direct_abstract_declarator\n";}}	;
+	: pointer
+	| direct_abstract_declarator
+	| pointer direct_abstract_declarator
+	;
 
 direct_abstract_declarator
-	 :  '(' abstract_declarator ')'
- {if(parseDebug)
-{parseDebugOut << "direct_abstract_declarator <- '(' abstract_declarator ')'\n";}}
-	 |  '[' ']'
- {if(parseDebug){parseDebugOut << "direct_abstract_declarator <- '[' ']'\n";}}	 |  '[' constant_expression ']'
- {if(parseDebug){parseDebugOut << "direct_abstract_declarator <- '[' constant_expression ']'\n";}}	 |  direct_abstract_declarator '[' ']'
- {if(parseDebug){parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '[' ']'\n";}}	 |  direct_abstract_declarator '[' constant_expression ']'
- {if(parseDebug){parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '[' constant_expression ']'\n";}}	 |  '(' ')'
- {if(parseDebug){parseDebugOut << "direct_abstract_declarator <- '(' ')'\n";}}	 |  '(' parameter_type_list ')'
- {if(parseDebug){parseDebugOut << "direct_abstract_declarator <- '(' parameter_type_list ')'\n";}}	 |  direct_abstract_declarator '(' ')'
- {if(parseDebug){parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '(' ')'\n";}}	 |  direct_abstract_declarator '(' parameter_type_list ')'
- {if(parseDebug){parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '(' parameter_type_list ')'\n";}}	;
+	: '(' abstract_declarator ')'
+	| '[' ']'
+	| '[' constant_expression ']'
+	| direct_abstract_declarator '[' ']'
+	| direct_abstract_declarator '[' constant_expression ']'
+	| '(' ')'
+	| '(' parameter_type_list ')'
+	| direct_abstract_declarator '(' ')'
+	| direct_abstract_declarator '(' parameter_type_list ')'
+	;
 
 statement
-	 :  labeled_statement
- {if(parseDebug)
-{parseDebugOut << "statement <- labeled_statement\n";}}
-	 |  compound_statement
- {if(parseDebug){parseDebugOut << "statement <- compound_statement\n";}}	 |  expression_statement
- {if(parseDebug){parseDebugOut << "statement <- expression_statement\n";}}	 |  selection_statement
- {if(parseDebug){parseDebugOut << "statement <- selection_statement\n";}}	 |  iteration_statement
- {if(parseDebug){parseDebugOut << "statement <- iteration_statement\n";}}	 |  jump_statement
- {if(parseDebug){parseDebugOut << "statement <- jump_statement\n";}}	;
+	: labeled_statement
+	| {st.push();}compound_statement {st.pop();}
+	| expression_statement
+	| selection_statement
+	| iteration_statement
+	| jump_statement
+	;
 
 labeled_statement
-	 :  identifier ':' statement
- {if(parseDebug)
-{parseDebugOut << "labeled_statement <- identifier ':' statement\n";}}
-	 |  CASE constant_expression ':' statement
- {if(parseDebug){parseDebugOut << "labeled_statement <- CASE constant_expression ':' statement\n";}}	 |  DEFAULT ':' statement
- {if(parseDebug){parseDebugOut << "labeled_statement <- DEFAULT ':' statement\n";}}	;
+	: identifier ':' statement
+	| CASE constant_expression ':' statement
+	| DEFAULT ':' statement
+	;
 
 expression_statement
-	 :  ';'
- {if(parseDebug)
-{parseDebugOut << "expression_statement <- ';'\n";}}
-	 |  expression ';'
- {if(parseDebug){parseDebugOut << "expression_statement <- expression ';'\n";}}	;
+	: ';'
+	| expression ';'
+	;
 
 compound_statement
-	 :  '{' '}'
- {if(parseDebug)
-{parseDebugOut << "compound_statement <- '{' '}'\n";}}
-	 |  '{' statement_list '}'
- {if(parseDebug){parseDebugOut << "compound_statement <- '{' statement_list '}'\n";}}	 |  '{' declaration_list '}'
- {if(parseDebug){parseDebugOut << "compound_statement <- '{' declaration_list '}'\n";}}	 |  '{' declaration_list statement_list '}'
- {if(parseDebug){parseDebugOut << "compound_statement <- '{' declaration_list statement_list '}'\n";}}	;
+: '{' '}'
+| '{'statement_list '}'
+| '{' declaration_list '}'
+| '{' declaration_list statement_list '}'
+	;
 
 statement_list
-	 :  statement
- {if(parseDebug)
-{parseDebugOut << "statement_list <- statement\n";}}
-	 |  statement_list statement
- {if(parseDebug){parseDebugOut << "statement_list <- statement_list statement\n";}}	;
+	: statement
+	| statement_list statement
+	;
 
 selection_statement
-	 :  IF '(' expression ')' statement
- {if(parseDebug)
-{parseDebugOut << "selection_statement <- IF '(' expression ')' statement\n";}}
-	 |  IF '(' expression ')' statement ELSE statement
- {if(parseDebug){parseDebugOut << "selection_statement <- IF '(' expression ')' statement ELSE statement\n";}}	 |  SWITCH '(' expression ')' statement
- {if(parseDebug){parseDebugOut << "selection_statement <- SWITCH '(' expression ')' statement\n";}}	;
+	: IF '(' expression ')' statement
+	| IF '(' expression ')' statement ELSE statement
+	| SWITCH '(' expression ')' statement
+	;
 
 iteration_statement
-	 :  WHILE '(' expression ')' statement
- {if(parseDebug)
-{parseDebugOut << "iteration_statement <- WHILE '(' expression ')' statement\n";}}
-	 |  DO statement WHILE '(' expression ')' ';'
- {if(parseDebug){parseDebugOut << "iteration_statement <- DO statement WHILE '(' expression ')' ';'\n";}}	 |  FOR '(' ';' ';' ')' statement
- {if(parseDebug){parseDebugOut << "iteration_statement <- FOR '(' ';' ';' ')' statement\n";}}	 |  FOR '(' ';' ';' expression ')' statement
- {if(parseDebug){parseDebugOut << "iteration_statement <- FOR '(' ';' ';' expression ')' statement\n";}}	 |  FOR '(' ';' expression ';' ')' statement
- {if(parseDebug){parseDebugOut << "iteration_statement <- FOR '(' ';' expression ';' ')' statement\n";}}	 |  FOR '(' ';' expression ';' expression ')' statement
- {if(parseDebug){parseDebugOut << "iteration_statement <- FOR '(' ';' expression ';' expression ')' statement\n";}}	 |  FOR '(' expression ';' ';' ')' statement
- {if(parseDebug){parseDebugOut << "iteration_statement <- FOR '(' expression ';' ';' ')' statement\n";}}	 |  FOR '(' expression ';' ';' expression ')' statement
- {if(parseDebug){parseDebugOut << "iteration_statement <- FOR '(' expression ';' ';' expression ')' statement\n";}}	 |  FOR '(' expression ';' expression ';' ')' statement
- {if(parseDebug){parseDebugOut << "iteration_statement <- FOR '(' expression ';' expression ';' ')' statement\n";}}	 |  FOR '(' expression ';' expression ';' expression ')' statement
- {if(parseDebug){parseDebugOut << "iteration_statement <- FOR '(' expression ';' expression ';' expression ')' statement\n";}}	;
+	: WHILE '(' expression ')' statement
+	| DO statement WHILE '(' expression ')' ';'
+	| FOR '(' ';' ';' ')' statement
+	| FOR '(' ';' ';' expression ')' statement
+	| FOR '(' ';' expression ';' ')' statement
+	| FOR '(' ';' expression ';' expression ')' statement
+	| FOR '(' expression ';' ';' ')' statement
+	| FOR '(' expression ';' ';' expression ')' statement
+	| FOR '(' expression ';' expression ';' ')' statement
+	| FOR '(' expression ';' expression ';' expression ')' statement
+	;
 
 jump_statement
-	 :  GOTO identifier ';'
- {if(parseDebug)
-{parseDebugOut << "jump_statement <- GOTO identifier ';'\n";}}
-	 |  CONTINUE ';'
- {if(parseDebug){parseDebugOut << "jump_statement <- CONTINUE ';'\n";}}	 |  BREAK ';'
- {if(parseDebug){parseDebugOut << "jump_statement <- BREAK ';'\n";}}	 |  RETURN ';'
- {if(parseDebug){parseDebugOut << "jump_statement <- RETURN ';'\n";}}	 |  RETURN expression ';'
- {if(parseDebug){parseDebugOut << "jump_statement <- RETURN expression ';'\n";}}	;
+	: GOTO identifier ';'
+	| CONTINUE ';'
+	| BREAK ';'
+	| RETURN ';'
+	| RETURN expression ';'
+	;
 
 expression
-	 :  assignment_expression
- {if(parseDebug)
-{parseDebugOut << "expression <- assignment_expression\n";}}
-	 |  expression ',' assignment_expression
- {if(parseDebug){parseDebugOut << "expression <- expression ',' assignment_expression\n";}}	;
+	: assignment_expression
+	| expression ',' assignment_expression
+	;
 
 assignment_expression
-	 :  conditional_expression
- {if(parseDebug)
-{parseDebugOut << "assignment_expression <- conditional_expression\n";}}
-	 |  unary_expression assignment_operator assignment_expression
- {if(parseDebug){parseDebugOut << "assignment_expression <- unary_expression assignment_operator assignment_expression\n";}}	;
+	: conditional_expression
+	| unary_expression assignment_operator assignment_expression
+	;
 
+ /*all of these should turn decl mode off*/
 assignment_operator
-	 :  '='
- {if(parseDebug)
-{parseDebugOut << "assignment_operator <- '='\n";}}
-	 |  MUL_ASSIGN
- {if(parseDebug){parseDebugOut << "assignment_operator <- MUL_ASSIGN\n";}}	 |  DIV_ASSIGN
- {if(parseDebug){parseDebugOut << "assignment_operator <- DIV_ASSIGN\n";}}	 |  MOD_ASSIGN
- {if(parseDebug){parseDebugOut << "assignment_operator <- MOD_ASSIGN\n";}}	 |  ADD_ASSIGN
- {if(parseDebug){parseDebugOut << "assignment_operator <- ADD_ASSIGN\n";}}	 |  SUB_ASSIGN
- {if(parseDebug){parseDebugOut << "assignment_operator <- SUB_ASSIGN\n";}}	 |  LEFT_ASSIGN
- {if(parseDebug){parseDebugOut << "assignment_operator <- LEFT_ASSIGN\n";}}	 |  RIGHT_ASSIGN
- {if(parseDebug){parseDebugOut << "assignment_operator <- RIGHT_ASSIGN\n";}}	 |  AND_ASSIGN
- {if(parseDebug){parseDebugOut << "assignment_operator <- AND_ASSIGN\n";}}	 |  XOR_ASSIGN
- {if(parseDebug){parseDebugOut << "assignment_operator <- XOR_ASSIGN\n";}}	 |  OR_ASSIGN
- {if(parseDebug){parseDebugOut << "assignment_operator <- OR_ASSIGN\n";}}	;
+: '=' {declMode = false;}
+        | MUL_ASSIGN {declMode = false;}
+        | DIV_ASSIGN {declMode = false;}
+        | MOD_ASSIGN {declMode = false;}
+	| ADD_ASSIGN {declMode = false;}
+	| SUB_ASSIGN {declMode = false;}
+	| LEFT_ASSIGN {declMode = false;}
+	| RIGHT_ASSIGN {declMode = false;}
+	| AND_ASSIGN {declMode = false;}
+	| XOR_ASSIGN {declMode = false;}
+	| OR_ASSIGN {declMode = false;}
+	;
 
 conditional_expression
-	 :  logical_or_expression
- {if(parseDebug)
-{parseDebugOut << "conditional_expression <- logical_or_expression\n";}}
-	 |  logical_or_expression '?' expression ':' conditional_expression
- {if(parseDebug){parseDebugOut << "conditional_expression <- logical_or_expression '?' expression ':' conditional_expression\n";}}	;
+	: logical_or_expression
+	| logical_or_expression '?' expression ':' conditional_expression
+	;
 
 constant_expression
-	 :  conditional_expression
- {if(parseDebug)
-{parseDebugOut << "constant_expression <- conditional_expression\n";}}
+	: conditional_expression
 	;
 
 logical_or_expression
-	 :  logical_and_expression
- {if(parseDebug)
-{parseDebugOut << "logical_or_expression <- logical_and_expression\n";}}
-	 |  logical_or_expression OR_OP logical_and_expression
- {if(parseDebug){parseDebugOut << "logical_or_expression <- logical_or_expression OR_OP logical_and_expression\n";}}	;
+	: logical_and_expression
+	| logical_or_expression OR_OP logical_and_expression
+	;
 
 logical_and_expression
-	 :  inclusive_or_expression
- {if(parseDebug)
-{parseDebugOut << "logical_and_expression <- inclusive_or_expression\n";}}
-	 |  logical_and_expression AND_OP inclusive_or_expression
- {if(parseDebug){parseDebugOut << "logical_and_expression <- logical_and_expression AND_OP inclusive_or_expression\n";}}	;
+	: inclusive_or_expression
+	| logical_and_expression AND_OP inclusive_or_expression
+	;
 
 inclusive_or_expression
-	 :  exclusive_or_expression
- {if(parseDebug)
-{parseDebugOut << "inclusive_or_expression <- exclusive_or_expression\n";}}
-	 |  inclusive_or_expression '|' exclusive_or_expression
- {if(parseDebug){parseDebugOut << "inclusive_or_expression <- inclusive_or_expression '|' exclusive_or_expression\n";}}	;
+	: exclusive_or_expression
+	| inclusive_or_expression '|' exclusive_or_expression
+	;
 
 exclusive_or_expression
-	 :  and_expression
- {if(parseDebug)
-{parseDebugOut << "exclusive_or_expression <- and_expression\n";}}
-	 |  exclusive_or_expression '^' and_expression
- {if(parseDebug){parseDebugOut << "exclusive_or_expression <- exclusive_or_expression '^' and_expression\n";}}	;
+	: and_expression
+	| exclusive_or_expression '^' and_expression
+	;
 
 and_expression
-	 :  equality_expression
- {if(parseDebug)
-{parseDebugOut << "and_expression <- equality_expression\n";}}
-	 |  and_expression '&' equality_expression
- {if(parseDebug){parseDebugOut << "and_expression <- and_expression '&' equality_expression\n";}}	;
+	: equality_expression
+	| and_expression '&' equality_expression
+	;
 
 equality_expression
-	 :  relational_expression
- {if(parseDebug)
-{parseDebugOut << "equality_expression <- relational_expression\n";}}
-	 |  equality_expression EQ_OP relational_expression
- {if(parseDebug){parseDebugOut << "equality_expression <- equality_expression EQ_OP relational_expression\n";}}	 |  equality_expression NE_OP relational_expression
- {if(parseDebug){parseDebugOut << "equality_expression <- equality_expression NE_OP relational_expression\n";}}	;
+	: relational_expression
+	| equality_expression EQ_OP relational_expression
+	| equality_expression NE_OP relational_expression
+	;
 
 relational_expression
-	 :  shift_expression
- {if(parseDebug)
-{parseDebugOut << "relational_expression <- shift_expression\n";}}
-	 |  relational_expression '<' shift_expression
- {if(parseDebug){parseDebugOut << "relational_expression <- relational_expression '<' shift_expression\n";}}	 |  relational_expression '>' shift_expression
- {if(parseDebug){parseDebugOut << "relational_expression <- relational_expression '>' shift_expression\n";}}	 |  relational_expression LE_OP shift_expression
- {if(parseDebug){parseDebugOut << "relational_expression <- relational_expression LE_OP shift_expression\n";}}	 |  relational_expression GE_OP shift_expression
- {if(parseDebug){parseDebugOut << "relational_expression <- relational_expression GE_OP shift_expression\n";}}	;
+	: shift_expression
+	| relational_expression '<' shift_expression
+	| relational_expression '>' shift_expression
+	| relational_expression LE_OP shift_expression
+	| relational_expression GE_OP shift_expression
+	;
 
 shift_expression
-	 :  additive_expression
- {if(parseDebug)
-{parseDebugOut << "shift_expression <- additive_expression\n";}}
-	 |  shift_expression LEFT_OP additive_expression
- {if(parseDebug){parseDebugOut << "shift_expression <- shift_expression LEFT_OP additive_expression\n";}}	 |  shift_expression RIGHT_OP additive_expression
- {if(parseDebug){parseDebugOut << "shift_expression <- shift_expression RIGHT_OP additive_expression\n";}}	;
+	: additive_expression
+	| shift_expression LEFT_OP additive_expression
+	| shift_expression RIGHT_OP additive_expression
+	;
 
 additive_expression
-	 :  multiplicative_expression
- {if(parseDebug)
-{parseDebugOut << "additive_expression <- multiplicative_expression\n";}}
-	 |  additive_expression '+' multiplicative_expression
- {if(parseDebug){parseDebugOut << "additive_expression <- additive_expression '+' multiplicative_expression\n";}}	 |  additive_expression '-' multiplicative_expression
- {if(parseDebug){parseDebugOut << "additive_expression <- additive_expression '-' multiplicative_expression\n";}}	;
+	: multiplicative_expression
+	| additive_expression '+' multiplicative_expression
+	| additive_expression '-' multiplicative_expression
+	;
 
 multiplicative_expression
-	 :  cast_expression
- {if(parseDebug)
-{parseDebugOut << "multiplicative_expression <- cast_expression\n";}}
-	 |  multiplicative_expression '*' cast_expression
- {if(parseDebug){parseDebugOut << "multiplicative_expression <- multiplicative_expression '*' cast_expression\n";}}	 |  multiplicative_expression '/' cast_expression
- {if(parseDebug){parseDebugOut << "multiplicative_expression <- multiplicative_expression '/' cast_expression\n";}}	 |  multiplicative_expression '%' cast_expression
- {if(parseDebug){parseDebugOut << "multiplicative_expression <- multiplicative_expression '%' cast_expression\n";}}	;
+	: cast_expression
+	| multiplicative_expression '*' cast_expression
+	| multiplicative_expression '/' cast_expression
+	| multiplicative_expression '%' cast_expression
+	;
 
 cast_expression
-	 :  unary_expression
- {if(parseDebug)
-{parseDebugOut << "cast_expression <- unary_expression\n";}}
-	 |  '(' type_name ')' cast_expression
- {if(parseDebug){parseDebugOut << "cast_expression <- '(' type_name ')' cast_expression\n";}}	;
+	: unary_expression
+	| '(' type_name ')' cast_expression
+	;
 
 unary_expression
-	 :  postfix_expression
- {if(parseDebug)
-{parseDebugOut << "unary_expression <- postfix_expression\n";}}
-	 |  INC_OP unary_expression
- {if(parseDebug){parseDebugOut << "unary_expression <- INC_OP unary_expression\n";}}	 |  DEC_OP unary_expression
- {if(parseDebug){parseDebugOut << "unary_expression <- DEC_OP unary_expression\n";}}	 |  unary_operator cast_expression
- {if(parseDebug){parseDebugOut << "unary_expression <- unary_operator cast_expression\n";}}	 |  SIZEOF unary_expression
- {if(parseDebug){parseDebugOut << "unary_expression <- SIZEOF unary_expression\n";}}	 |  SIZEOF '(' type_name ')'
- {if(parseDebug){parseDebugOut << "unary_expression <- SIZEOF '(' type_name ')'\n";}}	;
+	: postfix_expression
+	| INC_OP unary_expression
+	| DEC_OP unary_expression
+	| unary_operator cast_expression
+	| SIZEOF unary_expression
+	| SIZEOF '(' type_name ')'
+	;
 
 unary_operator
-	 :  '&'
- {if(parseDebug)
-{parseDebugOut << "unary_operator <- '&'\n";}}
-	 |  '*'
- {if(parseDebug){parseDebugOut << "unary_operator <- '*'\n";}}	 |  '+'
- {if(parseDebug){parseDebugOut << "unary_operator <- '+'\n";}}	 |  '-'
- {if(parseDebug){parseDebugOut << "unary_operator <- '-'\n";}}	 |  '~'
- {if(parseDebug){parseDebugOut << "unary_operator <- '~'\n";}}	 |  '!'
- {if(parseDebug){parseDebugOut << "unary_operator <- '!'\n";}}	;
+	: '&'
+	| '*'
+	| '+'
+	| '-'
+	| '~'
+	| '!'
+	;
 
 postfix_expression
-	 :  primary_expression
- {if(parseDebug)
-{parseDebugOut << "postfix_expression <- primary_expression\n";}}
-	 |  postfix_expression '[' expression ']'
- {if(parseDebug){parseDebugOut << "postfix_expression <- postfix_expression '[' expression ']'\n";}}	 |  postfix_expression '(' ')'
- {if(parseDebug){parseDebugOut << "postfix_expression <- postfix_expression '(' ')'\n";}}	 |  postfix_expression '(' argument_expression_list ')'
- {if(parseDebug){parseDebugOut << "postfix_expression <- postfix_expression '(' argument_expression_list ')'\n";}}	 |  postfix_expression '.' identifier
- {if(parseDebug){parseDebugOut << "postfix_expression <- postfix_expression '.' identifier\n";}}	 |  postfix_expression PTR_OP identifier
- {if(parseDebug){parseDebugOut << "postfix_expression <- postfix_expression PTR_OP identifier\n";}}	 |  postfix_expression INC_OP
- {if(parseDebug){parseDebugOut << "postfix_expression <- postfix_expression INC_OP\n";}}	 |  postfix_expression DEC_OP
- {if(parseDebug){parseDebugOut << "postfix_expression <- postfix_expression DEC_OP\n";}}	;
+	: primary_expression
+	| postfix_expression '[' expression ']'
+	| postfix_expression '(' ')'
+	| postfix_expression '(' argument_expression_list ')'
+	| postfix_expression '.' identifier
+	| postfix_expression PTR_OP identifier
+	| postfix_expression INC_OP
+	| postfix_expression DEC_OP
+	;
 
 primary_expression
-	 :  identifier
- {if(parseDebug)
-{parseDebugOut << "primary_expression <- identifier\n";}}
-	 |  constant
- {if(parseDebug){parseDebugOut << "primary_expression <- constant\n";}}	 |  string
- {if(parseDebug){parseDebugOut << "primary_expression <- string\n";}}	 |  '(' expression ')'
- {if(parseDebug){parseDebugOut << "primary_expression <- '(' expression ')'\n";}}	;
+	: identifier
+	| constant
+	| string
+	| '(' expression ')'
+	;
 
 argument_expression_list
-	 :  assignment_expression
- {if(parseDebug)
-{parseDebugOut << "argument_expression_list <- assignment_expression\n";}}
-	 |  argument_expression_list ',' assignment_expression
- {if(parseDebug){parseDebugOut << "argument_expression_list <- argument_expression_list ',' assignment_expression\n";}}	;
+	: assignment_expression
+	| argument_expression_list ',' assignment_expression
+	;
 
 constant
-	 :  INTEGER_CONSTANT
- {if(parseDebug)
-{parseDebugOut << "constant <- INTEGER_CONSTANT\n";}}
-	 |  CHARACTER_CONSTANT
- {if(parseDebug){parseDebugOut << "constant <- CHARACTER_CONSTANT\n";}}	 |  FLOATING_CONSTANT
- {if(parseDebug){parseDebugOut << "constant <- FLOATING_CONSTANT\n";}}	 |  ENUMERATION_CONSTANT
- {if(parseDebug){parseDebugOut << "constant <- ENUMERATION_CONSTANT\n";}}	;
+	: INTEGER_CONSTANT
+	| CHARACTER_CONSTANT
+	| FLOATING_CONSTANT
+	| ENUMERATION_CONSTANT
+	;
 
 string
-	 :  STRING_LITERAL
- {if(parseDebug)
-{parseDebugOut << "string <- STRING_LITERAL\n";}}
+	: STRING_LITERAL
 	;
 
 identifier 
-	 :  IDENTIFIER 
-	 {$$ = $1;
-	   if(parseDebug)
-	     {parseDebugOut << "identifier  <- IDENTIFIER\n";}}
-	;
+: IDENTIFIER {
+  declNode dn;
+  dn.id = $1;
+  $$ = &dn;
+ }
+  ;
 %%
 
 #include <stdio.h>
 
 extern char yytext[];
 extern int column;
-
 
 
 /*
