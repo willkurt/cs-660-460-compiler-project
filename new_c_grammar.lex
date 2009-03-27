@@ -59,11 +59,12 @@ digit	[0-9]
 integer	{digit}+
 letter	[A-Za-z]
 hex		[A-Fa-f0-9]
-id		('_'|{letter})({letter}|{digit}|'_')* 
+id		("_"|{letter})({letter}|{digit}|"_")* 
 float_const {digit}+"."{digit}+("e"[+-]?{digit}+)?
 character   \'.\'
-string   \".*\" 
-
+string   \".*\"
+ccomment "/*".*"*/"
+cppcomment "//".*"\n"
 	      
  /* %token  ENUMERATION_CONSTANT */
 
@@ -73,7 +74,8 @@ string   \".*\"
  Questionable definitions marked with ? */
 
 %%
-
+{ccomment}    {}
+{cppcomment}  {lineCount++;currentCharDepth = 0;}
 "!!S"         {st.outputToFile();}
 "\n"            {if(lexDebug)
 			{
