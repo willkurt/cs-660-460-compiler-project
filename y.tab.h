@@ -100,7 +100,8 @@
      GOTO = 316,
      CONTINUE = 317,
      BREAK = 318,
-     RETURN = 319
+     RETURN = 319,
+     ERROR = 320
    };
 #endif
 /* Tokens.  */
@@ -166,24 +167,50 @@
 #define CONTINUE 317
 #define BREAK 318
 #define RETURN 319
+#define ERROR 320
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 23 "test_c_grammar.y"
+#line 47 "new_c_grammar.y"
 {
   //consider making this a string pointer
   char* sval;
   float dval;
   int ival;
-  long lval;
   char cval;
-  struct declNode *declval;
+  /* barrayval is for all the possible specifies
+     here is the key:
+     * --storage
+     * 0-AUTO
+     * 1-REGISTER
+     * 2-STATIC
+     * 3-EXTERN
+     * 4-TYPEDEF
+     * --Types
+     * 5-VOID
+     * 6-CHAR
+     * 7-SHORT
+     * 8-INT
+     * 9-LONG
+     *10-FLOAT
+     *11-DOUBLE
+     *12-SIGNED
+     *13-UNSIGNED
+     *14-STRUCT
+     *15-UNION
+     *16-ENUM no idea what I'm doing with this!
+     *17-TYPEDEF_NAME
+     *---type qualifiers
+     *18-CONST
+     *19-VOLATILE
+   */
+  bool barrayval[20];
  }
 /* Line 1489 of yacc.c.  */
-#line 187 "y.tab.h"
+#line 214 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

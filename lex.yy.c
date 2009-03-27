@@ -1789,7 +1789,7 @@ YY_RULE_SETUP
 case 87:
 YY_RULE_SETUP
 #line 593 "new_c_grammar.lex"
-{/*return(ERROR);*/}
+{return(ERROR);}
 	YY_BREAK
 /*I have no idea if this works*/
 case 88:
