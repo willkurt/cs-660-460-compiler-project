@@ -4,10 +4,7 @@
  */
 
 #include "c_grammar.h"
-<<<<<<< HEAD:main.cpp
 #include "SymbolTable.hpp"
-=======
->>>>>>> alexlex:main.cpp
 #include <iostream>
 
 SymbolTable st;
@@ -15,6 +12,10 @@ bool lexDebug;
 bool stDebug;
 bool parseDebug;
 bool declMode = true;
+
+bool undeclVar = false;
+bool redeclVar = false;
+
 std::ofstream lexDebugOut;
 std::ofstream parseDebugOut;
 extern int lineCount;
