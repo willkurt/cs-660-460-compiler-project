@@ -365,14 +365,17 @@ $$=&dn;
 {if(parseDebug)
     {parseDebugOut << "declaration_specifiers <- type_qualifier\n";}
   
+  declNode dn;
+  dn.specs = 0;
   if($1 == "CONST")
     {
-      $$[18] = true;
+      dn.specs |= xCONST;
     }
   else if($1 == "VOLATILE")
     {
-      $$[19] = true;
+      dn.specs |= xVOLATILE;
     }
+  $$ = &dn;
 }	 
          |  type_qualifier declaration_specifiers
 {if(parseDebug)
