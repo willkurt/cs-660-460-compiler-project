@@ -4,7 +4,10 @@
  */
 
 #include "c_grammar.h"
+<<<<<<< HEAD:main.cpp
 #include "SymbolTable.hpp"
+=======
+>>>>>>> alexlex:main.cpp
 #include <iostream>
 
 SymbolTable st;

@@ -1411,8 +1411,13 @@ if(declMode){
 /*All else would be an error-note error token not working*/
 case 86:
 YY_RULE_SETUP
+<<<<<<< HEAD:lex.yy.c
 #line 224 "new_c_grammar.lex"
 {}
+=======
+#line 593 "new_c_grammar.lex"
+{return(ERROR);}
+>>>>>>> alexlex:lex.yy.c
 	YY_BREAK
 /*I have no idea if this works*/
 case 87:
