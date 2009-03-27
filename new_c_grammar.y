@@ -13,6 +13,13 @@ extern bool declMode;
 extern bool undeclVar;
 extern bool redeclVar;
 
+struct declNode{
+  char* id;
+  unsigned int specs;
+  int lineno;
+  declNode* next;
+};
+
 int prevFlag = 0;
 /* prevFlag key:
 	* 1 = short
@@ -49,34 +56,9 @@ bool unsignedFlag;
   char* sval;
   float dval;
   int ival;
+  long lval;
   char cval;
-  /* barrayval is for all the possible specifies
-     here is the key:
-     * --storage
-     * 0-AUTO
-     * 1-REGISTER
-     * 2-STATIC
-     * 3-EXTERN
-     * 4-TYPEDEF
-     * --Types
-     * 5-VOID
-     * 6-CHAR
-     * 7-SHORT
-     * 8-INT
-     * 9-LONG
-     *10-FLOAT
-     *11-DOUBLE
-     *12-SIGNED
-     *13-UNSIGNED
-     *14-STRUCT
-     *15-UNION
-     *16-ENUM no idea what I'm doing with this!
-     *17-TYPEDEF_NAME
-     *---type qualifiers
-     *18-CONST
-     *19-VOLATILE
-   */
-  bool barrayval[20];
+  struct declNode *declval;
  }
 
 
@@ -101,14 +83,15 @@ bool unsignedFlag;
 
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN ERROR
 
-%type <sval> identifier
+
+%type <declval> identifier identifier_list
 %type <sval> type_specifier storage_class_specifier
 %type <sval> type_qualifier struct_or_union
-%type <sval> declarator direct_declarator
-%type <sval> init_declarator init_declarator_list
-%type <sval> declaration declaration_list
+%type <declval> declarator direct_declarator
+%type <declval> init_declarator init_declarator_list
+%type <declval> declaration declaration_list
 
-%type <barrayval> declaration_specifiers
+%type <declval> declaration_specifiers
 
 %start translation_unit
 %%
@@ -132,35 +115,58 @@ external_declaration
  	;
 
 function_definition
-	 :  declarator {st.push();} compound_statement {st.pop();st.pop();}
+	 :  declarator {st.push();} compound_statement {st.pop();}
  {if(parseDebug)
 	{parseDebugOut << "function_definition <- declarator compound_statement\n";}}
-	 |  declarator declaration_list {st.push();} compound_statement {st.pop();st.pop();}
+	 |  declarator declaration_list {st.push();} compound_statement {st.pop();}
  {if(parseDebug)
  	{parseDebugOut << "function_definition <- declarator declaration_list compound_statement\n";}}
- 	 |  declaration_specifiers declarator {st.push();} compound_statement {st.pop();st.pop();}
+ 	 |  declaration_specifiers declarator {st.push();} compound_statement {st.pop();}
  {if(parseDebug)
  	{parseDebugOut << "function_definition <- declaration_specifiers declarator compound_statement\n";}}
- 	 |  declaration_specifiers declarator declaration_list {st.push();} compound_statement {st.pop();st.pop();}
+ 	 |  declaration_specifiers declarator declaration_list {st.push();} compound_statement {st.pop();}
  {if(parseDebug)
  	{parseDebugOut << "function_definition <- declaration_specifiers declarator declaration_list compound_statement\n";}}
  	;
 
 declaration
 	 :  declaration_specifiers ';' identifier_flag_clear
- 	  //for right now I'm just assuming no list, just a declarator
 {if(parseDebug)
     {parseDebugOut << "declaration <- declaration_specifiers ';'\n";}}
 	 |  declaration_specifiers init_declarator_list identifier_flag_clear ';'
+{
+  declNode dn = *$2;
+  SymbolContent *sc = st.searchAll((*$2).id);
+  if(sc == 0)
+    {
+      //make this an error later
+      std::cout<<"Warning! trying to use a variable not declared"<<std::endl;
+    }
+  else
+    {
+      SymbolContent newsc;
+      
+      newsc.specs = dn.specs;
+      newsc.lineno = lineCount;
+      st.update((*$2).id,newsc);
+    }
+  SymbolContent *sn = st.searchAll((*$2).id);
+ }
 {if(parseDebug)
     {parseDebugOut << "declaration <- declaration_specifiers init_declarator_list ';'\n";}}
     	;
 
 declaration_list
-	 :  start_decl declaration end_decl {/*$$ = $1;*/}
+	 :  start_decl declaration end_decl {$$ = $2;}
 {if(parseDebug)
     {parseDebugOut << "declaration_list <- declaration\n";}}
 	 |  declaration_list start_decl declaration end_decl
+{
+  declNode dn = *$3;
+  dn.next = $1;
+  $$ = &dn;
+}
+
 {if(parseDebug)
     {parseDebugOut << "declaration_list <- declaration_list declaration\n";}}
     	;
@@ -176,179 +182,185 @@ end_decl
 declaration_specifiers
 	 :  storage_class_specifier
 {if(parseDebug)
-    {parseDebugOut << "declaration_specifiers <- storage_class_specifier\n";}
-      if($1=="AUTO")
+    {parseDebugOut << "declaration_specifiers <- storage_class_specifier\n";}} 
+{
+  declNode dn;
+  dn.specs = 0;
+  if($1=="AUTO")
     {
-      $$[0] = true;
+      dn.specs |= xAUTO;
     }
   else if($1 == "REGISTER")
     {
-      $$[1] = true;
+      dn.specs |= xREGISTER;
     }
   else if($1 ==  "STATIC")
     {
-      $$[2] = true;
+      dn.specs |= xSTATIC;
     }
   else if($1 == "EXTERN")
     {
-      $$[3] = true;
+      dn.specs |= xEXTERN;
     }
   else if($1 ==  "TYPEDEF")
     {   
-      $$[4] = true;
+      dn.specs |= xTYPEDEF;
     }
-}
+    $$ = &dn;
+ }
+   
 	 |  storage_class_specifier declaration_specifiers
 {if(parseDebug)
     {parseDebugOut << "declaration_specifiers <- storage_class_specifier declaration_specifiers\n";}
-    
-  int asize = sizeof($$)/sizeof($$[0]);
-  int i;
-  for(i = 0;i < asize;i++)
-    {
-      $$[i] = $2[i];
-    }
+ }
+{
+  declNode dn = *$2;
   if($1=="AUTO")
     {
-      $$[0] = true;
+      dn.specs |= xAUTO;
     }
   else if($1 == "REGISTER")
     {
-      $$[1] = true;
+      dn.specs |= xREGISTER;
     }
   else if($1 ==  "STATIC")
     {
-      $$[2] = true;
+      dn.specs |= xSTATIC;
     }
   else if($1 == "EXTERN")
     {
-      $$[3] = true;
+      dn.specs |= xEXTERN;
     }
   else if($1 ==  "TYPEDEF")
     {   
-      $$[4] = true;
+      dn.specs |= xTYPEDEF;
     }
- }	 
+    $$ = &dn;
+ 
+}
+	 
 	|  type_specifier 
 {if(parseDebug)
     {parseDebugOut << "declaration_specifiers <- type_specifier\n";}
-  
+  }
+{
+  declNode dn;
+  dn.specs = 0;
   if($1 == "VOID")
     {
-      $$[5] = true;
+      dn.specs |= xVOID;
     }
   else if($1 == "CHAR")
     {
-      $$[6] = true;
+      dn.specs |= xCHAR;
     }
   else if($1 == "SHORT")
     {
-      $$[7] = true;
+      dn.specs |= xSHORT;
     }
   else if($1 == "INT")
     {
-      $$[8] = true;
-    }
+      dn.specs |= xINT;
+      }
   else if($1 == "LONG")
     {
-      $$[9] = true;
+      dn.specs |= xLONG;
     }
   else if($1 == "FLOAT")
     {
-      $$[10] = true;
+      dn.specs |= xFLOAT;
     }
   else if($1 == "DOUBLE")
     {
-      $$[11] = true;
+      dn.specs |= xDOUBLE;
     }
   else if($1 == "SIGNED")
     {
-      $$[12] = true;
+      dn.specs  |= xSIGNED;
     }
   else if($1 == "UNSIGNED")
     {
-      $$[13] = true; 
+      dn.specs |= xUNSIGNED; 
     }
   else if($1 == "STRUCT")
     {
-      $$[14] = true;
+      dn.specs |= xSTRUCT;
     }
   else if($1 == "UNION" )
     {
-      $$[15] = true;
+      dn.specs |= xUNION;
     }
   else if($1 ==  "ENUM")
     {
-      $$[16] = true;
+      dn.specs  |= xENUM;
     }
   else if($1 == "TYPEDEF_NAME")
     {
-      $$[17] =  true;
-    }
-}	 
+      dn.specs |=  xTYPEDEF_NAME;
+      }
+$$=&dn;
+}
+	 
      |  type_specifier declaration_specifiers  
 {if(parseDebug)
     {parseDebugOut << "declaration_specifiers <- type_specifier declaration_specifiers\n";}
-  
-  int asize = sizeof($$)/sizeof($$[0]);
-  int i;
-  for(i = 0;i < asize;i++)
-    {
-      $$[i] = $2[i];
-    }
+ }
+	 {
+     declNode dn = *$2;
  if($1 == "VOID")
     {
-      $$[5] = true;
+      dn.specs |= xVOID;
     }
   else if($1 == "CHAR")
     {
-      $$[6] = true;
+      dn.specs |= xCHAR;
     }
   else if($1 == "SHORT")
     {
-      $$[7] = true;
+      dn.specs |= xSHORT;
     }
   else if($1 == "INT")
     {
-      $$[8] = true;
+      dn.specs |= xINT;
     }
   else if($1 == "LONG")
     {
-      $$[9] = true;
+      dn.specs |= xLONG;
     }
   else if($1 == "FLOAT")
     {
-      $$[10] = true;
+      dn.specs |= xFLOAT;
     }
   else if($1 == "DOUBLE")
     {
-      $$[11] = true;
+      dn.specs |= xDOUBLE;
     }
   else if($1 == "SIGNED")
     {
-      $$[12] = true;
+      dn.specs  |= xSIGNED;
     }
   else if($1 == "UNSIGNED")
     {
-      $$[13] = true; 
+      dn.specs |= xUNSIGNED; 
     }
   else if($1 == "STRUCT")
     {
-      $$[14] = true;
+      dn.specs |= xSTRUCT;
     }
   else if($1 == "UNION" )
     {
-      $$[15] = true;
+      dn.specs |= xUNION;
     }
   else if($1 ==  "ENUM")
     {
-      $$[16] = true;
+      dn.specs  |= xENUM;
     }
   else if($1 == "TYPEDEF_NAME")
     {
-      $$[17] =  true;
+      dn.specs |=  xTYPEDEF_NAME;
     }
-}	 
+ $$ = &dn;
+ }
          |  type_qualifier 
 {if(parseDebug)
     {parseDebugOut << "declaration_specifiers <- type_qualifier\n";}
@@ -365,21 +377,19 @@ declaration_specifiers
          |  type_qualifier declaration_specifiers
 {if(parseDebug)
     {parseDebugOut << "declaration_specifiers <- type_qualifier declaration_specifiers\n";}
-
-  int asize = sizeof($$)/sizeof($$[0]);
-  int i;
-  for(i = 0;i < asize;i++)
+}
+{
+  declNode dn  = *$2;
+  if($1 == "CONST")
     {
-      $$[i] = $2[i];
-    }
- if($1 == "CONST")
-    {
-      $$[18] = true;
+      dn.specs  |= xCONST;
     }
   else if($1 == "VOLATILE")
     {
-      $$[19] = true;
-    }
+      dn.specs |= xVOLATILE;
+      }
+  $$ = &dn;
+
 }
     	;
 
@@ -875,40 +885,62 @@ declarator
 	 |  pointer direct_declarator
  {if(parseDebug)
  	{parseDebugOut << "declarator <- pointer direct_declarator\n";}
- 	$$ = $2;}
+        declNode dn = *$2;
+	dn.specs |= xPOINTER;
+	$$ = &dn;
+        }
  	;
 
-/*for now I'm just passing up the id string*/
+
 direct_declarator
 	 :  identifier
  {if(parseDebug)
 	{parseDebugOut << "direct_declarator <- identifier\n";}
-	$$ = $1;}
+	declNode dn = *$1;
+	dn.next = 0;
+	$$ = &dn;
+}
 	 |  '(' declarator ')'
  {if(parseDebug)
  	{parseDebugOut << "direct_declarator <- '(' declarator ')'\n";}
- 	$$ = $2;}/*not quite sure what this is for*/
+ 	 declNode dn = *$2;
+	 $$ = &dn;
+}
+//array
  	 |  direct_declarator '[' ']'
  {if(parseDebug)
  	{parseDebugOut << "direct_declarator <- direct_declarator '[' ']'\n";}
- 	$$ = $1;}
+ 	 declNode dn = *$1;
+	 dn.specs |= xARRAY;
+	 $$=&dn;
+}
  	 |  direct_declarator '[' constant_expression ']'
  {if(parseDebug)
  	{parseDebugOut << "direct_declarator <- direct_declarator '[' constant_expression ']'\n";}
- 	$$ = $1;}
+        declNode dn = *$1;
+	dn.specs |= xARRAY;
+	$$=&dn;}
  	 |  direct_declarator '(' ')'
  {if(parseDebug)
  	{parseDebugOut << "direct_declarator <- direct_declarator '(' ')'\n";}
- 	$$ = $1;
+ 	 declNode dn = *$1;
+	 dn.specs |= xFUNCTION;
+	 $$=&dn;
  	st.push();}/*though empty all funcs wil pop 2x*/ 	
  	 |  direct_declarator '(' {st.push();} parameter_type_list ')'
  {if(parseDebug)
  	{parseDebugOut << "direct_declarator <- direct_declarator '(' parameter_type_list ')'\n";}
- 	$$ = $1;}
+   declNode dn = *$1;
+   dn.specs |= xFUNCTION;
+   $$=&dn;
+}
  	 |  direct_declarator '(' identifier_list ')'
  {if(parseDebug)
  	{parseDebugOut << "direct_declarator <- direct_declarator '(' identifier_list ')'\n";}
- 	$$ = $1;}
+  declNode dn = *$1;
+  dn.specs |= xFUNCTION;
+  $$=&dn;
+}
  	;
 
 pointer
@@ -968,10 +1000,19 @@ parameter_declaration
 identifier_list
 	 :  identifier
  {if(parseDebug)
-	{parseDebugOut << "identifier_list <- identifier\n";}}
+	{parseDebugOut << "identifier_list <- identifier\n";}
+
+ declNode dn = *$1;
+  $$ = &dn;
+}
 	 |  identifier_list ',' identifier
  {if(parseDebug)
- 	{parseDebugOut << "identifier_list <- identifier_list ',' identifier\n";}}
+ 	{parseDebugOut << "identifier_list <- identifier_list ',' identifier\n";}
+
+   declNode dn = *$1;
+   dn.next = $3;
+   $$ = &dn;
+}
  	;
 
 initializer
@@ -1050,7 +1091,7 @@ statement
 	 :  labeled_statement
  {if(parseDebug)
 	{parseDebugOut << "statement <- labeled_statement\n";}}
-	 |  compound_statement
+|{st.push();}  compound_statement {st.pop();}
  {if(parseDebug)
  	{parseDebugOut << "statement <- compound_statement\n";}}
  	 |  expression_statement
@@ -1483,7 +1524,10 @@ string
 
 identifier 
 	 :  IDENTIFIER 
-	 {$$ = $1;
+	 {
+	   declNode dn;
+	   dn.id = $1;
+	   $$ = &dn;
 	   if(parseDebug)
 	     {parseDebugOut << "identifier  <- IDENTIFIER\n";}
 	   if(undeclVar || redeclVar) 

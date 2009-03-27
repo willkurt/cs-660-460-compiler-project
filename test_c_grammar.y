@@ -78,6 +78,7 @@ external_declaration
 function_definition
 : declarator {st.push();} compound_statement {st.pop();st.pop();}
 | declarator declaration_list {st.push();} compound_statement {st.pop();}
+//double chech this 2x poping stuff
 | declaration_specifiers declarator {st.push();} compound_statement {st.pop();st.pop();}
 | declaration_specifiers declarator declaration_list {st.push();}compound_statement {st.pop();st.pop();}
 	;

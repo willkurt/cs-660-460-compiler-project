@@ -174,43 +174,18 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 47 "new_c_grammar.y"
+#line 54 "new_c_grammar.y"
 {
   //consider making this a string pointer
   char* sval;
   float dval;
   int ival;
+  long lval;
   char cval;
-  /* barrayval is for all the possible specifies
-     here is the key:
-     * --storage
-     * 0-AUTO
-     * 1-REGISTER
-     * 2-STATIC
-     * 3-EXTERN
-     * 4-TYPEDEF
-     * --Types
-     * 5-VOID
-     * 6-CHAR
-     * 7-SHORT
-     * 8-INT
-     * 9-LONG
-     *10-FLOAT
-     *11-DOUBLE
-     *12-SIGNED
-     *13-UNSIGNED
-     *14-STRUCT
-     *15-UNION
-     *16-ENUM no idea what I'm doing with this!
-     *17-TYPEDEF_NAME
-     *---type qualifiers
-     *18-CONST
-     *19-VOLATILE
-   */
-  bool barrayval[20];
+  struct declNode *declval;
  }
 /* Line 1489 of yacc.c.  */
-#line 214 "y.tab.h"
+#line 189 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
