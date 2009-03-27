@@ -97,7 +97,7 @@ bool unsignedFlag;
 %%
 
 translation_unit
-	 :  external_declaration
+:  external_declaration 
  {if(parseDebug)
 	{parseDebugOut << "translation_unit <- external_declaration\n";}}
 	 |  translation_unit external_declaration
@@ -115,16 +115,16 @@ external_declaration
  	;
 
 function_definition
-	 :  declarator {st.push();} compound_statement {st.pop();}
+:  declarator {st.push();declMode = false;} compound_statement {st.pop();}
  {if(parseDebug)
 	{parseDebugOut << "function_definition <- declarator compound_statement\n";}}
-	 |  declarator declaration_list {st.push();} compound_statement {st.pop();}
+|  declarator declaration_list {st.push();declMode=false;} compound_statement {st.pop();}
  {if(parseDebug)
  	{parseDebugOut << "function_definition <- declarator declaration_list compound_statement\n";}}
- 	 |  declaration_specifiers declarator {st.push();} compound_statement {st.pop();}
+|  declaration_specifiers declarator {st.push();declMode=false;} compound_statement {st.pop();}
  {if(parseDebug)
  	{parseDebugOut << "function_definition <- declaration_specifiers declarator compound_statement\n";}}
- 	 |  declaration_specifiers declarator declaration_list {st.push();} compound_statement {st.pop();}
+|  declaration_specifiers declarator declaration_list {st.push();declMode=false;} compound_statement {st.pop();}
  {if(parseDebug)
  	{parseDebugOut << "function_definition <- declaration_specifiers declarator declaration_list compound_statement\n";}}
  	;
@@ -181,7 +181,8 @@ end_decl
 
 declaration_specifiers
 	 :  storage_class_specifier
-{if(parseDebug)
+	 {declMode = true;
+if(parseDebug)
     {parseDebugOut << "declaration_specifiers <- storage_class_specifier\n";}} 
 {
   declNode dn;
@@ -210,7 +211,8 @@ declaration_specifiers
  }
    
 	 |  storage_class_specifier declaration_specifiers
-{if(parseDebug)
+	 {declMode = true;
+if(parseDebug)
     {parseDebugOut << "declaration_specifiers <- storage_class_specifier declaration_specifiers\n";}
  }
 {
@@ -240,7 +242,8 @@ declaration_specifiers
 }
 	 
 	|  type_specifier 
-{if(parseDebug)
+	{declMode = true;
+if(parseDebug)
     {parseDebugOut << "declaration_specifiers <- type_specifier\n";}
   }
 {
@@ -302,7 +305,8 @@ $$=&dn;
 }
 	 
      |  type_specifier declaration_specifiers  
-{if(parseDebug)
+     {declMode = true;
+if(parseDebug)
     {parseDebugOut << "declaration_specifiers <- type_specifier declaration_specifiers\n";}
  }
 	 {
@@ -378,7 +382,8 @@ $$=&dn;
   $$ = &dn;
 }	 
          |  type_qualifier declaration_specifiers
-{if(parseDebug)
+	 {declMode = true; 
+if(parseDebug)
     {parseDebugOut << "declaration_specifiers <- type_qualifier declaration_specifiers\n";}
 }
 {

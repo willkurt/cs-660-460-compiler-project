@@ -1737,7 +1737,7 @@ YY_RULE_SETUP
     if(st.shadowing(yytext))
       {
 	SymbolContent* shadowsc = st.searchAll(yytext);
-	std::cout<<"warning: "<<yytext<<" is shadowing an earlier declaration at line: "<<(*shadowsc).lineno<<std::endl;
+	std::cout<<"warning: "<<yytext<<" is shadowing an earlier declaration at line: "<<(*shadowsc).specs<<std::endl;
       }
     /*actually I might want to call an error, but for now this is allowed*/
     if(!st.add(yytext,sc))
@@ -1753,7 +1753,9 @@ YY_RULE_SETUP
   else{
   	if(st.searchTop(yytext))
   	{
-  	std::cout << "using in same scope" << std::endl;
+	  /* I don't think we need this anymore
+	     std::cout << "using in same scope" << std::endl;
+	  */
   	}
   	else if(st.searchAll(yytext))
   	{
@@ -1775,16 +1777,16 @@ YY_RULE_SETUP
 /*All else would be an error-note error token not working*/
 case 89:
 YY_RULE_SETUP
-#line 597 "new_c_grammar.lex"
+#line 599 "new_c_grammar.lex"
 {return(ERROR);}
 	YY_BREAK
 /*I have no idea if this works*/
 case 90:
 YY_RULE_SETUP
-#line 602 "new_c_grammar.lex"
+#line 604 "new_c_grammar.lex"
 ECHO;
 	YY_BREAK
-#line 1788 "lex.yy.c"
+#line 1790 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2782,7 +2784,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 602 "new_c_grammar.lex"
+#line 604 "new_c_grammar.lex"
 
 
 

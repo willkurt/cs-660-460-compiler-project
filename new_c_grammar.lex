@@ -559,7 +559,7 @@ currentCharDepth += yyleng;return ('?'); }
     if(st.shadowing(yytext))
       {
 	SymbolContent* shadowsc = st.searchAll(yytext);
-	std::cout<<"warning: "<<yytext<<" is shadowing an earlier declaration at line: "<<(*shadowsc).lineno<<std::endl;
+	std::cout<<"warning: "<<yytext<<" is shadowing an earlier declaration at line: "<<(*shadowsc).specs<<std::endl;
       }
     /*actually I might want to call an error, but for now this is allowed*/
     if(!st.add(yytext,sc))
@@ -575,7 +575,9 @@ currentCharDepth += yyleng;return ('?'); }
   else{
   	if(st.searchTop(yytext))
   	{
-  	std::cout << "using in same scope" << std::endl;
+	  /* I don't think we need this anymore
+	     std::cout << "using in same scope" << std::endl;
+	  */
   	}
   	else if(st.searchAll(yytext))
   	{
