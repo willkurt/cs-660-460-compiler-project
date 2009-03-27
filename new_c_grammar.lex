@@ -63,7 +63,7 @@ id		("_"|{letter})({letter}|{digit}|"_")*
 float_const {digit}+"."{digit}+("e"[+-]?{digit}+)?
 character   \'.\'
 string   \".*\"
-ccomment "/*".*"*/"
+ccomment "/*"(.|"\n")"*/"
 cppcomment "//".*"\n"
 	      
  /* %token  ENUMERATION_CONSTANT */
