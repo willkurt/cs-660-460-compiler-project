@@ -4,7 +4,7 @@
  */
 
 #include "c_grammar.h"
-#include "SymbolTable.hpp"
+#include "SymbolTable.cpp"
 #include <iostream>
 
 SymbolTable st;
@@ -12,11 +12,17 @@ bool lexDebug;
 bool stDebug;
 bool parseDebug;
 bool declMode = true;
+
+bool undeclVar = false;
+bool redeclVar = false;
+
 std::ofstream lexDebugOut;
 std::ofstream parseDebugOut;
 extern int lineCount;
 extern int currentCharDepth;
 extern char *yytext;
+
+
 /*debug outputs we're worried about initially are:
  * -d with l or s or p (for lexer, symboltable, parser)
  *
@@ -59,7 +65,14 @@ int main(int argc, char* argv[])
   //some more testing
   //I actually just put this here to make sure it would compile
   
-  yyparse();
+  if(yyparse() == 0)
+  {
+  std::cout<< "Success" << std::endl;
+  }
+  else
+  {
+  std::cout<< "Error" << std::endl;
+  }
 
   //print symbol table if necessary
   if(stDebug)
