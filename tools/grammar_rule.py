@@ -64,7 +64,6 @@ class GrammarRule:
                 remaining.remove(current)
         self.struct_vars = set(all_struct_vars)
 
-
     def rule_to_string(self):
         std_spacing = "    "
         rule_string = ""
@@ -78,10 +77,25 @@ class GrammarRule:
         rule_string += std_spacing+";\n"
         return rule_string
 
-    #creates the c struct
+    #creates the string rep of a c struct
     #maybe an actual class later on?
     def c_struct(self):
-        pass
+        
+        struct_string = "struct "+self.rule+"_node {\n"
+        for each in self.struct_vars:
+            if "char_lit_" in each:
+                struct_string += "char "+each+";\n"
+            #int is the default value for tokens
+            #change with actual grammar as is necessary
+            elif "token_" in each:
+                struct_string += "int "+each+";\n"
+            #only remaining case is a node ptr
+            else:
+                struct_string += each[:-2]+" *"+each+";\n"
+        struct_string += "}\n"
+        
+        return struct_string
+        
             
 
     #create the yylval for the struct
