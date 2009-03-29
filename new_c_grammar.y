@@ -929,21 +929,24 @@ direct_declarator
 	dn.specs |= xARRAY;
 	$$=&dn;}
  	 |  direct_declarator '(' ')'
- {if(parseDebug)
+ {
+if(parseDebug)
  	{parseDebugOut << "direct_declarator <- direct_declarator '(' ')'\n";}
  	 declNode dn = *$1;
 	 dn.specs |= xFUNCTION;
 	 $$=&dn;
  	st.push();}/*though empty all funcs wil pop 2x*/ 	
  	 |  direct_declarator '(' {st.push();} parameter_type_list ')'
- {if(parseDebug)
+ {
+if(parseDebug)
  	{parseDebugOut << "direct_declarator <- direct_declarator '(' parameter_type_list ')'\n";}
    declNode dn = *$1;
    dn.specs |= xFUNCTION;
    $$=&dn;
 }
  	 |  direct_declarator '(' identifier_list ')'
- {if(parseDebug)
+	 {
+if(parseDebug)
  	{parseDebugOut << "direct_declarator <- direct_declarator '(' identifier_list ')'\n";}
   declNode dn = *$1;
   dn.specs |= xFUNCTION;

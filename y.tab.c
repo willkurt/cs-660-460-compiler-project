@@ -696,22 +696,22 @@ static const yytype_uint16 yyrline[] =
      775,   779,   786,   789,   795,   799,   806,   810,   816,   822,
      825,   828,   831,   837,   840,   846,   849,   852,   858,   861,
      864,   870,   873,   879,   882,   889,   893,   904,   911,   918,
-     925,   931,   938,   938,   945,   955,   958,   961,   964,   970,
-     973,   979,   982,   988,   991,   997,  1000,  1003,  1009,  1016,
-    1027,  1030,  1033,  1039,  1042,  1048,  1051,  1057,  1060,  1063,
-    1069,  1072,  1075,  1078,  1081,  1084,  1087,  1090,  1093,  1099,
-    1102,  1102,  1102,  1105,  1108,  1111,  1114,  1120,  1123,  1126,
-    1132,  1135,  1141,  1144,  1147,  1150,  1156,  1159,  1165,  1168,
-    1171,  1177,  1180,  1183,  1186,  1189,  1192,  1195,  1198,  1201,
-    1204,  1210,  1213,  1216,  1219,  1222,  1228,  1231,  1237,  1240,
-    1246,  1249,  1252,  1255,  1258,  1261,  1264,  1267,  1270,  1273,
-    1276,  1282,  1285,  1291,  1297,  1300,  1306,  1309,  1315,  1318,
-    1324,  1327,  1333,  1336,  1342,  1345,  1348,  1354,  1357,  1360,
-    1363,  1366,  1372,  1375,  1378,  1384,  1387,  1390,  1396,  1399,
-    1402,  1405,  1411,  1414,  1420,  1423,  1426,  1429,  1432,  1435,
-    1441,  1444,  1447,  1450,  1453,  1456,  1462,  1465,  1468,  1471,
-    1474,  1477,  1480,  1483,  1489,  1492,  1495,  1498,  1504,  1507,
-    1513,  1516,  1519,  1522,  1528,  1534,  1547
+     925,   931,   939,   939,   947,   958,   961,   964,   967,   973,
+     976,   982,   985,   991,   994,  1000,  1003,  1006,  1012,  1019,
+    1030,  1033,  1036,  1042,  1045,  1051,  1054,  1060,  1063,  1066,
+    1072,  1075,  1078,  1081,  1084,  1087,  1090,  1093,  1096,  1102,
+    1105,  1105,  1105,  1108,  1111,  1114,  1117,  1123,  1126,  1129,
+    1135,  1138,  1144,  1147,  1150,  1153,  1159,  1162,  1168,  1171,
+    1174,  1180,  1183,  1186,  1189,  1192,  1195,  1198,  1201,  1204,
+    1207,  1213,  1216,  1219,  1222,  1225,  1231,  1234,  1240,  1243,
+    1249,  1252,  1255,  1258,  1261,  1264,  1267,  1270,  1273,  1276,
+    1279,  1285,  1288,  1294,  1300,  1303,  1309,  1312,  1318,  1321,
+    1327,  1330,  1336,  1339,  1345,  1348,  1351,  1357,  1360,  1363,
+    1366,  1369,  1375,  1378,  1381,  1387,  1390,  1393,  1399,  1402,
+    1405,  1408,  1414,  1417,  1423,  1426,  1429,  1432,  1435,  1438,
+    1444,  1447,  1450,  1453,  1456,  1459,  1465,  1468,  1471,  1474,
+    1477,  1480,  1483,  1486,  1492,  1495,  1498,  1501,  1507,  1510,
+    1516,  1519,  1522,  1525,  1531,  1537,  1550
 };
 #endif
 
@@ -3161,7 +3161,8 @@ if(parseDebug)
 
   case 91:
 #line 932 "new_c_grammar.y"
-    {if(parseDebug)
+    {std::cout<<"I'm a function!"<<std::endl;
+if(parseDebug)
  	{parseDebugOut << "direct_declarator <- direct_declarator '(' ')'\n";}
  	 declNode dn = *(yyvsp[(1) - (3)].declval);
 	 dn.specs |= xFUNCTION;
@@ -3170,13 +3171,14 @@ if(parseDebug)
     break;
 
   case 92:
-#line 938 "new_c_grammar.y"
+#line 939 "new_c_grammar.y"
     {st.push();}
     break;
 
   case 93:
-#line 939 "new_c_grammar.y"
-    {if(parseDebug)
+#line 940 "new_c_grammar.y"
+    {std::cout<<"I'm a function!"<<std::endl;
+if(parseDebug)
  	{parseDebugOut << "direct_declarator <- direct_declarator '(' parameter_type_list ')'\n";}
    declNode dn = *(yyvsp[(1) - (5)].declval);
    dn.specs |= xFUNCTION;
@@ -3185,8 +3187,9 @@ if(parseDebug)
     break;
 
   case 94:
-#line 946 "new_c_grammar.y"
-    {if(parseDebug)
+#line 948 "new_c_grammar.y"
+    {std::cout<<"I'm a function!"<<std::endl;
+if(parseDebug)
  	{parseDebugOut << "direct_declarator <- direct_declarator '(' identifier_list ')'\n";}
   declNode dn = *(yyvsp[(1) - (4)].declval);
   dn.specs |= xFUNCTION;
@@ -3195,85 +3198,85 @@ if(parseDebug)
     break;
 
   case 95:
-#line 956 "new_c_grammar.y"
+#line 959 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "pointer <- '*'\n";}}
     break;
 
   case 96:
-#line 959 "new_c_grammar.y"
+#line 962 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "pointer <- '*' type_qualifier_list\n";}}
     break;
 
   case 97:
-#line 962 "new_c_grammar.y"
+#line 965 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "pointer <- '*' pointer\n";}}
     break;
 
   case 98:
-#line 965 "new_c_grammar.y"
+#line 968 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "pointer <- '*' type_qualifier_list pointer\n";}}
     break;
 
   case 99:
-#line 971 "new_c_grammar.y"
+#line 974 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "type_qualifier_list <- type_qualifier\n";}}
     break;
 
   case 100:
-#line 974 "new_c_grammar.y"
+#line 977 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "type_qualifier_list <- type_qualifier_list type_qualifier\n";}}
     break;
 
   case 101:
-#line 980 "new_c_grammar.y"
+#line 983 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "parameter_type_list <- parameter_list\n";}}
     break;
 
   case 102:
-#line 983 "new_c_grammar.y"
+#line 986 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "parameter_type_list <- parameter_list ',' ELIPSIS\n";}}
     break;
 
   case 103:
-#line 989 "new_c_grammar.y"
+#line 992 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "parameter_list <- parameter_declaration\n";}}
     break;
 
   case 104:
-#line 992 "new_c_grammar.y"
+#line 995 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "parameter_list <- parameter_list ',' parameter_declaration\n";}}
     break;
 
   case 105:
-#line 998 "new_c_grammar.y"
+#line 1001 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "parameter_declaration <- declaration_specifiers declarator\n";}}
     break;
 
   case 106:
-#line 1001 "new_c_grammar.y"
+#line 1004 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "parameter_declaration <- declaration_specifiers\n";}}
     break;
 
   case 107:
-#line 1004 "new_c_grammar.y"
+#line 1007 "new_c_grammar.y"
     {if(parseDebug)
  {parseDebugOut << "parameter_declaration <- declaration_specifiers abstract_declarator\n";}}
     break;
 
   case 108:
-#line 1010 "new_c_grammar.y"
+#line 1013 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "identifier_list <- identifier\n";}
 
@@ -3283,7 +3286,7 @@ if(parseDebug)
     break;
 
   case 109:
-#line 1017 "new_c_grammar.y"
+#line 1020 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "identifier_list <- identifier_list ',' identifier\n";}
 
@@ -3294,815 +3297,815 @@ if(parseDebug)
     break;
 
   case 110:
-#line 1028 "new_c_grammar.y"
+#line 1031 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "initializer <- assignment_expression\n";}}
     break;
 
   case 111:
-#line 1031 "new_c_grammar.y"
+#line 1034 "new_c_grammar.y"
     {if(parseDebug)
  {parseDebugOut << "initializer <- '{' initializer_list '}'\n";}}
     break;
 
   case 112:
-#line 1034 "new_c_grammar.y"
+#line 1037 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "initializer <- '{' initializer_list ',' '}'\n";}}
     break;
 
   case 113:
-#line 1040 "new_c_grammar.y"
+#line 1043 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "initializer_list <- initializer\n";}}
     break;
 
   case 114:
-#line 1043 "new_c_grammar.y"
+#line 1046 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "initializer_list <- initializer_list ',' initializer\n";}}
     break;
 
   case 115:
-#line 1049 "new_c_grammar.y"
+#line 1052 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "type_name <- specifier_qualifier_list\n";}}
     break;
 
   case 116:
-#line 1052 "new_c_grammar.y"
+#line 1055 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "type_name <- specifier_qualifier_list abstract_declarator\n";}}
     break;
 
   case 117:
-#line 1058 "new_c_grammar.y"
+#line 1061 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "abstract_declarator <- pointer\n";}}
     break;
 
   case 118:
-#line 1061 "new_c_grammar.y"
+#line 1064 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "abstract_declarator <- direct_abstract_declarator\n";}}
     break;
 
   case 119:
-#line 1064 "new_c_grammar.y"
+#line 1067 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "abstract_declarator <- pointer direct_abstract_declarator\n";}}
     break;
 
   case 120:
-#line 1070 "new_c_grammar.y"
+#line 1073 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "direct_abstract_declarator <- '(' abstract_declarator ')'\n";}}
     break;
 
   case 121:
-#line 1073 "new_c_grammar.y"
+#line 1076 "new_c_grammar.y"
     {if(parseDebug)
  {parseDebugOut << "direct_abstract_declarator <- '[' ']'\n";}}
     break;
 
   case 122:
-#line 1076 "new_c_grammar.y"
+#line 1079 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "direct_abstract_declarator <- '[' constant_expression ']'\n";}}
     break;
 
   case 123:
-#line 1079 "new_c_grammar.y"
+#line 1082 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '[' ']'\n";}}
     break;
 
   case 124:
-#line 1082 "new_c_grammar.y"
+#line 1085 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '[' constant_expression ']'\n";}}
     break;
 
   case 125:
-#line 1085 "new_c_grammar.y"
+#line 1088 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "direct_abstract_declarator <- '(' ')'\n";}}
     break;
 
   case 126:
-#line 1088 "new_c_grammar.y"
+#line 1091 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "direct_abstract_declarator <- '(' parameter_type_list ')'\n";}}
     break;
 
   case 127:
-#line 1091 "new_c_grammar.y"
+#line 1094 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '(' ')'\n";}}
     break;
 
   case 128:
-#line 1094 "new_c_grammar.y"
+#line 1097 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '(' parameter_type_list ')'\n";}}
     break;
 
   case 129:
-#line 1100 "new_c_grammar.y"
+#line 1103 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "statement <- labeled_statement\n";}}
     break;
 
   case 130:
-#line 1102 "new_c_grammar.y"
+#line 1105 "new_c_grammar.y"
     {st.push();}
     break;
 
   case 131:
-#line 1102 "new_c_grammar.y"
+#line 1105 "new_c_grammar.y"
     {st.pop();}
     break;
 
   case 132:
-#line 1103 "new_c_grammar.y"
+#line 1106 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "statement <- compound_statement\n";}}
     break;
 
   case 133:
-#line 1106 "new_c_grammar.y"
+#line 1109 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "statement <- expression_statement\n";}}
     break;
 
   case 134:
-#line 1109 "new_c_grammar.y"
+#line 1112 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "statement <- selection_statement\n";}}
     break;
 
   case 135:
-#line 1112 "new_c_grammar.y"
+#line 1115 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "statement <- iteration_statement\n";}}
     break;
 
   case 136:
-#line 1115 "new_c_grammar.y"
+#line 1118 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "statement <- jump_statement\n";}}
     break;
 
   case 137:
-#line 1121 "new_c_grammar.y"
+#line 1124 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "labeled_statement <- identifier ':' statement\n";}}
     break;
 
   case 138:
-#line 1124 "new_c_grammar.y"
+#line 1127 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "labeled_statement <- CASE constant_expression ':' statement\n";}}
     break;
 
   case 139:
-#line 1127 "new_c_grammar.y"
+#line 1130 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "labeled_statement <- DEFAULT ':' statement\n";}}
     break;
 
   case 140:
-#line 1133 "new_c_grammar.y"
+#line 1136 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "expression_statement <- ';'\n";}}
     break;
 
   case 141:
-#line 1136 "new_c_grammar.y"
+#line 1139 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "expression_statement <- expression ';'\n";}}
     break;
 
   case 142:
-#line 1142 "new_c_grammar.y"
+#line 1145 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "compound_statement <- '{' '}'\n";}}
     break;
 
   case 143:
-#line 1145 "new_c_grammar.y"
+#line 1148 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "compound_statement <- '{' statement_list '}'\n";}}
     break;
 
   case 144:
-#line 1148 "new_c_grammar.y"
+#line 1151 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "compound_statement <- '{' declaration_list '}'\n";}}
     break;
 
   case 145:
-#line 1151 "new_c_grammar.y"
+#line 1154 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "compound_statement <- '{' declaration_list statement_list '}'\n";}}
     break;
 
   case 146:
-#line 1157 "new_c_grammar.y"
+#line 1160 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "statement_list <- statement\n";}}
     break;
 
   case 147:
-#line 1160 "new_c_grammar.y"
+#line 1163 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "statement_list <- statement_list statement\n";}}
     break;
 
   case 148:
-#line 1166 "new_c_grammar.y"
+#line 1169 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "selection_statement <- IF '(' expression ')' statement\n";}}
     break;
 
   case 149:
-#line 1169 "new_c_grammar.y"
+#line 1172 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "selection_statement <- IF '(' expression ')' statement ELSE statement\n";}}
     break;
 
   case 150:
-#line 1172 "new_c_grammar.y"
+#line 1175 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "selection_statement <- SWITCH '(' expression ')' statement\n";}}
     break;
 
   case 151:
-#line 1178 "new_c_grammar.y"
+#line 1181 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "iteration_statement <- WHILE '(' expression ')' statement\n";}}
     break;
 
   case 152:
-#line 1181 "new_c_grammar.y"
+#line 1184 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "iteration_statement <- DO statement WHILE '(' expression ')' ';'\n";}}
     break;
 
   case 153:
-#line 1184 "new_c_grammar.y"
+#line 1187 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "iteration_statement <- FOR '(' ';' ';' ')' statement\n";}}
     break;
 
   case 154:
-#line 1187 "new_c_grammar.y"
+#line 1190 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "iteration_statement <- FOR '(' ';' ';' expression ')' statement\n";}}
     break;
 
   case 155:
-#line 1190 "new_c_grammar.y"
+#line 1193 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "iteration_statement <- FOR '(' ';' expression ';' ')' statement\n";}}
     break;
 
   case 156:
-#line 1193 "new_c_grammar.y"
+#line 1196 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "iteration_statement <- FOR '(' ';' expression ';' expression ')' statement\n";}}
     break;
 
   case 157:
-#line 1196 "new_c_grammar.y"
+#line 1199 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "iteration_statement <- FOR '(' expression ';' ';' ')' statement\n";}}
     break;
 
   case 158:
-#line 1199 "new_c_grammar.y"
+#line 1202 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "iteration_statement <- FOR '(' expression ';' ';' expression ')' statement\n";}}
     break;
 
   case 159:
-#line 1202 "new_c_grammar.y"
+#line 1205 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "iteration_statement <- FOR '(' expression ';' expression ';' ')' statement\n";}}
     break;
 
   case 160:
-#line 1205 "new_c_grammar.y"
+#line 1208 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "iteration_statement <- FOR '(' expression ';' expression ';' expression ')' statement\n";}}
     break;
 
   case 161:
-#line 1211 "new_c_grammar.y"
+#line 1214 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "jump_statement <- GOTO identifier ';'\n";}}
     break;
 
   case 162:
-#line 1214 "new_c_grammar.y"
+#line 1217 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "jump_statement <- CONTINUE ';'\n";}}
     break;
 
   case 163:
-#line 1217 "new_c_grammar.y"
+#line 1220 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "jump_statement <- BREAK ';'\n";}}
     break;
 
   case 164:
-#line 1220 "new_c_grammar.y"
+#line 1223 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "jump_statement <- RETURN ';'\n";}}
     break;
 
   case 165:
-#line 1223 "new_c_grammar.y"
+#line 1226 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "jump_statement <- RETURN expression ';'\n";}}
     break;
 
   case 166:
-#line 1229 "new_c_grammar.y"
+#line 1232 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "expression <- assignment_expression\n";}}
     break;
 
   case 167:
-#line 1232 "new_c_grammar.y"
+#line 1235 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "expression <- expression ',' assignment_expression\n";}}
     break;
 
   case 168:
-#line 1238 "new_c_grammar.y"
+#line 1241 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "assignment_expression <- conditional_expression\n";}}
     break;
 
   case 169:
-#line 1241 "new_c_grammar.y"
+#line 1244 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "assignment_expression <- unary_expression assignment_operator assignment_expression\n";}}
     break;
 
   case 170:
-#line 1247 "new_c_grammar.y"
+#line 1250 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "assignment_operator <- '='\n";}}
     break;
 
   case 171:
-#line 1250 "new_c_grammar.y"
+#line 1253 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "assignment_operator <- MUL_ASSIGN\n";}}
     break;
 
   case 172:
-#line 1253 "new_c_grammar.y"
+#line 1256 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "assignment_operator <- DIV_ASSIGN\n";}}
     break;
 
   case 173:
-#line 1256 "new_c_grammar.y"
+#line 1259 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "assignment_operator <- MOD_ASSIGN\n";}}
     break;
 
   case 174:
-#line 1259 "new_c_grammar.y"
+#line 1262 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "assignment_operator <- ADD_ASSIGN\n";}}
     break;
 
   case 175:
-#line 1262 "new_c_grammar.y"
+#line 1265 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "assignment_operator <- SUB_ASSIGN\n";}}
     break;
 
   case 176:
-#line 1265 "new_c_grammar.y"
+#line 1268 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "assignment_operator <- LEFT_ASSIGN\n";}}
     break;
 
   case 177:
-#line 1268 "new_c_grammar.y"
+#line 1271 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "assignment_operator <- RIGHT_ASSIGN\n";}}
     break;
 
   case 178:
-#line 1271 "new_c_grammar.y"
+#line 1274 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "assignment_operator <- AND_ASSIGN\n";}}
     break;
 
   case 179:
-#line 1274 "new_c_grammar.y"
+#line 1277 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "assignment_operator <- XOR_ASSIGN\n";}}
     break;
 
   case 180:
-#line 1277 "new_c_grammar.y"
+#line 1280 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "assignment_operator <- OR_ASSIGN\n";}}
     break;
 
   case 181:
-#line 1283 "new_c_grammar.y"
+#line 1286 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "conditional_expression <- logical_or_expression\n";}}
     break;
 
   case 182:
-#line 1286 "new_c_grammar.y"
+#line 1289 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "conditional_expression <- logical_or_expression '?' expression ':' conditional_expression\n";}}
     break;
 
   case 183:
-#line 1292 "new_c_grammar.y"
+#line 1295 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "constant_expression <- conditional_expression\n";}}
     break;
 
   case 184:
-#line 1298 "new_c_grammar.y"
+#line 1301 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "logical_or_expression <- logical_and_expression\n";}}
     break;
 
   case 185:
-#line 1301 "new_c_grammar.y"
+#line 1304 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "logical_or_expression <- logical_or_expression OR_OP logical_and_expression\n";}}
     break;
 
   case 186:
-#line 1307 "new_c_grammar.y"
+#line 1310 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "logical_and_expression <- inclusive_or_expression\n";}}
     break;
 
   case 187:
-#line 1310 "new_c_grammar.y"
+#line 1313 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "logical_and_expression <- logical_and_expression AND_OP inclusive_or_expression\n";}}
     break;
 
   case 188:
-#line 1316 "new_c_grammar.y"
+#line 1319 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "inclusive_or_expression <- exclusive_or_expression\n";}}
     break;
 
   case 189:
-#line 1319 "new_c_grammar.y"
+#line 1322 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "inclusive_or_expression <- inclusive_or_expression '|' exclusive_or_expression\n";}}
     break;
 
   case 190:
-#line 1325 "new_c_grammar.y"
+#line 1328 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "exclusive_or_expression <- and_expression\n";}}
     break;
 
   case 191:
-#line 1328 "new_c_grammar.y"
+#line 1331 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "exclusive_or_expression <- exclusive_or_expression '^' and_expression\n";}}
     break;
 
   case 192:
-#line 1334 "new_c_grammar.y"
+#line 1337 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "and_expression <- equality_expression\n";}}
     break;
 
   case 193:
-#line 1337 "new_c_grammar.y"
+#line 1340 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "and_expression <- and_expression '&' equality_expression\n";}}
     break;
 
   case 194:
-#line 1343 "new_c_grammar.y"
+#line 1346 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "equality_expression <- relational_expression\n";}}
     break;
 
   case 195:
-#line 1346 "new_c_grammar.y"
+#line 1349 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "equality_expression <- equality_expression EQ_OP relational_expression\n";}}
     break;
 
   case 196:
-#line 1349 "new_c_grammar.y"
+#line 1352 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "equality_expression <- equality_expression NE_OP relational_expression\n";}}
     break;
 
   case 197:
-#line 1355 "new_c_grammar.y"
+#line 1358 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "relational_expression <- shift_expression\n";}}
     break;
 
   case 198:
-#line 1358 "new_c_grammar.y"
+#line 1361 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "relational_expression <- relational_expression '<' shift_expression\n";}}
     break;
 
   case 199:
-#line 1361 "new_c_grammar.y"
+#line 1364 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "relational_expression <- relational_expression '>' shift_expression\n";}}
     break;
 
   case 200:
-#line 1364 "new_c_grammar.y"
+#line 1367 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "relational_expression <- relational_expression LE_OP shift_expression\n";}}
     break;
 
   case 201:
-#line 1367 "new_c_grammar.y"
+#line 1370 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "relational_expression <- relational_expression GE_OP shift_expression\n";}}
     break;
 
   case 202:
-#line 1373 "new_c_grammar.y"
+#line 1376 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "shift_expression <- additive_expression\n";}}
     break;
 
   case 203:
-#line 1376 "new_c_grammar.y"
+#line 1379 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "shift_expression <- shift_expression LEFT_OP additive_expression\n";}}
     break;
 
   case 204:
-#line 1379 "new_c_grammar.y"
+#line 1382 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "shift_expression <- shift_expression RIGHT_OP additive_expression\n";}}
     break;
 
   case 205:
-#line 1385 "new_c_grammar.y"
+#line 1388 "new_c_grammar.y"
     {if(parseDebug)
 {parseDebugOut << "additive_expression <- multiplicative_expression\n";}}
     break;
 
   case 206:
-#line 1388 "new_c_grammar.y"
+#line 1391 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "additive_expression <- additive_expression '+' multiplicative_expression\n";}}
     break;
 
   case 207:
-#line 1391 "new_c_grammar.y"
+#line 1394 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "additive_expression <- additive_expression '-' multiplicative_expression\n";}}
     break;
 
   case 208:
-#line 1397 "new_c_grammar.y"
+#line 1400 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "multiplicative_expression <- cast_expression\n";}}
     break;
 
   case 209:
-#line 1400 "new_c_grammar.y"
+#line 1403 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "multiplicative_expression <- multiplicative_expression '*' cast_expression\n";}}
     break;
 
   case 210:
-#line 1403 "new_c_grammar.y"
+#line 1406 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "multiplicative_expression <- multiplicative_expression '/' cast_expression\n";}}
     break;
 
   case 211:
-#line 1406 "new_c_grammar.y"
+#line 1409 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "multiplicative_expression <- multiplicative_expression '%' cast_expression\n";}}
     break;
 
   case 212:
-#line 1412 "new_c_grammar.y"
+#line 1415 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "cast_expression <- unary_expression\n";}}
     break;
 
   case 213:
-#line 1415 "new_c_grammar.y"
+#line 1418 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "cast_expression <- '(' type_name ')' cast_expression\n";}}
     break;
 
   case 214:
-#line 1421 "new_c_grammar.y"
+#line 1424 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "unary_expression <- postfix_expression\n";}}
     break;
 
   case 215:
-#line 1424 "new_c_grammar.y"
+#line 1427 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "unary_expression <- INC_OP unary_expression\n";}}
     break;
 
   case 216:
-#line 1427 "new_c_grammar.y"
+#line 1430 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "unary_expression <- DEC_OP unary_expression\n";}}
     break;
 
   case 217:
-#line 1430 "new_c_grammar.y"
+#line 1433 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "unary_expression <- unary_operator cast_expression\n";}}
     break;
 
   case 218:
-#line 1433 "new_c_grammar.y"
+#line 1436 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "unary_expression <- SIZEOF unary_expression\n";}}
     break;
 
   case 219:
-#line 1436 "new_c_grammar.y"
+#line 1439 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "unary_expression <- SIZEOF '(' type_name ')'\n";}}
     break;
 
   case 220:
-#line 1442 "new_c_grammar.y"
+#line 1445 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "unary_operator <- '&'\n";}}
     break;
 
   case 221:
-#line 1445 "new_c_grammar.y"
+#line 1448 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "unary_operator <- '*'\n";}}
     break;
 
   case 222:
-#line 1448 "new_c_grammar.y"
+#line 1451 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "unary_operator <- '+'\n";}}
     break;
 
   case 223:
-#line 1451 "new_c_grammar.y"
+#line 1454 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "unary_operator <- '-'\n";}}
     break;
 
   case 224:
-#line 1454 "new_c_grammar.y"
+#line 1457 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "unary_operator <- '~'\n";}}
     break;
 
   case 225:
-#line 1457 "new_c_grammar.y"
+#line 1460 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "unary_operator <- '!'\n";}}
     break;
 
   case 226:
-#line 1463 "new_c_grammar.y"
+#line 1466 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "postfix_expression <- primary_expression\n";}}
     break;
 
   case 227:
-#line 1466 "new_c_grammar.y"
+#line 1469 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "postfix_expression <- postfix_expression '[' expression ']'\n";}}
     break;
 
   case 228:
-#line 1469 "new_c_grammar.y"
+#line 1472 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "postfix_expression <- postfix_expression '(' ')'\n";}}
     break;
 
   case 229:
-#line 1472 "new_c_grammar.y"
+#line 1475 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "postfix_expression <- postfix_expression '(' argument_expression_list ')'\n";}}
     break;
 
   case 230:
-#line 1475 "new_c_grammar.y"
+#line 1478 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "postfix_expression <- postfix_expression '.' identifier\n";}}
     break;
 
   case 231:
-#line 1478 "new_c_grammar.y"
+#line 1481 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "postfix_expression <- postfix_expression PTR_OP identifier\n";}}
     break;
 
   case 232:
-#line 1481 "new_c_grammar.y"
+#line 1484 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "postfix_expression <- postfix_expression INC_OP\n";}}
     break;
 
   case 233:
-#line 1484 "new_c_grammar.y"
+#line 1487 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "postfix_expression <- postfix_expression DEC_OP\n";}}
     break;
 
   case 234:
-#line 1490 "new_c_grammar.y"
+#line 1493 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "primary_expression <- identifier\n";}}
     break;
 
   case 235:
-#line 1493 "new_c_grammar.y"
+#line 1496 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "primary_expression <- constant\n";}}
     break;
 
   case 236:
-#line 1496 "new_c_grammar.y"
+#line 1499 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "primary_expression <- string\n";}}
     break;
 
   case 237:
-#line 1499 "new_c_grammar.y"
+#line 1502 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "primary_expression <- '(' expression ')'\n";}}
     break;
 
   case 238:
-#line 1505 "new_c_grammar.y"
+#line 1508 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "argument_expression_list <- assignment_expression\n";}}
     break;
 
   case 239:
-#line 1508 "new_c_grammar.y"
+#line 1511 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "argument_expression_list <- argument_expression_list ',' assignment_expression\n";}}
     break;
 
   case 240:
-#line 1514 "new_c_grammar.y"
+#line 1517 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "constant <- INTEGER_CONSTANT\n";}}
     break;
 
   case 241:
-#line 1517 "new_c_grammar.y"
+#line 1520 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "constant <- CHARACTER_CONSTANT\n";}}
     break;
 
   case 242:
-#line 1520 "new_c_grammar.y"
+#line 1523 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "constant <- FLOATING_CONSTANT\n";}}
     break;
 
   case 243:
-#line 1523 "new_c_grammar.y"
+#line 1526 "new_c_grammar.y"
     {if(parseDebug)
  	{parseDebugOut << "constant <- ENUMERATION_CONSTANT\n";}}
     break;
 
   case 244:
-#line 1529 "new_c_grammar.y"
+#line 1532 "new_c_grammar.y"
     {if(parseDebug)
 	{parseDebugOut << "string <- STRING_LITERAL\n";}}
     break;
 
   case 245:
-#line 1535 "new_c_grammar.y"
+#line 1538 "new_c_grammar.y"
     {
 	   declNode dn;
 	   dn.id = (yyvsp[(1) - (1)].sval);
@@ -4115,14 +4118,14 @@ if(parseDebug)
     break;
 
   case 246:
-#line 1547 "new_c_grammar.y"
+#line 1550 "new_c_grammar.y"
     { prevFlag = 0;
 	   }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 4126 "y.tab.c"
+#line 4129 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -4336,7 +4339,7 @@ yyreturn:
 }
 
 
-#line 1549 "new_c_grammar.y"
+#line 1552 "new_c_grammar.y"
 
 
 #include <stdio.h>
