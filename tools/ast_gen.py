@@ -43,9 +43,13 @@ def main():
     c_structs += "\n\n#endif"
     structs.write(c_structs)
     out.write(yylval_string)
+    out.write("\n")
     out.write("/************/\n")
+    out.write("\n")
     out.write(type_val_string)
+    out.write("\n")
     out.write("/************/\n")
+    out.write("\n")
     out.write(body)
     core.close()
     structs.close()

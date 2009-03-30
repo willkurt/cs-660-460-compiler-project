@@ -150,7 +150,7 @@ class GrammarRule:
             for i in range(1,number_of_char_lits+1):
                 vars_used.append("char_lit_"+str(i))
                 location = statment_list.index(char_lits[i-1])+1
-                code_stmnt +=spacing+"anode.char_lit_"+str(i)+"=$"+str(location)+";\n"
+                code_stmnt +=spacing+"anode.char_lit_"+str(i)+'=\"'+statment_list[location-1]+"\";\n"
             #find how many token_x
             #then add 
             number_of_tokens = len(tokens)

@@ -42,6 +42,7 @@ int token_1;
 
 struct type_specifier_node {
 int token_1;
+struct enum_specifier_node *enum_specifier_node_1;
 struct struct_or_union_specifier_node *struct_or_union_specifier_node_1;
 };
 
@@ -100,6 +101,26 @@ struct struct_declarator_node {
 struct declarator_node *declarator_node_1;
 struct constant_expression_node *constant_expression_node_1;
 char *char_lit_1;
+};
+
+struct enum_specifier_node {
+int token_1;
+char *char_lit_1;
+struct identifier_node *identifier_node_1;
+struct enumerator_list_node *enumerator_list_node_1;
+char *char_lit_2;
+};
+
+struct enumerator_list_node {
+struct enumerator_node *enumerator_node_1;
+char *char_lit_1;
+struct enumerator_list_node *enumerator_list_node_1;
+};
+
+struct enumerator_node {
+struct constant_expression_node *constant_expression_node_1;
+char *char_lit_1;
+struct identifier_node *identifier_node_1;
 };
 
 struct declarator_node {

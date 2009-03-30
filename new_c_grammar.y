@@ -52,7 +52,6 @@ bool unsignedFlag;
  %}
 
 %union{
-  //consider making this a string pointer
   char* sval;
   float dval;
   int ival;
