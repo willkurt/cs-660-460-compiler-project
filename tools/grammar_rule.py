@@ -101,8 +101,8 @@ class GrammarRule:
                 struct_string += "int "+each+";\n"
             #only remaining case is a node ptr
             else:
-                struct_string += each[:-2]+" *"+each+";\n"
-        struct_string += "}\n"
+                struct_string += "struct "+each[:-2]+" *"+each+";\n"
+        struct_string += "};\n"
         
         return struct_string
         
@@ -110,7 +110,7 @@ class GrammarRule:
 
     #create the yylval for the union
     def yylval(self):
-        return self.rule+"_node *"+self.rule+"_val;\n"
+        return "struct "+self.rule+"_node *"+self.rule+"_val;\n"
 
     def type_val(self):
         return "%type <"+self.rule+"_val> "+self.rule+"\n"
