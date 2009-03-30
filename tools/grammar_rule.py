@@ -75,6 +75,8 @@ class GrammarRule:
             first = self.productions[0]
             rest = self.productions[1:]
             rule_string += std_spacing+':'+first+"\n"
+            if(with_code):
+                rule_string += self.rule_code_dict[first]
             for each in rest:
                 rule_string+= std_spacing+'|'+each+"\n"
                 if(with_code):
@@ -89,7 +91,7 @@ class GrammarRule:
         struct_string = "struct "+self.rule+"_node {\n"
         for each in self.struct_vars:
             if "char_lit_" in each:
-                struct_string += "char "+each+";\n"
+                struct_string += "char *"+each+";\n"
             #int is the default value for tokens
             #change with actual grammar as is necessary
             elif "token_" in each:
@@ -136,7 +138,7 @@ class GrammarRule:
             # then and char_1 ... char_n
             number_of_char_lits = len(char_lits)
             for i in range(1,number_of_char_lits+1):
-                vars_used.append("char_"+str(i))
+                vars_used.append("char_lit_"+str(i))
                 location = statment_list.index(char_lits[i-1])+1
                 code_stmnt +="anode.char_lit_"+str(i)+"=$"+str(location)+";\n"
             #find how many token_x
@@ -159,5 +161,5 @@ class GrammarRule:
                     code_stmnt += "anode."+var+"= \"\";\n"
                 else:
                     code_stmnt += "anode."+var+"= 0;\n"
-            code_stmnt += "$$ = &anode\n}"        
+            code_stmnt += "$$ = &anode;\n}"        
             self.rule_code_dict[each] = code_stmnt
