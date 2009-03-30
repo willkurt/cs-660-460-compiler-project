@@ -7,6 +7,7 @@ from grammar_rule import GrammarRule
 def main():
     core = open("ast_core.txt",'r')
     out = open("py_ast_out.txt",'w')
+    structs = open("ast_structs.h",'w')
     g_objects = []
     expression_pattern = '([a-z]|_)+'
     grammar_lines = core.readlines()
@@ -20,7 +21,7 @@ def main():
             current_productions = []
         elif(":" in line or "|" in line):
             print "found production"
-            current_productions.append(line.strip())
+            current_productions.append(line.replace(": "," ",1).replace("| "," ",1).strip())
         elif(re.match(expression_pattern,line)):
             print "found start"
             current_exp = line.strip()
@@ -30,20 +31,24 @@ def main():
     
     yylval_string = ""
     type_val_string = ""
+    c_structs = "#ifndef AST_STRUCTS_H\n#define AST_STRUCTS_H\n\n"
     body = ""
     
     for obj in g_objects:
-        yylval_string += obj.yylval()+"\n"
-        type_val_string += obj.type_val()+"\n"
+        yylval_string += obj.yylval()
+        type_val_string += obj.type_val()
+        c_structs += obj.c_struct()+"\n"
         body += obj.rule_to_string(True)
 
-    
+    c_structs += "\n\n#endif"
+    structs.write(c_structs)
     out.write(yylval_string)
     out.write("/************/\n")
     out.write(type_val_string)
     out.write("/************/\n")
     out.write(body)
     core.close()
+    structs.close()
     out.close()
 
 

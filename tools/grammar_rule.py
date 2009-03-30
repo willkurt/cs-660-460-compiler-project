@@ -40,7 +40,7 @@ class GrammarRule:
         """
         all_struct_vars = []
         char_lit = '\'.\''
-        token = '[A-Z]+'
+        token = '[A-Z]+_?[A-Z]+'
         for each in self.productions:
             char_lits = re.findall(char_lit,each)
             tokens = re.findall(token,each)
@@ -124,10 +124,11 @@ class GrammarRule:
         $$ = &anode;
         """
         char_lit = '\'.\''
-        token = '[A-Z]+_[A-Z]+'
+        token = '[A-Z]+_?[A-Z]+'
+        spacing = "    "
         for each in self.productions:
             vars_used = []
-            code_stmnt = "{\n    "+self.struct_name+" anode;\n"
+            code_stmnt = "{\n"+spacing+self.struct_name+" anode;\n"
             
             char_lits = re.findall(char_lit,each)
             tokens = re.findall(token,each)
@@ -149,26 +150,26 @@ class GrammarRule:
             for i in range(1,number_of_char_lits+1):
                 vars_used.append("char_lit_"+str(i))
                 location = statment_list.index(char_lits[i-1])+1
-                code_stmnt +="anode.char_lit_"+str(i)+"=$"+str(location)+";\n"
+                code_stmnt +=spacing+"anode.char_lit_"+str(i)+"=$"+str(location)+";\n"
             #find how many token_x
             #then add 
             number_of_tokens = len(tokens)
             for i in range(1,number_of_tokens+1):
                 vars_used.append("token_"+str(i))
                 location = statment_list.index(tokens[i-1])+1
-                code_stmnt +="anode.token_"+str(i)+"=$"+str(location)+";\n"
+                code_stmnt +=spacing+"anode.token_"+str(i)+"=$"+str(location)+";\n"
             while(len(remaining) > 0):
                 current = remaining[0]
                 current_count = remaining.count(current)
                 for i in range(1,current_count+1):
                     vars_used.append(current+"_node_"+str(i))
                     location = statment_list.index(current,current_count-1)+1
-                    code_stmnt +="anode."+current+"_node_"+str(i)+"=$"+str(location)+";\n"
+                    code_stmnt +=spacing+"anode."+current+"_node_"+str(i)+"=$"+str(location)+";\n"
                 remaining.remove(current)
             for var in (self.struct_vars - set(vars_used)):
                 if "char_lit_" in var:
-                    code_stmnt += "anode."+var+"= \"\";\n"
+                    code_stmnt += spacing+"anode."+var+"= \"\";\n"
                 else:
-                    code_stmnt += "anode."+var+"= 0;\n"
-            code_stmnt += "$$ = &anode;\n}"        
+                    code_stmnt += spacing+"anode."+var+"= 0;\n"
+            code_stmnt += spacing+"$$ = &anode;\n}\n"        
             self.rule_code_dict[each] = code_stmnt
