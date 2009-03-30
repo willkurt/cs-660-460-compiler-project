@@ -46,9 +46,12 @@ class GrammarRule:
             tokens = re.findall(token,each)
             remaining = each.split(' ')
             for c in char_lits:
-                remaining.remove(c)
+                #not sure I relaly really need this..
+                if c in remaining:
+                    remaining.remove(c)
             for t in tokens:
-                remaining.remove(t)
+                if t in remaining:
+                    remaining.remove(t)
             #find how many char_x
             # then and char_1 ... char_n
             number_of_char_lits = len(char_lits)
@@ -107,10 +110,10 @@ class GrammarRule:
 
     #create the yylval for the union
     def yylval(self):
-        pass
+        return self.rule+"_node *"+self.rule+"_val;\n"
 
-    def type_val_statment(self):
-        pass
+    def type_val(self):
+        return "%type <"+self.rule+"_val> "+self.rule+"\n"
 
     #create the grammar string with necessary code
     def _build_rule_code_dict(self):
@@ -121,7 +124,7 @@ class GrammarRule:
         $$ = &anode;
         """
         char_lit = '\'.\''
-        token = '[A-Z]+'
+        token = '[A-Z]+_[A-Z]+'
         for each in self.productions:
             vars_used = []
             code_stmnt = "{\n    "+self.struct_name+" anode;\n"
@@ -131,9 +134,15 @@ class GrammarRule:
             remaining = each.split(' ')
             statment_list = each.split(' ')
             for c in char_lits:
-                remaining.remove(c)
+                if c in remaining:
+                    remaining.remove(c)
+                else:
+                    print "trouble with: "+c
             for t in tokens:
-                remaining.remove(t)
+                if t in remaining:
+                    remaining.remove(t)
+                else:
+                    print "trouble with: "+t
             #find how many char_x
             # then and char_1 ... char_n
             number_of_char_lits = len(char_lits)
