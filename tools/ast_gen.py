@@ -8,6 +8,7 @@ def main():
     core = open("ast_core.txt",'r')
     out = open("py_ast_out.txt",'w')
     structs = open("ast_structs.h",'w')
+    print_decls = open("print_decls.h",'w')
     g_objects = []
     expression_pattern = '([a-z]|_)+'
     grammar_lines = core.readlines()
@@ -32,16 +33,21 @@ def main():
     yylval_string = ""
     type_val_string = ""
     c_structs = "#ifndef AST_STRUCTS_H\n#define AST_STRUCTS_H\n\n"
+    print_decl = "#ifndef PRINT_DECLS_H\n#include <iostream>\n#define PRINT_DECLS_H\n\n"
+    print_defs = ""
     body = ""
-    
     for obj in g_objects:
         yylval_string += obj.yylval()
         type_val_string += obj.type_val()
         c_structs += obj.c_struct()+"\n"
+        print_decl += obj.print_decl()
+        print_defs += obj.print_stmnt()
         body += obj.rule_to_string(True)
 
     c_structs += "\n\n#endif"
+    print_decl += "\n\n#endif"
     structs.write(c_structs)
+    print_decls.write(print_decl)
     out.write(yylval_string)
     out.write("\n")
     out.write("/************/\n")
@@ -51,8 +57,13 @@ def main():
     out.write("/************/\n")
     out.write("\n")
     out.write(body)
+    out.write("\n")
+    out.write("/************/\n")
+    out.write("\n")
+    out.write(print_defs)
     core.close()
     structs.close()
+    print_decls.close()
     out.close()
 
 
