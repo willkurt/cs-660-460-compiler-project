@@ -108,22 +108,22 @@ class GrammarRule:
         
     #create print declaration
     def print_decl(self):
-        return "void print_"+self.struct_name+"("+self.struct_name+" *ptr);\n"
+        return "void print_"+self.struct_name+"("+self.struct_name+" *ptr, std::string indent);\n"
    
    
 
 #i'm going to try to run this with count intead
  #create the print statement
     def print_stmnt(self):
-        spacing = "    "
         #to start I only want to see the nodes
-        stmnt_str = "void print_"+self.struct_name+"("+self.struct_name+" *ptr)\n{\n    "
+        stmnt_str = "void print_"+self.struct_name+"("+self.struct_name+" *ptr, std::string indent)\n{\n    "
+        stmnt_str += "std::string spacing = indent.append(\"    \");"
         stmnt_str += self.struct_name + " aNode = *ptr;\n"
-        stmnt_str += "std::cout << \"("+self.struct_name+"\\n"+spacing+"\";\n"
+        stmnt_str += "std::cout <<spacing<<\"("+self.struct_name+"\\n\";\n"
         for each in self.struct_vars:
             #later we can change this
             if("_node_" in each):
-                stmnt_str+="   if(aNode."+each+" != 0)\n    { print_"+each[:-2]+" (aNode."+each+");}\n"
+                stmnt_str+="   if(aNode."+each+" != 0)\n    { print_"+each[:-2]+" (aNode."+each+",spacing);}\n"
         stmnt_str+="std::cout<<\")\";\n"
         stmnt_str+="}\n"
         return stmnt_str

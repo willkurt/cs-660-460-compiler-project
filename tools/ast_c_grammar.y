@@ -7,74 +7,72 @@
 extern bool parseDebug;
 extern std::ofstream parseDebugOut;
 
-
-
-void print_translation_unit_node(translation_unit_node *ptr);
-void print_external_declaration_node(external_declaration_node *ptr);
-void print_function_definition_node(function_definition_node *ptr);
-void print_declaration_node(declaration_node *ptr);
-void print_declaration_list_node(declaration_list_node *ptr);
-void print_declaration_specifiers_node(declaration_specifiers_node *ptr);
-void print_storage_class_specifier_node(storage_class_specifier_node *ptr);
-void print_type_specifier_node(type_specifier_node *ptr);
-void print_type_qualifier_node(type_qualifier_node *ptr);
-void print_struct_or_union_specifier_node(struct_or_union_specifier_node *ptr);
-void print_struct_or_union_node(struct_or_union_node *ptr);
-void print_struct_declaration_list_node(struct_declaration_list_node *ptr);
-void print_init_declarator_list_node(init_declarator_list_node *ptr);
-void print_init_declarator_node(init_declarator_node *ptr);
-void print_struct_declaration_node(struct_declaration_node *ptr);
-void print_specifier_qualifier_list_node(specifier_qualifier_list_node *ptr);
-void print_struct_declarator_list_node(struct_declarator_list_node *ptr);
-void print_struct_declarator_node(struct_declarator_node *ptr);
-void print_enum_specifier_node(enum_specifier_node *ptr);
-void print_enumerator_list_node(enumerator_list_node *ptr);
-void print_enumerator_node(enumerator_node *ptr);
-void print_declarator_node(declarator_node *ptr);
-void print_direct_declarator_node(direct_declarator_node *ptr);
-void print_pointer_node(pointer_node *ptr);
-void print_type_qualifier_list_node(type_qualifier_list_node *ptr);
-void print_parameter_type_list_node(parameter_type_list_node *ptr);
-void print_parameter_list_node(parameter_list_node *ptr);
-void print_parameter_declaration_node(parameter_declaration_node *ptr);
-void print_identifier_list_node(identifier_list_node *ptr);
-void print_initializer_node(initializer_node *ptr);
-void print_initializer_list_node(initializer_list_node *ptr);
-void print_type_name_node(type_name_node *ptr);
-void print_abstract_declarator_node(abstract_declarator_node *ptr);
-void print_direct_abstract_declarator_node(direct_abstract_declarator_node *ptr);
-void print_statement_node(statement_node *ptr);
-void print_labeled_statement_node(labeled_statement_node *ptr);
-void print_expression_statement_node(expression_statement_node *ptr);
-void print_compound_statement_node(compound_statement_node *ptr);
-void print_statement_list_node(statement_list_node *ptr);
-void print_selection_statement_node(selection_statement_node *ptr);
-void print_iteration_statement_node(iteration_statement_node *ptr);
-void print_jump_statement_node(jump_statement_node *ptr);
-void print_expression_node(expression_node *ptr);
-void print_assignment_expression_node(assignment_expression_node *ptr);
-void print_assignment_operator_node(assignment_operator_node *ptr);
-void print_conditional_expression_node(conditional_expression_node *ptr);
-void print_constant_expression_node(constant_expression_node *ptr);
-void print_logical_or_expression_node(logical_or_expression_node *ptr);
-void print_logical_and_expression_node(logical_and_expression_node *ptr);
-void print_inclusive_or_expression_node(inclusive_or_expression_node *ptr);
-void print_exclusive_or_expression_node(exclusive_or_expression_node *ptr);
-void print_and_expression_node(and_expression_node *ptr);
-void print_equality_expression_node(equality_expression_node *ptr);
-void print_relational_expression_node(relational_expression_node *ptr);
-void print_shift_expression_node(shift_expression_node *ptr);
-void print_additive_expression_node(additive_expression_node *ptr);
-void print_multiplicative_expression_node(multiplicative_expression_node *ptr);
-void print_cast_expression_node(cast_expression_node *ptr);
-void print_unary_expression_node(unary_expression_node *ptr);
-void print_unary_operator_node(unary_operator_node *ptr);
-void print_postfix_expression_node(postfix_expression_node *ptr);
-void print_primary_expression_node(primary_expression_node *ptr);
-void print_argument_expression_list_node(argument_expression_list_node *ptr);
-void print_constant_node(constant_node *ptr);
-void print_string_node(string_node *ptr);
-void print_identifier_node(identifier_node *ptr);
+void print_translation_unit_node(translation_unit_node *ptr, std::string indent);
+void print_external_declaration_node(external_declaration_node *ptr, std::string indent);
+void print_function_definition_node(function_definition_node *ptr, std::string indent);
+void print_declaration_node(declaration_node *ptr, std::string indent);
+void print_declaration_list_node(declaration_list_node *ptr, std::string indent);
+void print_declaration_specifiers_node(declaration_specifiers_node *ptr, std::string indent);
+void print_storage_class_specifier_node(storage_class_specifier_node *ptr, std::string indent);
+void print_type_specifier_node(type_specifier_node *ptr, std::string indent);
+void print_type_qualifier_node(type_qualifier_node *ptr, std::string indent);
+void print_struct_or_union_specifier_node(struct_or_union_specifier_node *ptr, std::string indent);
+void print_struct_or_union_node(struct_or_union_node *ptr, std::string indent);
+void print_struct_declaration_list_node(struct_declaration_list_node *ptr, std::string indent);
+void print_init_declarator_list_node(init_declarator_list_node *ptr, std::string indent);
+void print_init_declarator_node(init_declarator_node *ptr, std::string indent);
+void print_struct_declaration_node(struct_declaration_node *ptr, std::string indent);
+void print_specifier_qualifier_list_node(specifier_qualifier_list_node *ptr, std::string indent);
+void print_struct_declarator_list_node(struct_declarator_list_node *ptr, std::string indent);
+void print_struct_declarator_node(struct_declarator_node *ptr, std::string indent);
+void print_enum_specifier_node(enum_specifier_node *ptr, std::string indent);
+void print_enumerator_list_node(enumerator_list_node *ptr, std::string indent);
+void print_enumerator_node(enumerator_node *ptr, std::string indent);
+void print_declarator_node(declarator_node *ptr, std::string indent);
+void print_direct_declarator_node(direct_declarator_node *ptr, std::string indent);
+void print_pointer_node(pointer_node *ptr, std::string indent);
+void print_type_qualifier_list_node(type_qualifier_list_node *ptr, std::string indent);
+void print_parameter_type_list_node(parameter_type_list_node *ptr, std::string indent);
+void print_parameter_list_node(parameter_list_node *ptr, std::string indent);
+void print_parameter_declaration_node(parameter_declaration_node *ptr, std::string indent);
+void print_identifier_list_node(identifier_list_node *ptr, std::string indent);
+void print_initializer_node(initializer_node *ptr, std::string indent);
+void print_initializer_list_node(initializer_list_node *ptr, std::string indent);
+void print_type_name_node(type_name_node *ptr, std::string indent);
+void print_abstract_declarator_node(abstract_declarator_node *ptr, std::string indent);
+void print_direct_abstract_declarator_node(direct_abstract_declarator_node *ptr, std::string indent);
+void print_statement_node(statement_node *ptr, std::string indent);
+void print_labeled_statement_node(labeled_statement_node *ptr, std::string indent);
+void print_expression_statement_node(expression_statement_node *ptr, std::string indent);
+void print_compound_statement_node(compound_statement_node *ptr, std::string indent);
+void print_statement_list_node(statement_list_node *ptr, std::string indent);
+void print_selection_statement_node(selection_statement_node *ptr, std::string indent);
+void print_iteration_statement_node(iteration_statement_node *ptr, std::string indent);
+void print_jump_statement_node(jump_statement_node *ptr, std::string indent);
+void print_expression_node(expression_node *ptr, std::string indent);
+void print_assignment_expression_node(assignment_expression_node *ptr, std::string indent);
+void print_assignment_operator_node(assignment_operator_node *ptr, std::string indent);
+void print_conditional_expression_node(conditional_expression_node *ptr, std::string indent);
+void print_constant_expression_node(constant_expression_node *ptr, std::string indent);
+void print_logical_or_expression_node(logical_or_expression_node *ptr, std::string indent);
+void print_logical_and_expression_node(logical_and_expression_node *ptr, std::string indent);
+void print_inclusive_or_expression_node(inclusive_or_expression_node *ptr, std::string indent);
+void print_exclusive_or_expression_node(exclusive_or_expression_node *ptr, std::string indent);
+void print_and_expression_node(and_expression_node *ptr, std::string indent);
+void print_equality_expression_node(equality_expression_node *ptr, std::string indent);
+void print_relational_expression_node(relational_expression_node *ptr, std::string indent);
+void print_shift_expression_node(shift_expression_node *ptr, std::string indent);
+void print_additive_expression_node(additive_expression_node *ptr, std::string indent);
+void print_multiplicative_expression_node(multiplicative_expression_node *ptr, std::string indent);
+void print_cast_expression_node(cast_expression_node *ptr, std::string indent);
+void print_unary_expression_node(unary_expression_node *ptr, std::string indent);
+void print_unary_operator_node(unary_operator_node *ptr, std::string indent);
+void print_postfix_expression_node(postfix_expression_node *ptr, std::string indent);
+void print_primary_expression_node(primary_expression_node *ptr, std::string indent);
+void print_argument_expression_list_node(argument_expression_list_node *ptr, std::string indent);
+void print_constant_node(constant_node *ptr, std::string indent);
+void print_string_node(string_node *ptr, std::string indent);
+void print_identifier_node(identifier_node *ptr, std::string indent);
 
 
 
@@ -263,7 +261,7 @@ anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
     (*anode).external_declaration_node_1=$1;
     (*anode).translation_unit_node_1= 0;
     $$ = anode;
-    print_translation_unit_node($$);
+    print_translation_unit_node($$," ");
 }
     |translation_unit external_declaration
 {
@@ -2639,704 +2637,694 @@ extern int column;
 
 
 
-
-void print_translation_unit_node(translation_unit_node *ptr)
+void print_translation_unit_node(translation_unit_node *ptr, std::string indent)
 {
-    translation_unit_node aNode = *ptr;
-    std::cout<<"address of this node:" << ptr <<std::endl;
-    std::cout << "(translation_unit_node\n    ";
+    std::string spacing = indent.append("    ");translation_unit_node aNode = *ptr;
+std::cout <<spacing<<"(translation_unit_node\n";
    if(aNode.external_declaration_node_1 != 0)
-    { print_external_declaration_node (aNode.external_declaration_node_1);}
+    { print_external_declaration_node (aNode.external_declaration_node_1,spacing);}
    if(aNode.translation_unit_node_1 != 0)
-    { print_translation_unit_node (aNode.translation_unit_node_1);}
+    { print_translation_unit_node (aNode.translation_unit_node_1,spacing);}
 std::cout<<")";
 }
-void print_external_declaration_node(external_declaration_node *ptr)
+void print_external_declaration_node(external_declaration_node *ptr, std::string indent)
 {
-    external_declaration_node aNode = *ptr;
-  std::cout<<"address of this node:" << ptr <<std::endl;
-std::cout << "(external_declaration_node\n    ";
+    std::string spacing = indent.append("    ");external_declaration_node aNode = *ptr;
+std::cout <<spacing<<"(external_declaration_node\n";
    if(aNode.declaration_node_1 != 0)
-    { print_declaration_node (aNode.declaration_node_1);}
+    { print_declaration_node (aNode.declaration_node_1,spacing);}
    if(aNode.function_definition_node_1 != 0)
-    { print_function_definition_node (aNode.function_definition_node_1);}
+    { print_function_definition_node (aNode.function_definition_node_1,spacing);}
 std::cout<<")";
 }
-void print_function_definition_node(function_definition_node *ptr)
+void print_function_definition_node(function_definition_node *ptr, std::string indent)
 {
-    function_definition_node aNode = *ptr;
-std::cout << "(function_definition_node\n    ";
+    std::string spacing = indent.append("    ");function_definition_node aNode = *ptr;
+std::cout <<spacing<<"(function_definition_node\n";
    if(aNode.declarator_node_1 != 0)
-    { print_declarator_node (aNode.declarator_node_1);}
+    { print_declarator_node (aNode.declarator_node_1,spacing);}
    if(aNode.declaration_list_node_1 != 0)
-    { print_declaration_list_node (aNode.declaration_list_node_1);}
+    { print_declaration_list_node (aNode.declaration_list_node_1,spacing);}
    if(aNode.declaration_specifiers_node_1 != 0)
-    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1);}
+    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1,spacing);}
    if(aNode.compound_statement_node_1 != 0)
-    { print_compound_statement_node (aNode.compound_statement_node_1);}
+    { print_compound_statement_node (aNode.compound_statement_node_1,spacing);}
 std::cout<<")";
 }
-void print_declaration_node(declaration_node *ptr)
+void print_declaration_node(declaration_node *ptr, std::string indent)
 {
-    declaration_node aNode = *ptr;
-  std::cout<<"address of this node:" << ptr <<std::endl;
-std::cout << "(declaration_node\n    ";
+    std::string spacing = indent.append("    ");declaration_node aNode = *ptr;
+std::cout <<spacing<<"(declaration_node\n";
    if(aNode.init_declarator_list_node_1 != 0)
-    { print_init_declarator_list_node (aNode.init_declarator_list_node_1);}
+    { print_init_declarator_list_node (aNode.init_declarator_list_node_1,spacing);}
    if(aNode.declaration_specifiers_node_1 != 0)
-    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1);}
+    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1,spacing);}
 std::cout<<")";
 }
-void print_declaration_list_node(declaration_list_node *ptr)
+void print_declaration_list_node(declaration_list_node *ptr, std::string indent)
 {
-    declaration_list_node aNode = *ptr;
-std::cout << "(declaration_list_node\n    ";
+    std::string spacing = indent.append("    ");declaration_list_node aNode = *ptr;
+std::cout <<spacing<<"(declaration_list_node\n";
    if(aNode.declaration_node_1 != 0)
-    { print_declaration_node (aNode.declaration_node_1);}
+    { print_declaration_node (aNode.declaration_node_1,spacing);}
    if(aNode.declaration_list_node_1 != 0)
-    { print_declaration_list_node (aNode.declaration_list_node_1);}
+    { print_declaration_list_node (aNode.declaration_list_node_1,spacing);}
 std::cout<<")";
 }
-void print_declaration_specifiers_node(declaration_specifiers_node *ptr)
+void print_declaration_specifiers_node(declaration_specifiers_node *ptr, std::string indent)
 {
-    declaration_specifiers_node aNode = *ptr;
-std::cout << "(declaration_specifiers_node\n    ";
+    std::string spacing = indent.append("    ");declaration_specifiers_node aNode = *ptr;
+std::cout <<spacing<<"(declaration_specifiers_node\n";
    if(aNode.storage_class_specifier_node_1 != 0)
-    { print_storage_class_specifier_node (aNode.storage_class_specifier_node_1);}
+    { print_storage_class_specifier_node (aNode.storage_class_specifier_node_1,spacing);}
    if(aNode.declaration_specifiers_node_1 != 0)
-    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1);}
+    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1,spacing);}
    if(aNode.type_specifier_node_1 != 0)
-    { print_type_specifier_node (aNode.type_specifier_node_1);}
+    { print_type_specifier_node (aNode.type_specifier_node_1,spacing);}
    if(aNode.type_qualifier_node_1 != 0)
-    { print_type_qualifier_node (aNode.type_qualifier_node_1);}
+    { print_type_qualifier_node (aNode.type_qualifier_node_1,spacing);}
 std::cout<<")";
 }
-void print_storage_class_specifier_node(storage_class_specifier_node *ptr)
+void print_storage_class_specifier_node(storage_class_specifier_node *ptr, std::string indent)
 {
-    storage_class_specifier_node aNode = *ptr;
-std::cout << "(storage_class_specifier_node\n    ";
+    std::string spacing = indent.append("    ");storage_class_specifier_node aNode = *ptr;
+std::cout <<spacing<<"(storage_class_specifier_node\n";
 std::cout<<")";
 }
-void print_type_specifier_node(type_specifier_node *ptr)
+void print_type_specifier_node(type_specifier_node *ptr, std::string indent)
 {
-    type_specifier_node aNode = *ptr;
-std::cout << "(type_specifier_node\n    ";
+    std::string spacing = indent.append("    ");type_specifier_node aNode = *ptr;
+std::cout <<spacing<<"(type_specifier_node\n";
    if(aNode.enum_specifier_node_1 != 0)
-    { print_enum_specifier_node (aNode.enum_specifier_node_1);}
+    { print_enum_specifier_node (aNode.enum_specifier_node_1,spacing);}
    if(aNode.struct_or_union_specifier_node_1 != 0)
-    { print_struct_or_union_specifier_node (aNode.struct_or_union_specifier_node_1);}
+    { print_struct_or_union_specifier_node (aNode.struct_or_union_specifier_node_1,spacing);}
 std::cout<<")";
 }
-void print_type_qualifier_node(type_qualifier_node *ptr)
+void print_type_qualifier_node(type_qualifier_node *ptr, std::string indent)
 {
-    type_qualifier_node aNode = *ptr;
-std::cout << "(type_qualifier_node\n    ";
+    std::string spacing = indent.append("    ");type_qualifier_node aNode = *ptr;
+std::cout <<spacing<<"(type_qualifier_node\n";
 std::cout<<")";
 }
-void print_struct_or_union_specifier_node(struct_or_union_specifier_node *ptr)
+void print_struct_or_union_specifier_node(struct_or_union_specifier_node *ptr, std::string indent)
 {
-    struct_or_union_specifier_node aNode = *ptr;
-std::cout << "(struct_or_union_specifier_node\n    ";
+    std::string spacing = indent.append("    ");struct_or_union_specifier_node aNode = *ptr;
+std::cout <<spacing<<"(struct_or_union_specifier_node\n";
    if(aNode.struct_declaration_list_node_1 != 0)
-    { print_struct_declaration_list_node (aNode.struct_declaration_list_node_1);}
+    { print_struct_declaration_list_node (aNode.struct_declaration_list_node_1,spacing);}
    if(aNode.identifier_node_1 != 0)
-    { print_identifier_node (aNode.identifier_node_1);}
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
    if(aNode.struct_or_union_node_1 != 0)
-    { print_struct_or_union_node (aNode.struct_or_union_node_1);}
+    { print_struct_or_union_node (aNode.struct_or_union_node_1,spacing);}
 std::cout<<")";
 }
-void print_struct_or_union_node(struct_or_union_node *ptr)
+void print_struct_or_union_node(struct_or_union_node *ptr, std::string indent)
 {
-    struct_or_union_node aNode = *ptr;
-std::cout << "(struct_or_union_node\n    ";
+    std::string spacing = indent.append("    ");struct_or_union_node aNode = *ptr;
+std::cout <<spacing<<"(struct_or_union_node\n";
 std::cout<<")";
 }
-void print_struct_declaration_list_node(struct_declaration_list_node *ptr)
+void print_struct_declaration_list_node(struct_declaration_list_node *ptr, std::string indent)
 {
-    struct_declaration_list_node aNode = *ptr;
-std::cout << "(struct_declaration_list_node\n    ";
+    std::string spacing = indent.append("    ");struct_declaration_list_node aNode = *ptr;
+std::cout <<spacing<<"(struct_declaration_list_node\n";
    if(aNode.struct_declaration_node_1 != 0)
-    { print_struct_declaration_node (aNode.struct_declaration_node_1);}
+    { print_struct_declaration_node (aNode.struct_declaration_node_1,spacing);}
    if(aNode.struct_declaration_list_node_1 != 0)
-    { print_struct_declaration_list_node (aNode.struct_declaration_list_node_1);}
+    { print_struct_declaration_list_node (aNode.struct_declaration_list_node_1,spacing);}
 std::cout<<")";
 }
-void print_init_declarator_list_node(init_declarator_list_node *ptr)
+void print_init_declarator_list_node(init_declarator_list_node *ptr, std::string indent)
 {
-    init_declarator_list_node aNode = *ptr;
-  std::cout<<"address of this node:" << ptr <<std::endl;
-std::cout << "(init_declarator_list_node\n    ";
+    std::string spacing = indent.append("    ");init_declarator_list_node aNode = *ptr;
+std::cout <<spacing<<"(init_declarator_list_node\n";
    if(aNode.init_declarator_node_1 != 0)
-    { print_init_declarator_node (aNode.init_declarator_node_1);}
+    { print_init_declarator_node (aNode.init_declarator_node_1,spacing);}
    if(aNode.init_declarator_list_node_1 != 0)
-    { print_init_declarator_list_node (aNode.init_declarator_list_node_1);}
+    { print_init_declarator_list_node (aNode.init_declarator_list_node_1,spacing);}
 std::cout<<")";
 }
-void print_init_declarator_node(init_declarator_node *ptr)
+void print_init_declarator_node(init_declarator_node *ptr, std::string indent)
 {
-    init_declarator_node aNode = *ptr;
-  std::cout<<"address of this node:" << ptr <<std::endl;
-std::cout << "(init_declarator_node\n    ";
+    std::string spacing = indent.append("    ");init_declarator_node aNode = *ptr;
+std::cout <<spacing<<"(init_declarator_node\n";
    if(aNode.declarator_node_1 != 0)
-    { print_declarator_node (aNode.declarator_node_1);}
+    { print_declarator_node (aNode.declarator_node_1,spacing);}
    if(aNode.initializer_node_1 != 0)
-    { print_initializer_node (aNode.initializer_node_1);}
+    { print_initializer_node (aNode.initializer_node_1,spacing);}
 std::cout<<")";
 }
-void print_struct_declaration_node(struct_declaration_node *ptr)
+void print_struct_declaration_node(struct_declaration_node *ptr, std::string indent)
 {
-    struct_declaration_node aNode = *ptr;
-std::cout << "(struct_declaration_node\n    ";
+    std::string spacing = indent.append("    ");struct_declaration_node aNode = *ptr;
+std::cout <<spacing<<"(struct_declaration_node\n";
    if(aNode.specifier_qualifier_list_node_1 != 0)
-    { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1);}
+    { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1,spacing);}
    if(aNode.struct_declarator_list_node_1 != 0)
-    { print_struct_declarator_list_node (aNode.struct_declarator_list_node_1);}
+    { print_struct_declarator_list_node (aNode.struct_declarator_list_node_1,spacing);}
 std::cout<<")";
 }
-void print_specifier_qualifier_list_node(specifier_qualifier_list_node *ptr)
+void print_specifier_qualifier_list_node(specifier_qualifier_list_node *ptr, std::string indent)
 {
-    specifier_qualifier_list_node aNode = *ptr;
-std::cout << "(specifier_qualifier_list_node\n    ";
+    std::string spacing = indent.append("    ");specifier_qualifier_list_node aNode = *ptr;
+std::cout <<spacing<<"(specifier_qualifier_list_node\n";
    if(aNode.specifier_qualifier_list_node_1 != 0)
-    { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1);}
+    { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1,spacing);}
    if(aNode.type_specifier_node_1 != 0)
-    { print_type_specifier_node (aNode.type_specifier_node_1);}
+    { print_type_specifier_node (aNode.type_specifier_node_1,spacing);}
    if(aNode.type_qualifier_node_1 != 0)
-    { print_type_qualifier_node (aNode.type_qualifier_node_1);}
+    { print_type_qualifier_node (aNode.type_qualifier_node_1,spacing);}
 std::cout<<")";
 }
-void print_struct_declarator_list_node(struct_declarator_list_node *ptr)
+void print_struct_declarator_list_node(struct_declarator_list_node *ptr, std::string indent)
 {
-    struct_declarator_list_node aNode = *ptr;
-std::cout << "(struct_declarator_list_node\n    ";
+    std::string spacing = indent.append("    ");struct_declarator_list_node aNode = *ptr;
+std::cout <<spacing<<"(struct_declarator_list_node\n";
    if(aNode.struct_declarator_list_node_1 != 0)
-    { print_struct_declarator_list_node (aNode.struct_declarator_list_node_1);}
+    { print_struct_declarator_list_node (aNode.struct_declarator_list_node_1,spacing);}
    if(aNode.struct_declarator_node_1 != 0)
-    { print_struct_declarator_node (aNode.struct_declarator_node_1);}
+    { print_struct_declarator_node (aNode.struct_declarator_node_1,spacing);}
 std::cout<<")";
 }
-void print_struct_declarator_node(struct_declarator_node *ptr)
+void print_struct_declarator_node(struct_declarator_node *ptr, std::string indent)
 {
-    struct_declarator_node aNode = *ptr;
-std::cout << "(struct_declarator_node\n    ";
+    std::string spacing = indent.append("    ");struct_declarator_node aNode = *ptr;
+std::cout <<spacing<<"(struct_declarator_node\n";
    if(aNode.declarator_node_1 != 0)
-    { print_declarator_node (aNode.declarator_node_1);}
+    { print_declarator_node (aNode.declarator_node_1,spacing);}
    if(aNode.constant_expression_node_1 != 0)
-    { print_constant_expression_node (aNode.constant_expression_node_1);}
+    { print_constant_expression_node (aNode.constant_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_enum_specifier_node(enum_specifier_node *ptr)
+void print_enum_specifier_node(enum_specifier_node *ptr, std::string indent)
 {
-    enum_specifier_node aNode = *ptr;
-std::cout << "(enum_specifier_node\n    ";
+    std::string spacing = indent.append("    ");enum_specifier_node aNode = *ptr;
+std::cout <<spacing<<"(enum_specifier_node\n";
    if(aNode.identifier_node_1 != 0)
-    { print_identifier_node (aNode.identifier_node_1);}
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
    if(aNode.enumerator_list_node_1 != 0)
-    { print_enumerator_list_node (aNode.enumerator_list_node_1);}
+    { print_enumerator_list_node (aNode.enumerator_list_node_1,spacing);}
 std::cout<<")";
 }
-void print_enumerator_list_node(enumerator_list_node *ptr)
+void print_enumerator_list_node(enumerator_list_node *ptr, std::string indent)
 {
-    enumerator_list_node aNode = *ptr;
-std::cout << "(enumerator_list_node\n    ";
+    std::string spacing = indent.append("    ");enumerator_list_node aNode = *ptr;
+std::cout <<spacing<<"(enumerator_list_node\n";
    if(aNode.enumerator_node_1 != 0)
-    { print_enumerator_node (aNode.enumerator_node_1);}
+    { print_enumerator_node (aNode.enumerator_node_1,spacing);}
    if(aNode.enumerator_list_node_1 != 0)
-    { print_enumerator_list_node (aNode.enumerator_list_node_1);}
+    { print_enumerator_list_node (aNode.enumerator_list_node_1,spacing);}
 std::cout<<")";
 }
-void print_enumerator_node(enumerator_node *ptr)
+void print_enumerator_node(enumerator_node *ptr, std::string indent)
 {
-    enumerator_node aNode = *ptr;
-std::cout << "(enumerator_node\n    ";
+    std::string spacing = indent.append("    ");enumerator_node aNode = *ptr;
+std::cout <<spacing<<"(enumerator_node\n";
    if(aNode.constant_expression_node_1 != 0)
-    { print_constant_expression_node (aNode.constant_expression_node_1);}
+    { print_constant_expression_node (aNode.constant_expression_node_1,spacing);}
    if(aNode.identifier_node_1 != 0)
-    { print_identifier_node (aNode.identifier_node_1);}
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
 std::cout<<")";
 }
-void print_declarator_node(declarator_node *ptr)
+void print_declarator_node(declarator_node *ptr, std::string indent)
 {
-    declarator_node aNode = *ptr;
-   std::cout<<"address of this node:" << ptr <<std::endl;
-std::cout << "(declarator_node\n    ";
+    std::string spacing = indent.append("    ");declarator_node aNode = *ptr;
+std::cout <<spacing<<"(declarator_node\n";
    if(aNode.direct_declarator_node_1 != 0)
-    { print_direct_declarator_node (aNode.direct_declarator_node_1);}
+    { print_direct_declarator_node (aNode.direct_declarator_node_1,spacing);}
    if(aNode.pointer_node_1 != 0)
-    { print_pointer_node (aNode.pointer_node_1);}
+    { print_pointer_node (aNode.pointer_node_1,spacing);}
 std::cout<<")";
 }
-void print_direct_declarator_node(direct_declarator_node *ptr)
+void print_direct_declarator_node(direct_declarator_node *ptr, std::string indent)
 {
-    direct_declarator_node aNode = *ptr;
-   std::cout<<"address of this node:" << ptr <<std::endl;
-std::cout << "(direct_declarator_node\n    ";
-    if(aNode.parameter_type_list_node_1 != 0)
-    { print_parameter_type_list_node (aNode.parameter_type_list_node_1);}
-   if(aNode.direct_declarator_node_1 != 0)
-    { print_direct_declarator_node (aNode.direct_declarator_node_1);}
-   if(aNode.constant_expression_node_1 != 0)
-    { print_constant_expression_node (aNode.constant_expression_node_1);}
-   if(aNode.identifier_list_node_1 != 0)
-    { print_identifier_list_node (aNode.identifier_list_node_1);}
-   if(aNode.declarator_node_1 != 0)
-    { print_declarator_node (aNode.declarator_node_1);}
-   if(aNode.identifier_node_1 != 0)
-    { print_identifier_node (aNode.identifier_node_1);}
-std::cout<<")";
-}
-void print_pointer_node(pointer_node *ptr)
-{
-    pointer_node aNode = *ptr;
-std::cout << "(pointer_node\n    ";
-   if(aNode.pointer_node_1 != 0)
-    { print_pointer_node (aNode.pointer_node_1);}
-   if(aNode.type_qualifier_list_node_1 != 0)
-    { print_type_qualifier_list_node (aNode.type_qualifier_list_node_1);}
-std::cout<<")";
-}
-void print_type_qualifier_list_node(type_qualifier_list_node *ptr)
-{
-    type_qualifier_list_node aNode = *ptr;
-std::cout << "(type_qualifier_list_node\n    ";
-   if(aNode.type_qualifier_node_1 != 0)
-    { print_type_qualifier_node (aNode.type_qualifier_node_1);}
-   if(aNode.type_qualifier_list_node_1 != 0)
-    { print_type_qualifier_list_node (aNode.type_qualifier_list_node_1);}
-std::cout<<")";
-}
-void print_parameter_type_list_node(parameter_type_list_node *ptr)
-{
-    parameter_type_list_node aNode = *ptr;
-std::cout << "(parameter_type_list_node\n    ";
-   if(aNode.parameter_list_node_1 != 0)
-    { print_parameter_list_node (aNode.parameter_list_node_1);}
-std::cout<<")";
-}
-void print_parameter_list_node(parameter_list_node *ptr)
-{
-    parameter_list_node aNode = *ptr;
-std::cout << "(parameter_list_node\n    ";
-   if(aNode.parameter_list_node_1 != 0)
-    { print_parameter_list_node (aNode.parameter_list_node_1);}
-   if(aNode.parameter_declaration_node_1 != 0)
-    { print_parameter_declaration_node (aNode.parameter_declaration_node_1);}
-std::cout<<")";
-}
-void print_parameter_declaration_node(parameter_declaration_node *ptr)
-{
-    parameter_declaration_node aNode = *ptr;
-std::cout << "(parameter_declaration_node\n    ";
-   if(aNode.declarator_node_1 != 0)
-    { print_declarator_node (aNode.declarator_node_1);}
-   if(aNode.declaration_specifiers_node_1 != 0)
-    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1);}
-   if(aNode.abstract_declarator_node_1 != 0)
-    { print_abstract_declarator_node (aNode.abstract_declarator_node_1);}
-std::cout<<")";
-}
-void print_identifier_list_node(identifier_list_node *ptr)
-{
-    identifier_list_node aNode = *ptr;
-std::cout << "(identifier_list_node\n    ";
-   if(aNode.identifier_node_1 != 0)
-    { print_identifier_node (aNode.identifier_node_1);}
-   if(aNode.identifier_list_node_1 != 0)
-    { print_identifier_list_node (aNode.identifier_list_node_1);}
-std::cout<<")";
-}
-void print_initializer_node(initializer_node *ptr)
-{
-    initializer_node aNode = *ptr;
-std::cout << "(initializer_node\n    ";
-   if(aNode.initializer_list_node_1 != 0)
-    { print_initializer_list_node (aNode.initializer_list_node_1);}
-   if(aNode.assignment_expression_node_1 != 0)
-    { print_assignment_expression_node (aNode.assignment_expression_node_1);}
-std::cout<<")";
-}
-void print_initializer_list_node(initializer_list_node *ptr)
-{
-    initializer_list_node aNode = *ptr;
-std::cout << "(initializer_list_node\n    ";
-   if(aNode.initializer_node_1 != 0)
-    { print_initializer_node (aNode.initializer_node_1);}
-   if(aNode.initializer_list_node_1 != 0)
-    { print_initializer_list_node (aNode.initializer_list_node_1);}
-std::cout<<")";
-}
-void print_type_name_node(type_name_node *ptr)
-{
-    type_name_node aNode = *ptr;
-std::cout << "(type_name_node\n    ";
-   if(aNode.specifier_qualifier_list_node_1 != 0)
-    { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1);}
-   if(aNode.abstract_declarator_node_1 != 0)
-    { print_abstract_declarator_node (aNode.abstract_declarator_node_1);}
-std::cout<<")";
-}
-void print_abstract_declarator_node(abstract_declarator_node *ptr)
-{
-    abstract_declarator_node aNode = *ptr;
-std::cout << "(abstract_declarator_node\n    ";
-   if(aNode.direct_abstract_declarator_node_1 != 0)
-    { print_direct_abstract_declarator_node (aNode.direct_abstract_declarator_node_1);}
-   if(aNode.pointer_node_1 != 0)
-    { print_pointer_node (aNode.pointer_node_1);}
-std::cout<<")";
-}
-void print_direct_abstract_declarator_node(direct_abstract_declarator_node *ptr)
-{
-    direct_abstract_declarator_node aNode = *ptr;
-std::cout << "(direct_abstract_declarator_node\n    ";
+    std::string spacing = indent.append("    ");direct_declarator_node aNode = *ptr;
+std::cout <<spacing<<"(direct_declarator_node\n";
    if(aNode.parameter_type_list_node_1 != 0)
-    { print_parameter_type_list_node (aNode.parameter_type_list_node_1);}
+    { print_parameter_type_list_node (aNode.parameter_type_list_node_1,spacing);}
+   if(aNode.direct_declarator_node_1 != 0)
+    { print_direct_declarator_node (aNode.direct_declarator_node_1,spacing);}
+   if(aNode.constant_expression_node_1 != 0)
+    { print_constant_expression_node (aNode.constant_expression_node_1,spacing);}
+   if(aNode.identifier_list_node_1 != 0)
+    { print_identifier_list_node (aNode.identifier_list_node_1,spacing);}
+   if(aNode.declarator_node_1 != 0)
+    { print_declarator_node (aNode.declarator_node_1,spacing);}
+   if(aNode.identifier_node_1 != 0)
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
+std::cout<<")";
+}
+void print_pointer_node(pointer_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");pointer_node aNode = *ptr;
+std::cout <<spacing<<"(pointer_node\n";
+   if(aNode.pointer_node_1 != 0)
+    { print_pointer_node (aNode.pointer_node_1,spacing);}
+   if(aNode.type_qualifier_list_node_1 != 0)
+    { print_type_qualifier_list_node (aNode.type_qualifier_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_type_qualifier_list_node(type_qualifier_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");type_qualifier_list_node aNode = *ptr;
+std::cout <<spacing<<"(type_qualifier_list_node\n";
+   if(aNode.type_qualifier_node_1 != 0)
+    { print_type_qualifier_node (aNode.type_qualifier_node_1,spacing);}
+   if(aNode.type_qualifier_list_node_1 != 0)
+    { print_type_qualifier_list_node (aNode.type_qualifier_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_parameter_type_list_node(parameter_type_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");parameter_type_list_node aNode = *ptr;
+std::cout <<spacing<<"(parameter_type_list_node\n";
+   if(aNode.parameter_list_node_1 != 0)
+    { print_parameter_list_node (aNode.parameter_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_parameter_list_node(parameter_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");parameter_list_node aNode = *ptr;
+std::cout <<spacing<<"(parameter_list_node\n";
+   if(aNode.parameter_list_node_1 != 0)
+    { print_parameter_list_node (aNode.parameter_list_node_1,spacing);}
+   if(aNode.parameter_declaration_node_1 != 0)
+    { print_parameter_declaration_node (aNode.parameter_declaration_node_1,spacing);}
+std::cout<<")";
+}
+void print_parameter_declaration_node(parameter_declaration_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");parameter_declaration_node aNode = *ptr;
+std::cout <<spacing<<"(parameter_declaration_node\n";
+   if(aNode.declarator_node_1 != 0)
+    { print_declarator_node (aNode.declarator_node_1,spacing);}
+   if(aNode.declaration_specifiers_node_1 != 0)
+    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1,spacing);}
    if(aNode.abstract_declarator_node_1 != 0)
-    { print_abstract_declarator_node (aNode.abstract_declarator_node_1);}
-   if(aNode.constant_expression_node_1 != 0)
-    { print_constant_expression_node (aNode.constant_expression_node_1);}
+    { print_abstract_declarator_node (aNode.abstract_declarator_node_1,spacing);}
+std::cout<<")";
+}
+void print_identifier_list_node(identifier_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");identifier_list_node aNode = *ptr;
+std::cout <<spacing<<"(identifier_list_node\n";
+   if(aNode.identifier_node_1 != 0)
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
+   if(aNode.identifier_list_node_1 != 0)
+    { print_identifier_list_node (aNode.identifier_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_initializer_node(initializer_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");initializer_node aNode = *ptr;
+std::cout <<spacing<<"(initializer_node\n";
+   if(aNode.initializer_list_node_1 != 0)
+    { print_initializer_list_node (aNode.initializer_list_node_1,spacing);}
+   if(aNode.assignment_expression_node_1 != 0)
+    { print_assignment_expression_node (aNode.assignment_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_initializer_list_node(initializer_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");initializer_list_node aNode = *ptr;
+std::cout <<spacing<<"(initializer_list_node\n";
+   if(aNode.initializer_node_1 != 0)
+    { print_initializer_node (aNode.initializer_node_1,spacing);}
+   if(aNode.initializer_list_node_1 != 0)
+    { print_initializer_list_node (aNode.initializer_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_type_name_node(type_name_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");type_name_node aNode = *ptr;
+std::cout <<spacing<<"(type_name_node\n";
+   if(aNode.specifier_qualifier_list_node_1 != 0)
+    { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1,spacing);}
+   if(aNode.abstract_declarator_node_1 != 0)
+    { print_abstract_declarator_node (aNode.abstract_declarator_node_1,spacing);}
+std::cout<<")";
+}
+void print_abstract_declarator_node(abstract_declarator_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");abstract_declarator_node aNode = *ptr;
+std::cout <<spacing<<"(abstract_declarator_node\n";
    if(aNode.direct_abstract_declarator_node_1 != 0)
-    { print_direct_abstract_declarator_node (aNode.direct_abstract_declarator_node_1);}
+    { print_direct_abstract_declarator_node (aNode.direct_abstract_declarator_node_1,spacing);}
+   if(aNode.pointer_node_1 != 0)
+    { print_pointer_node (aNode.pointer_node_1,spacing);}
 std::cout<<")";
 }
-void print_statement_node(statement_node *ptr)
+void print_direct_abstract_declarator_node(direct_abstract_declarator_node *ptr, std::string indent)
 {
-    statement_node aNode = *ptr;
-std::cout << "(statement_node\n    ";
-   if(aNode.expression_statement_node_1 != 0)
-    { print_expression_statement_node (aNode.expression_statement_node_1);}
-   if(aNode.jump_statement_node_1 != 0)
-    { print_jump_statement_node (aNode.jump_statement_node_1);}
-   if(aNode.labeled_statement_node_1 != 0)
-    { print_labeled_statement_node (aNode.labeled_statement_node_1);}
-   if(aNode.compound_statement_node_1 != 0)
-    { print_compound_statement_node (aNode.compound_statement_node_1);}
-   if(aNode.iteration_statement_node_1 != 0)
-    { print_iteration_statement_node (aNode.iteration_statement_node_1);}
-   if(aNode.selection_statement_node_1 != 0)
-    { print_selection_statement_node (aNode.selection_statement_node_1);}
-std::cout<<")";
-}
-void print_labeled_statement_node(labeled_statement_node *ptr)
-{
-    labeled_statement_node aNode = *ptr;
-std::cout << "(labeled_statement_node\n    ";
+    std::string spacing = indent.append("    ");direct_abstract_declarator_node aNode = *ptr;
+std::cout <<spacing<<"(direct_abstract_declarator_node\n";
+   if(aNode.parameter_type_list_node_1 != 0)
+    { print_parameter_type_list_node (aNode.parameter_type_list_node_1,spacing);}
+   if(aNode.abstract_declarator_node_1 != 0)
+    { print_abstract_declarator_node (aNode.abstract_declarator_node_1,spacing);}
    if(aNode.constant_expression_node_1 != 0)
-    { print_constant_expression_node (aNode.constant_expression_node_1);}
+    { print_constant_expression_node (aNode.constant_expression_node_1,spacing);}
+   if(aNode.direct_abstract_declarator_node_1 != 0)
+    { print_direct_abstract_declarator_node (aNode.direct_abstract_declarator_node_1,spacing);}
+std::cout<<")";
+}
+void print_statement_node(statement_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");statement_node aNode = *ptr;
+std::cout <<spacing<<"(statement_node\n";
+   if(aNode.expression_statement_node_1 != 0)
+    { print_expression_statement_node (aNode.expression_statement_node_1,spacing);}
+   if(aNode.jump_statement_node_1 != 0)
+    { print_jump_statement_node (aNode.jump_statement_node_1,spacing);}
+   if(aNode.labeled_statement_node_1 != 0)
+    { print_labeled_statement_node (aNode.labeled_statement_node_1,spacing);}
+   if(aNode.compound_statement_node_1 != 0)
+    { print_compound_statement_node (aNode.compound_statement_node_1,spacing);}
+   if(aNode.iteration_statement_node_1 != 0)
+    { print_iteration_statement_node (aNode.iteration_statement_node_1,spacing);}
+   if(aNode.selection_statement_node_1 != 0)
+    { print_selection_statement_node (aNode.selection_statement_node_1,spacing);}
+std::cout<<")";
+}
+void print_labeled_statement_node(labeled_statement_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");labeled_statement_node aNode = *ptr;
+std::cout <<spacing<<"(labeled_statement_node\n";
+   if(aNode.constant_expression_node_1 != 0)
+    { print_constant_expression_node (aNode.constant_expression_node_1,spacing);}
    if(aNode.identifier_node_1 != 0)
-    { print_identifier_node (aNode.identifier_node_1);}
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
    if(aNode.statement_node_1 != 0)
-    { print_statement_node (aNode.statement_node_1);}
+    { print_statement_node (aNode.statement_node_1,spacing);}
 std::cout<<")";
 }
-void print_expression_statement_node(expression_statement_node *ptr)
+void print_expression_statement_node(expression_statement_node *ptr, std::string indent)
 {
-    expression_statement_node aNode = *ptr;
-std::cout << "(expression_statement_node\n    ";
+    std::string spacing = indent.append("    ");expression_statement_node aNode = *ptr;
+std::cout <<spacing<<"(expression_statement_node\n";
    if(aNode.expression_node_1 != 0)
-    { print_expression_node (aNode.expression_node_1);}
+    { print_expression_node (aNode.expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_compound_statement_node(compound_statement_node *ptr)
+void print_compound_statement_node(compound_statement_node *ptr, std::string indent)
 {
-    compound_statement_node aNode = *ptr;
-std::cout << "(compound_statement_node\n    ";
+    std::string spacing = indent.append("    ");compound_statement_node aNode = *ptr;
+std::cout <<spacing<<"(compound_statement_node\n";
    if(aNode.statement_list_node_1 != 0)
-    { print_statement_list_node (aNode.statement_list_node_1);}
+    { print_statement_list_node (aNode.statement_list_node_1,spacing);}
    if(aNode.declaration_list_node_1 != 0)
-    { print_declaration_list_node (aNode.declaration_list_node_1);}
+    { print_declaration_list_node (aNode.declaration_list_node_1,spacing);}
 std::cout<<")";
 }
-void print_statement_list_node(statement_list_node *ptr)
+void print_statement_list_node(statement_list_node *ptr, std::string indent)
 {
-    statement_list_node aNode = *ptr;
-std::cout << "(statement_list_node\n    ";
+    std::string spacing = indent.append("    ");statement_list_node aNode = *ptr;
+std::cout <<spacing<<"(statement_list_node\n";
    if(aNode.statement_list_node_1 != 0)
-    { print_statement_list_node (aNode.statement_list_node_1);}
+    { print_statement_list_node (aNode.statement_list_node_1,spacing);}
    if(aNode.statement_node_1 != 0)
-    { print_statement_node (aNode.statement_node_1);}
+    { print_statement_node (aNode.statement_node_1,spacing);}
 std::cout<<")";
 }
-void print_selection_statement_node(selection_statement_node *ptr)
+void print_selection_statement_node(selection_statement_node *ptr, std::string indent)
 {
-    selection_statement_node aNode = *ptr;
-std::cout << "(selection_statement_node\n    ";
+    std::string spacing = indent.append("    ");selection_statement_node aNode = *ptr;
+std::cout <<spacing<<"(selection_statement_node\n";
    if(aNode.statement_node_2 != 0)
-    { print_statement_node (aNode.statement_node_2);}
+    { print_statement_node (aNode.statement_node_2,spacing);}
    if(aNode.statement_node_1 != 0)
-    { print_statement_node (aNode.statement_node_1);}
+    { print_statement_node (aNode.statement_node_1,spacing);}
    if(aNode.expression_node_1 != 0)
-    { print_expression_node (aNode.expression_node_1);}
+    { print_expression_node (aNode.expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_iteration_statement_node(iteration_statement_node *ptr)
+void print_iteration_statement_node(iteration_statement_node *ptr, std::string indent)
 {
-    iteration_statement_node aNode = *ptr;
-std::cout << "(iteration_statement_node\n    ";
+    std::string spacing = indent.append("    ");iteration_statement_node aNode = *ptr;
+std::cout <<spacing<<"(iteration_statement_node\n";
    if(aNode.expression_node_2 != 0)
-    { print_expression_node (aNode.expression_node_2);}
+    { print_expression_node (aNode.expression_node_2,spacing);}
    if(aNode.statement_node_1 != 0)
-    { print_statement_node (aNode.statement_node_1);}
+    { print_statement_node (aNode.statement_node_1,spacing);}
    if(aNode.expression_node_1 != 0)
-    { print_expression_node (aNode.expression_node_1);}
+    { print_expression_node (aNode.expression_node_1,spacing);}
    if(aNode.expression_node_3 != 0)
-    { print_expression_node (aNode.expression_node_3);}
+    { print_expression_node (aNode.expression_node_3,spacing);}
 std::cout<<")";
 }
-void print_jump_statement_node(jump_statement_node *ptr)
+void print_jump_statement_node(jump_statement_node *ptr, std::string indent)
 {
-    jump_statement_node aNode = *ptr;
-std::cout << "(jump_statement_node\n    ";
+    std::string spacing = indent.append("    ");jump_statement_node aNode = *ptr;
+std::cout <<spacing<<"(jump_statement_node\n";
    if(aNode.expression_node_1 != 0)
-    { print_expression_node (aNode.expression_node_1);}
+    { print_expression_node (aNode.expression_node_1,spacing);}
    if(aNode.identifier_node_1 != 0)
-    { print_identifier_node (aNode.identifier_node_1);}
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
 std::cout<<")";
 }
-void print_expression_node(expression_node *ptr)
+void print_expression_node(expression_node *ptr, std::string indent)
 {
-    expression_node aNode = *ptr;
-std::cout << "(expression_node\n    ";
+    std::string spacing = indent.append("    ");expression_node aNode = *ptr;
+std::cout <<spacing<<"(expression_node\n";
    if(aNode.expression_node_1 != 0)
-    { print_expression_node (aNode.expression_node_1);}
+    { print_expression_node (aNode.expression_node_1,spacing);}
    if(aNode.assignment_expression_node_1 != 0)
-    { print_assignment_expression_node (aNode.assignment_expression_node_1);}
+    { print_assignment_expression_node (aNode.assignment_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_assignment_expression_node(assignment_expression_node *ptr)
+void print_assignment_expression_node(assignment_expression_node *ptr, std::string indent)
 {
-    assignment_expression_node aNode = *ptr;
-std::cout << "(assignment_expression_node\n    ";
+    std::string spacing = indent.append("    ");assignment_expression_node aNode = *ptr;
+std::cout <<spacing<<"(assignment_expression_node\n";
    if(aNode.conditional_expression_node_1 != 0)
-    { print_conditional_expression_node (aNode.conditional_expression_node_1);}
+    { print_conditional_expression_node (aNode.conditional_expression_node_1,spacing);}
    if(aNode.assignment_operator_node_1 != 0)
-    { print_assignment_operator_node (aNode.assignment_operator_node_1);}
+    { print_assignment_operator_node (aNode.assignment_operator_node_1,spacing);}
    if(aNode.unary_expression_node_1 != 0)
-    { print_unary_expression_node (aNode.unary_expression_node_1);}
+    { print_unary_expression_node (aNode.unary_expression_node_1,spacing);}
    if(aNode.assignment_expression_node_1 != 0)
-    { print_assignment_expression_node (aNode.assignment_expression_node_1);}
+    { print_assignment_expression_node (aNode.assignment_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_assignment_operator_node(assignment_operator_node *ptr)
+void print_assignment_operator_node(assignment_operator_node *ptr, std::string indent)
 {
-    assignment_operator_node aNode = *ptr;
-std::cout << "(assignment_operator_node\n    ";
+    std::string spacing = indent.append("    ");assignment_operator_node aNode = *ptr;
+std::cout <<spacing<<"(assignment_operator_node\n";
 std::cout<<")";
 }
-void print_conditional_expression_node(conditional_expression_node *ptr)
+void print_conditional_expression_node(conditional_expression_node *ptr, std::string indent)
 {
-    conditional_expression_node aNode = *ptr;
-std::cout << "(conditional_expression_node\n    ";
+    std::string spacing = indent.append("    ");conditional_expression_node aNode = *ptr;
+std::cout <<spacing<<"(conditional_expression_node\n";
    if(aNode.expression_node_1 != 0)
-    { print_expression_node (aNode.expression_node_1);}
+    { print_expression_node (aNode.expression_node_1,spacing);}
    if(aNode.conditional_expression_node_1 != 0)
-    { print_conditional_expression_node (aNode.conditional_expression_node_1);}
+    { print_conditional_expression_node (aNode.conditional_expression_node_1,spacing);}
    if(aNode.logical_or_expression_node_1 != 0)
-    { print_logical_or_expression_node (aNode.logical_or_expression_node_1);}
+    { print_logical_or_expression_node (aNode.logical_or_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_constant_expression_node(constant_expression_node *ptr)
+void print_constant_expression_node(constant_expression_node *ptr, std::string indent)
 {
-    constant_expression_node aNode = *ptr;
-std::cout << "(constant_expression_node\n    ";
+    std::string spacing = indent.append("    ");constant_expression_node aNode = *ptr;
+std::cout <<spacing<<"(constant_expression_node\n";
    if(aNode.conditional_expression_node_1 != 0)
-    { print_conditional_expression_node (aNode.conditional_expression_node_1);}
+    { print_conditional_expression_node (aNode.conditional_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_logical_or_expression_node(logical_or_expression_node *ptr)
+void print_logical_or_expression_node(logical_or_expression_node *ptr, std::string indent)
 {
-    logical_or_expression_node aNode = *ptr;
-std::cout << "(logical_or_expression_node\n    ";
+    std::string spacing = indent.append("    ");logical_or_expression_node aNode = *ptr;
+std::cout <<spacing<<"(logical_or_expression_node\n";
    if(aNode.logical_or_expression_node_1 != 0)
-    { print_logical_or_expression_node (aNode.logical_or_expression_node_1);}
+    { print_logical_or_expression_node (aNode.logical_or_expression_node_1,spacing);}
    if(aNode.logical_and_expression_node_1 != 0)
-    { print_logical_and_expression_node (aNode.logical_and_expression_node_1);}
+    { print_logical_and_expression_node (aNode.logical_and_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_logical_and_expression_node(logical_and_expression_node *ptr)
+void print_logical_and_expression_node(logical_and_expression_node *ptr, std::string indent)
 {
-    logical_and_expression_node aNode = *ptr;
-std::cout << "(logical_and_expression_node\n    ";
+    std::string spacing = indent.append("    ");logical_and_expression_node aNode = *ptr;
+std::cout <<spacing<<"(logical_and_expression_node\n";
    if(aNode.inclusive_or_expression_node_1 != 0)
-    { print_inclusive_or_expression_node (aNode.inclusive_or_expression_node_1);}
+    { print_inclusive_or_expression_node (aNode.inclusive_or_expression_node_1,spacing);}
    if(aNode.logical_and_expression_node_1 != 0)
-    { print_logical_and_expression_node (aNode.logical_and_expression_node_1);}
+    { print_logical_and_expression_node (aNode.logical_and_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_inclusive_or_expression_node(inclusive_or_expression_node *ptr)
+void print_inclusive_or_expression_node(inclusive_or_expression_node *ptr, std::string indent)
 {
-    inclusive_or_expression_node aNode = *ptr;
-std::cout << "(inclusive_or_expression_node\n    ";
+    std::string spacing = indent.append("    ");inclusive_or_expression_node aNode = *ptr;
+std::cout <<spacing<<"(inclusive_or_expression_node\n";
    if(aNode.inclusive_or_expression_node_1 != 0)
-    { print_inclusive_or_expression_node (aNode.inclusive_or_expression_node_1);}
+    { print_inclusive_or_expression_node (aNode.inclusive_or_expression_node_1,spacing);}
    if(aNode.exclusive_or_expression_node_1 != 0)
-    { print_exclusive_or_expression_node (aNode.exclusive_or_expression_node_1);}
+    { print_exclusive_or_expression_node (aNode.exclusive_or_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_exclusive_or_expression_node(exclusive_or_expression_node *ptr)
+void print_exclusive_or_expression_node(exclusive_or_expression_node *ptr, std::string indent)
 {
-    exclusive_or_expression_node aNode = *ptr;
-std::cout << "(exclusive_or_expression_node\n    ";
+    std::string spacing = indent.append("    ");exclusive_or_expression_node aNode = *ptr;
+std::cout <<spacing<<"(exclusive_or_expression_node\n";
    if(aNode.and_expression_node_1 != 0)
-    { print_and_expression_node (aNode.and_expression_node_1);}
+    { print_and_expression_node (aNode.and_expression_node_1,spacing);}
    if(aNode.exclusive_or_expression_node_1 != 0)
-    { print_exclusive_or_expression_node (aNode.exclusive_or_expression_node_1);}
+    { print_exclusive_or_expression_node (aNode.exclusive_or_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_and_expression_node(and_expression_node *ptr)
+void print_and_expression_node(and_expression_node *ptr, std::string indent)
 {
-    and_expression_node aNode = *ptr;
-std::cout << "(and_expression_node\n    ";
+    std::string spacing = indent.append("    ");and_expression_node aNode = *ptr;
+std::cout <<spacing<<"(and_expression_node\n";
    if(aNode.equality_expression_node_1 != 0)
-    { print_equality_expression_node (aNode.equality_expression_node_1);}
+    { print_equality_expression_node (aNode.equality_expression_node_1,spacing);}
    if(aNode.and_expression_node_1 != 0)
-    { print_and_expression_node (aNode.and_expression_node_1);}
+    { print_and_expression_node (aNode.and_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_equality_expression_node(equality_expression_node *ptr)
+void print_equality_expression_node(equality_expression_node *ptr, std::string indent)
 {
-    equality_expression_node aNode = *ptr;
-std::cout << "(equality_expression_node\n    ";
+    std::string spacing = indent.append("    ");equality_expression_node aNode = *ptr;
+std::cout <<spacing<<"(equality_expression_node\n";
    if(aNode.equality_expression_node_1 != 0)
-    { print_equality_expression_node (aNode.equality_expression_node_1);}
+    { print_equality_expression_node (aNode.equality_expression_node_1,spacing);}
    if(aNode.relational_expression_node_1 != 0)
-    { print_relational_expression_node (aNode.relational_expression_node_1);}
+    { print_relational_expression_node (aNode.relational_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_relational_expression_node(relational_expression_node *ptr)
+void print_relational_expression_node(relational_expression_node *ptr, std::string indent)
 {
-    relational_expression_node aNode = *ptr;
-std::cout << "(relational_expression_node\n    ";
+    std::string spacing = indent.append("    ");relational_expression_node aNode = *ptr;
+std::cout <<spacing<<"(relational_expression_node\n";
    if(aNode.relational_expression_node_1 != 0)
-    { print_relational_expression_node (aNode.relational_expression_node_1);}
+    { print_relational_expression_node (aNode.relational_expression_node_1,spacing);}
    if(aNode.shift_expression_node_1 != 0)
-    { print_shift_expression_node (aNode.shift_expression_node_1);}
+    { print_shift_expression_node (aNode.shift_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_shift_expression_node(shift_expression_node *ptr)
+void print_shift_expression_node(shift_expression_node *ptr, std::string indent)
 {
-    shift_expression_node aNode = *ptr;
-std::cout << "(shift_expression_node\n    ";
+    std::string spacing = indent.append("    ");shift_expression_node aNode = *ptr;
+std::cout <<spacing<<"(shift_expression_node\n";
    if(aNode.additive_expression_node_1 != 0)
-    { print_additive_expression_node (aNode.additive_expression_node_1);}
+    { print_additive_expression_node (aNode.additive_expression_node_1,spacing);}
    if(aNode.shift_expression_node_1 != 0)
-    { print_shift_expression_node (aNode.shift_expression_node_1);}
+    { print_shift_expression_node (aNode.shift_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_additive_expression_node(additive_expression_node *ptr)
+void print_additive_expression_node(additive_expression_node *ptr, std::string indent)
 {
-    additive_expression_node aNode = *ptr;
-std::cout << "(additive_expression_node\n    ";
+    std::string spacing = indent.append("    ");additive_expression_node aNode = *ptr;
+std::cout <<spacing<<"(additive_expression_node\n";
    if(aNode.multiplicative_expression_node_1 != 0)
-    { print_multiplicative_expression_node (aNode.multiplicative_expression_node_1);}
+    { print_multiplicative_expression_node (aNode.multiplicative_expression_node_1,spacing);}
    if(aNode.additive_expression_node_1 != 0)
-    { print_additive_expression_node (aNode.additive_expression_node_1);}
+    { print_additive_expression_node (aNode.additive_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_multiplicative_expression_node(multiplicative_expression_node *ptr)
+void print_multiplicative_expression_node(multiplicative_expression_node *ptr, std::string indent)
 {
-    multiplicative_expression_node aNode = *ptr;
-std::cout << "(multiplicative_expression_node\n    ";
+    std::string spacing = indent.append("    ");multiplicative_expression_node aNode = *ptr;
+std::cout <<spacing<<"(multiplicative_expression_node\n";
    if(aNode.multiplicative_expression_node_1 != 0)
-    { print_multiplicative_expression_node (aNode.multiplicative_expression_node_1);}
+    { print_multiplicative_expression_node (aNode.multiplicative_expression_node_1,spacing);}
    if(aNode.cast_expression_node_1 != 0)
-    { print_cast_expression_node (aNode.cast_expression_node_1);}
+    { print_cast_expression_node (aNode.cast_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_cast_expression_node(cast_expression_node *ptr)
+void print_cast_expression_node(cast_expression_node *ptr, std::string indent)
 {
-    cast_expression_node aNode = *ptr;
-std::cout << "(cast_expression_node\n    ";
+    std::string spacing = indent.append("    ");cast_expression_node aNode = *ptr;
+std::cout <<spacing<<"(cast_expression_node\n";
    if(aNode.cast_expression_node_1 != 0)
-    { print_cast_expression_node (aNode.cast_expression_node_1);}
+    { print_cast_expression_node (aNode.cast_expression_node_1,spacing);}
    if(aNode.type_name_node_1 != 0)
-    { print_type_name_node (aNode.type_name_node_1);}
+    { print_type_name_node (aNode.type_name_node_1,spacing);}
    if(aNode.unary_expression_node_1 != 0)
-    { print_unary_expression_node (aNode.unary_expression_node_1);}
+    { print_unary_expression_node (aNode.unary_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_unary_expression_node(unary_expression_node *ptr)
+void print_unary_expression_node(unary_expression_node *ptr, std::string indent)
 {
-    unary_expression_node aNode = *ptr;
-std::cout << "(unary_expression_node\n    ";
+    std::string spacing = indent.append("    ");unary_expression_node aNode = *ptr;
+std::cout <<spacing<<"(unary_expression_node\n";
    if(aNode.postfix_expression_node_1 != 0)
-    { print_postfix_expression_node (aNode.postfix_expression_node_1);}
+    { print_postfix_expression_node (aNode.postfix_expression_node_1,spacing);}
    if(aNode.type_name_node_1 != 0)
-    { print_type_name_node (aNode.type_name_node_1);}
+    { print_type_name_node (aNode.type_name_node_1,spacing);}
    if(aNode.unary_operator_node_1 != 0)
-    { print_unary_operator_node (aNode.unary_operator_node_1);}
+    { print_unary_operator_node (aNode.unary_operator_node_1,spacing);}
    if(aNode.unary_expression_node_1 != 0)
-    { print_unary_expression_node (aNode.unary_expression_node_1);}
+    { print_unary_expression_node (aNode.unary_expression_node_1,spacing);}
    if(aNode.cast_expression_node_1 != 0)
-    { print_cast_expression_node (aNode.cast_expression_node_1);}
+    { print_cast_expression_node (aNode.cast_expression_node_1,spacing);}
 std::cout<<")";
 }
-void print_unary_operator_node(unary_operator_node *ptr)
+void print_unary_operator_node(unary_operator_node *ptr, std::string indent)
 {
-    unary_operator_node aNode = *ptr;
-std::cout << "(unary_operator_node\n    ";
+    std::string spacing = indent.append("    ");unary_operator_node aNode = *ptr;
+std::cout <<spacing<<"(unary_operator_node\n";
 std::cout<<")";
 }
-void print_postfix_expression_node(postfix_expression_node *ptr)
+void print_postfix_expression_node(postfix_expression_node *ptr, std::string indent)
 {
-    postfix_expression_node aNode = *ptr;
-std::cout << "(postfix_expression_node\n    ";
+    std::string spacing = indent.append("    ");postfix_expression_node aNode = *ptr;
+std::cout <<spacing<<"(postfix_expression_node\n";
    if(aNode.postfix_expression_node_1 != 0)
-    { print_postfix_expression_node (aNode.postfix_expression_node_1);}
+    { print_postfix_expression_node (aNode.postfix_expression_node_1,spacing);}
    if(aNode.primary_expression_node_1 != 0)
-    { print_primary_expression_node (aNode.primary_expression_node_1);}
+    { print_primary_expression_node (aNode.primary_expression_node_1,spacing);}
    if(aNode.argument_expression_list_node_1 != 0)
-    { print_argument_expression_list_node (aNode.argument_expression_list_node_1);}
+    { print_argument_expression_list_node (aNode.argument_expression_list_node_1,spacing);}
    if(aNode.expression_node_1 != 0)
-    { print_expression_node (aNode.expression_node_1);}
+    { print_expression_node (aNode.expression_node_1,spacing);}
    if(aNode.identifier_node_1 != 0)
-    { print_identifier_node (aNode.identifier_node_1);}
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
 std::cout<<")";
 }
-void print_primary_expression_node(primary_expression_node *ptr)
+void print_primary_expression_node(primary_expression_node *ptr, std::string indent)
 {
-    primary_expression_node aNode = *ptr;
-std::cout << "(primary_expression_node\n    ";
+    std::string spacing = indent.append("    ");primary_expression_node aNode = *ptr;
+std::cout <<spacing<<"(primary_expression_node\n";
    if(aNode.constant_node_1 != 0)
-    { print_constant_node (aNode.constant_node_1);}
+    { print_constant_node (aNode.constant_node_1,spacing);}
    if(aNode.expression_node_1 != 0)
-    { print_expression_node (aNode.expression_node_1);}
+    { print_expression_node (aNode.expression_node_1,spacing);}
    if(aNode.string_node_1 != 0)
-    { print_string_node (aNode.string_node_1);}
+    { print_string_node (aNode.string_node_1,spacing);}
    if(aNode.identifier_node_1 != 0)
-    { print_identifier_node (aNode.identifier_node_1);}
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
 std::cout<<")";
 }
-void print_argument_expression_list_node(argument_expression_list_node *ptr)
+void print_argument_expression_list_node(argument_expression_list_node *ptr, std::string indent)
 {
-    argument_expression_list_node aNode = *ptr;
-std::cout << "(argument_expression_list_node\n    ";
+    std::string spacing = indent.append("    ");argument_expression_list_node aNode = *ptr;
+std::cout <<spacing<<"(argument_expression_list_node\n";
    if(aNode.assignment_expression_node_1 != 0)
-    { print_assignment_expression_node (aNode.assignment_expression_node_1);}
+    { print_assignment_expression_node (aNode.assignment_expression_node_1,spacing);}
    if(aNode.argument_expression_list_node_1 != 0)
-    { print_argument_expression_list_node (aNode.argument_expression_list_node_1);}
+    { print_argument_expression_list_node (aNode.argument_expression_list_node_1,spacing);}
 std::cout<<")";
 }
-void print_constant_node(constant_node *ptr)
+void print_constant_node(constant_node *ptr, std::string indent)
 {
-    constant_node aNode = *ptr;
-std::cout << "(constant_node\n    ";
+    std::string spacing = indent.append("    ");constant_node aNode = *ptr;
+std::cout <<spacing<<"(constant_node\n";
 std::cout<<")";
 }
-void print_string_node(string_node *ptr)
+void print_string_node(string_node *ptr, std::string indent)
 {
-    string_node aNode = *ptr;
-std::cout << "(string_node\n    ";
+    std::string spacing = indent.append("    ");string_node aNode = *ptr;
+std::cout <<spacing<<"(string_node\n";
 std::cout<<")";
 }
-void print_identifier_node(identifier_node *ptr)
+void print_identifier_node(identifier_node *ptr, std::string indent)
 {
-    identifier_node aNode = *ptr;
-std::cout << "(identifier_node\n    ";
+    std::string spacing = indent.append("    ");identifier_node aNode = *ptr;
+std::cout <<spacing<<"(identifier_node\n";
 std::cout<<")";
 }
-
-
 
 /*
 yyerror(s)
