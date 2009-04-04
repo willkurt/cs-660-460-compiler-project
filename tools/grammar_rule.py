@@ -115,10 +115,11 @@ class GrammarRule:
 #i'm going to try to run this with count intead
  #create the print statement
     def print_stmnt(self):
+        spacing = "    "
         #to start I only want to see the nodes
         stmnt_str = "void print_"+self.struct_name+"("+self.struct_name+" *ptr)\n{\n    "
         stmnt_str += self.struct_name + " aNode = *ptr;\n"
-        stmnt_str += "std::cout << \"("+self.struct_name+"\\n\";\n"
+        stmnt_str += "std::cout << \"("+self.struct_name+"\\n"+spacing+"\";\n"
         for each in self.struct_vars:
             #later we can change this
             if("_node_" in each):
@@ -150,7 +151,8 @@ class GrammarRule:
         spacing = "    "
         for each in self.productions:
             vars_used = []
-            code_stmnt = "{\n"+spacing+self.struct_name+" anode;\n"
+            code_stmnt = "{\n "+spacing+self.struct_name+" *anode;\n"
+            code_stmnt += "anode = ("+self.struct_name+"*) malloc(sizeof("+self.struct_name+"));\n"
             
             char_lits = re.findall(char_lit,each)
             tokens = re.findall(token,each)
@@ -172,26 +174,26 @@ class GrammarRule:
             for i in range(1,number_of_char_lits+1):
                 vars_used.append("char_lit_"+str(i))
                 location = statment_list.index(char_lits[i-1])+1
-                code_stmnt +=spacing+"anode.char_lit_"+str(i)+'=\"'+statment_list[location-1]+"\";\n"
+                code_stmnt +=spacing+"(*anode).char_lit_"+str(i)+'=\"'+statment_list[location-1]+"\";\n"
             #find how many token_x
             #then add 
             number_of_tokens = len(tokens)
             for i in range(1,number_of_tokens+1):
                 vars_used.append("token_"+str(i))
                 location = statment_list.index(tokens[i-1])+1
-                code_stmnt +=spacing+"anode.token_"+str(i)+"=$"+str(location)+";\n"
+                code_stmnt +=spacing+"(*anode).token_"+str(i)+"=$"+str(location)+";\n"
             while(len(remaining) > 0):
                 current = remaining[0]
                 current_count = remaining.count(current)
                 for i in range(1,current_count+1):
                     vars_used.append(current+"_node_"+str(i))
                     location = statment_list.index(current,current_count-1)+1
-                    code_stmnt +=spacing+"anode."+current+"_node_"+str(i)+"=$"+str(location)+";\n"
+                    code_stmnt +=spacing+"(*anode)."+current+"_node_"+str(i)+"=$"+str(location)+";\n"
                 remaining.remove(current)
             for var in (self.struct_vars - set(vars_used)):
                 if "char_lit_" in var:
-                    code_stmnt += spacing+"anode."+var+"= \"\";\n"
+                    code_stmnt += spacing+"(*anode)."+var+"= \"\";\n"
                 else:
-                    code_stmnt += spacing+"anode."+var+"= 0;\n"
-            code_stmnt += spacing+"$$ = &anode;\n}\n"        
+                    code_stmnt += spacing+"(*anode)."+var+"= 0;\n"
+            code_stmnt += spacing+"$$ = anode;\n}\n"        
             self.rule_code_dict[each] = code_stmnt

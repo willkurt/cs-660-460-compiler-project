@@ -255,2156 +255,2377 @@ struct identifier_node *identifier_val;
 %start translation_unit
 %%
 
-
 translation_unit
     :external_declaration
 {
-    translation_unit_node anode;
-    anode.external_declaration_node_1=$1;
-    anode.translation_unit_node_1= 0;
-    $$ = &anode;
-    std::cout << "I'm here"<<std::endl;
-    print_translation_unit_node(&anode);
+     translation_unit_node *anode;
+anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
+    (*anode).external_declaration_node_1=$1;
+    (*anode).translation_unit_node_1= 0;
+    $$ = anode;
+    print_translation_unit_node($$);
 }
     |translation_unit external_declaration
 {
-    translation_unit_node anode;
-    anode.translation_unit_node_1=$1;
-    anode.external_declaration_node_1=$2;
-    $$ = &anode;
+     translation_unit_node *anode;
+anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
+    (*anode).translation_unit_node_1=$1;
+    (*anode).external_declaration_node_1=$2;
+    $$ = anode;
 }
     ;
 external_declaration
     :function_definition
 {
-    external_declaration_node anode;
-    anode.function_definition_node_1=$1;
-    anode.declaration_node_1= 0;
-    $$ = &anode;
+     external_declaration_node *anode;
+anode = (external_declaration_node*) malloc(sizeof(external_declaration_node));
+    (*anode).function_definition_node_1=$1;
+    (*anode).declaration_node_1= 0;
+    $$ = anode;
 }
     |declaration
 {
-    external_declaration_node anode;
-    anode.declaration_node_1=$1;
-    anode.function_definition_node_1= 0;
-    $$ = &anode;
+     external_declaration_node *anode;
+anode = (external_declaration_node*) malloc(sizeof(external_declaration_node));
+    (*anode).declaration_node_1=$1;
+    (*anode).function_definition_node_1= 0;
+    $$ = anode;
 }
     ;
 function_definition
     :declarator compound_statement
 {
-    function_definition_node anode;
-    anode.declarator_node_1=$1;
-    anode.compound_statement_node_1=$2;
-    anode.declaration_list_node_1= 0;
-    anode.declaration_specifiers_node_1= 0;
-    $$ = &anode;
+     function_definition_node *anode;
+anode = (function_definition_node*) malloc(sizeof(function_definition_node));
+    (*anode).declarator_node_1=$1;
+    (*anode).compound_statement_node_1=$2;
+    (*anode).declaration_list_node_1= 0;
+    (*anode).declaration_specifiers_node_1= 0;
+    $$ = anode;
 }
     |declarator declaration_list compound_statement
 {
-    function_definition_node anode;
-    anode.declarator_node_1=$1;
-    anode.declaration_list_node_1=$2;
-    anode.compound_statement_node_1=$3;
-    anode.declaration_specifiers_node_1= 0;
-    $$ = &anode;
+     function_definition_node *anode;
+anode = (function_definition_node*) malloc(sizeof(function_definition_node));
+    (*anode).declarator_node_1=$1;
+    (*anode).declaration_list_node_1=$2;
+    (*anode).compound_statement_node_1=$3;
+    (*anode).declaration_specifiers_node_1= 0;
+    $$ = anode;
 }
     |declaration_specifiers declarator compound_statement
 {
-    function_definition_node anode;
-    anode.declaration_specifiers_node_1=$1;
-    anode.declarator_node_1=$2;
-    anode.compound_statement_node_1=$3;
-    anode.declaration_list_node_1= 0;
-    $$ = &anode;
+     function_definition_node *anode;
+anode = (function_definition_node*) malloc(sizeof(function_definition_node));
+    (*anode).declaration_specifiers_node_1=$1;
+    (*anode).declarator_node_1=$2;
+    (*anode).compound_statement_node_1=$3;
+    (*anode).declaration_list_node_1= 0;
+    $$ = anode;
 }
     |declaration_specifiers declarator declaration_list compound_statement
 {
-    function_definition_node anode;
-    anode.declaration_specifiers_node_1=$1;
-    anode.declarator_node_1=$2;
-    anode.declaration_list_node_1=$3;
-    anode.compound_statement_node_1=$4;
-    $$ = &anode;
+     function_definition_node *anode;
+anode = (function_definition_node*) malloc(sizeof(function_definition_node));
+    (*anode).declaration_specifiers_node_1=$1;
+    (*anode).declarator_node_1=$2;
+    (*anode).declaration_list_node_1=$3;
+    (*anode).compound_statement_node_1=$4;
+    $$ = anode;
 }
     ;
 declaration
     :declaration_specifiers ';'
 {
-    declaration_node anode;
-    anode.char_lit_1="';'";
-    anode.declaration_specifiers_node_1=$1;
-    anode.init_declarator_list_node_1= 0;
-    $$ = &anode;
+     declaration_node *anode;
+anode = (declaration_node*) malloc(sizeof(declaration_node));
+    (*anode).char_lit_1="';'";
+    (*anode).declaration_specifiers_node_1=$1;
+    (*anode).init_declarator_list_node_1= 0;
+    $$ = anode;
 }
     |declaration_specifiers init_declarator_list ';'
 {
-    declaration_node anode;
-    anode.char_lit_1="';'";
-    anode.declaration_specifiers_node_1=$1;
-    anode.init_declarator_list_node_1=$2;
-    $$ = &anode;
+     declaration_node *anode;
+anode = (declaration_node*) malloc(sizeof(declaration_node));
+    (*anode).char_lit_1="';'";
+    (*anode).declaration_specifiers_node_1=$1;
+    (*anode).init_declarator_list_node_1=$2;
+    $$ = anode;
 }
     ;
 declaration_list
     :declaration
 {
-    declaration_list_node anode;
-    anode.declaration_node_1=$1;
-    anode.declaration_list_node_1= 0;
-    $$ = &anode;
+     declaration_list_node *anode;
+anode = (declaration_list_node*) malloc(sizeof(declaration_list_node));
+    (*anode).declaration_node_1=$1;
+    (*anode).declaration_list_node_1= 0;
+    $$ = anode;
 }
     |declaration_list declaration
 {
-    declaration_list_node anode;
-    anode.declaration_list_node_1=$1;
-    anode.declaration_node_1=$2;
-    $$ = &anode;
+     declaration_list_node *anode;
+anode = (declaration_list_node*) malloc(sizeof(declaration_list_node));
+    (*anode).declaration_list_node_1=$1;
+    (*anode).declaration_node_1=$2;
+    $$ = anode;
 }
     ;
 declaration_specifiers
     :storage_class_specifier
 {
-    declaration_specifiers_node anode;
-    anode.storage_class_specifier_node_1=$1;
-    anode.declaration_specifiers_node_1= 0;
-    anode.type_specifier_node_1= 0;
-    anode.type_qualifier_node_1= 0;
-    $$ = &anode;
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).storage_class_specifier_node_1=$1;
+    (*anode).declaration_specifiers_node_1= 0;
+    (*anode).type_specifier_node_1= 0;
+    (*anode).type_qualifier_node_1= 0;
+    $$ = anode;
 }
     |storage_class_specifier declaration_specifiers
 {
-    declaration_specifiers_node anode;
-    anode.storage_class_specifier_node_1=$1;
-    anode.declaration_specifiers_node_1=$2;
-    anode.type_specifier_node_1= 0;
-    anode.type_qualifier_node_1= 0;
-    $$ = &anode;
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).storage_class_specifier_node_1=$1;
+    (*anode).declaration_specifiers_node_1=$2;
+    (*anode).type_specifier_node_1= 0;
+    (*anode).type_qualifier_node_1= 0;
+    $$ = anode;
 }
     |type_specifier
 {
-    declaration_specifiers_node anode;
-    anode.type_specifier_node_1=$1;
-    anode.storage_class_specifier_node_1= 0;
-    anode.declaration_specifiers_node_1= 0;
-    anode.type_qualifier_node_1= 0;
-    $$ = &anode;
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).type_specifier_node_1=$1;
+    (*anode).storage_class_specifier_node_1= 0;
+    (*anode).declaration_specifiers_node_1= 0;
+    (*anode).type_qualifier_node_1= 0;
+    $$ = anode;
 }
     |type_specifier declaration_specifiers
 {
-    declaration_specifiers_node anode;
-    anode.type_specifier_node_1=$1;
-    anode.declaration_specifiers_node_1=$2;
-    anode.storage_class_specifier_node_1= 0;
-    anode.type_qualifier_node_1= 0;
-    $$ = &anode;
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).type_specifier_node_1=$1;
+    (*anode).declaration_specifiers_node_1=$2;
+    (*anode).storage_class_specifier_node_1= 0;
+    (*anode).type_qualifier_node_1= 0;
+    $$ = anode;
 }
     |type_qualifier
 {
-    declaration_specifiers_node anode;
-    anode.type_qualifier_node_1=$1;
-    anode.storage_class_specifier_node_1= 0;
-    anode.declaration_specifiers_node_1= 0;
-    anode.type_specifier_node_1= 0;
-    $$ = &anode;
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).type_qualifier_node_1=$1;
+    (*anode).storage_class_specifier_node_1= 0;
+    (*anode).declaration_specifiers_node_1= 0;
+    (*anode).type_specifier_node_1= 0;
+    $$ = anode;
 }
     |type_qualifier declaration_specifiers
 {
-    declaration_specifiers_node anode;
-    anode.type_qualifier_node_1=$1;
-    anode.declaration_specifiers_node_1=$2;
-    anode.storage_class_specifier_node_1= 0;
-    anode.type_specifier_node_1= 0;
-    $$ = &anode;
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).type_qualifier_node_1=$1;
+    (*anode).declaration_specifiers_node_1=$2;
+    (*anode).storage_class_specifier_node_1= 0;
+    (*anode).type_specifier_node_1= 0;
+    $$ = anode;
 }
     ;
 storage_class_specifier
     :AUTO
 {
-    storage_class_specifier_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     storage_class_specifier_node *anode;
+anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     |REGISTER
 {
-    storage_class_specifier_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     storage_class_specifier_node *anode;
+anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     |STATIC
 {
-    storage_class_specifier_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     storage_class_specifier_node *anode;
+anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     |EXTERN
 {
-    storage_class_specifier_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     storage_class_specifier_node *anode;
+anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     |TYPEDEF
 {
-    storage_class_specifier_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     storage_class_specifier_node *anode;
+anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     ;
 type_specifier
     :VOID
 {
-    type_specifier_node anode;
-    anode.token_1=$1;
-    anode.enum_specifier_node_1= 0;
-    anode.struct_or_union_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=$1;
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    $$ = anode;
 }
     |CHAR
 {
-    type_specifier_node anode;
-    anode.token_1=$1;
-    anode.enum_specifier_node_1= 0;
-    anode.struct_or_union_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=$1;
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    $$ = anode;
 }
     |SHORT
 {
-    type_specifier_node anode;
-    anode.token_1=$1;
-    anode.enum_specifier_node_1= 0;
-    anode.struct_or_union_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=$1;
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    $$ = anode;
 }
     |INT
 {
-    type_specifier_node anode;
-    anode.token_1=$1;
-    anode.enum_specifier_node_1= 0;
-    anode.struct_or_union_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=$1;
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    $$ = anode;
 }
     |LONG
 {
-    type_specifier_node anode;
-    anode.token_1=$1;
-    anode.enum_specifier_node_1= 0;
-    anode.struct_or_union_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=$1;
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    $$ = anode;
 }
     |FLOAT
 {
-    type_specifier_node anode;
-    anode.token_1=$1;
-    anode.enum_specifier_node_1= 0;
-    anode.struct_or_union_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=$1;
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    $$ = anode;
 }
     |DOUBLE
 {
-    type_specifier_node anode;
-    anode.token_1=$1;
-    anode.enum_specifier_node_1= 0;
-    anode.struct_or_union_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=$1;
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    $$ = anode;
 }
     |SIGNED
 {
-    type_specifier_node anode;
-    anode.token_1=$1;
-    anode.enum_specifier_node_1= 0;
-    anode.struct_or_union_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=$1;
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    $$ = anode;
 }
     |UNSIGNED
 {
-    type_specifier_node anode;
-    anode.token_1=$1;
-    anode.enum_specifier_node_1= 0;
-    anode.struct_or_union_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=$1;
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    $$ = anode;
 }
     |struct_or_union_specifier
 {
-    type_specifier_node anode;
-    anode.struct_or_union_specifier_node_1=$1;
-    anode.token_1= 0;
-    anode.enum_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).struct_or_union_specifier_node_1=$1;
+    (*anode).token_1= 0;
+    (*anode).enum_specifier_node_1= 0;
+    $$ = anode;
 }
     |enum_specifier
 {
-    type_specifier_node anode;
-    anode.enum_specifier_node_1=$1;
-    anode.token_1= 0;
-    anode.struct_or_union_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).enum_specifier_node_1=$1;
+    (*anode).token_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    $$ = anode;
 }
     |TYPEDEF_NAME
 {
-    type_specifier_node anode;
-    anode.token_1=$1;
-    anode.enum_specifier_node_1= 0;
-    anode.struct_or_union_specifier_node_1= 0;
-    $$ = &anode;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=$1;
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    $$ = anode;
 }
     ;
 type_qualifier
     :CONST
 {
-    type_qualifier_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     type_qualifier_node *anode;
+anode = (type_qualifier_node*) malloc(sizeof(type_qualifier_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     |VOLATILE
 {
-    type_qualifier_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     type_qualifier_node *anode;
+anode = (type_qualifier_node*) malloc(sizeof(type_qualifier_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     ;
 struct_or_union_specifier
     :struct_or_union identifier '{' struct_declaration_list '}'
 {
-    struct_or_union_specifier_node anode;
-    anode.char_lit_1="'{'";
-    anode.char_lit_2="'}'";
-    anode.struct_or_union_node_1=$1;
-    anode.identifier_node_1=$2;
-    anode.struct_declaration_list_node_1=$4;
-    $$ = &anode;
+     struct_or_union_specifier_node *anode;
+anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifier_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).struct_or_union_node_1=$1;
+    (*anode).identifier_node_1=$2;
+    (*anode).struct_declaration_list_node_1=$4;
+    $$ = anode;
 }
     |struct_or_union '{' struct_declaration_list '}'
 {
-    struct_or_union_specifier_node anode;
-    anode.char_lit_1="'{'";
-    anode.char_lit_2="'}'";
-    anode.struct_or_union_node_1=$1;
-    anode.struct_declaration_list_node_1=$3;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     struct_or_union_specifier_node *anode;
+anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifier_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).struct_or_union_node_1=$1;
+    (*anode).struct_declaration_list_node_1=$3;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     |struct_or_union identifier
 {
-    struct_or_union_specifier_node anode;
-    anode.struct_or_union_node_1=$1;
-    anode.identifier_node_1=$2;
-    anode.char_lit_1= "";
-    anode.struct_declaration_list_node_1= 0;
-    anode.char_lit_2= "";
-    $$ = &anode;
+     struct_or_union_specifier_node *anode;
+anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifier_node));
+    (*anode).struct_or_union_node_1=$1;
+    (*anode).identifier_node_1=$2;
+    (*anode).char_lit_1= "";
+    (*anode).struct_declaration_list_node_1= 0;
+    (*anode).char_lit_2= "";
+    $$ = anode;
 }
     ;
 struct_or_union
     :STRUCT
 {
-    struct_or_union_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     struct_or_union_node *anode;
+anode = (struct_or_union_node*) malloc(sizeof(struct_or_union_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     |UNION
 {
-    struct_or_union_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     struct_or_union_node *anode;
+anode = (struct_or_union_node*) malloc(sizeof(struct_or_union_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     ;
 struct_declaration_list
     :struct_declaration
 {
-    struct_declaration_list_node anode;
-    anode.struct_declaration_node_1=$1;
-    anode.struct_declaration_list_node_1= 0;
-    $$ = &anode;
+     struct_declaration_list_node *anode;
+anode = (struct_declaration_list_node*) malloc(sizeof(struct_declaration_list_node));
+    (*anode).struct_declaration_node_1=$1;
+    (*anode).struct_declaration_list_node_1= 0;
+    $$ = anode;
 }
     |struct_declaration_list struct_declaration
 {
-    struct_declaration_list_node anode;
-    anode.struct_declaration_list_node_1=$1;
-    anode.struct_declaration_node_1=$2;
-    $$ = &anode;
+     struct_declaration_list_node *anode;
+anode = (struct_declaration_list_node*) malloc(sizeof(struct_declaration_list_node));
+    (*anode).struct_declaration_list_node_1=$1;
+    (*anode).struct_declaration_node_1=$2;
+    $$ = anode;
 }
     ;
 init_declarator_list
     :init_declarator
 {
-    init_declarator_list_node anode;
-    anode.init_declarator_node_1=$1;
-    anode.init_declarator_list_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     init_declarator_list_node *anode;
+anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
+    (*anode).init_declarator_node_1=$1;
+    (*anode).init_declarator_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |init_declarator_list ',' init_declarator
 {
-    init_declarator_list_node anode;
-    anode.char_lit_1="','";
-    anode.init_declarator_list_node_1=$1;
-    anode.init_declarator_node_1=$3;
-    $$ = &anode;
+     init_declarator_list_node *anode;
+anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).init_declarator_list_node_1=$1;
+    (*anode).init_declarator_node_1=$3;
+    $$ = anode;
 }
     ;
 init_declarator
     :declarator
 {
-    init_declarator_node anode;
-    anode.declarator_node_1=$1;
-    anode.initializer_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     init_declarator_node *anode;
+anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
+    (*anode).declarator_node_1=$1;
+    (*anode).initializer_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |declarator '=' initializer
 {
-    init_declarator_node anode;
-    anode.char_lit_1="'='";
-    anode.declarator_node_1=$1;
-    anode.initializer_node_1=$3;
-    $$ = &anode;
+     init_declarator_node *anode;
+anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
+    (*anode).char_lit_1="'='";
+    (*anode).declarator_node_1=$1;
+    (*anode).initializer_node_1=$3;
+    $$ = anode;
 }
     ;
 struct_declaration
     :specifier_qualifier_list struct_declarator_list ';'
 {
-    struct_declaration_node anode;
-    anode.char_lit_1="';'";
-    anode.specifier_qualifier_list_node_1=$1;
-    anode.struct_declarator_list_node_1=$2;
-    $$ = &anode;
+     struct_declaration_node *anode;
+anode = (struct_declaration_node*) malloc(sizeof(struct_declaration_node));
+    (*anode).char_lit_1="';'";
+    (*anode).specifier_qualifier_list_node_1=$1;
+    (*anode).struct_declarator_list_node_1=$2;
+    $$ = anode;
 }
     ;
 specifier_qualifier_list
     :type_specifier
 {
-    specifier_qualifier_list_node anode;
-    anode.type_specifier_node_1=$1;
-    anode.specifier_qualifier_list_node_1= 0;
-    anode.type_qualifier_node_1= 0;
-    $$ = &anode;
+     specifier_qualifier_list_node *anode;
+anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
+    (*anode).type_specifier_node_1=$1;
+    (*anode).specifier_qualifier_list_node_1= 0;
+    (*anode).type_qualifier_node_1= 0;
+    $$ = anode;
 }
     |type_specifier specifier_qualifier_list
 {
-    specifier_qualifier_list_node anode;
-    anode.type_specifier_node_1=$1;
-    anode.specifier_qualifier_list_node_1=$2;
-    anode.type_qualifier_node_1= 0;
-    $$ = &anode;
+     specifier_qualifier_list_node *anode;
+anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
+    (*anode).type_specifier_node_1=$1;
+    (*anode).specifier_qualifier_list_node_1=$2;
+    (*anode).type_qualifier_node_1= 0;
+    $$ = anode;
 }
     |type_qualifier
 {
-    specifier_qualifier_list_node anode;
-    anode.type_qualifier_node_1=$1;
-    anode.specifier_qualifier_list_node_1= 0;
-    anode.type_specifier_node_1= 0;
-    $$ = &anode;
+     specifier_qualifier_list_node *anode;
+anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
+    (*anode).type_qualifier_node_1=$1;
+    (*anode).specifier_qualifier_list_node_1= 0;
+    (*anode).type_specifier_node_1= 0;
+    $$ = anode;
 }
     |type_qualifier specifier_qualifier_list
 {
-    specifier_qualifier_list_node anode;
-    anode.type_qualifier_node_1=$1;
-    anode.specifier_qualifier_list_node_1=$2;
-    anode.type_specifier_node_1= 0;
-    $$ = &anode;
+     specifier_qualifier_list_node *anode;
+anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
+    (*anode).type_qualifier_node_1=$1;
+    (*anode).specifier_qualifier_list_node_1=$2;
+    (*anode).type_specifier_node_1= 0;
+    $$ = anode;
 }
     ;
 struct_declarator_list
     :struct_declarator
 {
-    struct_declarator_list_node anode;
-    anode.struct_declarator_node_1=$1;
-    anode.struct_declarator_list_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     struct_declarator_list_node *anode;
+anode = (struct_declarator_list_node*) malloc(sizeof(struct_declarator_list_node));
+    (*anode).struct_declarator_node_1=$1;
+    (*anode).struct_declarator_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |struct_declarator_list ',' struct_declarator
 {
-    struct_declarator_list_node anode;
-    anode.char_lit_1="','";
-    anode.struct_declarator_list_node_1=$1;
-    anode.struct_declarator_node_1=$3;
-    $$ = &anode;
+     struct_declarator_list_node *anode;
+anode = (struct_declarator_list_node*) malloc(sizeof(struct_declarator_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).struct_declarator_list_node_1=$1;
+    (*anode).struct_declarator_node_1=$3;
+    $$ = anode;
 }
     ;
 struct_declarator
     :declarator
 {
-    struct_declarator_node anode;
-    anode.declarator_node_1=$1;
-    anode.constant_expression_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     struct_declarator_node *anode;
+anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
+    (*anode).declarator_node_1=$1;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |':' constant_expression
 {
-    struct_declarator_node anode;
-    anode.char_lit_1="':'";
-    anode.constant_expression_node_1=$2;
-    anode.declarator_node_1= 0;
-    $$ = &anode;
+     struct_declarator_node *anode;
+anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
+    (*anode).char_lit_1="':'";
+    (*anode).constant_expression_node_1=$2;
+    (*anode).declarator_node_1= 0;
+    $$ = anode;
 }
     |declarator ':' constant_expression
 {
-    struct_declarator_node anode;
-    anode.char_lit_1="':'";
-    anode.declarator_node_1=$1;
-    anode.constant_expression_node_1=$3;
-    $$ = &anode;
+     struct_declarator_node *anode;
+anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
+    (*anode).char_lit_1="':'";
+    (*anode).declarator_node_1=$1;
+    (*anode).constant_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 enum_specifier
     :ENUM '{' enumerator_list '}'
 {
-    enum_specifier_node anode;
-    anode.char_lit_1="'{'";
-    anode.char_lit_2="'}'";
-    anode.token_1=$1;
-    anode.enumerator_list_node_1=$3;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     enum_specifier_node *anode;
+anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).token_1=$1;
+    (*anode).enumerator_list_node_1=$3;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     |ENUM identifier '{' enumerator_list '}'
 {
-    enum_specifier_node anode;
-    anode.char_lit_1="'{'";
-    anode.char_lit_2="'}'";
-    anode.token_1=$1;
-    anode.identifier_node_1=$2;
-    anode.enumerator_list_node_1=$4;
-    $$ = &anode;
+     enum_specifier_node *anode;
+anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).token_1=$1;
+    (*anode).identifier_node_1=$2;
+    (*anode).enumerator_list_node_1=$4;
+    $$ = anode;
 }
     |ENUM identifier
 {
-    enum_specifier_node anode;
-    anode.token_1=$1;
-    anode.identifier_node_1=$2;
-    anode.char_lit_1= "";
-    anode.enumerator_list_node_1= 0;
-    anode.char_lit_2= "";
-    $$ = &anode;
+     enum_specifier_node *anode;
+anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
+    (*anode).token_1=$1;
+    (*anode).identifier_node_1=$2;
+    (*anode).char_lit_1= "";
+    (*anode).enumerator_list_node_1= 0;
+    (*anode).char_lit_2= "";
+    $$ = anode;
 }
     ;
 enumerator_list
     :enumerator
 {
-    enumerator_list_node anode;
-    anode.enumerator_node_1=$1;
-    anode.char_lit_1= "";
-    anode.enumerator_list_node_1= 0;
-    $$ = &anode;
+     enumerator_list_node *anode;
+anode = (enumerator_list_node*) malloc(sizeof(enumerator_list_node));
+    (*anode).enumerator_node_1=$1;
+    (*anode).char_lit_1= "";
+    (*anode).enumerator_list_node_1= 0;
+    $$ = anode;
 }
     |enumerator_list ',' enumerator
 {
-    enumerator_list_node anode;
-    anode.char_lit_1="','";
-    anode.enumerator_list_node_1=$1;
-    anode.enumerator_node_1=$3;
-    $$ = &anode;
+     enumerator_list_node *anode;
+anode = (enumerator_list_node*) malloc(sizeof(enumerator_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).enumerator_list_node_1=$1;
+    (*anode).enumerator_node_1=$3;
+    $$ = anode;
 }
     ;
 enumerator
     :identifier
 {
-    enumerator_node anode;
-    anode.identifier_node_1=$1;
-    anode.constant_expression_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     enumerator_node *anode;
+anode = (enumerator_node*) malloc(sizeof(enumerator_node));
+    (*anode).identifier_node_1=$1;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |identifier '=' constant_expression
 {
-    enumerator_node anode;
-    anode.char_lit_1="'='";
-    anode.identifier_node_1=$1;
-    anode.constant_expression_node_1=$3;
-    $$ = &anode;
+     enumerator_node *anode;
+anode = (enumerator_node*) malloc(sizeof(enumerator_node));
+    (*anode).char_lit_1="'='";
+    (*anode).identifier_node_1=$1;
+    (*anode).constant_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 declarator
     :direct_declarator
 {
-    declarator_node anode;
-    anode.direct_declarator_node_1=$1;
-    anode.pointer_node_1= 0;
-    $$ = &anode;
+     declarator_node *anode;
+anode = (declarator_node*) malloc(sizeof(declarator_node));
+    (*anode).direct_declarator_node_1=$1;
+    (*anode).pointer_node_1= 0;
+    $$ = anode;
 }
     |pointer direct_declarator
 {
-    declarator_node anode;
-    anode.pointer_node_1=$1;
-    anode.direct_declarator_node_1=$2;
-    $$ = &anode;
+     declarator_node *anode;
+anode = (declarator_node*) malloc(sizeof(declarator_node));
+    (*anode).pointer_node_1=$1;
+    (*anode).direct_declarator_node_1=$2;
+    $$ = anode;
 }
     ;
 direct_declarator
     :identifier
 {
-    direct_declarator_node anode;
-    anode.identifier_node_1=$1;
-    anode.parameter_type_list_node_1= 0;
-    anode.direct_declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    anode.identifier_list_node_1= 0;
-    anode.declarator_node_1= 0;
-    anode.char_lit_1= "";
-    anode.char_lit_2= "";
-    $$ = &anode;
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).identifier_node_1=$1;
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).direct_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    (*anode).declarator_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).char_lit_2= "";
+    $$ = anode;
 }
     |'(' declarator ')'
 {
-    direct_declarator_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.declarator_node_1=$2;
-    anode.parameter_type_list_node_1= 0;
-    anode.identifier_node_1= 0;
-    anode.direct_declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    anode.identifier_list_node_1= 0;
-    $$ = &anode;
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).declarator_node_1=$2;
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).direct_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    $$ = anode;
 }
     |direct_declarator '[' ']'
 {
-    direct_declarator_node anode;
-    anode.char_lit_1="'['";
-    anode.char_lit_2="']'";
-    anode.direct_declarator_node_1=$1;
-    anode.parameter_type_list_node_1= 0;
-    anode.declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    anode.identifier_list_node_1= 0;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).direct_declarator_node_1=$1;
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     |direct_declarator '[' constant_expression ']'
 {
-    direct_declarator_node anode;
-    anode.char_lit_1="'['";
-    anode.char_lit_2="']'";
-    anode.direct_declarator_node_1=$1;
-    anode.constant_expression_node_1=$3;
-    anode.parameter_type_list_node_1= 0;
-    anode.declarator_node_1= 0;
-    anode.identifier_list_node_1= 0;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).direct_declarator_node_1=$1;
+    (*anode).constant_expression_node_1=$3;
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).declarator_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     |direct_declarator '(' ')'
 {
-    direct_declarator_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.direct_declarator_node_1=$1;
-    anode.parameter_type_list_node_1= 0;
-    anode.declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    anode.identifier_list_node_1= 0;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).direct_declarator_node_1=$1;
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     |direct_declarator '(' parameter_type_list ')'
 {
-    direct_declarator_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.direct_declarator_node_1=$1;
-    anode.parameter_type_list_node_1=$3;
-    anode.declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    anode.identifier_list_node_1= 0;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).direct_declarator_node_1=$1;
+    (*anode).parameter_type_list_node_1=$3;
+    (*anode).declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     |direct_declarator '(' identifier_list ')'
 {
-    direct_declarator_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.direct_declarator_node_1=$1;
-    anode.identifier_list_node_1=$3;
-    anode.parameter_type_list_node_1= 0;
-    anode.declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).direct_declarator_node_1=$1;
+    (*anode).identifier_list_node_1=$3;
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     ;
 pointer
     :'*'
 {
-    pointer_node anode;
-    anode.char_lit_1="'*'";
-    anode.pointer_node_1= 0;
-    anode.type_qualifier_list_node_1= 0;
-    $$ = &anode;
+     pointer_node *anode;
+anode = (pointer_node*) malloc(sizeof(pointer_node));
+    (*anode).char_lit_1="'*'";
+    (*anode).pointer_node_1= 0;
+    (*anode).type_qualifier_list_node_1= 0;
+    $$ = anode;
 }
     |'*' type_qualifier_list
 {
-    pointer_node anode;
-    anode.char_lit_1="'*'";
-    anode.type_qualifier_list_node_1=$2;
-    anode.pointer_node_1= 0;
-    $$ = &anode;
+     pointer_node *anode;
+anode = (pointer_node*) malloc(sizeof(pointer_node));
+    (*anode).char_lit_1="'*'";
+    (*anode).type_qualifier_list_node_1=$2;
+    (*anode).pointer_node_1= 0;
+    $$ = anode;
 }
     |'*' pointer
 {
-    pointer_node anode;
-    anode.char_lit_1="'*'";
-    anode.pointer_node_1=$2;
-    anode.type_qualifier_list_node_1= 0;
-    $$ = &anode;
+     pointer_node *anode;
+anode = (pointer_node*) malloc(sizeof(pointer_node));
+    (*anode).char_lit_1="'*'";
+    (*anode).pointer_node_1=$2;
+    (*anode).type_qualifier_list_node_1= 0;
+    $$ = anode;
 }
     |'*' type_qualifier_list pointer
 {
-    pointer_node anode;
-    anode.char_lit_1="'*'";
-    anode.type_qualifier_list_node_1=$2;
-    anode.pointer_node_1=$3;
-    $$ = &anode;
+     pointer_node *anode;
+anode = (pointer_node*) malloc(sizeof(pointer_node));
+    (*anode).char_lit_1="'*'";
+    (*anode).type_qualifier_list_node_1=$2;
+    (*anode).pointer_node_1=$3;
+    $$ = anode;
 }
     ;
 type_qualifier_list
     :type_qualifier
 {
-    type_qualifier_list_node anode;
-    anode.type_qualifier_node_1=$1;
-    anode.type_qualifier_list_node_1= 0;
-    $$ = &anode;
+     type_qualifier_list_node *anode;
+anode = (type_qualifier_list_node*) malloc(sizeof(type_qualifier_list_node));
+    (*anode).type_qualifier_node_1=$1;
+    (*anode).type_qualifier_list_node_1= 0;
+    $$ = anode;
 }
     |type_qualifier_list type_qualifier
 {
-    type_qualifier_list_node anode;
-    anode.type_qualifier_list_node_1=$1;
-    anode.type_qualifier_node_1=$2;
-    $$ = &anode;
+     type_qualifier_list_node *anode;
+anode = (type_qualifier_list_node*) malloc(sizeof(type_qualifier_list_node));
+    (*anode).type_qualifier_list_node_1=$1;
+    (*anode).type_qualifier_node_1=$2;
+    $$ = anode;
 }
     ;
 parameter_type_list
     :parameter_list
 {
-    parameter_type_list_node anode;
-    anode.parameter_list_node_1=$1;
-    anode.token_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     parameter_type_list_node *anode;
+anode = (parameter_type_list_node*) malloc(sizeof(parameter_type_list_node));
+    (*anode).parameter_list_node_1=$1;
+    (*anode).token_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |parameter_list ',' ELIPSIS
 {
-    parameter_type_list_node anode;
-    anode.char_lit_1="','";
-    anode.token_1=$3;
-    anode.parameter_list_node_1=$1;
-    $$ = &anode;
+     parameter_type_list_node *anode;
+anode = (parameter_type_list_node*) malloc(sizeof(parameter_type_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).token_1=$3;
+    (*anode).parameter_list_node_1=$1;
+    $$ = anode;
 }
     ;
 parameter_list
     :parameter_declaration
 {
-    parameter_list_node anode;
-    anode.parameter_declaration_node_1=$1;
-    anode.parameter_list_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     parameter_list_node *anode;
+anode = (parameter_list_node*) malloc(sizeof(parameter_list_node));
+    (*anode).parameter_declaration_node_1=$1;
+    (*anode).parameter_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |parameter_list ',' parameter_declaration
 {
-    parameter_list_node anode;
-    anode.char_lit_1="','";
-    anode.parameter_list_node_1=$1;
-    anode.parameter_declaration_node_1=$3;
-    $$ = &anode;
+     parameter_list_node *anode;
+anode = (parameter_list_node*) malloc(sizeof(parameter_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).parameter_list_node_1=$1;
+    (*anode).parameter_declaration_node_1=$3;
+    $$ = anode;
 }
     ;
 parameter_declaration
     :declaration_specifiers declarator
 {
-    parameter_declaration_node anode;
-    anode.declaration_specifiers_node_1=$1;
-    anode.declarator_node_1=$2;
-    anode.abstract_declarator_node_1= 0;
-    $$ = &anode;
+     parameter_declaration_node *anode;
+anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node));
+    (*anode).declaration_specifiers_node_1=$1;
+    (*anode).declarator_node_1=$2;
+    (*anode).abstract_declarator_node_1= 0;
+    $$ = anode;
 }
     |declaration_specifiers
 {
-    parameter_declaration_node anode;
-    anode.declaration_specifiers_node_1=$1;
-    anode.declarator_node_1= 0;
-    anode.abstract_declarator_node_1= 0;
-    $$ = &anode;
+     parameter_declaration_node *anode;
+anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node));
+    (*anode).declaration_specifiers_node_1=$1;
+    (*anode).declarator_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    $$ = anode;
 }
     |declaration_specifiers abstract_declarator
 {
-    parameter_declaration_node anode;
-    anode.declaration_specifiers_node_1=$1;
-    anode.abstract_declarator_node_1=$2;
-    anode.declarator_node_1= 0;
-    $$ = &anode;
+     parameter_declaration_node *anode;
+anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node));
+    (*anode).declaration_specifiers_node_1=$1;
+    (*anode).abstract_declarator_node_1=$2;
+    (*anode).declarator_node_1= 0;
+    $$ = anode;
 }
     ;
 identifier_list
     :identifier
 {
-    identifier_list_node anode;
-    anode.identifier_node_1=$1;
-    anode.char_lit_1= "";
-    anode.identifier_list_node_1= 0;
-    $$ = &anode;
+     identifier_list_node *anode;
+anode = (identifier_list_node*) malloc(sizeof(identifier_list_node));
+    (*anode).identifier_node_1=$1;
+    (*anode).char_lit_1= "";
+    (*anode).identifier_list_node_1= 0;
+    $$ = anode;
 }
     |identifier_list ',' identifier
 {
-    identifier_list_node anode;
-    anode.char_lit_1="','";
-    anode.identifier_list_node_1=$1;
-    anode.identifier_node_1=$3;
-    $$ = &anode;
+     identifier_list_node *anode;
+anode = (identifier_list_node*) malloc(sizeof(identifier_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).identifier_list_node_1=$1;
+    (*anode).identifier_node_1=$3;
+    $$ = anode;
 }
     ;
 initializer
     :assignment_expression
 {
-    initializer_node anode;
-    anode.assignment_expression_node_1=$1;
-    anode.initializer_list_node_1= 0;
-    anode.char_lit_1= "";
-    anode.char_lit_3= "";
-    anode.char_lit_2= "";
-    $$ = &anode;
+     initializer_node *anode;
+anode = (initializer_node*) malloc(sizeof(initializer_node));
+    (*anode).assignment_expression_node_1=$1;
+    (*anode).initializer_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).char_lit_3= "";
+    (*anode).char_lit_2= "";
+    $$ = anode;
 }
     |'{' initializer_list '}'
 {
-    initializer_node anode;
-    anode.char_lit_1="'{'";
-    anode.char_lit_2="'}'";
-    anode.initializer_list_node_1=$2;
-    anode.assignment_expression_node_1= 0;
-    anode.char_lit_3= "";
-    $$ = &anode;
+     initializer_node *anode;
+anode = (initializer_node*) malloc(sizeof(initializer_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).initializer_list_node_1=$2;
+    (*anode).assignment_expression_node_1= 0;
+    (*anode).char_lit_3= "";
+    $$ = anode;
 }
     |'{' initializer_list ',' '}'
 {
-    initializer_node anode;
-    anode.char_lit_1="'{'";
-    anode.char_lit_2="','";
-    anode.char_lit_3="'}'";
-    anode.initializer_list_node_1=$2;
-    anode.assignment_expression_node_1= 0;
-    $$ = &anode;
+     initializer_node *anode;
+anode = (initializer_node*) malloc(sizeof(initializer_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="','";
+    (*anode).char_lit_3="'}'";
+    (*anode).initializer_list_node_1=$2;
+    (*anode).assignment_expression_node_1= 0;
+    $$ = anode;
 }
     ;
 initializer_list
     :initializer
 {
-    initializer_list_node anode;
-    anode.initializer_node_1=$1;
-    anode.initializer_list_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     initializer_list_node *anode;
+anode = (initializer_list_node*) malloc(sizeof(initializer_list_node));
+    (*anode).initializer_node_1=$1;
+    (*anode).initializer_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |initializer_list ',' initializer
 {
-    initializer_list_node anode;
-    anode.char_lit_1="','";
-    anode.initializer_list_node_1=$1;
-    anode.initializer_node_1=$3;
-    $$ = &anode;
+     initializer_list_node *anode;
+anode = (initializer_list_node*) malloc(sizeof(initializer_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).initializer_list_node_1=$1;
+    (*anode).initializer_node_1=$3;
+    $$ = anode;
 }
     ;
 type_name
     :specifier_qualifier_list
 {
-    type_name_node anode;
-    anode.specifier_qualifier_list_node_1=$1;
-    anode.abstract_declarator_node_1= 0;
-    $$ = &anode;
+     type_name_node *anode;
+anode = (type_name_node*) malloc(sizeof(type_name_node));
+    (*anode).specifier_qualifier_list_node_1=$1;
+    (*anode).abstract_declarator_node_1= 0;
+    $$ = anode;
 }
     |specifier_qualifier_list abstract_declarator
 {
-    type_name_node anode;
-    anode.specifier_qualifier_list_node_1=$1;
-    anode.abstract_declarator_node_1=$2;
-    $$ = &anode;
+     type_name_node *anode;
+anode = (type_name_node*) malloc(sizeof(type_name_node));
+    (*anode).specifier_qualifier_list_node_1=$1;
+    (*anode).abstract_declarator_node_1=$2;
+    $$ = anode;
 }
     ;
 abstract_declarator
     :pointer
 {
-    abstract_declarator_node anode;
-    anode.pointer_node_1=$1;
-    anode.direct_abstract_declarator_node_1= 0;
-    $$ = &anode;
+     abstract_declarator_node *anode;
+anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
+    (*anode).pointer_node_1=$1;
+    (*anode).direct_abstract_declarator_node_1= 0;
+    $$ = anode;
 }
     |direct_abstract_declarator
 {
-    abstract_declarator_node anode;
-    anode.direct_abstract_declarator_node_1=$1;
-    anode.pointer_node_1= 0;
-    $$ = &anode;
+     abstract_declarator_node *anode;
+anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
+    (*anode).direct_abstract_declarator_node_1=$1;
+    (*anode).pointer_node_1= 0;
+    $$ = anode;
 }
     |pointer direct_abstract_declarator
 {
-    abstract_declarator_node anode;
-    anode.pointer_node_1=$1;
-    anode.direct_abstract_declarator_node_1=$2;
-    $$ = &anode;
+     abstract_declarator_node *anode;
+anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
+    (*anode).pointer_node_1=$1;
+    (*anode).direct_abstract_declarator_node_1=$2;
+    $$ = anode;
 }
     ;
 direct_abstract_declarator
     :'(' abstract_declarator ')'
 {
-    direct_abstract_declarator_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.abstract_declarator_node_1=$2;
-    anode.parameter_type_list_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    anode.direct_abstract_declarator_node_1= 0;
-    $$ = &anode;
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).abstract_declarator_node_1=$2;
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).direct_abstract_declarator_node_1= 0;
+    $$ = anode;
 }
     |'[' ']'
 {
-    direct_abstract_declarator_node anode;
-    anode.char_lit_1="'['";
-    anode.char_lit_2="']'";
-    anode.parameter_type_list_node_1= 0;
-    anode.abstract_declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    anode.direct_abstract_declarator_node_1= 0;
-    $$ = &anode;
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).direct_abstract_declarator_node_1= 0;
+    $$ = anode;
 }
     |'[' constant_expression ']'
 {
-    direct_abstract_declarator_node anode;
-    anode.char_lit_1="'['";
-    anode.char_lit_2="']'";
-    anode.constant_expression_node_1=$2;
-    anode.parameter_type_list_node_1= 0;
-    anode.abstract_declarator_node_1= 0;
-    anode.direct_abstract_declarator_node_1= 0;
-    $$ = &anode;
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).constant_expression_node_1=$2;
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).direct_abstract_declarator_node_1= 0;
+    $$ = anode;
 }
     |direct_abstract_declarator '[' ']'
 {
-    direct_abstract_declarator_node anode;
-    anode.char_lit_1="'['";
-    anode.char_lit_2="']'";
-    anode.direct_abstract_declarator_node_1=$1;
-    anode.parameter_type_list_node_1= 0;
-    anode.abstract_declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    $$ = &anode;
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).direct_abstract_declarator_node_1=$1;
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    $$ = anode;
 }
     |direct_abstract_declarator '[' constant_expression ']'
 {
-    direct_abstract_declarator_node anode;
-    anode.char_lit_1="'['";
-    anode.char_lit_2="']'";
-    anode.direct_abstract_declarator_node_1=$1;
-    anode.constant_expression_node_1=$3;
-    anode.parameter_type_list_node_1= 0;
-    anode.abstract_declarator_node_1= 0;
-    $$ = &anode;
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).direct_abstract_declarator_node_1=$1;
+    (*anode).constant_expression_node_1=$3;
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    $$ = anode;
 }
     |'(' ')'
 {
-    direct_abstract_declarator_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.parameter_type_list_node_1= 0;
-    anode.abstract_declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    anode.direct_abstract_declarator_node_1= 0;
-    $$ = &anode;
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).direct_abstract_declarator_node_1= 0;
+    $$ = anode;
 }
     |'(' parameter_type_list ')'
 {
-    direct_abstract_declarator_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.parameter_type_list_node_1=$2;
-    anode.abstract_declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    anode.direct_abstract_declarator_node_1= 0;
-    $$ = &anode;
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).parameter_type_list_node_1=$2;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).direct_abstract_declarator_node_1= 0;
+    $$ = anode;
 }
     |direct_abstract_declarator '(' ')'
 {
-    direct_abstract_declarator_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.direct_abstract_declarator_node_1=$1;
-    anode.parameter_type_list_node_1= 0;
-    anode.abstract_declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    $$ = &anode;
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).direct_abstract_declarator_node_1=$1;
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    $$ = anode;
 }
     |direct_abstract_declarator '(' parameter_type_list ')'
 {
-    direct_abstract_declarator_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.direct_abstract_declarator_node_1=$1;
-    anode.parameter_type_list_node_1=$3;
-    anode.abstract_declarator_node_1= 0;
-    anode.constant_expression_node_1= 0;
-    $$ = &anode;
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).direct_abstract_declarator_node_1=$1;
+    (*anode).parameter_type_list_node_1=$3;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    $$ = anode;
 }
     ;
 statement
     :labeled_statement
 {
-    statement_node anode;
-    anode.labeled_statement_node_1=$1;
-    anode.expression_statement_node_1= 0;
-    anode.compound_statement_node_1= 0;
-    anode.jump_statement_node_1= 0;
-    anode.selection_statement_node_1= 0;
-    anode.iteration_statement_node_1= 0;
-    $$ = &anode;
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).labeled_statement_node_1=$1;
+    (*anode).expression_statement_node_1= 0;
+    (*anode).compound_statement_node_1= 0;
+    (*anode).jump_statement_node_1= 0;
+    (*anode).selection_statement_node_1= 0;
+    (*anode).iteration_statement_node_1= 0;
+    $$ = anode;
 }
     |compound_statement
 {
-    statement_node anode;
-    anode.compound_statement_node_1=$1;
-    anode.expression_statement_node_1= 0;
-    anode.iteration_statement_node_1= 0;
-    anode.jump_statement_node_1= 0;
-    anode.selection_statement_node_1= 0;
-    anode.labeled_statement_node_1= 0;
-    $$ = &anode;
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).compound_statement_node_1=$1;
+    (*anode).expression_statement_node_1= 0;
+    (*anode).iteration_statement_node_1= 0;
+    (*anode).jump_statement_node_1= 0;
+    (*anode).selection_statement_node_1= 0;
+    (*anode).labeled_statement_node_1= 0;
+    $$ = anode;
 }
     |expression_statement
 {
-    statement_node anode;
-    anode.expression_statement_node_1=$1;
-    anode.compound_statement_node_1= 0;
-    anode.jump_statement_node_1= 0;
-    anode.iteration_statement_node_1= 0;
-    anode.labeled_statement_node_1= 0;
-    anode.selection_statement_node_1= 0;
-    $$ = &anode;
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).expression_statement_node_1=$1;
+    (*anode).compound_statement_node_1= 0;
+    (*anode).jump_statement_node_1= 0;
+    (*anode).iteration_statement_node_1= 0;
+    (*anode).labeled_statement_node_1= 0;
+    (*anode).selection_statement_node_1= 0;
+    $$ = anode;
 }
     |selection_statement
 {
-    statement_node anode;
-    anode.selection_statement_node_1=$1;
-    anode.expression_statement_node_1= 0;
-    anode.compound_statement_node_1= 0;
-    anode.jump_statement_node_1= 0;
-    anode.iteration_statement_node_1= 0;
-    anode.labeled_statement_node_1= 0;
-    $$ = &anode;
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).selection_statement_node_1=$1;
+    (*anode).expression_statement_node_1= 0;
+    (*anode).compound_statement_node_1= 0;
+    (*anode).jump_statement_node_1= 0;
+    (*anode).iteration_statement_node_1= 0;
+    (*anode).labeled_statement_node_1= 0;
+    $$ = anode;
 }
     |iteration_statement
 {
-    statement_node anode;
-    anode.iteration_statement_node_1=$1;
-    anode.expression_statement_node_1= 0;
-    anode.compound_statement_node_1= 0;
-    anode.jump_statement_node_1= 0;
-    anode.selection_statement_node_1= 0;
-    anode.labeled_statement_node_1= 0;
-    $$ = &anode;
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).iteration_statement_node_1=$1;
+    (*anode).expression_statement_node_1= 0;
+    (*anode).compound_statement_node_1= 0;
+    (*anode).jump_statement_node_1= 0;
+    (*anode).selection_statement_node_1= 0;
+    (*anode).labeled_statement_node_1= 0;
+    $$ = anode;
 }
     |jump_statement
 {
-    statement_node anode;
-    anode.jump_statement_node_1=$1;
-    anode.expression_statement_node_1= 0;
-    anode.compound_statement_node_1= 0;
-    anode.iteration_statement_node_1= 0;
-    anode.selection_statement_node_1= 0;
-    anode.labeled_statement_node_1= 0;
-    $$ = &anode;
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).jump_statement_node_1=$1;
+    (*anode).expression_statement_node_1= 0;
+    (*anode).compound_statement_node_1= 0;
+    (*anode).iteration_statement_node_1= 0;
+    (*anode).selection_statement_node_1= 0;
+    (*anode).labeled_statement_node_1= 0;
+    $$ = anode;
 }
     ;
 labeled_statement
     :identifier ':' statement
 {
-    labeled_statement_node anode;
-    anode.char_lit_1="':'";
-    anode.identifier_node_1=$1;
-    anode.statement_node_1=$3;
-    anode.token_1= 0;
-    anode.constant_expression_node_1= 0;
-    $$ = &anode;
+     labeled_statement_node *anode;
+anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
+    (*anode).char_lit_1="':'";
+    (*anode).identifier_node_1=$1;
+    (*anode).statement_node_1=$3;
+    (*anode).token_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    $$ = anode;
 }
     |CASE constant_expression ':' statement
 {
-    labeled_statement_node anode;
-    anode.char_lit_1="':'";
-    anode.token_1=$1;
-    anode.constant_expression_node_1=$2;
-    anode.statement_node_1=$4;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     labeled_statement_node *anode;
+anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
+    (*anode).char_lit_1="':'";
+    (*anode).token_1=$1;
+    (*anode).constant_expression_node_1=$2;
+    (*anode).statement_node_1=$4;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     |DEFAULT ':' statement
 {
-    labeled_statement_node anode;
-    anode.char_lit_1="':'";
-    anode.token_1=$1;
-    anode.statement_node_1=$3;
-    anode.constant_expression_node_1= 0;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     labeled_statement_node *anode;
+anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
+    (*anode).char_lit_1="':'";
+    (*anode).token_1=$1;
+    (*anode).statement_node_1=$3;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     ;
 expression_statement
     :';'
 {
-    expression_statement_node anode;
-    anode.char_lit_1="';'";
-    anode.expression_node_1= 0;
-    $$ = &anode;
+     expression_statement_node *anode;
+anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).expression_node_1= 0;
+    $$ = anode;
 }
     |expression ';'
 {
-    expression_statement_node anode;
-    anode.char_lit_1="';'";
-    anode.expression_node_1=$1;
-    $$ = &anode;
+     expression_statement_node *anode;
+anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).expression_node_1=$1;
+    $$ = anode;
 }
     ;
 compound_statement
     :'{' '}'
 {
-    compound_statement_node anode;
-    anode.char_lit_1="'{'";
-    anode.char_lit_2="'}'";
-    anode.declaration_list_node_1= 0;
-    anode.statement_list_node_1= 0;
-    $$ = &anode;
+     compound_statement_node *anode;
+anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).declaration_list_node_1= 0;
+    (*anode).statement_list_node_1= 0;
+    $$ = anode;
 }
     |'{' statement_list '}'
 {
-    compound_statement_node anode;
-    anode.char_lit_1="'{'";
-    anode.char_lit_2="'}'";
-    anode.statement_list_node_1=$2;
-    anode.declaration_list_node_1= 0;
-    $$ = &anode;
+     compound_statement_node *anode;
+anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).statement_list_node_1=$2;
+    (*anode).declaration_list_node_1= 0;
+    $$ = anode;
 }
     |'{' declaration_list '}'
 {
-    compound_statement_node anode;
-    anode.char_lit_1="'{'";
-    anode.char_lit_2="'}'";
-    anode.declaration_list_node_1=$2;
-    anode.statement_list_node_1= 0;
-    $$ = &anode;
+     compound_statement_node *anode;
+anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).declaration_list_node_1=$2;
+    (*anode).statement_list_node_1= 0;
+    $$ = anode;
 }
     |'{' declaration_list statement_list '}'
 {
-    compound_statement_node anode;
-    anode.char_lit_1="'{'";
-    anode.char_lit_2="'}'";
-    anode.declaration_list_node_1=$2;
-    anode.statement_list_node_1=$3;
-    $$ = &anode;
+     compound_statement_node *anode;
+anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).declaration_list_node_1=$2;
+    (*anode).statement_list_node_1=$3;
+    $$ = anode;
 }
     ;
 statement_list
     :statement
 {
-    statement_list_node anode;
-    anode.statement_node_1=$1;
-    anode.statement_list_node_1= 0;
-    $$ = &anode;
+     statement_list_node *anode;
+anode = (statement_list_node*) malloc(sizeof(statement_list_node));
+    (*anode).statement_node_1=$1;
+    (*anode).statement_list_node_1= 0;
+    $$ = anode;
 }
     |statement_list statement
 {
-    statement_list_node anode;
-    anode.statement_list_node_1=$1;
-    anode.statement_node_1=$2;
-    $$ = &anode;
+     statement_list_node *anode;
+anode = (statement_list_node*) malloc(sizeof(statement_list_node));
+    (*anode).statement_list_node_1=$1;
+    (*anode).statement_node_1=$2;
+    $$ = anode;
 }
     ;
 selection_statement
     :IF '(' expression ')' statement
 {
-    selection_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.token_1=$1;
-    anode.expression_node_1=$3;
-    anode.statement_node_1=$5;
-    anode.token_2= 0;
-    anode.statement_node_2= 0;
-    $$ = &anode;
+     selection_statement_node *anode;
+anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1=$3;
+    (*anode).statement_node_1=$5;
+    (*anode).token_2= 0;
+    (*anode).statement_node_2= 0;
+    $$ = anode;
 }
     |IF '(' expression ')' statement ELSE statement
 {
-    selection_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.token_1=$1;
-    anode.token_2=$6;
-    anode.expression_node_1=$3;
-    anode.statement_node_1=$5;
-    anode.statement_node_2=$5;
-    anode.statement_node_1=$5;
-    $$ = &anode;
+     selection_statement_node *anode;
+anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).token_1=$1;
+    (*anode).token_2=$6;
+    (*anode).expression_node_1=$3;
+    (*anode).statement_node_1=$5;
+    (*anode).statement_node_2=$5;
+    (*anode).statement_node_1=$5;
+    $$ = anode;
 }
     |SWITCH '(' expression ')' statement
 {
-    selection_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.token_1=$1;
-    anode.expression_node_1=$3;
-    anode.statement_node_1=$5;
-    anode.token_2= 0;
-    anode.statement_node_2= 0;
-    $$ = &anode;
+     selection_statement_node *anode;
+anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1=$3;
+    (*anode).statement_node_1=$5;
+    (*anode).token_2= 0;
+    (*anode).statement_node_2= 0;
+    $$ = anode;
 }
     ;
 iteration_statement
     :WHILE '(' expression ')' statement
 {
-    iteration_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.token_1=$1;
-    anode.expression_node_1=$3;
-    anode.statement_node_1=$5;
-    anode.char_lit_4= "";
-    anode.expression_node_3= 0;
-    anode.expression_node_2= 0;
-    anode.char_lit_3= "";
-    anode.token_2= 0;
-    $$ = &anode;
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1=$3;
+    (*anode).statement_node_1=$5;
+    (*anode).char_lit_4= "";
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    (*anode).char_lit_3= "";
+    (*anode).token_2= 0;
+    $$ = anode;
 }
     |DO statement WHILE '(' expression ')' ';'
 {
-    iteration_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.char_lit_3="';'";
-    anode.token_1=$1;
-    anode.token_2=$3;
-    anode.statement_node_1=$2;
-    anode.expression_node_1=$5;
-    anode.char_lit_4= "";
-    anode.expression_node_3= 0;
-    anode.expression_node_2= 0;
-    $$ = &anode;
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).char_lit_3="';'";
+    (*anode).token_1=$1;
+    (*anode).token_2=$3;
+    (*anode).statement_node_1=$2;
+    (*anode).expression_node_1=$5;
+    (*anode).char_lit_4= "";
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    $$ = anode;
 }
     |FOR '(' ';' ';' ')' statement
 {
-    iteration_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="';'";
-    anode.char_lit_3="';'";
-    anode.char_lit_4="')'";
-    anode.token_1=$1;
-    anode.statement_node_1=$6;
-    anode.expression_node_1= 0;
-    anode.expression_node_3= 0;
-    anode.expression_node_2= 0;
-    anode.token_2= 0;
-    $$ = &anode;
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=$1;
+    (*anode).statement_node_1=$6;
+    (*anode).expression_node_1= 0;
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    (*anode).token_2= 0;
+    $$ = anode;
 }
     |FOR '(' ';' ';' expression ')' statement
 {
-    iteration_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="';'";
-    anode.char_lit_3="';'";
-    anode.char_lit_4="')'";
-    anode.token_1=$1;
-    anode.expression_node_1=$5;
-    anode.statement_node_1=$7;
-    anode.expression_node_3= 0;
-    anode.expression_node_2= 0;
-    anode.token_2= 0;
-    $$ = &anode;
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1=$5;
+    (*anode).statement_node_1=$7;
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    (*anode).token_2= 0;
+    $$ = anode;
 }
     |FOR '(' ';' expression ';' ')' statement
 {
-    iteration_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="';'";
-    anode.char_lit_3="';'";
-    anode.char_lit_4="')'";
-    anode.token_1=$1;
-    anode.expression_node_1=$4;
-    anode.statement_node_1=$7;
-    anode.expression_node_3= 0;
-    anode.expression_node_2= 0;
-    anode.token_2= 0;
-    $$ = &anode;
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1=$4;
+    (*anode).statement_node_1=$7;
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    (*anode).token_2= 0;
+    $$ = anode;
 }
     |FOR '(' ';' expression ';' expression ')' statement
 {
-    iteration_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="';'";
-    anode.char_lit_3="';'";
-    anode.char_lit_4="')'";
-    anode.token_1=$1;
-    anode.expression_node_1=$4;
-    anode.expression_node_2=$4;
-    anode.expression_node_1=$4;
-    anode.statement_node_1=$8;
-    anode.expression_node_3= 0;
-    anode.token_2= 0;
-    $$ = &anode;
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1=$4;
+    (*anode).expression_node_2=$4;
+    (*anode).expression_node_1=$4;
+    (*anode).statement_node_1=$8;
+    (*anode).expression_node_3= 0;
+    (*anode).token_2= 0;
+    $$ = anode;
 }
     |FOR '(' expression ';' ';' ')' statement
 {
-    iteration_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="';'";
-    anode.char_lit_3="';'";
-    anode.char_lit_4="')'";
-    anode.token_1=$1;
-    anode.expression_node_1=$3;
-    anode.statement_node_1=$7;
-    anode.expression_node_3= 0;
-    anode.expression_node_2= 0;
-    anode.token_2= 0;
-    $$ = &anode;
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1=$3;
+    (*anode).statement_node_1=$7;
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    (*anode).token_2= 0;
+    $$ = anode;
 }
     |FOR '(' expression ';' ';' expression ')' statement
 {
-    iteration_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="';'";
-    anode.char_lit_3="';'";
-    anode.char_lit_4="')'";
-    anode.token_1=$1;
-    anode.expression_node_1=$3;
-    anode.expression_node_2=$3;
-    anode.expression_node_1=$3;
-    anode.statement_node_1=$8;
-    anode.expression_node_3= 0;
-    anode.token_2= 0;
-    $$ = &anode;
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1=$3;
+    (*anode).expression_node_2=$3;
+    (*anode).expression_node_1=$3;
+    (*anode).statement_node_1=$8;
+    (*anode).expression_node_3= 0;
+    (*anode).token_2= 0;
+    $$ = anode;
 }
     |FOR '(' expression ';' expression ';' ')' statement
 {
-    iteration_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="';'";
-    anode.char_lit_3="';'";
-    anode.char_lit_4="')'";
-    anode.token_1=$1;
-    anode.expression_node_1=$3;
-    anode.expression_node_2=$3;
-    anode.expression_node_1=$3;
-    anode.statement_node_1=$8;
-    anode.expression_node_3= 0;
-    anode.token_2= 0;
-    $$ = &anode;
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1=$3;
+    (*anode).expression_node_2=$3;
+    (*anode).expression_node_1=$3;
+    (*anode).statement_node_1=$8;
+    (*anode).expression_node_3= 0;
+    (*anode).token_2= 0;
+    $$ = anode;
 }
     |FOR '(' expression ';' expression ';' expression ')' statement
 {
-    iteration_statement_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="';'";
-    anode.char_lit_3="';'";
-    anode.char_lit_4="')'";
-    anode.token_1=$1;
-    anode.expression_node_1=$3;
-    anode.expression_node_2=$3;
-    anode.expression_node_3=$3;
-    anode.expression_node_1=$3;
-    anode.expression_node_2=$3;
-    anode.expression_node_1=$3;
-    anode.statement_node_1=$9;
-    anode.token_2= 0;
-    $$ = &anode;
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1=$3;
+    (*anode).expression_node_2=$3;
+    (*anode).expression_node_3=$3;
+    (*anode).expression_node_1=$3;
+    (*anode).expression_node_2=$3;
+    (*anode).expression_node_1=$3;
+    (*anode).statement_node_1=$9;
+    (*anode).token_2= 0;
+    $$ = anode;
 }
     ;
 jump_statement
     :GOTO identifier ';'
 {
-    jump_statement_node anode;
-    anode.char_lit_1="';'";
-    anode.token_1=$1;
-    anode.identifier_node_1=$2;
-    anode.expression_node_1= 0;
-    $$ = &anode;
+     jump_statement_node *anode;
+anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).token_1=$1;
+    (*anode).identifier_node_1=$2;
+    (*anode).expression_node_1= 0;
+    $$ = anode;
 }
     |CONTINUE ';'
 {
-    jump_statement_node anode;
-    anode.char_lit_1="';'";
-    anode.token_1=$1;
-    anode.expression_node_1= 0;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     jump_statement_node *anode;
+anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     |BREAK ';'
 {
-    jump_statement_node anode;
-    anode.char_lit_1="';'";
-    anode.token_1=$1;
-    anode.expression_node_1= 0;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     jump_statement_node *anode;
+anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     |RETURN ';'
 {
-    jump_statement_node anode;
-    anode.char_lit_1="';'";
-    anode.token_1=$1;
-    anode.expression_node_1= 0;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     jump_statement_node *anode;
+anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     |RETURN expression ';'
 {
-    jump_statement_node anode;
-    anode.char_lit_1="';'";
-    anode.token_1=$1;
-    anode.expression_node_1=$2;
-    anode.identifier_node_1= 0;
-    $$ = &anode;
+     jump_statement_node *anode;
+anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).token_1=$1;
+    (*anode).expression_node_1=$2;
+    (*anode).identifier_node_1= 0;
+    $$ = anode;
 }
     ;
 expression
     :assignment_expression
 {
-    expression_node anode;
-    anode.assignment_expression_node_1=$1;
-    anode.expression_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     expression_node *anode;
+anode = (expression_node*) malloc(sizeof(expression_node));
+    (*anode).assignment_expression_node_1=$1;
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |expression ',' assignment_expression
 {
-    expression_node anode;
-    anode.char_lit_1="','";
-    anode.expression_node_1=$1;
-    anode.assignment_expression_node_1=$3;
-    $$ = &anode;
+     expression_node *anode;
+anode = (expression_node*) malloc(sizeof(expression_node));
+    (*anode).char_lit_1="','";
+    (*anode).expression_node_1=$1;
+    (*anode).assignment_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 assignment_expression
     :conditional_expression
 {
-    assignment_expression_node anode;
-    anode.conditional_expression_node_1=$1;
-    anode.assignment_operator_node_1= 0;
-    anode.unary_expression_node_1= 0;
-    anode.assignment_expression_node_1= 0;
-    $$ = &anode;
+     assignment_expression_node *anode;
+anode = (assignment_expression_node*) malloc(sizeof(assignment_expression_node));
+    (*anode).conditional_expression_node_1=$1;
+    (*anode).assignment_operator_node_1= 0;
+    (*anode).unary_expression_node_1= 0;
+    (*anode).assignment_expression_node_1= 0;
+    $$ = anode;
 }
     |unary_expression assignment_operator assignment_expression
 {
-    assignment_expression_node anode;
-    anode.unary_expression_node_1=$1;
-    anode.assignment_operator_node_1=$2;
-    anode.assignment_expression_node_1=$3;
-    anode.conditional_expression_node_1= 0;
-    $$ = &anode;
+     assignment_expression_node *anode;
+anode = (assignment_expression_node*) malloc(sizeof(assignment_expression_node));
+    (*anode).unary_expression_node_1=$1;
+    (*anode).assignment_operator_node_1=$2;
+    (*anode).assignment_expression_node_1=$3;
+    (*anode).conditional_expression_node_1= 0;
+    $$ = anode;
 }
     ;
 assignment_operator
     :'='
 {
-    assignment_operator_node anode;
-    anode.char_lit_1="'='";
-    anode.token_1= 0;
-    $$ = &anode;
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).char_lit_1="'='";
+    (*anode).token_1= 0;
+    $$ = anode;
 }
     |MUL_ASSIGN
 {
-    assignment_operator_node anode;
-    anode.token_1=$1;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=$1;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |DIV_ASSIGN
 {
-    assignment_operator_node anode;
-    anode.token_1=$1;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=$1;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |MOD_ASSIGN
 {
-    assignment_operator_node anode;
-    anode.token_1=$1;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=$1;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |ADD_ASSIGN
 {
-    assignment_operator_node anode;
-    anode.token_1=$1;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=$1;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |SUB_ASSIGN
 {
-    assignment_operator_node anode;
-    anode.token_1=$1;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=$1;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |LEFT_ASSIGN
 {
-    assignment_operator_node anode;
-    anode.token_1=$1;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=$1;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |RIGHT_ASSIGN
 {
-    assignment_operator_node anode;
-    anode.token_1=$1;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=$1;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |AND_ASSIGN
 {
-    assignment_operator_node anode;
-    anode.token_1=$1;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=$1;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |XOR_ASSIGN
 {
-    assignment_operator_node anode;
-    anode.token_1=$1;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=$1;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |OR_ASSIGN
 {
-    assignment_operator_node anode;
-    anode.token_1=$1;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=$1;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     ;
 conditional_expression
     :logical_or_expression
 {
-    conditional_expression_node anode;
-    anode.logical_or_expression_node_1=$1;
-    anode.expression_node_1= 0;
-    anode.conditional_expression_node_1= 0;
-    anode.char_lit_1= "";
-    anode.char_lit_2= "";
-    $$ = &anode;
+     conditional_expression_node *anode;
+anode = (conditional_expression_node*) malloc(sizeof(conditional_expression_node));
+    (*anode).logical_or_expression_node_1=$1;
+    (*anode).expression_node_1= 0;
+    (*anode).conditional_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).char_lit_2= "";
+    $$ = anode;
 }
     |logical_or_expression '?' expression ':' conditional_expression
 {
-    conditional_expression_node anode;
-    anode.char_lit_1="'?'";
-    anode.char_lit_2="':'";
-    anode.logical_or_expression_node_1=$1;
-    anode.expression_node_1=$3;
-    anode.conditional_expression_node_1=$5;
-    $$ = &anode;
+     conditional_expression_node *anode;
+anode = (conditional_expression_node*) malloc(sizeof(conditional_expression_node));
+    (*anode).char_lit_1="'?'";
+    (*anode).char_lit_2="':'";
+    (*anode).logical_or_expression_node_1=$1;
+    (*anode).expression_node_1=$3;
+    (*anode).conditional_expression_node_1=$5;
+    $$ = anode;
 }
     ;
 constant_expression
     :conditional_expression
 {
-    constant_expression_node anode;
-    anode.conditional_expression_node_1=$1;
-    $$ = &anode;
+     constant_expression_node *anode;
+anode = (constant_expression_node*) malloc(sizeof(constant_expression_node));
+    (*anode).conditional_expression_node_1=$1;
+    $$ = anode;
 }
     ;
 logical_or_expression
     :logical_and_expression
 {
-    logical_or_expression_node anode;
-    anode.logical_and_expression_node_1=$1;
-    anode.token_1= 0;
-    anode.logical_or_expression_node_1= 0;
-    $$ = &anode;
+     logical_or_expression_node *anode;
+anode = (logical_or_expression_node*) malloc(sizeof(logical_or_expression_node));
+    (*anode).logical_and_expression_node_1=$1;
+    (*anode).token_1= 0;
+    (*anode).logical_or_expression_node_1= 0;
+    $$ = anode;
 }
     |logical_or_expression OR_OP logical_and_expression
 {
-    logical_or_expression_node anode;
-    anode.token_1=$2;
-    anode.logical_or_expression_node_1=$1;
-    anode.logical_and_expression_node_1=$3;
-    $$ = &anode;
+     logical_or_expression_node *anode;
+anode = (logical_or_expression_node*) malloc(sizeof(logical_or_expression_node));
+    (*anode).token_1=$2;
+    (*anode).logical_or_expression_node_1=$1;
+    (*anode).logical_and_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 logical_and_expression
     :inclusive_or_expression
 {
-    logical_and_expression_node anode;
-    anode.inclusive_or_expression_node_1=$1;
-    anode.token_1= 0;
-    anode.logical_and_expression_node_1= 0;
-    $$ = &anode;
+     logical_and_expression_node *anode;
+anode = (logical_and_expression_node*) malloc(sizeof(logical_and_expression_node));
+    (*anode).inclusive_or_expression_node_1=$1;
+    (*anode).token_1= 0;
+    (*anode).logical_and_expression_node_1= 0;
+    $$ = anode;
 }
     |logical_and_expression AND_OP inclusive_or_expression
 {
-    logical_and_expression_node anode;
-    anode.token_1=$2;
-    anode.logical_and_expression_node_1=$1;
-    anode.inclusive_or_expression_node_1=$3;
-    $$ = &anode;
+     logical_and_expression_node *anode;
+anode = (logical_and_expression_node*) malloc(sizeof(logical_and_expression_node));
+    (*anode).token_1=$2;
+    (*anode).logical_and_expression_node_1=$1;
+    (*anode).inclusive_or_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 inclusive_or_expression
     :exclusive_or_expression
 {
-    inclusive_or_expression_node anode;
-    anode.exclusive_or_expression_node_1=$1;
-    anode.inclusive_or_expression_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     inclusive_or_expression_node *anode;
+anode = (inclusive_or_expression_node*) malloc(sizeof(inclusive_or_expression_node));
+    (*anode).exclusive_or_expression_node_1=$1;
+    (*anode).inclusive_or_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |inclusive_or_expression '|' exclusive_or_expression
 {
-    inclusive_or_expression_node anode;
-    anode.char_lit_1="'|'";
-    anode.inclusive_or_expression_node_1=$1;
-    anode.exclusive_or_expression_node_1=$3;
-    $$ = &anode;
+     inclusive_or_expression_node *anode;
+anode = (inclusive_or_expression_node*) malloc(sizeof(inclusive_or_expression_node));
+    (*anode).char_lit_1="'|'";
+    (*anode).inclusive_or_expression_node_1=$1;
+    (*anode).exclusive_or_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 exclusive_or_expression
     :and_expression
 {
-    exclusive_or_expression_node anode;
-    anode.and_expression_node_1=$1;
-    anode.char_lit_1= "";
-    anode.exclusive_or_expression_node_1= 0;
-    $$ = &anode;
+     exclusive_or_expression_node *anode;
+anode = (exclusive_or_expression_node*) malloc(sizeof(exclusive_or_expression_node));
+    (*anode).and_expression_node_1=$1;
+    (*anode).char_lit_1= "";
+    (*anode).exclusive_or_expression_node_1= 0;
+    $$ = anode;
 }
     |exclusive_or_expression '^' and_expression
 {
-    exclusive_or_expression_node anode;
-    anode.char_lit_1="'^'";
-    anode.exclusive_or_expression_node_1=$1;
-    anode.and_expression_node_1=$3;
-    $$ = &anode;
+     exclusive_or_expression_node *anode;
+anode = (exclusive_or_expression_node*) malloc(sizeof(exclusive_or_expression_node));
+    (*anode).char_lit_1="'^'";
+    (*anode).exclusive_or_expression_node_1=$1;
+    (*anode).and_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 and_expression
     :equality_expression
 {
-    and_expression_node anode;
-    anode.equality_expression_node_1=$1;
-    anode.and_expression_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     and_expression_node *anode;
+anode = (and_expression_node*) malloc(sizeof(and_expression_node));
+    (*anode).equality_expression_node_1=$1;
+    (*anode).and_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |and_expression '&' equality_expression
 {
-    and_expression_node anode;
-    anode.char_lit_1="'&'";
-    anode.and_expression_node_1=$1;
-    anode.equality_expression_node_1=$3;
-    $$ = &anode;
+     and_expression_node *anode;
+anode = (and_expression_node*) malloc(sizeof(and_expression_node));
+    (*anode).char_lit_1="'&'";
+    (*anode).and_expression_node_1=$1;
+    (*anode).equality_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 equality_expression
     :relational_expression
 {
-    equality_expression_node anode;
-    anode.relational_expression_node_1=$1;
-    anode.token_1= 0;
-    anode.equality_expression_node_1= 0;
-    $$ = &anode;
+     equality_expression_node *anode;
+anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
+    (*anode).relational_expression_node_1=$1;
+    (*anode).token_1= 0;
+    (*anode).equality_expression_node_1= 0;
+    $$ = anode;
 }
     |equality_expression EQ_OP relational_expression
 {
-    equality_expression_node anode;
-    anode.token_1=$2;
-    anode.equality_expression_node_1=$1;
-    anode.relational_expression_node_1=$3;
-    $$ = &anode;
+     equality_expression_node *anode;
+anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
+    (*anode).token_1=$2;
+    (*anode).equality_expression_node_1=$1;
+    (*anode).relational_expression_node_1=$3;
+    $$ = anode;
 }
     |equality_expression NE_OP relational_expression
 {
-    equality_expression_node anode;
-    anode.token_1=$2;
-    anode.equality_expression_node_1=$1;
-    anode.relational_expression_node_1=$3;
-    $$ = &anode;
+     equality_expression_node *anode;
+anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
+    (*anode).token_1=$2;
+    (*anode).equality_expression_node_1=$1;
+    (*anode).relational_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 relational_expression
     :shift_expression
 {
-    relational_expression_node anode;
-    anode.shift_expression_node_1=$1;
-    anode.token_1= 0;
-    anode.relational_expression_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     relational_expression_node *anode;
+anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
+    (*anode).shift_expression_node_1=$1;
+    (*anode).token_1= 0;
+    (*anode).relational_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |relational_expression '<' shift_expression
 {
-    relational_expression_node anode;
-    anode.char_lit_1="'<'";
-    anode.relational_expression_node_1=$1;
-    anode.shift_expression_node_1=$3;
-    anode.token_1= 0;
-    $$ = &anode;
+     relational_expression_node *anode;
+anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
+    (*anode).char_lit_1="'<'";
+    (*anode).relational_expression_node_1=$1;
+    (*anode).shift_expression_node_1=$3;
+    (*anode).token_1= 0;
+    $$ = anode;
 }
     |relational_expression '>' shift_expression
 {
-    relational_expression_node anode;
-    anode.char_lit_1="'>'";
-    anode.relational_expression_node_1=$1;
-    anode.shift_expression_node_1=$3;
-    anode.token_1= 0;
-    $$ = &anode;
+     relational_expression_node *anode;
+anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
+    (*anode).char_lit_1="'>'";
+    (*anode).relational_expression_node_1=$1;
+    (*anode).shift_expression_node_1=$3;
+    (*anode).token_1= 0;
+    $$ = anode;
 }
     |relational_expression LE_OP shift_expression
 {
-    relational_expression_node anode;
-    anode.token_1=$2;
-    anode.relational_expression_node_1=$1;
-    anode.shift_expression_node_1=$3;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     relational_expression_node *anode;
+anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
+    (*anode).token_1=$2;
+    (*anode).relational_expression_node_1=$1;
+    (*anode).shift_expression_node_1=$3;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |relational_expression GE_OP shift_expression
 {
-    relational_expression_node anode;
-    anode.token_1=$2;
-    anode.relational_expression_node_1=$1;
-    anode.shift_expression_node_1=$3;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     relational_expression_node *anode;
+anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
+    (*anode).token_1=$2;
+    (*anode).relational_expression_node_1=$1;
+    (*anode).shift_expression_node_1=$3;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     ;
 shift_expression
     :additive_expression
 {
-    shift_expression_node anode;
-    anode.additive_expression_node_1=$1;
-    anode.token_1= 0;
-    anode.shift_expression_node_1= 0;
-    $$ = &anode;
+     shift_expression_node *anode;
+anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
+    (*anode).additive_expression_node_1=$1;
+    (*anode).token_1= 0;
+    (*anode).shift_expression_node_1= 0;
+    $$ = anode;
 }
     |shift_expression LEFT_OP additive_expression
 {
-    shift_expression_node anode;
-    anode.token_1=$2;
-    anode.shift_expression_node_1=$1;
-    anode.additive_expression_node_1=$3;
-    $$ = &anode;
+     shift_expression_node *anode;
+anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
+    (*anode).token_1=$2;
+    (*anode).shift_expression_node_1=$1;
+    (*anode).additive_expression_node_1=$3;
+    $$ = anode;
 }
     |shift_expression RIGHT_OP additive_expression
 {
-    shift_expression_node anode;
-    anode.token_1=$2;
-    anode.shift_expression_node_1=$1;
-    anode.additive_expression_node_1=$3;
-    $$ = &anode;
+     shift_expression_node *anode;
+anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
+    (*anode).token_1=$2;
+    (*anode).shift_expression_node_1=$1;
+    (*anode).additive_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 additive_expression
     :multiplicative_expression
 {
-    additive_expression_node anode;
-    anode.multiplicative_expression_node_1=$1;
-    anode.additive_expression_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     additive_expression_node *anode;
+anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
+    (*anode).multiplicative_expression_node_1=$1;
+    (*anode).additive_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |additive_expression '+' multiplicative_expression
 {
-    additive_expression_node anode;
-    anode.char_lit_1="'+'";
-    anode.additive_expression_node_1=$1;
-    anode.multiplicative_expression_node_1=$3;
-    $$ = &anode;
+     additive_expression_node *anode;
+anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
+    (*anode).char_lit_1="'+'";
+    (*anode).additive_expression_node_1=$1;
+    (*anode).multiplicative_expression_node_1=$3;
+    $$ = anode;
 }
     |additive_expression '-' multiplicative_expression
 {
-    additive_expression_node anode;
-    anode.char_lit_1="'-'";
-    anode.additive_expression_node_1=$1;
-    anode.multiplicative_expression_node_1=$3;
-    $$ = &anode;
+     additive_expression_node *anode;
+anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
+    (*anode).char_lit_1="'-'";
+    (*anode).additive_expression_node_1=$1;
+    (*anode).multiplicative_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 multiplicative_expression
     :cast_expression
 {
-    multiplicative_expression_node anode;
-    anode.cast_expression_node_1=$1;
-    anode.multiplicative_expression_node_1= 0;
-    anode.char_lit_1= "";
-    $$ = &anode;
+     multiplicative_expression_node *anode;
+anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
+    (*anode).cast_expression_node_1=$1;
+    (*anode).multiplicative_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    $$ = anode;
 }
     |multiplicative_expression '*' cast_expression
 {
-    multiplicative_expression_node anode;
-    anode.char_lit_1="'*'";
-    anode.multiplicative_expression_node_1=$1;
-    anode.cast_expression_node_1=$3;
-    $$ = &anode;
+     multiplicative_expression_node *anode;
+anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
+    (*anode).char_lit_1="'*'";
+    (*anode).multiplicative_expression_node_1=$1;
+    (*anode).cast_expression_node_1=$3;
+    $$ = anode;
 }
     |multiplicative_expression '/' cast_expression
 {
-    multiplicative_expression_node anode;
-    anode.char_lit_1="'/'";
-    anode.multiplicative_expression_node_1=$1;
-    anode.cast_expression_node_1=$3;
-    $$ = &anode;
+     multiplicative_expression_node *anode;
+anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
+    (*anode).char_lit_1="'/'";
+    (*anode).multiplicative_expression_node_1=$1;
+    (*anode).cast_expression_node_1=$3;
+    $$ = anode;
 }
     |multiplicative_expression '%' cast_expression
 {
-    multiplicative_expression_node anode;
-    anode.char_lit_1="'%'";
-    anode.multiplicative_expression_node_1=$1;
-    anode.cast_expression_node_1=$3;
-    $$ = &anode;
+     multiplicative_expression_node *anode;
+anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
+    (*anode).char_lit_1="'%'";
+    (*anode).multiplicative_expression_node_1=$1;
+    (*anode).cast_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 cast_expression
     :unary_expression
 {
-    cast_expression_node anode;
-    anode.unary_expression_node_1=$1;
-    anode.char_lit_2= "";
-    anode.char_lit_1= "";
-    anode.type_name_node_1= 0;
-    anode.cast_expression_node_1= 0;
-    $$ = &anode;
+     cast_expression_node *anode;
+anode = (cast_expression_node*) malloc(sizeof(cast_expression_node));
+    (*anode).unary_expression_node_1=$1;
+    (*anode).char_lit_2= "";
+    (*anode).char_lit_1= "";
+    (*anode).type_name_node_1= 0;
+    (*anode).cast_expression_node_1= 0;
+    $$ = anode;
 }
     |'(' type_name ')' cast_expression
 {
-    cast_expression_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.type_name_node_1=$2;
-    anode.cast_expression_node_1=$4;
-    anode.unary_expression_node_1= 0;
-    $$ = &anode;
+     cast_expression_node *anode;
+anode = (cast_expression_node*) malloc(sizeof(cast_expression_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).type_name_node_1=$2;
+    (*anode).cast_expression_node_1=$4;
+    (*anode).unary_expression_node_1= 0;
+    $$ = anode;
 }
     ;
 unary_expression
     :postfix_expression
 {
-    unary_expression_node anode;
-    anode.postfix_expression_node_1=$1;
-    anode.type_name_node_1= 0;
-    anode.token_1= 0;
-    anode.unary_operator_node_1= 0;
-    anode.cast_expression_node_1= 0;
-    anode.char_lit_1= "";
-    anode.unary_expression_node_1= 0;
-    anode.char_lit_2= "";
-    $$ = &anode;
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).postfix_expression_node_1=$1;
+    (*anode).type_name_node_1= 0;
+    (*anode).token_1= 0;
+    (*anode).unary_operator_node_1= 0;
+    (*anode).cast_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).unary_expression_node_1= 0;
+    (*anode).char_lit_2= "";
+    $$ = anode;
 }
     |INC_OP unary_expression
 {
-    unary_expression_node anode;
-    anode.token_1=$1;
-    anode.unary_expression_node_1=$2;
-    anode.postfix_expression_node_1= 0;
-    anode.type_name_node_1= 0;
-    anode.unary_operator_node_1= 0;
-    anode.char_lit_2= "";
-    anode.char_lit_1= "";
-    anode.cast_expression_node_1= 0;
-    $$ = &anode;
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).token_1=$1;
+    (*anode).unary_expression_node_1=$2;
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).type_name_node_1= 0;
+    (*anode).unary_operator_node_1= 0;
+    (*anode).char_lit_2= "";
+    (*anode).char_lit_1= "";
+    (*anode).cast_expression_node_1= 0;
+    $$ = anode;
 }
     |DEC_OP unary_expression
 {
-    unary_expression_node anode;
-    anode.token_1=$1;
-    anode.unary_expression_node_1=$2;
-    anode.postfix_expression_node_1= 0;
-    anode.type_name_node_1= 0;
-    anode.unary_operator_node_1= 0;
-    anode.char_lit_2= "";
-    anode.char_lit_1= "";
-    anode.cast_expression_node_1= 0;
-    $$ = &anode;
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).token_1=$1;
+    (*anode).unary_expression_node_1=$2;
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).type_name_node_1= 0;
+    (*anode).unary_operator_node_1= 0;
+    (*anode).char_lit_2= "";
+    (*anode).char_lit_1= "";
+    (*anode).cast_expression_node_1= 0;
+    $$ = anode;
 }
     |unary_operator cast_expression
 {
-    unary_expression_node anode;
-    anode.unary_operator_node_1=$1;
-    anode.cast_expression_node_1=$2;
-    anode.postfix_expression_node_1= 0;
-    anode.type_name_node_1= 0;
-    anode.token_1= 0;
-    anode.char_lit_1= "";
-    anode.unary_expression_node_1= 0;
-    anode.char_lit_2= "";
-    $$ = &anode;
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).unary_operator_node_1=$1;
+    (*anode).cast_expression_node_1=$2;
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).type_name_node_1= 0;
+    (*anode).token_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).unary_expression_node_1= 0;
+    (*anode).char_lit_2= "";
+    $$ = anode;
 }
     |SIZEOF unary_expression
 {
-    unary_expression_node anode;
-    anode.token_1=$1;
-    anode.unary_expression_node_1=$2;
-    anode.postfix_expression_node_1= 0;
-    anode.type_name_node_1= 0;
-    anode.unary_operator_node_1= 0;
-    anode.char_lit_2= "";
-    anode.char_lit_1= "";
-    anode.cast_expression_node_1= 0;
-    $$ = &anode;
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).token_1=$1;
+    (*anode).unary_expression_node_1=$2;
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).type_name_node_1= 0;
+    (*anode).unary_operator_node_1= 0;
+    (*anode).char_lit_2= "";
+    (*anode).char_lit_1= "";
+    (*anode).cast_expression_node_1= 0;
+    $$ = anode;
 }
     |SIZEOF '(' type_name ')'
 {
-    unary_expression_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.token_1=$1;
-    anode.type_name_node_1=$3;
-    anode.postfix_expression_node_1= 0;
-    anode.unary_operator_node_1= 0;
-    anode.unary_expression_node_1= 0;
-    anode.cast_expression_node_1= 0;
-    $$ = &anode;
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).token_1=$1;
+    (*anode).type_name_node_1=$3;
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).unary_operator_node_1= 0;
+    (*anode).unary_expression_node_1= 0;
+    (*anode).cast_expression_node_1= 0;
+    $$ = anode;
 }
     ;
 unary_operator
     :'&'
 {
-    unary_operator_node anode;
-    anode.char_lit_1="'&'";
-    $$ = &anode;
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'&'";
+    $$ = anode;
 }
     |'*'
 {
-    unary_operator_node anode;
-    anode.char_lit_1="'*'";
-    $$ = &anode;
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'*'";
+    $$ = anode;
 }
     |'+'
 {
-    unary_operator_node anode;
-    anode.char_lit_1="'+'";
-    $$ = &anode;
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'+'";
+    $$ = anode;
 }
     |'-'
 {
-    unary_operator_node anode;
-    anode.char_lit_1="'-'";
-    $$ = &anode;
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'-'";
+    $$ = anode;
 }
     |'~'
 {
-    unary_operator_node anode;
-    anode.char_lit_1="'~'";
-    $$ = &anode;
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'~'";
+    $$ = anode;
 }
     |'!'
 {
-    unary_operator_node anode;
-    anode.char_lit_1="'!'";
-    $$ = &anode;
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'!'";
+    $$ = anode;
 }
     ;
 postfix_expression
     :primary_expression
 {
-    postfix_expression_node anode;
-    anode.primary_expression_node_1=$1;
-    anode.postfix_expression_node_1= 0;
-    anode.expression_node_1= 0;
-    anode.argument_expression_list_node_1= 0;
-    anode.token_1= 0;
-    anode.char_lit_1= "";
-    anode.identifier_node_1= 0;
-    anode.char_lit_2= "";
-    $$ = &anode;
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).primary_expression_node_1=$1;
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).token_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).identifier_node_1= 0;
+    (*anode).char_lit_2= "";
+    $$ = anode;
 }
     |postfix_expression '[' expression ']'
 {
-    postfix_expression_node anode;
-    anode.char_lit_1="'['";
-    anode.char_lit_2="']'";
-    anode.postfix_expression_node_1=$1;
-    anode.expression_node_1=$3;
-    anode.token_1= 0;
-    anode.argument_expression_list_node_1= 0;
-    anode.identifier_node_1= 0;
-    anode.primary_expression_node_1= 0;
-    $$ = &anode;
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).postfix_expression_node_1=$1;
+    (*anode).expression_node_1=$3;
+    (*anode).token_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).primary_expression_node_1= 0;
+    $$ = anode;
 }
     |postfix_expression '(' ')'
 {
-    postfix_expression_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.postfix_expression_node_1=$1;
-    anode.token_1= 0;
-    anode.expression_node_1= 0;
-    anode.argument_expression_list_node_1= 0;
-    anode.identifier_node_1= 0;
-    anode.primary_expression_node_1= 0;
-    $$ = &anode;
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).postfix_expression_node_1=$1;
+    (*anode).token_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).primary_expression_node_1= 0;
+    $$ = anode;
 }
     |postfix_expression '(' argument_expression_list ')'
 {
-    postfix_expression_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.postfix_expression_node_1=$1;
-    anode.argument_expression_list_node_1=$3;
-    anode.token_1= 0;
-    anode.expression_node_1= 0;
-    anode.identifier_node_1= 0;
-    anode.primary_expression_node_1= 0;
-    $$ = &anode;
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).postfix_expression_node_1=$1;
+    (*anode).argument_expression_list_node_1=$3;
+    (*anode).token_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).primary_expression_node_1= 0;
+    $$ = anode;
 }
     |postfix_expression '.' identifier
 {
-    postfix_expression_node anode;
-    anode.char_lit_1="'.'";
-    anode.postfix_expression_node_1=$1;
-    anode.identifier_node_1=$3;
-    anode.token_1= 0;
-    anode.expression_node_1= 0;
-    anode.argument_expression_list_node_1= 0;
-    anode.char_lit_2= "";
-    anode.primary_expression_node_1= 0;
-    $$ = &anode;
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).char_lit_1="'.'";
+    (*anode).postfix_expression_node_1=$1;
+    (*anode).identifier_node_1=$3;
+    (*anode).token_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).char_lit_2= "";
+    (*anode).primary_expression_node_1= 0;
+    $$ = anode;
 }
     |postfix_expression PTR_OP identifier
 {
-    postfix_expression_node anode;
-    anode.token_1=$2;
-    anode.postfix_expression_node_1=$1;
-    anode.identifier_node_1=$3;
-    anode.expression_node_1= 0;
-    anode.argument_expression_list_node_1= 0;
-    anode.char_lit_1= "";
-    anode.char_lit_2= "";
-    anode.primary_expression_node_1= 0;
-    $$ = &anode;
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).token_1=$2;
+    (*anode).postfix_expression_node_1=$1;
+    (*anode).identifier_node_1=$3;
+    (*anode).expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).char_lit_2= "";
+    (*anode).primary_expression_node_1= 0;
+    $$ = anode;
 }
     |postfix_expression INC_OP
 {
-    postfix_expression_node anode;
-    anode.token_1=$2;
-    anode.postfix_expression_node_1=$1;
-    anode.primary_expression_node_1= 0;
-    anode.argument_expression_list_node_1= 0;
-    anode.expression_node_1= 0;
-    anode.char_lit_1= "";
-    anode.identifier_node_1= 0;
-    anode.char_lit_2= "";
-    $$ = &anode;
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).token_1=$2;
+    (*anode).postfix_expression_node_1=$1;
+    (*anode).primary_expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).identifier_node_1= 0;
+    (*anode).char_lit_2= "";
+    $$ = anode;
 }
     |postfix_expression DEC_OP
 {
-    postfix_expression_node anode;
-    anode.token_1=$2;
-    anode.postfix_expression_node_1=$1;
-    anode.primary_expression_node_1= 0;
-    anode.argument_expression_list_node_1= 0;
-    anode.expression_node_1= 0;
-    anode.char_lit_1= "";
-    anode.identifier_node_1= 0;
-    anode.char_lit_2= "";
-    $$ = &anode;
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).token_1=$2;
+    (*anode).postfix_expression_node_1=$1;
+    (*anode).primary_expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).identifier_node_1= 0;
+    (*anode).char_lit_2= "";
+    $$ = anode;
 }
     ;
 primary_expression
     :identifier
 {
-    primary_expression_node anode;
-    anode.identifier_node_1=$1;
-    anode.expression_node_1= 0;
-    anode.char_lit_1= "";
-    anode.char_lit_2= "";
-    anode.constant_node_1= 0;
-    anode.string_node_1= 0;
-    $$ = &anode;
+     primary_expression_node *anode;
+anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
+    (*anode).identifier_node_1=$1;
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).char_lit_2= "";
+    (*anode).constant_node_1= 0;
+    (*anode).string_node_1= 0;
+    $$ = anode;
 }
     |constant
 {
-    primary_expression_node anode;
-    anode.constant_node_1=$1;
-    anode.expression_node_1= 0;
-    anode.char_lit_2= "";
-    anode.char_lit_1= "";
-    anode.identifier_node_1= 0;
-    anode.string_node_1= 0;
-    $$ = &anode;
+     primary_expression_node *anode;
+anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
+    (*anode).constant_node_1=$1;
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_2= "";
+    (*anode).char_lit_1= "";
+    (*anode).identifier_node_1= 0;
+    (*anode).string_node_1= 0;
+    $$ = anode;
 }
     |string
 {
-    primary_expression_node anode;
-    anode.string_node_1=$1;
-    anode.expression_node_1= 0;
-    anode.char_lit_1= "";
-    anode.constant_node_1= 0;
-    anode.identifier_node_1= 0;
-    anode.char_lit_2= "";
-    $$ = &anode;
+     primary_expression_node *anode;
+anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
+    (*anode).string_node_1=$1;
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).constant_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).char_lit_2= "";
+    $$ = anode;
 }
     |'(' expression ')'
 {
-    primary_expression_node anode;
-    anode.char_lit_1="'('";
-    anode.char_lit_2="')'";
-    anode.expression_node_1=$2;
-    anode.constant_node_1= 0;
-    anode.identifier_node_1= 0;
-    anode.string_node_1= 0;
-    $$ = &anode;
+     primary_expression_node *anode;
+anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).expression_node_1=$2;
+    (*anode).constant_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).string_node_1= 0;
+    $$ = anode;
 }
     ;
 argument_expression_list
     :assignment_expression
 {
-    argument_expression_list_node anode;
-    anode.assignment_expression_node_1=$1;
-    anode.char_lit_1= "";
-    anode.argument_expression_list_node_1= 0;
-    $$ = &anode;
+     argument_expression_list_node *anode;
+anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_node));
+    (*anode).assignment_expression_node_1=$1;
+    (*anode).char_lit_1= "";
+    (*anode).argument_expression_list_node_1= 0;
+    $$ = anode;
 }
     |argument_expression_list ',' assignment_expression
 {
-    argument_expression_list_node anode;
-    anode.char_lit_1="','";
-    anode.argument_expression_list_node_1=$1;
-    anode.assignment_expression_node_1=$3;
-    $$ = &anode;
+     argument_expression_list_node *anode;
+anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).argument_expression_list_node_1=$1;
+    (*anode).assignment_expression_node_1=$3;
+    $$ = anode;
 }
     ;
 constant
     :INTEGER_CONSTANT
 {
-    constant_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     constant_node *anode;
+anode = (constant_node*) malloc(sizeof(constant_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     |CHARACTER_CONSTANT
 {
-    constant_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     constant_node *anode;
+anode = (constant_node*) malloc(sizeof(constant_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     |FLOATING_CONSTANT
 {
-    constant_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     constant_node *anode;
+anode = (constant_node*) malloc(sizeof(constant_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     |ENUMERATION_CONSTANT
 {
-    constant_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     constant_node *anode;
+anode = (constant_node*) malloc(sizeof(constant_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     ;
 string
     :STRING_LITERAL
 {
-    string_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     string_node *anode;
+anode = (string_node*) malloc(sizeof(string_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     ;
 identifier
     :IDENTIFIER
 {
-    identifier_node anode;
-    anode.token_1=$1;
-    $$ = &anode;
+     identifier_node *anode;
+anode = (identifier_node*) malloc(sizeof(identifier_node));
+    (*anode).token_1=$1;
+    $$ = anode;
 }
     ;
 
@@ -2419,12 +2640,11 @@ extern int column;
 
 
 
-
-
 void print_translation_unit_node(translation_unit_node *ptr)
 {
     translation_unit_node aNode = *ptr;
-std::cout << "(translation_unit_node\n";
+    std::cout<<"address of this node:" << ptr <<std::endl;
+    std::cout << "(translation_unit_node\n    ";
    if(aNode.external_declaration_node_1 != 0)
     { print_external_declaration_node (aNode.external_declaration_node_1);}
    if(aNode.translation_unit_node_1 != 0)
@@ -2434,7 +2654,8 @@ std::cout<<")";
 void print_external_declaration_node(external_declaration_node *ptr)
 {
     external_declaration_node aNode = *ptr;
-std::cout << "(external_declaration_node\n";
+  std::cout<<"address of this node:" << ptr <<std::endl;
+std::cout << "(external_declaration_node\n    ";
    if(aNode.declaration_node_1 != 0)
     { print_declaration_node (aNode.declaration_node_1);}
    if(aNode.function_definition_node_1 != 0)
@@ -2444,7 +2665,7 @@ std::cout<<")";
 void print_function_definition_node(function_definition_node *ptr)
 {
     function_definition_node aNode = *ptr;
-std::cout << "(function_definition_node\n";
+std::cout << "(function_definition_node\n    ";
    if(aNode.declarator_node_1 != 0)
     { print_declarator_node (aNode.declarator_node_1);}
    if(aNode.declaration_list_node_1 != 0)
@@ -2458,7 +2679,8 @@ std::cout<<")";
 void print_declaration_node(declaration_node *ptr)
 {
     declaration_node aNode = *ptr;
-std::cout << "(declaration_node\n";
+  std::cout<<"address of this node:" << ptr <<std::endl;
+std::cout << "(declaration_node\n    ";
    if(aNode.init_declarator_list_node_1 != 0)
     { print_init_declarator_list_node (aNode.init_declarator_list_node_1);}
    if(aNode.declaration_specifiers_node_1 != 0)
@@ -2468,7 +2690,7 @@ std::cout<<")";
 void print_declaration_list_node(declaration_list_node *ptr)
 {
     declaration_list_node aNode = *ptr;
-std::cout << "(declaration_list_node\n";
+std::cout << "(declaration_list_node\n    ";
    if(aNode.declaration_node_1 != 0)
     { print_declaration_node (aNode.declaration_node_1);}
    if(aNode.declaration_list_node_1 != 0)
@@ -2478,7 +2700,7 @@ std::cout<<")";
 void print_declaration_specifiers_node(declaration_specifiers_node *ptr)
 {
     declaration_specifiers_node aNode = *ptr;
-std::cout << "(declaration_specifiers_node\n";
+std::cout << "(declaration_specifiers_node\n    ";
    if(aNode.storage_class_specifier_node_1 != 0)
     { print_storage_class_specifier_node (aNode.storage_class_specifier_node_1);}
    if(aNode.declaration_specifiers_node_1 != 0)
@@ -2492,13 +2714,13 @@ std::cout<<")";
 void print_storage_class_specifier_node(storage_class_specifier_node *ptr)
 {
     storage_class_specifier_node aNode = *ptr;
-std::cout << "(storage_class_specifier_node\n";
+std::cout << "(storage_class_specifier_node\n    ";
 std::cout<<")";
 }
 void print_type_specifier_node(type_specifier_node *ptr)
 {
     type_specifier_node aNode = *ptr;
-std::cout << "(type_specifier_node\n";
+std::cout << "(type_specifier_node\n    ";
    if(aNode.enum_specifier_node_1 != 0)
     { print_enum_specifier_node (aNode.enum_specifier_node_1);}
    if(aNode.struct_or_union_specifier_node_1 != 0)
@@ -2508,13 +2730,13 @@ std::cout<<")";
 void print_type_qualifier_node(type_qualifier_node *ptr)
 {
     type_qualifier_node aNode = *ptr;
-std::cout << "(type_qualifier_node\n";
+std::cout << "(type_qualifier_node\n    ";
 std::cout<<")";
 }
 void print_struct_or_union_specifier_node(struct_or_union_specifier_node *ptr)
 {
     struct_or_union_specifier_node aNode = *ptr;
-std::cout << "(struct_or_union_specifier_node\n";
+std::cout << "(struct_or_union_specifier_node\n    ";
    if(aNode.struct_declaration_list_node_1 != 0)
     { print_struct_declaration_list_node (aNode.struct_declaration_list_node_1);}
    if(aNode.identifier_node_1 != 0)
@@ -2526,13 +2748,13 @@ std::cout<<")";
 void print_struct_or_union_node(struct_or_union_node *ptr)
 {
     struct_or_union_node aNode = *ptr;
-std::cout << "(struct_or_union_node\n";
+std::cout << "(struct_or_union_node\n    ";
 std::cout<<")";
 }
 void print_struct_declaration_list_node(struct_declaration_list_node *ptr)
 {
     struct_declaration_list_node aNode = *ptr;
-std::cout << "(struct_declaration_list_node\n";
+std::cout << "(struct_declaration_list_node\n    ";
    if(aNode.struct_declaration_node_1 != 0)
     { print_struct_declaration_node (aNode.struct_declaration_node_1);}
    if(aNode.struct_declaration_list_node_1 != 0)
@@ -2542,7 +2764,8 @@ std::cout<<")";
 void print_init_declarator_list_node(init_declarator_list_node *ptr)
 {
     init_declarator_list_node aNode = *ptr;
-std::cout << "(init_declarator_list_node\n";
+  std::cout<<"address of this node:" << ptr <<std::endl;
+std::cout << "(init_declarator_list_node\n    ";
    if(aNode.init_declarator_node_1 != 0)
     { print_init_declarator_node (aNode.init_declarator_node_1);}
    if(aNode.init_declarator_list_node_1 != 0)
@@ -2552,7 +2775,8 @@ std::cout<<")";
 void print_init_declarator_node(init_declarator_node *ptr)
 {
     init_declarator_node aNode = *ptr;
-std::cout << "(init_declarator_node\n";
+  std::cout<<"address of this node:" << ptr <<std::endl;
+std::cout << "(init_declarator_node\n    ";
    if(aNode.declarator_node_1 != 0)
     { print_declarator_node (aNode.declarator_node_1);}
    if(aNode.initializer_node_1 != 0)
@@ -2562,7 +2786,7 @@ std::cout<<")";
 void print_struct_declaration_node(struct_declaration_node *ptr)
 {
     struct_declaration_node aNode = *ptr;
-std::cout << "(struct_declaration_node\n";
+std::cout << "(struct_declaration_node\n    ";
    if(aNode.specifier_qualifier_list_node_1 != 0)
     { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1);}
    if(aNode.struct_declarator_list_node_1 != 0)
@@ -2572,7 +2796,7 @@ std::cout<<")";
 void print_specifier_qualifier_list_node(specifier_qualifier_list_node *ptr)
 {
     specifier_qualifier_list_node aNode = *ptr;
-std::cout << "(specifier_qualifier_list_node\n";
+std::cout << "(specifier_qualifier_list_node\n    ";
    if(aNode.specifier_qualifier_list_node_1 != 0)
     { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1);}
    if(aNode.type_specifier_node_1 != 0)
@@ -2584,7 +2808,7 @@ std::cout<<")";
 void print_struct_declarator_list_node(struct_declarator_list_node *ptr)
 {
     struct_declarator_list_node aNode = *ptr;
-std::cout << "(struct_declarator_list_node\n";
+std::cout << "(struct_declarator_list_node\n    ";
    if(aNode.struct_declarator_list_node_1 != 0)
     { print_struct_declarator_list_node (aNode.struct_declarator_list_node_1);}
    if(aNode.struct_declarator_node_1 != 0)
@@ -2594,7 +2818,7 @@ std::cout<<")";
 void print_struct_declarator_node(struct_declarator_node *ptr)
 {
     struct_declarator_node aNode = *ptr;
-std::cout << "(struct_declarator_node\n";
+std::cout << "(struct_declarator_node\n    ";
    if(aNode.declarator_node_1 != 0)
     { print_declarator_node (aNode.declarator_node_1);}
    if(aNode.constant_expression_node_1 != 0)
@@ -2604,7 +2828,7 @@ std::cout<<")";
 void print_enum_specifier_node(enum_specifier_node *ptr)
 {
     enum_specifier_node aNode = *ptr;
-std::cout << "(enum_specifier_node\n";
+std::cout << "(enum_specifier_node\n    ";
    if(aNode.identifier_node_1 != 0)
     { print_identifier_node (aNode.identifier_node_1);}
    if(aNode.enumerator_list_node_1 != 0)
@@ -2614,7 +2838,7 @@ std::cout<<")";
 void print_enumerator_list_node(enumerator_list_node *ptr)
 {
     enumerator_list_node aNode = *ptr;
-std::cout << "(enumerator_list_node\n";
+std::cout << "(enumerator_list_node\n    ";
    if(aNode.enumerator_node_1 != 0)
     { print_enumerator_node (aNode.enumerator_node_1);}
    if(aNode.enumerator_list_node_1 != 0)
@@ -2624,7 +2848,7 @@ std::cout<<")";
 void print_enumerator_node(enumerator_node *ptr)
 {
     enumerator_node aNode = *ptr;
-std::cout << "(enumerator_node\n";
+std::cout << "(enumerator_node\n    ";
    if(aNode.constant_expression_node_1 != 0)
     { print_constant_expression_node (aNode.constant_expression_node_1);}
    if(aNode.identifier_node_1 != 0)
@@ -2634,7 +2858,8 @@ std::cout<<")";
 void print_declarator_node(declarator_node *ptr)
 {
     declarator_node aNode = *ptr;
-std::cout << "(declarator_node\n";
+   std::cout<<"address of this node:" << ptr <<std::endl;
+std::cout << "(declarator_node\n    ";
    if(aNode.direct_declarator_node_1 != 0)
     { print_direct_declarator_node (aNode.direct_declarator_node_1);}
    if(aNode.pointer_node_1 != 0)
@@ -2644,8 +2869,9 @@ std::cout<<")";
 void print_direct_declarator_node(direct_declarator_node *ptr)
 {
     direct_declarator_node aNode = *ptr;
-std::cout << "(direct_declarator_node\n";
-   if(aNode.parameter_type_list_node_1 != 0)
+   std::cout<<"address of this node:" << ptr <<std::endl;
+std::cout << "(direct_declarator_node\n    ";
+    if(aNode.parameter_type_list_node_1 != 0)
     { print_parameter_type_list_node (aNode.parameter_type_list_node_1);}
    if(aNode.direct_declarator_node_1 != 0)
     { print_direct_declarator_node (aNode.direct_declarator_node_1);}
@@ -2662,7 +2888,7 @@ std::cout<<")";
 void print_pointer_node(pointer_node *ptr)
 {
     pointer_node aNode = *ptr;
-std::cout << "(pointer_node\n";
+std::cout << "(pointer_node\n    ";
    if(aNode.pointer_node_1 != 0)
     { print_pointer_node (aNode.pointer_node_1);}
    if(aNode.type_qualifier_list_node_1 != 0)
@@ -2672,7 +2898,7 @@ std::cout<<")";
 void print_type_qualifier_list_node(type_qualifier_list_node *ptr)
 {
     type_qualifier_list_node aNode = *ptr;
-std::cout << "(type_qualifier_list_node\n";
+std::cout << "(type_qualifier_list_node\n    ";
    if(aNode.type_qualifier_node_1 != 0)
     { print_type_qualifier_node (aNode.type_qualifier_node_1);}
    if(aNode.type_qualifier_list_node_1 != 0)
@@ -2682,7 +2908,7 @@ std::cout<<")";
 void print_parameter_type_list_node(parameter_type_list_node *ptr)
 {
     parameter_type_list_node aNode = *ptr;
-std::cout << "(parameter_type_list_node\n";
+std::cout << "(parameter_type_list_node\n    ";
    if(aNode.parameter_list_node_1 != 0)
     { print_parameter_list_node (aNode.parameter_list_node_1);}
 std::cout<<")";
@@ -2690,7 +2916,7 @@ std::cout<<")";
 void print_parameter_list_node(parameter_list_node *ptr)
 {
     parameter_list_node aNode = *ptr;
-std::cout << "(parameter_list_node\n";
+std::cout << "(parameter_list_node\n    ";
    if(aNode.parameter_list_node_1 != 0)
     { print_parameter_list_node (aNode.parameter_list_node_1);}
    if(aNode.parameter_declaration_node_1 != 0)
@@ -2700,7 +2926,7 @@ std::cout<<")";
 void print_parameter_declaration_node(parameter_declaration_node *ptr)
 {
     parameter_declaration_node aNode = *ptr;
-std::cout << "(parameter_declaration_node\n";
+std::cout << "(parameter_declaration_node\n    ";
    if(aNode.declarator_node_1 != 0)
     { print_declarator_node (aNode.declarator_node_1);}
    if(aNode.declaration_specifiers_node_1 != 0)
@@ -2712,7 +2938,7 @@ std::cout<<")";
 void print_identifier_list_node(identifier_list_node *ptr)
 {
     identifier_list_node aNode = *ptr;
-std::cout << "(identifier_list_node\n";
+std::cout << "(identifier_list_node\n    ";
    if(aNode.identifier_node_1 != 0)
     { print_identifier_node (aNode.identifier_node_1);}
    if(aNode.identifier_list_node_1 != 0)
@@ -2722,7 +2948,7 @@ std::cout<<")";
 void print_initializer_node(initializer_node *ptr)
 {
     initializer_node aNode = *ptr;
-std::cout << "(initializer_node\n";
+std::cout << "(initializer_node\n    ";
    if(aNode.initializer_list_node_1 != 0)
     { print_initializer_list_node (aNode.initializer_list_node_1);}
    if(aNode.assignment_expression_node_1 != 0)
@@ -2732,7 +2958,7 @@ std::cout<<")";
 void print_initializer_list_node(initializer_list_node *ptr)
 {
     initializer_list_node aNode = *ptr;
-std::cout << "(initializer_list_node\n";
+std::cout << "(initializer_list_node\n    ";
    if(aNode.initializer_node_1 != 0)
     { print_initializer_node (aNode.initializer_node_1);}
    if(aNode.initializer_list_node_1 != 0)
@@ -2742,7 +2968,7 @@ std::cout<<")";
 void print_type_name_node(type_name_node *ptr)
 {
     type_name_node aNode = *ptr;
-std::cout << "(type_name_node\n";
+std::cout << "(type_name_node\n    ";
    if(aNode.specifier_qualifier_list_node_1 != 0)
     { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1);}
    if(aNode.abstract_declarator_node_1 != 0)
@@ -2752,7 +2978,7 @@ std::cout<<")";
 void print_abstract_declarator_node(abstract_declarator_node *ptr)
 {
     abstract_declarator_node aNode = *ptr;
-std::cout << "(abstract_declarator_node\n";
+std::cout << "(abstract_declarator_node\n    ";
    if(aNode.direct_abstract_declarator_node_1 != 0)
     { print_direct_abstract_declarator_node (aNode.direct_abstract_declarator_node_1);}
    if(aNode.pointer_node_1 != 0)
@@ -2762,7 +2988,7 @@ std::cout<<")";
 void print_direct_abstract_declarator_node(direct_abstract_declarator_node *ptr)
 {
     direct_abstract_declarator_node aNode = *ptr;
-std::cout << "(direct_abstract_declarator_node\n";
+std::cout << "(direct_abstract_declarator_node\n    ";
    if(aNode.parameter_type_list_node_1 != 0)
     { print_parameter_type_list_node (aNode.parameter_type_list_node_1);}
    if(aNode.abstract_declarator_node_1 != 0)
@@ -2776,7 +3002,7 @@ std::cout<<")";
 void print_statement_node(statement_node *ptr)
 {
     statement_node aNode = *ptr;
-std::cout << "(statement_node\n";
+std::cout << "(statement_node\n    ";
    if(aNode.expression_statement_node_1 != 0)
     { print_expression_statement_node (aNode.expression_statement_node_1);}
    if(aNode.jump_statement_node_1 != 0)
@@ -2794,7 +3020,7 @@ std::cout<<")";
 void print_labeled_statement_node(labeled_statement_node *ptr)
 {
     labeled_statement_node aNode = *ptr;
-std::cout << "(labeled_statement_node\n";
+std::cout << "(labeled_statement_node\n    ";
    if(aNode.constant_expression_node_1 != 0)
     { print_constant_expression_node (aNode.constant_expression_node_1);}
    if(aNode.identifier_node_1 != 0)
@@ -2806,7 +3032,7 @@ std::cout<<")";
 void print_expression_statement_node(expression_statement_node *ptr)
 {
     expression_statement_node aNode = *ptr;
-std::cout << "(expression_statement_node\n";
+std::cout << "(expression_statement_node\n    ";
    if(aNode.expression_node_1 != 0)
     { print_expression_node (aNode.expression_node_1);}
 std::cout<<")";
@@ -2814,7 +3040,7 @@ std::cout<<")";
 void print_compound_statement_node(compound_statement_node *ptr)
 {
     compound_statement_node aNode = *ptr;
-std::cout << "(compound_statement_node\n";
+std::cout << "(compound_statement_node\n    ";
    if(aNode.statement_list_node_1 != 0)
     { print_statement_list_node (aNode.statement_list_node_1);}
    if(aNode.declaration_list_node_1 != 0)
@@ -2824,7 +3050,7 @@ std::cout<<")";
 void print_statement_list_node(statement_list_node *ptr)
 {
     statement_list_node aNode = *ptr;
-std::cout << "(statement_list_node\n";
+std::cout << "(statement_list_node\n    ";
    if(aNode.statement_list_node_1 != 0)
     { print_statement_list_node (aNode.statement_list_node_1);}
    if(aNode.statement_node_1 != 0)
@@ -2834,7 +3060,7 @@ std::cout<<")";
 void print_selection_statement_node(selection_statement_node *ptr)
 {
     selection_statement_node aNode = *ptr;
-std::cout << "(selection_statement_node\n";
+std::cout << "(selection_statement_node\n    ";
    if(aNode.statement_node_2 != 0)
     { print_statement_node (aNode.statement_node_2);}
    if(aNode.statement_node_1 != 0)
@@ -2846,7 +3072,7 @@ std::cout<<")";
 void print_iteration_statement_node(iteration_statement_node *ptr)
 {
     iteration_statement_node aNode = *ptr;
-std::cout << "(iteration_statement_node\n";
+std::cout << "(iteration_statement_node\n    ";
    if(aNode.expression_node_2 != 0)
     { print_expression_node (aNode.expression_node_2);}
    if(aNode.statement_node_1 != 0)
@@ -2860,7 +3086,7 @@ std::cout<<")";
 void print_jump_statement_node(jump_statement_node *ptr)
 {
     jump_statement_node aNode = *ptr;
-std::cout << "(jump_statement_node\n";
+std::cout << "(jump_statement_node\n    ";
    if(aNode.expression_node_1 != 0)
     { print_expression_node (aNode.expression_node_1);}
    if(aNode.identifier_node_1 != 0)
@@ -2870,7 +3096,7 @@ std::cout<<")";
 void print_expression_node(expression_node *ptr)
 {
     expression_node aNode = *ptr;
-std::cout << "(expression_node\n";
+std::cout << "(expression_node\n    ";
    if(aNode.expression_node_1 != 0)
     { print_expression_node (aNode.expression_node_1);}
    if(aNode.assignment_expression_node_1 != 0)
@@ -2880,7 +3106,7 @@ std::cout<<")";
 void print_assignment_expression_node(assignment_expression_node *ptr)
 {
     assignment_expression_node aNode = *ptr;
-std::cout << "(assignment_expression_node\n";
+std::cout << "(assignment_expression_node\n    ";
    if(aNode.conditional_expression_node_1 != 0)
     { print_conditional_expression_node (aNode.conditional_expression_node_1);}
    if(aNode.assignment_operator_node_1 != 0)
@@ -2894,13 +3120,13 @@ std::cout<<")";
 void print_assignment_operator_node(assignment_operator_node *ptr)
 {
     assignment_operator_node aNode = *ptr;
-std::cout << "(assignment_operator_node\n";
+std::cout << "(assignment_operator_node\n    ";
 std::cout<<")";
 }
 void print_conditional_expression_node(conditional_expression_node *ptr)
 {
     conditional_expression_node aNode = *ptr;
-std::cout << "(conditional_expression_node\n";
+std::cout << "(conditional_expression_node\n    ";
    if(aNode.expression_node_1 != 0)
     { print_expression_node (aNode.expression_node_1);}
    if(aNode.conditional_expression_node_1 != 0)
@@ -2912,7 +3138,7 @@ std::cout<<")";
 void print_constant_expression_node(constant_expression_node *ptr)
 {
     constant_expression_node aNode = *ptr;
-std::cout << "(constant_expression_node\n";
+std::cout << "(constant_expression_node\n    ";
    if(aNode.conditional_expression_node_1 != 0)
     { print_conditional_expression_node (aNode.conditional_expression_node_1);}
 std::cout<<")";
@@ -2920,7 +3146,7 @@ std::cout<<")";
 void print_logical_or_expression_node(logical_or_expression_node *ptr)
 {
     logical_or_expression_node aNode = *ptr;
-std::cout << "(logical_or_expression_node\n";
+std::cout << "(logical_or_expression_node\n    ";
    if(aNode.logical_or_expression_node_1 != 0)
     { print_logical_or_expression_node (aNode.logical_or_expression_node_1);}
    if(aNode.logical_and_expression_node_1 != 0)
@@ -2930,7 +3156,7 @@ std::cout<<")";
 void print_logical_and_expression_node(logical_and_expression_node *ptr)
 {
     logical_and_expression_node aNode = *ptr;
-std::cout << "(logical_and_expression_node\n";
+std::cout << "(logical_and_expression_node\n    ";
    if(aNode.inclusive_or_expression_node_1 != 0)
     { print_inclusive_or_expression_node (aNode.inclusive_or_expression_node_1);}
    if(aNode.logical_and_expression_node_1 != 0)
@@ -2940,7 +3166,7 @@ std::cout<<")";
 void print_inclusive_or_expression_node(inclusive_or_expression_node *ptr)
 {
     inclusive_or_expression_node aNode = *ptr;
-std::cout << "(inclusive_or_expression_node\n";
+std::cout << "(inclusive_or_expression_node\n    ";
    if(aNode.inclusive_or_expression_node_1 != 0)
     { print_inclusive_or_expression_node (aNode.inclusive_or_expression_node_1);}
    if(aNode.exclusive_or_expression_node_1 != 0)
@@ -2950,7 +3176,7 @@ std::cout<<")";
 void print_exclusive_or_expression_node(exclusive_or_expression_node *ptr)
 {
     exclusive_or_expression_node aNode = *ptr;
-std::cout << "(exclusive_or_expression_node\n";
+std::cout << "(exclusive_or_expression_node\n    ";
    if(aNode.and_expression_node_1 != 0)
     { print_and_expression_node (aNode.and_expression_node_1);}
    if(aNode.exclusive_or_expression_node_1 != 0)
@@ -2960,7 +3186,7 @@ std::cout<<")";
 void print_and_expression_node(and_expression_node *ptr)
 {
     and_expression_node aNode = *ptr;
-std::cout << "(and_expression_node\n";
+std::cout << "(and_expression_node\n    ";
    if(aNode.equality_expression_node_1 != 0)
     { print_equality_expression_node (aNode.equality_expression_node_1);}
    if(aNode.and_expression_node_1 != 0)
@@ -2970,7 +3196,7 @@ std::cout<<")";
 void print_equality_expression_node(equality_expression_node *ptr)
 {
     equality_expression_node aNode = *ptr;
-std::cout << "(equality_expression_node\n";
+std::cout << "(equality_expression_node\n    ";
    if(aNode.equality_expression_node_1 != 0)
     { print_equality_expression_node (aNode.equality_expression_node_1);}
    if(aNode.relational_expression_node_1 != 0)
@@ -2980,7 +3206,7 @@ std::cout<<")";
 void print_relational_expression_node(relational_expression_node *ptr)
 {
     relational_expression_node aNode = *ptr;
-std::cout << "(relational_expression_node\n";
+std::cout << "(relational_expression_node\n    ";
    if(aNode.relational_expression_node_1 != 0)
     { print_relational_expression_node (aNode.relational_expression_node_1);}
    if(aNode.shift_expression_node_1 != 0)
@@ -2990,7 +3216,7 @@ std::cout<<")";
 void print_shift_expression_node(shift_expression_node *ptr)
 {
     shift_expression_node aNode = *ptr;
-std::cout << "(shift_expression_node\n";
+std::cout << "(shift_expression_node\n    ";
    if(aNode.additive_expression_node_1 != 0)
     { print_additive_expression_node (aNode.additive_expression_node_1);}
    if(aNode.shift_expression_node_1 != 0)
@@ -3000,7 +3226,7 @@ std::cout<<")";
 void print_additive_expression_node(additive_expression_node *ptr)
 {
     additive_expression_node aNode = *ptr;
-std::cout << "(additive_expression_node\n";
+std::cout << "(additive_expression_node\n    ";
    if(aNode.multiplicative_expression_node_1 != 0)
     { print_multiplicative_expression_node (aNode.multiplicative_expression_node_1);}
    if(aNode.additive_expression_node_1 != 0)
@@ -3010,7 +3236,7 @@ std::cout<<")";
 void print_multiplicative_expression_node(multiplicative_expression_node *ptr)
 {
     multiplicative_expression_node aNode = *ptr;
-std::cout << "(multiplicative_expression_node\n";
+std::cout << "(multiplicative_expression_node\n    ";
    if(aNode.multiplicative_expression_node_1 != 0)
     { print_multiplicative_expression_node (aNode.multiplicative_expression_node_1);}
    if(aNode.cast_expression_node_1 != 0)
@@ -3020,7 +3246,7 @@ std::cout<<")";
 void print_cast_expression_node(cast_expression_node *ptr)
 {
     cast_expression_node aNode = *ptr;
-std::cout << "(cast_expression_node\n";
+std::cout << "(cast_expression_node\n    ";
    if(aNode.cast_expression_node_1 != 0)
     { print_cast_expression_node (aNode.cast_expression_node_1);}
    if(aNode.type_name_node_1 != 0)
@@ -3032,7 +3258,7 @@ std::cout<<")";
 void print_unary_expression_node(unary_expression_node *ptr)
 {
     unary_expression_node aNode = *ptr;
-std::cout << "(unary_expression_node\n";
+std::cout << "(unary_expression_node\n    ";
    if(aNode.postfix_expression_node_1 != 0)
     { print_postfix_expression_node (aNode.postfix_expression_node_1);}
    if(aNode.type_name_node_1 != 0)
@@ -3048,13 +3274,13 @@ std::cout<<")";
 void print_unary_operator_node(unary_operator_node *ptr)
 {
     unary_operator_node aNode = *ptr;
-std::cout << "(unary_operator_node\n";
+std::cout << "(unary_operator_node\n    ";
 std::cout<<")";
 }
 void print_postfix_expression_node(postfix_expression_node *ptr)
 {
     postfix_expression_node aNode = *ptr;
-std::cout << "(postfix_expression_node\n";
+std::cout << "(postfix_expression_node\n    ";
    if(aNode.postfix_expression_node_1 != 0)
     { print_postfix_expression_node (aNode.postfix_expression_node_1);}
    if(aNode.primary_expression_node_1 != 0)
@@ -3070,7 +3296,7 @@ std::cout<<")";
 void print_primary_expression_node(primary_expression_node *ptr)
 {
     primary_expression_node aNode = *ptr;
-std::cout << "(primary_expression_node\n";
+std::cout << "(primary_expression_node\n    ";
    if(aNode.constant_node_1 != 0)
     { print_constant_node (aNode.constant_node_1);}
    if(aNode.expression_node_1 != 0)
@@ -3084,7 +3310,7 @@ std::cout<<")";
 void print_argument_expression_list_node(argument_expression_list_node *ptr)
 {
     argument_expression_list_node aNode = *ptr;
-std::cout << "(argument_expression_list_node\n";
+std::cout << "(argument_expression_list_node\n    ";
    if(aNode.assignment_expression_node_1 != 0)
     { print_assignment_expression_node (aNode.assignment_expression_node_1);}
    if(aNode.argument_expression_list_node_1 != 0)
@@ -3094,19 +3320,19 @@ std::cout<<")";
 void print_constant_node(constant_node *ptr)
 {
     constant_node aNode = *ptr;
-std::cout << "(constant_node\n";
+std::cout << "(constant_node\n    ";
 std::cout<<")";
 }
 void print_string_node(string_node *ptr)
 {
     string_node aNode = *ptr;
-std::cout << "(string_node\n";
+std::cout << "(string_node\n    ";
 std::cout<<")";
 }
 void print_identifier_node(identifier_node *ptr)
 {
     identifier_node aNode = *ptr;
-std::cout << "(identifier_node\n";
+std::cout << "(identifier_node\n    ";
 std::cout<<")";
 }
 
