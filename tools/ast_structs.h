@@ -411,8 +411,20 @@ char *char_lit_1;
 struct argument_expression_list_node *argument_expression_list_node_1;
 };
 
+/* constand node is a little unique
+   as it can actually have a variety of values
+   for it's tokens
+   token_x will still be assumed to be
+   a string we will also have
+   int_token_x
+   and
+   dec_token_x
+   for those 2 unique cases
+*/
 struct constant_node {
 char *token_1;
+  int int_token_1;
+  float dec_token_1;
 };
 
 struct string_node {

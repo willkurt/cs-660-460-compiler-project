@@ -7,7 +7,7 @@ from grammar_rule import GrammarRule
 def main():
     core = open("ast_core.txt",'r')
     out = open("py_ast_out.txt",'w')
-    structs = open("ast_structs.h",'w')
+    structs = open("new_ast_structs.h",'w')
     print_decls = open("print_decls.h",'w')
     g_objects = []
     expression_pattern = '([a-z]|_)+'
