@@ -90,216 +90,271 @@ currentCharDepth += yyleng;/* Do nothing for whitespace other than increment cha
 "auto"		{
 if(lexDebug)
 {lexDebugOut << "AUTO ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (AUTO);}
 "break"		{
 if(lexDebug)
 {lexDebugOut << "BREAK ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (BREAK);}
 "case"		{
 if(lexDebug)
 {lexDebugOut << "CASE ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (CASE);}
 "char"		{
 if(lexDebug)
 {lexDebugOut << "CHAR ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (CHAR);}
 "const"		{
 if(lexDebug)
 {lexDebugOut << "CONST ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (CONST);}
 "continue"	{
 if(lexDebug)
 {lexDebugOut << "CONTINUE ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (CONTINUE);}
 "default"	{
 if(lexDebug)
 {lexDebugOut << "DEFAULT ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (DEFAULT);}
 "do"		{
 if(lexDebug)
 {lexDebugOut << "DO ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (DO);}
 "double"	{
 if(lexDebug)
 {lexDebugOut << "DOUBLE ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (DOUBLE);}
 "else"		{
 if(lexDebug)
 {lexDebugOut << "ELSE ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (ELSE);}
 "enum"		{
 if(lexDebug)
 {lexDebugOut << "ENUM ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (ENUM);}
 "extern"	{
 if(lexDebug)
 {lexDebugOut << "EXTERN ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (EXTERN);}
 "float"		{
 if(lexDebug)
 {lexDebugOut << "FLOAT ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (FLOAT);}
 "for"		{
 if(lexDebug)
 {lexDebugOut << "FOR ";}/*??*/
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (FOR);}
 "goto"		{
 if(lexDebug)
 {lexDebugOut << "GOTO ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (GOTO);}
 "if"		{
 if(lexDebug)
 {lexDebugOut << "IF ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (IF);}
 "int"		{
 if(lexDebug)
 {lexDebugOut << "INT ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (INT);}
 "long"		{
 if(lexDebug)
 {lexDebugOut << "LONG ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (LONG);}
 "register"	{
 if(lexDebug)
 {lexDebugOut << "REGISTER ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (REGISTER);}
 "return"	{
 if(lexDebug)
 {lexDebugOut << "RETURN ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (RETURN);}
 "short"		{
 if(lexDebug)
 {lexDebugOut << "SHORT ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (SHORT);}
 "signed"	{
 if(lexDebug)
 {lexDebugOut << "SIGNED ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (SIGNED);}
 "sizeof"	{
 if(lexDebug)
 {lexDebugOut << "SIZEOF ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (SIZEOF);}
 "static"	{
 if(lexDebug)
 {lexDebugOut << "STATIC ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (STATIC);}
 "struct"	{
 if(lexDebug)
 {lexDebugOut << "STRUCT ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (STRUCT);}
 "switch"	{
 if(lexDebug)
 {lexDebugOut << "SWITCH ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (SWITCH);}
 "typedef"	{
 if(lexDebug)
 {lexDebugOut << "TYPEDEF ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (TYPEDEF);}
 "union"		{
 if(lexDebug)
 {lexDebugOut << "UNION ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (UNION);}
 "unsigned"	{
 if(lexDebug)
 {lexDebugOut << "UNSIGNED ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (UNSIGNED);}
 "void"		{
 if(lexDebug)
 {lexDebugOut << "VOID ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (VOID);}
 "volatile"	{
 if(lexDebug)
 {lexDebugOut << "VOLATILE ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (VOLATILE);}
 "while"		{
 if(lexDebug)
 {lexDebugOut << "WHILE ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (WHILE);}
 "..."		{
 if(lexDebug)
 {lexDebugOut << "ELIPSIS ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (ELIPSIS);}
 "->"		{if(lexDebug)/*?? What an online source said*/
 {lexDebugOut << "PTR_OP ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (PTR_OP);} 
 "++"		{
 if(lexDebug)
 {lexDebugOut << "INC_OP ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (INC_OP);}
 "--"		{
 if(lexDebug)
 {lexDebugOut << "DEC_OP ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (DEC_OP);}
 "<<"		{
 if(lexDebug)
 {lexDebugOut << "LEFT_OP ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (LEFT_OP);}
 ">>"		{
 if(lexDebug)
 {lexDebugOut << "RIGHT_OP ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (RIGHT_OP);}
 "<="		{
 if(lexDebug)
 {lexDebugOut << "LE_OP ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (LE_OP);}
 ">="		{
 if(lexDebug)
 {lexDebugOut << "GE_OP ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (GE_OP);}
 "=="		{
 if(lexDebug)
 {lexDebugOut << "EQ_OP ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (EQ_OP);}
 "!="		{
 if(lexDebug)
 {lexDebugOut << "NE_OP ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (NE_OP);}
 "&&"		{
 if(lexDebug)
 {lexDebugOut << "AND_OP ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (AND_OP);}
 "||"		{
 if(lexDebug)
 {lexDebugOut << "OR_OP ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (OR_OP);}
 "*="		{
 if(lexDebug)
 {lexDebugOut << "MUL_ASSIGN ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (MUL_ASSIGN);}
 "/="		{
 if(lexDebug)
 {lexDebugOut << "DIV_ASSIGN ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (DIV_ASSIGN);}
 "%="		{
 if(lexDebug)
 {lexDebugOut << "MOD_ASSIGN ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (MOD_ASSIGN);}
 "+="		{
 if(lexDebug)
 {lexDebugOut << "ADD_ASSIGN ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (ADD_ASSIGN);}
 "-="		{
 if(lexDebug){lexDebugOut << "SUB_ASSIGN ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (SUB_ASSIGN);}
 "<<="		{
 if(lexDebug)
 {lexDebugOut << "LEFT_ASSIGN ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (LEFT_ASSIGN);}
 ">>="		{
 if(lexDebug)
 {lexDebugOut << "RIGHT_ASSIGN ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (RIGHT_ASSIGN);}
 "&="		{
 if(lexDebug)
 {lexDebugOut << "AND_ASSIGN ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (AND_ASSIGN);}
 "^="		{
 if(lexDebug)
 {lexDebugOut << "XOR_ASSIGN ";}
+  yylval.sval = strdup(yytext);
 currentCharDepth += yyleng;return (XOR_ASSIGN);}
 "|="		{
 if(lexDebug)
 {lexDebugOut << "OR_ASSIGN ";}
+  yylval.sval = strdup(yytext);
+
 currentCharDepth += yyleng;return (OR_ASSIGN);}
 
  /* Single character tokens 
@@ -553,23 +608,23 @@ currentCharDepth += yyleng;return ('?'); }
 
 {id}            {yylval.sval = strdup(yytext);
   if(declMode){
-    SymbolContent sc;
-    sc.lineno = lineCount;
-    sc.specs = 0;
+    SymbolContent *sc = (SymbolContent*) malloc(sizeof(SymbolContent));
+    (*sc).lineno = lineCount;
+    (*sc).specs = 0;
     if(st.shadowing(yytext))
       {
 	SymbolContent* shadowsc = st.searchAll(yytext);
 	std::cout<<"warning: "<<yytext<<" is shadowing an earlier declaration at line: "<<(*shadowsc).specs<<std::endl;
       }
     /*actually I might want to call an error, but for now this is allowed*/
-    if(!st.add(yytext,sc))
+    if(!st.add(yytext,*sc))
       {
 	std::cout<<"Error: "<<yytext<<" is already defined in current scope"<< std::endl;
 	redeclVar = true;
       }
     else
       {
-	st.update(yytext,sc);
+	st.update(yytext,(*sc));
       }
   }
   else{

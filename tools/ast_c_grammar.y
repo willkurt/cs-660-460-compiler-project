@@ -489,6 +489,7 @@ storage_class_specifier
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
     (*anode).token_1=$1;
+    std::cout<<"!"<<$1<<"!"<<std::endl;
     $$ = anode;
 }
     |REGISTER
