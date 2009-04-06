@@ -2635,17 +2635,18 @@ constant
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
     (*anode).int_token_1=$1;
-    char* intAsString;
-    sprintf(intAsString,"%d",$1);
-    (*anode).token_1 = intAsString;
-    (*anode).dec_token_1 = 0.0; //just so we can know this is an int
+ 
+    (*anode).token_1 = "";
+    (*anode).char_token_1 = 0;
+    (*anode).dec_token_1 = 0; //just so we can know this is an int
     $$ = anode;
 }
     |CHARACTER_CONSTANT
 {
      constant_node *anode;
      anode = (constant_node*) malloc(sizeof(constant_node));
-     sprintf((*anode).token_1,"%c",$1);
+     (*anode).char_token_1 = $1;
+     (*anode).token_1 = "";
      (*anode).int_token_1 = 0;
      (*anode).dec_token_1 = 0;
      $$ = anode;
@@ -2655,9 +2656,9 @@ anode = (constant_node*) malloc(sizeof(constant_node));
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
     (*anode).dec_token_1=$1;
-    sprintf((*anode).token_1,"%d",$1);
-    //   (*anode).int_token_1 = 0;
-     (*anode).dec_token_1 = 0;
+    (*anode).token_1 = 0;
+    (*anode).int_token_1 = 0;
+    (*anode).char_token_1 = 0;
     $$ = anode;
 }
     |ENUMERATION_CONSTANT
@@ -2665,8 +2666,8 @@ anode = (constant_node*) malloc(sizeof(constant_node));
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
     (*anode).token_1=$1;
-     (*anode).int_token_1 = 0;
-     (*anode).dec_token_1 = 0;
+    (*anode).int_token_1 = 0;
+    (*anode).dec_token_1 = 0;
     $$ = anode;
 }
     ;

@@ -425,6 +425,7 @@ struct constant_node {
 char *token_1;
   int int_token_1;
   float dec_token_1;
+  char char_token_1;
 };
 
 struct string_node {
