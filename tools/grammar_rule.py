@@ -98,7 +98,7 @@ class GrammarRule:
             #int is the default value for tokens
             #change with actual grammar as is necessary
             elif "token_" in each:
-                struct_string += "int "+each+";\n"
+                struct_string += "char *"+each+";\n"
             #only remaining case is a node ptr
             else:
                 struct_string += "struct "+each[:-2]+" *"+each+";\n"

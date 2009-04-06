@@ -37,17 +37,17 @@ struct type_qualifier_node *type_qualifier_node_1;
 };
 
 struct storage_class_specifier_node {
-int token_1;
+char *token_1;
 };
 
 struct type_specifier_node {
-int token_1;
+char *token_1;
 struct enum_specifier_node *enum_specifier_node_1;
 struct struct_or_union_specifier_node *struct_or_union_specifier_node_1;
 };
 
 struct type_qualifier_node {
-int token_1;
+char *token_1;
 };
 
 struct struct_or_union_specifier_node {
@@ -59,7 +59,7 @@ char *char_lit_2;
 };
 
 struct struct_or_union_node {
-int token_1;
+char *token_1;
 };
 
 struct struct_declaration_list_node {
@@ -104,7 +104,7 @@ char *char_lit_1;
 };
 
 struct enum_specifier_node {
-int token_1;
+char *token_1;
 char *char_lit_1;
 struct identifier_node *identifier_node_1;
 struct enumerator_list_node *enumerator_list_node_1;
@@ -151,7 +151,7 @@ struct type_qualifier_list_node *type_qualifier_list_node_1;
 };
 
 struct parameter_type_list_node {
-int token_1;
+char *token_1;
 struct parameter_list_node *parameter_list_node_1;
 char *char_lit_1;
 };
@@ -217,7 +217,7 @@ struct selection_statement_node *selection_statement_node_1;
 };
 
 struct labeled_statement_node {
-int token_1;
+char *token_1;
 struct constant_expression_node *constant_expression_node_1;
 char *char_lit_1;
 struct identifier_node *identifier_node_1;
@@ -245,8 +245,8 @@ struct selection_statement_node {
 struct statement_node *statement_node_2;
 struct statement_node *statement_node_1;
 struct expression_node *expression_node_1;
-int token_1;
-int token_2;
+char *token_1;
+char *token_2;
 char *char_lit_1;
 char *char_lit_2;
 };
@@ -255,17 +255,17 @@ struct iteration_statement_node {
 struct expression_node *expression_node_2;
 struct statement_node *statement_node_1;
 struct expression_node *expression_node_1;
-int token_1;
+char *token_1;
 char *char_lit_4;
 struct expression_node *expression_node_3;
-int token_2;
+char *token_2;
 char *char_lit_1;
 char *char_lit_3;
 char *char_lit_2;
 };
 
 struct jump_statement_node {
-int token_1;
+char *token_1;
 struct expression_node *expression_node_1;
 char *char_lit_1;
 struct identifier_node *identifier_node_1;
@@ -285,7 +285,7 @@ struct assignment_expression_node *assignment_expression_node_1;
 };
 
 struct assignment_operator_node {
-int token_1;
+char *token_1;
 char *char_lit_1;
 };
 
@@ -302,14 +302,14 @@ struct conditional_expression_node *conditional_expression_node_1;
 };
 
 struct logical_or_expression_node {
-int token_1;
+char *token_1;
 struct logical_or_expression_node *logical_or_expression_node_1;
 struct logical_and_expression_node *logical_and_expression_node_1;
 };
 
 struct logical_and_expression_node {
 struct inclusive_or_expression_node *inclusive_or_expression_node_1;
-int token_1;
+char *token_1;
 struct logical_and_expression_node *logical_and_expression_node_1;
 };
 
@@ -332,20 +332,20 @@ struct and_expression_node *and_expression_node_1;
 };
 
 struct equality_expression_node {
-int token_1;
+char *token_1;
 struct equality_expression_node *equality_expression_node_1;
 struct relational_expression_node *relational_expression_node_1;
 };
 
 struct relational_expression_node {
-int token_1;
+char *token_1;
 struct relational_expression_node *relational_expression_node_1;
 char *char_lit_1;
 struct shift_expression_node *shift_expression_node_1;
 };
 
 struct shift_expression_node {
-int token_1;
+char *token_1;
 struct additive_expression_node *additive_expression_node_1;
 struct shift_expression_node *shift_expression_node_1;
 };
@@ -373,7 +373,7 @@ char *char_lit_2;
 struct unary_expression_node {
 struct postfix_expression_node *postfix_expression_node_1;
 struct type_name_node *type_name_node_1;
-int token_1;
+char *token_1;
 struct unary_operator_node *unary_operator_node_1;
 char *char_lit_2;
 char *char_lit_1;
@@ -388,7 +388,7 @@ char *char_lit_1;
 struct postfix_expression_node {
 struct postfix_expression_node *postfix_expression_node_1;
 struct primary_expression_node *primary_expression_node_1;
-int token_1;
+char *token_1;
 struct argument_expression_list_node *argument_expression_list_node_1;
 struct expression_node *expression_node_1;
 char *char_lit_1;
@@ -412,15 +412,15 @@ struct argument_expression_list_node *argument_expression_list_node_1;
 };
 
 struct constant_node {
-int token_1;
+char *token_1;
 };
 
 struct string_node {
-int token_1;
+char *token_1;
 };
 
 struct identifier_node {
-int token_1;
+char *token_1;
 };
 
 

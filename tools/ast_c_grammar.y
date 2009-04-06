@@ -4,6 +4,55 @@
 #include <stdio.h>
 #include <iostream>
   /* #include "SymbolTable.hpp" */
+
+extern SymbolTable st;
+extern bool parseDebug;
+extern std::ofstream parseDebugOut;
+extern int lineCount;
+/*for declaration or not*/
+extern bool declMode;
+
+extern bool undeclVar;
+extern bool redeclVar;
+
+/* this is going to be refactored away */
+struct declNode{
+  char* id;
+  unsigned int specs;
+  int lineno;
+  declNode* next;
+};
+
+int prevFlag = 0;
+/* prevFlag key:
+	* 1 = short
+	* 2 = uShort
+	* 3 = int
+	* 4 = uInt
+	* 5 = long
+	* 6 = uLong
+	* 7 = lLong
+	* 8 = uLLong
+	* 9 = float
+	* 10 = double
+	* 11 = lDouble
+	* 12 = unsigned
+*/
+
+bool shortFlag;
+bool uShortFlag;
+bool intFlag;
+bool uIntFlag;
+bool longFlag;
+bool uLongFlag;
+bool lLongFlag;
+bool uLLongFlag;
+bool floatFlag;
+bool doubleFlag;
+bool lDoubleFlag;
+bool unsignedFlag;
+
+
 extern bool parseDebug;
 extern std::ofstream parseDebugOut;
 
@@ -157,24 +206,26 @@ struct identifier_node *identifier_val;
  }
 
 
-%token <ival> IDENTIFIER 
-%token <ival> INTEGER_CONSTANT FLOATING_CONSTANT CHARACTER_CONSTANT ENUMERATION_CONSTANT 
-%token <ival> STRING_LITERAL 
-%token <ival> SIZEOF
-%token <ival> PTR_OP 
-%token <ival> INC_OP DEC_OP 
-%token <ival> LEFT_OP RIGHT_OP 
-%token <ival> LE_OP GE_OP EQ_OP NE_OP
-%token <ival> AND_OP OR_OP 
-%token <ival> MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN 
-%token <ival> LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN 
-%token <ival> TYPEDEF_NAME
+%token <sval> IDENTIFIER 
+%token <ival> INTEGER_CONSTANT 
+%token <dval> FLOATING_CONSTANT 
+%token <cval> CHARACTER_CONSTANT 
+%token <sval> ENUMERATION_CONSTANT 
+%token <sval> STRING_LITERAL 
+%token <sval> SIZEOF
+%token <sval> PTR_OP 
+%token <sval> INC_OP DEC_OP 
+%token <sval> LEFT_OP RIGHT_OP 
+%token <sval> LE_OP GE_OP EQ_OP NE_OP
+%token <sval> AND_OP OR_OP 
+%token <sval> MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN 
+%token <sval> LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN 
+%token <sval> TYPEDEF_NAME
+%token <sval> TYPEDEF EXTERN STATIC AUTO REGISTER
+%token <sval> CHAR SHORT INT LONG SIGNED UNSIGNED FLOAT DOUBLE CONST VOLATILE VOID
+%token <sval> STRUCT UNION ENUM ELIPSIS RANGE
 
-%token <ival> TYPEDEF EXTERN STATIC AUTO REGISTER
-%token <ival> CHAR SHORT INT LONG SIGNED UNSIGNED FLOAT DOUBLE CONST VOLATILE VOID
-%token <ival> STRUCT UNION ENUM ELIPSIS RANGE
-
-%token <ival> CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
+%token <sval> CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN ERROR
 
 
  /*autogen types*/
