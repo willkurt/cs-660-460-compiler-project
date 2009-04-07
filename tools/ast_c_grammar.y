@@ -408,18 +408,105 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
 	{
 	  if((*currentSpecNode).storage_class_specifier_node_1 != 0)
 	    {
-	      std::cout<<"storeage class!"<<std::endl;
-	      /*storage specifier code goes here*/
+	      
+	      std::string value = (*(*currentSpecNode).storage_class_specifier_node_1).token_1;
+	      if(value =="auto")
+		{
+		  std::cout<<"I am here"<<std::endl;
+		  new_specs |= xAUTO;
+		}
+	      else if(value == "register")
+		{
+		  new_specs |= xREGISTER;
+		}
+	      else if(value == "static")
+		{
+		  new_specs |= xSTATIC;
+		}
+	      else if(value == "extern")
+		{
+		  new_specs |= xEXTERN;
+		}
+	      else if(value == "typedef")
+		{
+		  new_specs |= xTYPEDEF;
+		}
+	      std::cout<<new_specs<<std::endl;
 	    }
 	  if((*currentSpecNode).type_specifier_node_1 != 0)
 	    {
-	      std::cout<<"type specifier!"<<std::endl;
-	      /* type specifer code goes here*/
+
+	      std::string value = (*(*currentSpecNode).type_specifier_node_1).token_1;
+
+	      if(value == "void")
+		{
+		  new_specs |= xVOID;
+		}
+	      else if(value == "char")
+		{
+		  new_specs |= xCHAR;
+		}
+	      else if(value == "short")
+		{
+		  new_specs |= xSHORT;
+		}
+	      else if(value == "int")
+		{
+		  new_specs |= xINT;
+		}
+	      else if(value == "long")
+		{
+		  new_specs |= xLONG;
+		}
+	      else if(value == "float")
+		{
+		  new_specs |= xFLOAT;
+		}
+	      else if(value == "double")
+		{
+		  new_specs |= xDOUBLE;
+		}
+	      else if(value == "signed")
+		{
+		  new_specs  |= xSIGNED;
+		}
+	      else if(value == "unsigned")
+		{
+		  new_specs |= xUNSIGNED; 
+		}
+	      else if(value == "struct")
+		{
+		  new_specs |= xSTRUCT;
+		}
+	      else if(value == "union" )
+		{
+		  new_specs |= xUNION;
+		}
+	      else if(value ==  "enum")
+		{
+		  new_specs  |= xENUM;
+		}
+	      else if(value == "typedef_name")
+		{
+		  new_specs |=  xTYPEDEF_NAME;
+		}
 	    }
+    
+	      
 	  if((*currentSpecNode).type_qualifier_node_1 != 0)
 	    {
-	      std::cout<<"type qualifier!"<<std::endl;
-	      /* type qualifier code goes here*/
+
+	      std::string value = (*(*currentSpecNode).type_qualifier_node_1).token_1;
+	      if(value=="const")
+		{
+		  new_specs |= xCONST;
+		}
+	      else if(value == "volatile")
+		{
+		  new_specs |= xVOLATILE;
+		}
+	      
+	      
 	    }
 	  
 	  if((*currentSpecNode).declaration_specifiers_node_1 != 0)
@@ -431,8 +518,18 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
 	      anotherSpecifier = false;
 	    }
 	}
+
+      /*
+	at this point new_specifier should have all
+	of the info needed, now we can add this
+	to every value declared
+      */
+      bool anotherDeclarator = true;
       
+
     }
+      
+    
 {
      declaration_node *anode;
 anode = (declaration_node*) malloc(sizeof(declaration_node));
