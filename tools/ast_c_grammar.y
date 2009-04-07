@@ -525,7 +525,25 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
 	to every value declared
       */
       bool anotherDeclarator = true;
-      
+      init_declarator_list_node* currentDeclList = $2;
+      while(anotherDeclarator)
+	{
+	  /*
+	    lots of thinking has to happen here
+	    function, array pointer etc are all determined at
+	    this stage
+	   */
+	  unsigned int this_spec = new_spec;
+
+	  if((*currentDeclList).init_declarator_list_node_1 != 0)
+	    {
+	      currentDeclList = (*currentDeclList).init_declarator_list_node_1;
+	    }
+	  else
+	    {
+	      anotherDeclarator = false;
+	    }
+	}
 
     }
       
