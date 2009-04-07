@@ -394,6 +394,45 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
     $$ = anode;
 }
     |declaration_specifiers init_declarator_list ';'
+     //st code
+    {
+      //we'll be using this to store most of the info about
+      //the object
+      unsigned int new_specs = 0;
+      //we'll need to get the info from the declaration specifiers
+      
+      //this is just to know whether there is another spec node
+      bool anotherSpecifier = true;
+      declaration_specifiers_node * currentSpecNode = $1;
+      while(anotherSpecifier)
+	{
+	  if((*currentSpecNode).storage_class_specifier_node_1 != 0)
+	    {
+	      std::cout<<"storeage class!"<<std::endl;
+	      /*storage specifier code goes here*/
+	    }
+	  if((*currentSpecNode).type_specifier_node_1 != 0)
+	    {
+	      std::cout<<"type specifier!"<<std::endl;
+	      /* type specifer code goes here*/
+	    }
+	  if((*currentSpecNode).type_qualifier_node_1 != 0)
+	    {
+	      std::cout<<"type qualifier!"<<std::endl;
+	      /* type qualifier code goes here*/
+	    }
+	  
+	  if((*currentSpecNode).declaration_specifiers_node_1 != 0)
+	    {
+	      currentSpecNode = (*currentSpecNode).declaration_specifiers_node_1;
+	    }
+	  else
+	    {
+	      anotherSpecifier = false;
+	    }
+	}
+      
+    }
 {
      declaration_node *anode;
 anode = (declaration_node*) malloc(sizeof(declaration_node));
@@ -489,7 +528,6 @@ storage_class_specifier
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
     (*anode).token_1=$1;
-    std::cout<<"!"<<$1<<"!"<<std::endl;
     $$ = anode;
 }
     |REGISTER
