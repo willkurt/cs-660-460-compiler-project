@@ -617,14 +617,14 @@ currentCharDepth += yyleng;return ('?'); }
 	std::cout<<"warning: "<<yytext<<" is shadowing an earlier declaration at line: "<<(*shadowsc).specs<<std::endl;
       }
     /*actually I might want to call an error, but for now this is allowed*/
-    if(!st.add(yytext,*sc))
+    if(!st.add(yytext,sc))
       {
 	std::cout<<"Error: "<<yytext<<" is already defined in current scope"<< std::endl;
 	redeclVar = true;
       }
     else
       {
-	st.update(yytext,(*sc));
+	st.update(yytext,(sc));
       }
   }
   else{

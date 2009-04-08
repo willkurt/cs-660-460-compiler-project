@@ -533,8 +533,71 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
 	    function, array pointer etc are all determined at
 	    this stage
 	   */
-	  unsigned int this_spec = new_spec;
+	  unsigned int this_spec = new_specs;
+	  init_declarator_node *int_decl = (*currentDeclList).init_declarator_node_1;
+	  declarator_node *decl_node = (*int_decl).declarator_node_1;
+	  
+	  //take care of pointer
+	  if((*decl_node).pointer_node_1 != 0)
+	    {
+	      this_spec |= xPOINTER;
+	    }
 
+	  //almost ready to actually touch the symbol table
+	  direct_declarator_node *dd = (*decl_node).direct_declarator_node_1;
+	  
+	  //follow the direct declarators until we find an identifier
+	  while( (*dd).identifier_node_1 == 0 &&( (*dd).declarator_node_1 == 0))
+	    {
+	      /* arrays
+		 don't forget to deal with constant expressions
+		 either here or elsewhere
+		 also array dimensions etc...
+	      */
+	      if((*dd).char_lit_1 == "'['")
+		{
+		  this_spec |= xARRAY;
+		}
+	      
+
+	      /*functions same thing, 
+		theire may be a lot we want to deal with here
+		
+	       */
+	      if((*dd).char_lit_1 == "'('")
+		{
+		  this_spec |= xFUNCTION;
+		}
+
+
+
+	      //change to end loops
+	      dd = (*dd).direct_declarator_node_1;
+	    }
+
+	  
+	  /*
+	    unless we have to, I don't intend on dealing with '('declaration')'
+	    or unless I really understand what it means ;)
+	   */
+	  if((*dd).declarator_node_1 != 0)
+	    {
+	      std::cout<<"OMG RIGHT NOW WE DON'T DEAL WITH THIS!"<<std::endl;
+	    }
+
+
+	  /*
+	    finally we get to indentifiers!!
+	    don't forget '(' declarator ')' will probably cause
+	    a seg fault
+	   */
+
+	  identifier_node * id_node = (*dd).identifier_node_1;
+
+	  //I forget if I should just be seaching top or all....
+	  SymbolContent *sc = st.searchAll((*id_node).token_1);
+	  (*sc).specs = this_spec;  
+	  //statement to decide whehter or not there are more nodes in the list
 	  if((*currentDeclList).init_declarator_list_node_1 != 0)
 	    {
 	      currentDeclList = (*currentDeclList).init_declarator_list_node_1;

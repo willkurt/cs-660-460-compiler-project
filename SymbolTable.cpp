@@ -2,15 +2,15 @@
 SymbolTable::SymbolTable()
   :st()
 {
-  std::map<std::string,SymbolContent> firstMap;
+  std::map<std::string,SymbolContent* > firstMap;
   st.push(firstMap);
 }
 
 //this method will only add if the item doesn't already exist 
-bool SymbolTable::add(std::string k, SymbolContent v)
+bool SymbolTable::add(std::string k, SymbolContent *v)
 {
   //current map
-  std::map<std::string,SymbolContent> currentMap = st.top();
+  std::map<std::string,SymbolContent*> currentMap = st.top();
 
   //if the key(k) is found before the end...
   if(currentMap.find(k) != currentMap.end())
@@ -31,10 +31,10 @@ bool SymbolTable::add(std::string k, SymbolContent v)
 
 
 //this method will only update if the item DOES already exist 
-bool SymbolTable::update(std::string k, SymbolContent v)
+bool SymbolTable::update(std::string k, SymbolContent *v)
 {
   //current map
-  std::map<std::string,SymbolContent> currentMap = st.top();
+  std::map<std::string,SymbolContent*> currentMap = st.top();
   //if the key(k) is NOT found before the end...
   if(currentMap.find(k) == currentMap.end())
     {
@@ -52,14 +52,14 @@ bool SymbolTable::update(std::string k, SymbolContent v)
 }
 
 
-void SymbolTable::push(std::map<std::string,SymbolContent> symbolMap)
+void SymbolTable::push(std::map<std::string,SymbolContent*> symbolMap)
 {
   st.push(symbolMap);
 }
 
 void SymbolTable::push()
 {
-  std::map<std::string,SymbolContent> newMap;
+  std::map<std::string,SymbolContent*> newMap;
   st.push(newMap);
 }
 
@@ -77,11 +77,11 @@ void SymbolTable::pop()
 //obviously only the top layer
 SymbolContent *SymbolTable::searchTop(std::string k)
 {
-  std::map<std::string,SymbolContent> top = st.top(); 
+  std::map<std::string,SymbolContent*> top = st.top(); 
   SymbolContent * returnValue = 0;
   if(top.find(k) != top.end())
     {
-      returnValue = &top[k];
+      returnValue = top[k];
     }
   return returnValue;
 }
@@ -90,15 +90,15 @@ SymbolContent *SymbolTable::searchTop(std::string k)
 SymbolContent *SymbolTable::searchAll(std::string k)
 {
   //store stack contents in a temp stack
-  std::stack<std::map<std::string, SymbolContent> > tmp;
+  std::stack<std::map<std::string, SymbolContent*> > tmp;
   SymbolContent * returnValue = 0;
   while(!st.empty())
     {
-      std::map<std::string, SymbolContent> currentTop = st.top();
+      std::map<std::string, SymbolContent*> currentTop = st.top();
       if(currentTop.find(k) != currentTop.end())
 	{
 	  
-	  returnValue = &currentTop[k];
+	  returnValue = currentTop[k];
 	  break;
 	}
       tmp.push(currentTop);
@@ -119,14 +119,14 @@ SymbolContent *SymbolTable::searchAll(std::string k)
 bool SymbolTable::shadowing(std::string k)
 {
   bool returnValue = false;
-  std::stack<std::map<std::string, SymbolContent> > tmp;
+  std::stack<std::map<std::string, SymbolContent*> > tmp;
   //we don't care if the symbol is in the current top
   tmp.push(st.top());
   //st minus current top
   st.pop();
   while(!st.empty())
     {
-      std::map<std::string, SymbolContent> current;
+      std::map<std::string, SymbolContent*> current;
       current = st.top();
       if(current.find(k) != current.end())
 	{
@@ -149,20 +149,20 @@ bool SymbolTable::shadowing(std::string k)
 
 void SymbolTable::outputToFile()
 {
-    std::stack<std::map<std::string, SymbolContent> > tmp;
+    std::stack<std::map<std::string, SymbolContent* > > tmp;
     std::ofstream outFile;
     outFile.open("stout.txt");
     int level = 0;
     while(!st.empty())
       {
-	std::map<std::string,SymbolContent> current = st.top();
-	std::map<std::string,SymbolContent>::iterator mapIter;
+	std::map<std::string,SymbolContent* > current = st.top();
+	std::map<std::string,SymbolContent* >::iterator mapIter;
 	outFile << level++ << " from top\n";
 	outFile << "-----------\n";
 	for(mapIter = current.begin(); mapIter != current.end(); mapIter++)
 	  {
 	    
-	    outFile << "Symbol: " << mapIter->first << " lineno: " << mapIter->second.lineno <<" specifiers: "<< readSpecifiers(mapIter->second.specs)<<std::endl;
+	    outFile << "Symbol: " << mapIter->first << " lineno: " << (*mapIter->second).lineno <<" specifiers: "<< readSpecifiers((*mapIter->second).specs)<<std::endl;
 	  }
 	outFile << "\n";
 
