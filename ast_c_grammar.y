@@ -639,7 +639,7 @@ anode = (declaration_list_node*) malloc(sizeof(declaration_list_node));
 }
     ;
 declaration_specifiers
-    :storage_class_specifier
+:storage_class_specifier {declMode = true;}
 {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -649,7 +649,7 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     (*anode).type_qualifier_node_1= 0;
     $$ = anode;
 }
-    |storage_class_specifier declaration_specifiers
+|storage_class_specifier declaration_specifiers {declMode = true;}
 {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -659,7 +659,7 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     (*anode).type_qualifier_node_1= 0;
     $$ = anode;
 }
-    |type_specifier
+|type_specifier {declMode = true;}
 {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -669,7 +669,7 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     (*anode).type_qualifier_node_1= 0;
     $$ = anode;
 }
-    |type_specifier declaration_specifiers
+|type_specifier declaration_specifiers {declMode = true;}
 {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -679,7 +679,7 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     (*anode).type_qualifier_node_1= 0;
     $$ = anode;
 }
-    |type_qualifier
+|type_qualifier {declMode=true;}
 {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -689,7 +689,7 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     (*anode).type_specifier_node_1= 0;
     $$ = anode;
 }
-    |type_qualifier declaration_specifiers
+|type_qualifier declaration_specifiers {declMode=true;}
 {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -700,7 +700,7 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     $$ = anode;
 }
     ;
-storage_class_specifier
+storage_class_specifier 
     :AUTO
 {
      storage_class_specifier_node *anode;
