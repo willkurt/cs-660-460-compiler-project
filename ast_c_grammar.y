@@ -342,44 +342,44 @@ anode = (external_declaration_node*) malloc(sizeof(external_declaration_node));
 }
     ;
 function_definition
-    :declarator compound_statement
+:declarator {st.push();} compound_statement {st.pop();}
 {
      function_definition_node *anode;
 anode = (function_definition_node*) malloc(sizeof(function_definition_node));
     (*anode).declarator_node_1=$1;
-    (*anode).compound_statement_node_1=$2;
+    (*anode).compound_statement_node_1=$3;
     (*anode).declaration_list_node_1= 0;
     (*anode).declaration_specifiers_node_1= 0;
     $$ = anode;
 }
-    |declarator declaration_list compound_statement
+|declarator declaration_list {st.push();} compound_statement{st.pop();}
 {
      function_definition_node *anode;
 anode = (function_definition_node*) malloc(sizeof(function_definition_node));
     (*anode).declarator_node_1=$1;
     (*anode).declaration_list_node_1=$2;
-    (*anode).compound_statement_node_1=$3;
+    (*anode).compound_statement_node_1=$4;
     (*anode).declaration_specifiers_node_1= 0;
     $$ = anode;
 }
-    |declaration_specifiers declarator compound_statement
+|declaration_specifiers declarator {st.push();} compound_statement {st.pop();}
 {
      function_definition_node *anode;
 anode = (function_definition_node*) malloc(sizeof(function_definition_node));
     (*anode).declaration_specifiers_node_1=$1;
     (*anode).declarator_node_1=$2;
-    (*anode).compound_statement_node_1=$3;
+    (*anode).compound_statement_node_1=$4;
     (*anode).declaration_list_node_1= 0;
     $$ = anode;
 }
-    |declaration_specifiers declarator declaration_list compound_statement
+|declaration_specifiers declarator declaration_list{st.push();} compound_statement {st.pop();}
 {
      function_definition_node *anode;
 anode = (function_definition_node*) malloc(sizeof(function_definition_node));
     (*anode).declaration_specifiers_node_1=$1;
     (*anode).declarator_node_1=$2;
     (*anode).declaration_list_node_1=$3;
-    (*anode).compound_statement_node_1=$4;
+    (*anode).compound_statement_node_1=$5;
     $$ = anode;
 }
     ;
@@ -1630,11 +1630,11 @@ anode = (statement_node*) malloc(sizeof(statement_node));
     (*anode).iteration_statement_node_1= 0;
     $$ = anode;
 }
-    |compound_statement
+|{st.push();}compound_statement{st.pop();}
 {
      statement_node *anode;
 anode = (statement_node*) malloc(sizeof(statement_node));
-    (*anode).compound_statement_node_1=$1;
+    (*anode).compound_statement_node_1=$2;
     (*anode).expression_statement_node_1= 0;
     (*anode).iteration_statement_node_1= 0;
     (*anode).jump_statement_node_1= 0;
@@ -1745,7 +1745,7 @@ anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
 }
     ;
 compound_statement
-    :'{' '}'
+:'{' '}'
 {
      compound_statement_node *anode;
 anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
