@@ -200,10 +200,12 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "new_c_grammar.y"
+#line 1 "ast_c_grammar.y"
 
 #include "c_grammar.h"
+#include "ast_structs.h"
 #include <stdio.h>
+#include <iostream>
   /* #include "SymbolTable.hpp" */
 
 extern SymbolTable st;
@@ -216,6 +218,7 @@ extern bool declMode;
 extern bool undeclVar;
 extern bool redeclVar;
 
+/* this is going to be refactored away */
 struct declNode{
   char* id;
   unsigned int specs;
@@ -252,11 +255,84 @@ bool doubleFlag;
 bool lDoubleFlag;
 bool unsignedFlag;
 
+
+extern bool parseDebug;
+extern std::ofstream parseDebugOut;
+
+void print_translation_unit_node(translation_unit_node *ptr, std::string indent);
+void print_external_declaration_node(external_declaration_node *ptr, std::string indent);
+void print_function_definition_node(function_definition_node *ptr, std::string indent);
+void print_declaration_node(declaration_node *ptr, std::string indent);
+void print_declaration_list_node(declaration_list_node *ptr, std::string indent);
+void print_declaration_specifiers_node(declaration_specifiers_node *ptr, std::string indent);
+void print_storage_class_specifier_node(storage_class_specifier_node *ptr, std::string indent);
+void print_type_specifier_node(type_specifier_node *ptr, std::string indent);
+void print_type_qualifier_node(type_qualifier_node *ptr, std::string indent);
+void print_struct_or_union_specifier_node(struct_or_union_specifier_node *ptr, std::string indent);
+void print_struct_or_union_node(struct_or_union_node *ptr, std::string indent);
+void print_struct_declaration_list_node(struct_declaration_list_node *ptr, std::string indent);
+void print_init_declarator_list_node(init_declarator_list_node *ptr, std::string indent);
+void print_init_declarator_node(init_declarator_node *ptr, std::string indent);
+void print_struct_declaration_node(struct_declaration_node *ptr, std::string indent);
+void print_specifier_qualifier_list_node(specifier_qualifier_list_node *ptr, std::string indent);
+void print_struct_declarator_list_node(struct_declarator_list_node *ptr, std::string indent);
+void print_struct_declarator_node(struct_declarator_node *ptr, std::string indent);
+void print_enum_specifier_node(enum_specifier_node *ptr, std::string indent);
+void print_enumerator_list_node(enumerator_list_node *ptr, std::string indent);
+void print_enumerator_node(enumerator_node *ptr, std::string indent);
+void print_declarator_node(declarator_node *ptr, std::string indent);
+void print_direct_declarator_node(direct_declarator_node *ptr, std::string indent);
+void print_pointer_node(pointer_node *ptr, std::string indent);
+void print_type_qualifier_list_node(type_qualifier_list_node *ptr, std::string indent);
+void print_parameter_type_list_node(parameter_type_list_node *ptr, std::string indent);
+void print_parameter_list_node(parameter_list_node *ptr, std::string indent);
+void print_parameter_declaration_node(parameter_declaration_node *ptr, std::string indent);
+void print_identifier_list_node(identifier_list_node *ptr, std::string indent);
+void print_initializer_node(initializer_node *ptr, std::string indent);
+void print_initializer_list_node(initializer_list_node *ptr, std::string indent);
+void print_type_name_node(type_name_node *ptr, std::string indent);
+void print_abstract_declarator_node(abstract_declarator_node *ptr, std::string indent);
+void print_direct_abstract_declarator_node(direct_abstract_declarator_node *ptr, std::string indent);
+void print_statement_node(statement_node *ptr, std::string indent);
+void print_labeled_statement_node(labeled_statement_node *ptr, std::string indent);
+void print_expression_statement_node(expression_statement_node *ptr, std::string indent);
+void print_compound_statement_node(compound_statement_node *ptr, std::string indent);
+void print_statement_list_node(statement_list_node *ptr, std::string indent);
+void print_selection_statement_node(selection_statement_node *ptr, std::string indent);
+void print_iteration_statement_node(iteration_statement_node *ptr, std::string indent);
+void print_jump_statement_node(jump_statement_node *ptr, std::string indent);
+void print_expression_node(expression_node *ptr, std::string indent);
+void print_assignment_expression_node(assignment_expression_node *ptr, std::string indent);
+void print_assignment_operator_node(assignment_operator_node *ptr, std::string indent);
+void print_conditional_expression_node(conditional_expression_node *ptr, std::string indent);
+void print_constant_expression_node(constant_expression_node *ptr, std::string indent);
+void print_logical_or_expression_node(logical_or_expression_node *ptr, std::string indent);
+void print_logical_and_expression_node(logical_and_expression_node *ptr, std::string indent);
+void print_inclusive_or_expression_node(inclusive_or_expression_node *ptr, std::string indent);
+void print_exclusive_or_expression_node(exclusive_or_expression_node *ptr, std::string indent);
+void print_and_expression_node(and_expression_node *ptr, std::string indent);
+void print_equality_expression_node(equality_expression_node *ptr, std::string indent);
+void print_relational_expression_node(relational_expression_node *ptr, std::string indent);
+void print_shift_expression_node(shift_expression_node *ptr, std::string indent);
+void print_additive_expression_node(additive_expression_node *ptr, std::string indent);
+void print_multiplicative_expression_node(multiplicative_expression_node *ptr, std::string indent);
+void print_cast_expression_node(cast_expression_node *ptr, std::string indent);
+void print_unary_expression_node(unary_expression_node *ptr, std::string indent);
+void print_unary_operator_node(unary_operator_node *ptr, std::string indent);
+void print_postfix_expression_node(postfix_expression_node *ptr, std::string indent);
+void print_primary_expression_node(primary_expression_node *ptr, std::string indent);
+void print_argument_expression_list_node(argument_expression_list_node *ptr, std::string indent);
+void print_constant_node(constant_node *ptr, std::string indent);
+void print_string_node(string_node *ptr, std::string indent);
+void print_identifier_node(identifier_node *ptr, std::string indent);
+
+
+
  
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 
 /* Enabling verbose error messages.  */
@@ -274,18 +350,86 @@ bool unsignedFlag;
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 54 "new_c_grammar.y"
+#line 130 "ast_c_grammar.y"
 {
-  //consider making this a string pointer
   char* sval;
   float dval;
   int ival;
   long lval;
   char cval;
   struct declNode *declval;
+
+  /* auto generated vals */
+struct translation_unit_node *translation_unit_val;
+struct external_declaration_node *external_declaration_val;
+struct function_definition_node *function_definition_val;
+struct declaration_node *declaration_val;
+struct declaration_list_node *declaration_list_val;
+struct declaration_specifiers_node *declaration_specifiers_val;
+struct storage_class_specifier_node *storage_class_specifier_val;
+struct type_specifier_node *type_specifier_val;
+struct type_qualifier_node *type_qualifier_val;
+struct struct_or_union_specifier_node *struct_or_union_specifier_val;
+struct struct_or_union_node *struct_or_union_val;
+struct struct_declaration_list_node *struct_declaration_list_val;
+struct init_declarator_list_node *init_declarator_list_val;
+struct init_declarator_node *init_declarator_val;
+struct struct_declaration_node *struct_declaration_val;
+struct specifier_qualifier_list_node *specifier_qualifier_list_val;
+struct struct_declarator_list_node *struct_declarator_list_val;
+struct struct_declarator_node *struct_declarator_val;
+struct enum_specifier_node *enum_specifier_val;
+struct enumerator_list_node *enumerator_list_val;
+struct enumerator_node *enumerator_val;
+struct declarator_node *declarator_val;
+struct direct_declarator_node *direct_declarator_val;
+struct pointer_node *pointer_val;
+struct type_qualifier_list_node *type_qualifier_list_val;
+struct parameter_type_list_node *parameter_type_list_val;
+struct parameter_list_node *parameter_list_val;
+struct parameter_declaration_node *parameter_declaration_val;
+struct identifier_list_node *identifier_list_val;
+struct initializer_node *initializer_val;
+struct initializer_list_node *initializer_list_val;
+struct type_name_node *type_name_val;
+struct abstract_declarator_node *abstract_declarator_val;
+struct direct_abstract_declarator_node *direct_abstract_declarator_val;
+struct statement_node *statement_val;
+struct labeled_statement_node *labeled_statement_val;
+struct expression_statement_node *expression_statement_val;
+struct compound_statement_node *compound_statement_val;
+struct statement_list_node *statement_list_val;
+struct selection_statement_node *selection_statement_val;
+struct iteration_statement_node *iteration_statement_val;
+struct jump_statement_node *jump_statement_val;
+struct expression_node *expression_val;
+struct assignment_expression_node *assignment_expression_val;
+struct assignment_operator_node *assignment_operator_val;
+struct conditional_expression_node *conditional_expression_val;
+struct constant_expression_node *constant_expression_val;
+struct logical_or_expression_node *logical_or_expression_val;
+struct logical_and_expression_node *logical_and_expression_val;
+struct inclusive_or_expression_node *inclusive_or_expression_val;
+struct exclusive_or_expression_node *exclusive_or_expression_val;
+struct and_expression_node *and_expression_val;
+struct equality_expression_node *equality_expression_val;
+struct relational_expression_node *relational_expression_val;
+struct shift_expression_node *shift_expression_val;
+struct additive_expression_node *additive_expression_val;
+struct multiplicative_expression_node *multiplicative_expression_val;
+struct cast_expression_node *cast_expression_val;
+struct unary_expression_node *unary_expression_val;
+struct unary_operator_node *unary_operator_val;
+struct postfix_expression_node *postfix_expression_val;
+struct primary_expression_node *primary_expression_val;
+struct argument_expression_list_node *argument_expression_list_val;
+struct constant_node *constant_val;
+struct string_node *string_val;
+struct identifier_node *identifier_val;
+
  }
 /* Line 187 of yacc.c.  */
-#line 289 "y.tab.c"
+#line 433 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -298,7 +442,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 302 "y.tab.c"
+#line 446 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -513,16 +657,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  45
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   1383
+#define YYLAST   1569
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  90
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  89
+#define YYNNTS  68
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  246
+#define YYNRULES  225
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  403
+#define YYNSTATES  379
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -574,144 +718,135 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint16 yyprhs[] =
 {
-       0,     0,     3,     5,     8,    10,    12,    13,    14,    19,
-      20,    21,    27,    28,    29,    35,    36,    37,    44,    48,
-      49,    55,    56,    61,    62,    68,    69,    70,    71,    74,
-      75,    79,    80,    83,    84,    88,    90,    91,    95,    97,
-      99,   101,   103,   105,   107,   109,   111,   113,   115,   117,
-     119,   121,   123,   125,   127,   129,   131,   133,   139,   144,
-     147,   149,   151,   153,   156,   158,   162,   164,   168,   172,
-     174,   177,   179,   182,   184,   188,   190,   193,   197,   202,
-     208,   211,   213,   217,   219,   223,   225,   228,   230,   234,
-     238,   243,   247,   248,   254,   259,   261,   264,   267,   271,
-     273,   276,   278,   282,   284,   288,   291,   293,   296,   298,
-     302,   304,   308,   313,   315,   319,   321,   324,   326,   328,
-     331,   335,   338,   342,   346,   351,   354,   358,   362,   367,
-     369,   370,   371,   375,   377,   379,   381,   383,   387,   392,
-     396,   398,   401,   404,   408,   412,   417,   419,   422,   428,
-     436,   442,   448,   456,   463,   471,   479,   488,   496,   505,
-     514,   524,   528,   531,   534,   537,   541,   543,   547,   549,
-     553,   555,   557,   559,   561,   563,   565,   567,   569,   571,
-     573,   575,   577,   583,   585,   587,   591,   593,   597,   599,
-     603,   605,   609,   611,   615,   617,   621,   625,   627,   631,
-     635,   639,   643,   645,   649,   653,   655,   659,   663,   665,
-     669,   673,   677,   679,   684,   686,   689,   692,   695,   698,
-     703,   705,   707,   709,   711,   713,   715,   717,   722,   726,
-     731,   735,   739,   742,   745,   747,   749,   751,   755,   757,
-     761,   763,   765,   767,   769,   771,   773
+       0,     0,     3,     5,     8,    10,    12,    15,    19,    23,
+      28,    31,    32,    37,    39,    42,    44,    47,    49,    52,
+      54,    57,    59,    61,    63,    65,    67,    69,    71,    73,
+      75,    77,    79,    81,    83,    85,    87,    89,    91,    93,
+      95,   101,   106,   109,   111,   113,   115,   118,   120,   124,
+     126,   130,   134,   136,   139,   141,   144,   146,   150,   152,
+     155,   159,   164,   170,   173,   175,   179,   181,   185,   187,
+     190,   192,   196,   200,   205,   209,   214,   219,   221,   224,
+     227,   231,   233,   236,   238,   242,   244,   248,   251,   253,
+     256,   258,   262,   264,   268,   273,   275,   279,   281,   284,
+     286,   288,   291,   295,   298,   302,   306,   311,   314,   318,
+     322,   327,   329,   331,   333,   335,   337,   339,   343,   348,
+     352,   354,   357,   360,   364,   368,   373,   375,   378,   384,
+     392,   398,   404,   412,   419,   427,   435,   444,   452,   461,
+     470,   480,   484,   487,   490,   493,   497,   499,   503,   505,
+     509,   511,   513,   515,   517,   519,   521,   523,   525,   527,
+     529,   531,   533,   539,   541,   543,   547,   549,   553,   555,
+     559,   561,   565,   567,   571,   573,   577,   581,   583,   587,
+     591,   595,   599,   601,   605,   609,   611,   615,   619,   621,
+     625,   629,   633,   635,   640,   642,   645,   648,   651,   654,
+     659,   661,   663,   665,   667,   669,   671,   673,   678,   682,
+     687,   691,   695,   698,   701,   703,   705,   707,   711,   713,
+     717,   719,   721,   723,   725,   727
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int16 yyrhs[] =
 {
       91,     0,    -1,    92,    -1,    91,    92,    -1,    93,    -1,
-     102,    -1,    -1,    -1,   130,    94,   149,    95,    -1,    -1,
-      -1,   130,   104,    96,   149,    97,    -1,    -1,    -1,   109,
-     130,    98,   149,    99,    -1,    -1,    -1,   109,   130,   104,
-     100,   149,   101,    -1,   109,    66,   178,    -1,    -1,   109,
-     121,   178,    66,   103,    -1,    -1,   107,   102,   108,   105,
-      -1,    -1,   104,   107,   102,   108,   106,    -1,    -1,    -1,
-      -1,   115,   110,    -1,    -1,   115,   109,   111,    -1,    -1,
-     116,   112,    -1,    -1,   116,   109,   113,    -1,   117,    -1,
-      -1,   117,   109,   114,    -1,    35,    -1,    36,    -1,    34,
-      -1,    33,    -1,    32,    -1,    47,    -1,    37,    -1,    38,
-      -1,    39,    -1,    40,    -1,    43,    -1,    44,    -1,    41,
-      -1,    42,    -1,   118,    -1,   127,    -1,    31,    -1,    45,
-      -1,    46,    -1,   119,   177,    67,   120,    68,    -1,   119,
-      67,   120,    68,    -1,   119,   177,    -1,    48,    -1,    49,
-      -1,   123,    -1,   120,   123,    -1,   122,    -1,   121,    69,
-     122,    -1,   130,    -1,   130,    70,   139,    -1,   124,   125,
-      66,    -1,   116,    -1,   116,   124,    -1,   117,    -1,   117,
-     124,    -1,   126,    -1,   125,    69,   126,    -1,   130,    -1,
-      71,   158,    -1,   130,    71,   158,    -1,    50,    67,   128,
-      68,    -1,    50,   177,    67,   128,    68,    -1,    50,   177,
-      -1,   129,    -1,   128,    69,   129,    -1,   177,    -1,   177,
-      70,   158,    -1,   131,    -1,   133,   131,    -1,   177,    -1,
-      72,   130,    73,    -1,   131,    74,    75,    -1,   131,    74,
-     158,    75,    -1,   131,    72,    73,    -1,    -1,   131,    72,
-     132,   135,    73,    -1,   131,    72,   138,    73,    -1,    76,
-      -1,    76,   134,    -1,    76,   133,    -1,    76,   134,   133,
-      -1,   117,    -1,   134,   117,    -1,   136,    -1,   136,    69,
-      51,    -1,   137,    -1,   136,    69,   137,    -1,   109,   130,
-      -1,   109,    -1,   109,   142,    -1,   177,    -1,   138,    69,
-     177,    -1,   155,    -1,    67,   140,    68,    -1,    67,   140,
-      69,    68,    -1,   139,    -1,   140,    69,   139,    -1,   124,
-      -1,   124,   142,    -1,   133,    -1,   143,    -1,   133,   143,
-      -1,    72,   142,    73,    -1,    74,    75,    -1,    74,   158,
-      75,    -1,   143,    74,    75,    -1,   143,    74,   158,    75,
-      -1,    72,    73,    -1,    72,   135,    73,    -1,   143,    72,
-      73,    -1,   143,    72,   135,    73,    -1,   147,    -1,    -1,
-      -1,   145,   149,   146,    -1,   148,    -1,   151,    -1,   152,
-      -1,   153,    -1,   177,    71,   144,    -1,    53,   158,    71,
-     144,    -1,    54,    71,   144,    -1,    66,    -1,   154,    66,
-      -1,    67,    68,    -1,    67,   150,    68,    -1,    67,   104,
-      68,    -1,    67,   104,   150,    68,    -1,   144,    -1,   150,
-     144,    -1,    55,    72,   154,    73,   144,    -1,    55,    72,
-     154,    73,   144,    56,   144,    -1,    57,    72,   154,    73,
-     144,    -1,    58,    72,   154,    73,   144,    -1,    59,   144,
-      58,    72,   154,    73,    66,    -1,    60,    72,    66,    66,
-      73,   144,    -1,    60,    72,    66,    66,   154,    73,   144,
-      -1,    60,    72,    66,   154,    66,    73,   144,    -1,    60,
-      72,    66,   154,    66,   154,    73,   144,    -1,    60,    72,
-     154,    66,    66,    73,   144,    -1,    60,    72,   154,    66,
-      66,   154,    73,   144,    -1,    60,    72,   154,    66,   154,
-      66,    73,   144,    -1,    60,    72,   154,    66,   154,    66,
-     154,    73,   144,    -1,    61,   177,    66,    -1,    62,    66,
-      -1,    63,    66,    -1,    64,    66,    -1,    64,   154,    66,
-      -1,   155,    -1,   154,    69,   155,    -1,   157,    -1,   170,
-     156,   155,    -1,    70,    -1,    21,    -1,    22,    -1,    23,
-      -1,    24,    -1,    25,    -1,    26,    -1,    27,    -1,    28,
-      -1,    29,    -1,    30,    -1,   159,    -1,   159,    77,   154,
-      71,   157,    -1,   157,    -1,   160,    -1,   159,    20,   160,
-      -1,   161,    -1,   160,    19,   161,    -1,   162,    -1,   161,
-      78,   162,    -1,   163,    -1,   162,    79,   163,    -1,   164,
-      -1,   163,    80,   164,    -1,   165,    -1,   164,    17,   165,
-      -1,   164,    18,   165,    -1,   166,    -1,   165,    81,   166,
-      -1,   165,    82,   166,    -1,   165,    15,   166,    -1,   165,
-      16,   166,    -1,   167,    -1,   166,    13,   167,    -1,   166,
-      14,   167,    -1,   168,    -1,   167,    83,   168,    -1,   167,
-      84,   168,    -1,   169,    -1,   168,    76,   169,    -1,   168,
-      85,   169,    -1,   168,    86,   169,    -1,   170,    -1,    72,
-     141,    73,   169,    -1,   172,    -1,    11,   170,    -1,    12,
-     170,    -1,   171,   169,    -1,     9,   170,    -1,     9,    72,
-     141,    73,    -1,    80,    -1,    76,    -1,    83,    -1,    84,
-      -1,    87,    -1,    88,    -1,   173,    -1,   172,    74,   154,
-      75,    -1,   172,    72,    73,    -1,   172,    72,   174,    73,
-      -1,   172,    89,   177,    -1,   172,    10,   177,    -1,   172,
-      11,    -1,   172,    12,    -1,   177,    -1,   175,    -1,   176,
-      -1,    72,   154,    73,    -1,   155,    -1,   174,    69,   155,
-      -1,     4,    -1,     6,    -1,     5,    -1,     7,    -1,     8,
-      -1,     3,    -1,    -1
+      94,    -1,   113,   129,    -1,   113,    96,   129,    -1,    97,
+     113,   129,    -1,    97,   113,    96,   129,    -1,    97,    66,
+      -1,    -1,    97,   104,    66,    95,    -1,    94,    -1,    96,
+      94,    -1,    98,    -1,    98,    97,    -1,    99,    -1,    99,
+      97,    -1,   100,    -1,   100,    97,    -1,    35,    -1,    36,
+      -1,    34,    -1,    33,    -1,    32,    -1,    47,    -1,    37,
+      -1,    38,    -1,    39,    -1,    40,    -1,    43,    -1,    44,
+      -1,    41,    -1,    42,    -1,   101,    -1,   110,    -1,    31,
+      -1,    45,    -1,    46,    -1,   102,   157,    67,   103,    68,
+      -1,   102,    67,   103,    68,    -1,   102,   157,    -1,    48,
+      -1,    49,    -1,   106,    -1,   103,   106,    -1,   105,    -1,
+     104,    69,   105,    -1,   113,    -1,   113,    70,   121,    -1,
+     107,   108,    66,    -1,    99,    -1,    99,   107,    -1,   100,
+      -1,   100,   107,    -1,   109,    -1,   108,    69,   109,    -1,
+     113,    -1,    71,   138,    -1,   113,    71,   138,    -1,    50,
+      67,   111,    68,    -1,    50,   157,    67,   111,    68,    -1,
+      50,   157,    -1,   112,    -1,   111,    69,   112,    -1,   157,
+      -1,   157,    70,   138,    -1,   114,    -1,   115,   114,    -1,
+     157,    -1,    72,   113,    73,    -1,   114,    74,    75,    -1,
+     114,    74,   138,    75,    -1,   114,    72,    73,    -1,   114,
+      72,   117,    73,    -1,   114,    72,   120,    73,    -1,    76,
+      -1,    76,   116,    -1,    76,   115,    -1,    76,   116,   115,
+      -1,   100,    -1,   116,   100,    -1,   118,    -1,   118,    69,
+      51,    -1,   119,    -1,   118,    69,   119,    -1,    97,   113,
+      -1,    97,    -1,    97,   124,    -1,   157,    -1,   120,    69,
+     157,    -1,   135,    -1,    67,   122,    68,    -1,    67,   122,
+      69,    68,    -1,   121,    -1,   122,    69,   121,    -1,   107,
+      -1,   107,   124,    -1,   115,    -1,   125,    -1,   115,   125,
+      -1,    72,   124,    73,    -1,    74,    75,    -1,    74,   138,
+      75,    -1,   125,    74,    75,    -1,   125,    74,   138,    75,
+      -1,    72,    73,    -1,    72,   117,    73,    -1,   125,    72,
+      73,    -1,   125,    72,   117,    73,    -1,   127,    -1,   129,
+      -1,   128,    -1,   131,    -1,   132,    -1,   133,    -1,   157,
+      71,   126,    -1,    53,   138,    71,   126,    -1,    54,    71,
+     126,    -1,    66,    -1,   134,    66,    -1,    67,    68,    -1,
+      67,   130,    68,    -1,    67,    96,    68,    -1,    67,    96,
+     130,    68,    -1,   126,    -1,   130,   126,    -1,    55,    72,
+     134,    73,   126,    -1,    55,    72,   134,    73,   126,    56,
+     126,    -1,    57,    72,   134,    73,   126,    -1,    58,    72,
+     134,    73,   126,    -1,    59,   126,    58,    72,   134,    73,
+      66,    -1,    60,    72,    66,    66,    73,   126,    -1,    60,
+      72,    66,    66,   134,    73,   126,    -1,    60,    72,    66,
+     134,    66,    73,   126,    -1,    60,    72,    66,   134,    66,
+     134,    73,   126,    -1,    60,    72,   134,    66,    66,    73,
+     126,    -1,    60,    72,   134,    66,    66,   134,    73,   126,
+      -1,    60,    72,   134,    66,   134,    66,    73,   126,    -1,
+      60,    72,   134,    66,   134,    66,   134,    73,   126,    -1,
+      61,   157,    66,    -1,    62,    66,    -1,    63,    66,    -1,
+      64,    66,    -1,    64,   134,    66,    -1,   135,    -1,   134,
+      69,   135,    -1,   137,    -1,   150,   136,   135,    -1,    70,
+      -1,    21,    -1,    22,    -1,    23,    -1,    24,    -1,    25,
+      -1,    26,    -1,    27,    -1,    28,    -1,    29,    -1,    30,
+      -1,   139,    -1,   139,    77,   134,    71,   137,    -1,   137,
+      -1,   140,    -1,   139,    20,   140,    -1,   141,    -1,   140,
+      19,   141,    -1,   142,    -1,   141,    78,   142,    -1,   143,
+      -1,   142,    79,   143,    -1,   144,    -1,   143,    80,   144,
+      -1,   145,    -1,   144,    17,   145,    -1,   144,    18,   145,
+      -1,   146,    -1,   145,    81,   146,    -1,   145,    82,   146,
+      -1,   145,    15,   146,    -1,   145,    16,   146,    -1,   147,
+      -1,   146,    13,   147,    -1,   146,    14,   147,    -1,   148,
+      -1,   147,    83,   148,    -1,   147,    84,   148,    -1,   149,
+      -1,   148,    76,   149,    -1,   148,    85,   149,    -1,   148,
+      86,   149,    -1,   150,    -1,    72,   123,    73,   149,    -1,
+     152,    -1,    11,   150,    -1,    12,   150,    -1,   151,   149,
+      -1,     9,   150,    -1,     9,    72,   123,    73,    -1,    80,
+      -1,    76,    -1,    83,    -1,    84,    -1,    87,    -1,    88,
+      -1,   153,    -1,   152,    74,   134,    75,    -1,   152,    72,
+      73,    -1,   152,    72,   154,    73,    -1,   152,    89,   157,
+      -1,   152,    10,   157,    -1,   152,    11,    -1,   152,    12,
+      -1,   157,    -1,   155,    -1,   156,    -1,    72,   134,    73,
+      -1,   135,    -1,   154,    69,   135,    -1,     4,    -1,     6,
+      -1,     5,    -1,     7,    -1,     8,    -1,     3,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   100,   100,   103,   109,   112,   118,   118,   118,   121,
-     121,   121,   124,   124,   124,   127,   127,   127,   133,   137,
-     136,   160,   160,   164,   163,   175,   179,   184,   183,   214,
-     213,   245,   244,   308,   307,   368,   385,   384,   405,   409,
-     413,   417,   421,   428,   432,   436,   473,   604,   673,   691,
-     729,   733,   738,   742,   746,   752,   756,   763,   766,   769,
-     775,   779,   786,   789,   795,   799,   806,   810,   816,   822,
-     825,   828,   831,   837,   840,   846,   849,   852,   858,   861,
-     864,   870,   873,   879,   882,   889,   893,   904,   911,   918,
-     925,   931,   939,   939,   947,   958,   961,   964,   967,   973,
-     976,   982,   985,   991,   994,  1000,  1003,  1006,  1012,  1019,
-    1030,  1033,  1036,  1042,  1045,  1051,  1054,  1060,  1063,  1066,
-    1072,  1075,  1078,  1081,  1084,  1087,  1090,  1093,  1096,  1102,
-    1105,  1105,  1105,  1108,  1111,  1114,  1117,  1123,  1126,  1129,
-    1135,  1138,  1144,  1147,  1150,  1153,  1159,  1162,  1168,  1171,
-    1174,  1180,  1183,  1186,  1189,  1192,  1195,  1198,  1201,  1204,
-    1207,  1213,  1216,  1219,  1222,  1225,  1231,  1234,  1240,  1243,
-    1249,  1252,  1255,  1258,  1261,  1264,  1267,  1270,  1273,  1276,
-    1279,  1285,  1288,  1294,  1300,  1303,  1309,  1312,  1318,  1321,
-    1327,  1330,  1336,  1339,  1345,  1348,  1351,  1357,  1360,  1363,
-    1366,  1369,  1375,  1378,  1381,  1387,  1390,  1393,  1399,  1402,
-    1405,  1408,  1414,  1417,  1423,  1426,  1429,  1432,  1435,  1438,
-    1444,  1447,  1450,  1453,  1456,  1459,  1465,  1468,  1471,  1474,
-    1477,  1480,  1483,  1486,  1492,  1495,  1498,  1501,  1507,  1510,
-    1516,  1519,  1522,  1525,  1531,  1537,  1550
+       0,   308,   308,   317,   327,   335,   345,   355,   365,   375,
+     387,   398,   396,   624,   632,   642,   652,   662,   672,   682,
+     692,   704,   711,   718,   725,   732,   741,   750,   759,   768,
+     777,   786,   795,   804,   813,   822,   831,   840,   851,   858,
+     867,   878,   889,   902,   909,   918,   926,   936,   945,   956,
+     965,   976,   987,   996,  1005,  1014,  1025,  1034,  1045,  1054,
+    1063,  1074,  1085,  1096,  1109,  1118,  1129,  1138,  1149,  1157,
+    1167,  1181,  1195,  1209,  1223,  1237,  1251,  1267,  1276,  1285,
+    1294,  1305,  1313,  1323,  1332,  1343,  1352,  1363,  1372,  1381,
+    1392,  1401,  1412,  1423,  1434,  1447,  1456,  1467,  1475,  1485,
+    1493,  1501,  1511,  1523,  1535,  1547,  1559,  1571,  1583,  1595,
+    1607,  1621,  1633,  1645,  1657,  1669,  1681,  1695,  1706,  1717,
+    1730,  1738,  1748,  1758,  1768,  1778,  1790,  1798,  1808,  1821,
+    1835,  1850,  1866,  1882,  1898,  1914,  1930,  1947,  1963,  1980,
+    1997,  2018,  2028,  2038,  2048,  2058,  2070,  2079,  2090,  2100,
+    2112,  2120,  2128,  2136,  2144,  2152,  2160,  2168,  2176,  2184,
+    2192,  2202,  2213,  2226,  2235,  2244,  2255,  2264,  2275,  2284,
+    2295,  2304,  2315,  2324,  2335,  2344,  2353,  2364,  2374,  2384,
+    2394,  2404,  2416,  2425,  2434,  2445,  2454,  2463,  2474,  2483,
+    2492,  2501,  2512,  2523,  2536,  2550,  2564,  2578,  2592,  2606,
+    2622,  2629,  2636,  2643,  2650,  2657,  2666,  2680,  2694,  2708,
+    2722,  2736,  2750,  2764,  2780,  2792,  2804,  2816,  2830,  2839,
+    2850,  2861,  2871,  2881,  2892,  2901
 };
 #endif
 
@@ -734,30 +869,27 @@ static const char *const yytname[] =
   "','", "'='", "':'", "'('", "')'", "'['", "']'", "'*'", "'?'", "'|'",
   "'^'", "'&'", "'<'", "'>'", "'+'", "'-'", "'/'", "'%'", "'~'", "'!'",
   "'.'", "$accept", "translation_unit", "external_declaration",
-  "function_definition", "@1", "@2", "@3", "@4", "@5", "@6", "@7", "@8",
-  "declaration", "@9", "declaration_list", "@10", "@11", "start_decl",
-  "end_decl", "declaration_specifiers", "@12", "@13", "@14", "@15", "@16",
-  "storage_class_specifier", "type_specifier", "type_qualifier",
-  "struct_or_union_specifier", "struct_or_union",
+  "function_definition", "declaration", "@1", "declaration_list",
+  "declaration_specifiers", "storage_class_specifier", "type_specifier",
+  "type_qualifier", "struct_or_union_specifier", "struct_or_union",
   "struct_declaration_list", "init_declarator_list", "init_declarator",
   "struct_declaration", "specifier_qualifier_list",
   "struct_declarator_list", "struct_declarator", "enum_specifier",
   "enumerator_list", "enumerator", "declarator", "direct_declarator",
-  "@17", "pointer", "type_qualifier_list", "parameter_type_list",
+  "pointer", "type_qualifier_list", "parameter_type_list",
   "parameter_list", "parameter_declaration", "identifier_list",
   "initializer", "initializer_list", "type_name", "abstract_declarator",
-  "direct_abstract_declarator", "statement", "@18", "@19",
-  "labeled_statement", "expression_statement", "compound_statement",
-  "statement_list", "selection_statement", "iteration_statement",
-  "jump_statement", "expression", "assignment_expression",
-  "assignment_operator", "conditional_expression", "constant_expression",
-  "logical_or_expression", "logical_and_expression",
-  "inclusive_or_expression", "exclusive_or_expression", "and_expression",
-  "equality_expression", "relational_expression", "shift_expression",
-  "additive_expression", "multiplicative_expression", "cast_expression",
-  "unary_expression", "unary_operator", "postfix_expression",
-  "primary_expression", "argument_expression_list", "constant", "string",
-  "identifier", "identifier_flag_clear", 0
+  "direct_abstract_declarator", "statement", "labeled_statement",
+  "expression_statement", "compound_statement", "statement_list",
+  "selection_statement", "iteration_statement", "jump_statement",
+  "expression", "assignment_expression", "assignment_operator",
+  "conditional_expression", "constant_expression", "logical_or_expression",
+  "logical_and_expression", "inclusive_or_expression",
+  "exclusive_or_expression", "and_expression", "equality_expression",
+  "relational_expression", "shift_expression", "additive_expression",
+  "multiplicative_expression", "cast_expression", "unary_expression",
+  "unary_operator", "postfix_expression", "primary_expression",
+  "argument_expression_list", "constant", "string", "identifier", 0
 };
 #endif
 
@@ -781,50 +913,46 @@ static const yytype_uint16 yytoknum[] =
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    90,    91,    91,    92,    92,    94,    95,    93,    96,
-      97,    93,    98,    99,    93,   100,   101,    93,   102,   103,
-     102,   105,   104,   106,   104,   107,   108,   110,   109,   111,
-     109,   112,   109,   113,   109,   109,   114,   109,   115,   115,
-     115,   115,   115,   116,   116,   116,   116,   116,   116,   116,
-     116,   116,   116,   116,   116,   117,   117,   118,   118,   118,
-     119,   119,   120,   120,   121,   121,   122,   122,   123,   124,
-     124,   124,   124,   125,   125,   126,   126,   126,   127,   127,
-     127,   128,   128,   129,   129,   130,   130,   131,   131,   131,
-     131,   131,   132,   131,   131,   133,   133,   133,   133,   134,
-     134,   135,   135,   136,   136,   137,   137,   137,   138,   138,
-     139,   139,   139,   140,   140,   141,   141,   142,   142,   142,
-     143,   143,   143,   143,   143,   143,   143,   143,   143,   144,
-     145,   146,   144,   144,   144,   144,   144,   147,   147,   147,
-     148,   148,   149,   149,   149,   149,   150,   150,   151,   151,
-     151,   152,   152,   152,   152,   152,   152,   152,   152,   152,
-     152,   153,   153,   153,   153,   153,   154,   154,   155,   155,
-     156,   156,   156,   156,   156,   156,   156,   156,   156,   156,
-     156,   157,   157,   158,   159,   159,   160,   160,   161,   161,
-     162,   162,   163,   163,   164,   164,   164,   165,   165,   165,
-     165,   165,   166,   166,   166,   167,   167,   167,   168,   168,
-     168,   168,   169,   169,   170,   170,   170,   170,   170,   170,
-     171,   171,   171,   171,   171,   171,   172,   172,   172,   172,
-     172,   172,   172,   172,   173,   173,   173,   173,   174,   174,
-     175,   175,   175,   175,   176,   177,   178
+       0,    90,    91,    91,    92,    92,    93,    93,    93,    93,
+      94,    95,    94,    96,    96,    97,    97,    97,    97,    97,
+      97,    98,    98,    98,    98,    98,    99,    99,    99,    99,
+      99,    99,    99,    99,    99,    99,    99,    99,   100,   100,
+     101,   101,   101,   102,   102,   103,   103,   104,   104,   105,
+     105,   106,   107,   107,   107,   107,   108,   108,   109,   109,
+     109,   110,   110,   110,   111,   111,   112,   112,   113,   113,
+     114,   114,   114,   114,   114,   114,   114,   115,   115,   115,
+     115,   116,   116,   117,   117,   118,   118,   119,   119,   119,
+     120,   120,   121,   121,   121,   122,   122,   123,   123,   124,
+     124,   124,   125,   125,   125,   125,   125,   125,   125,   125,
+     125,   126,   126,   126,   126,   126,   126,   127,   127,   127,
+     128,   128,   129,   129,   129,   129,   130,   130,   131,   131,
+     131,   132,   132,   132,   132,   132,   132,   132,   132,   132,
+     132,   133,   133,   133,   133,   133,   134,   134,   135,   135,
+     136,   136,   136,   136,   136,   136,   136,   136,   136,   136,
+     136,   137,   137,   138,   139,   139,   140,   140,   141,   141,
+     142,   142,   143,   143,   144,   144,   144,   145,   145,   145,
+     145,   145,   146,   146,   146,   147,   147,   147,   148,   148,
+     148,   148,   149,   149,   150,   150,   150,   150,   150,   150,
+     151,   151,   151,   151,   151,   151,   152,   152,   152,   152,
+     152,   152,   152,   152,   153,   153,   153,   153,   154,   154,
+     155,   155,   155,   155,   156,   157
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     2,     1,     1,     0,     0,     4,     0,
-       0,     5,     0,     0,     5,     0,     0,     6,     3,     0,
-       5,     0,     4,     0,     5,     0,     0,     0,     2,     0,
-       3,     0,     2,     0,     3,     1,     0,     3,     1,     1,
+       0,     2,     1,     2,     1,     1,     2,     3,     3,     4,
+       2,     0,     4,     1,     2,     1,     2,     1,     2,     1,
+       2,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     5,     4,     2,
-       1,     1,     1,     2,     1,     3,     1,     3,     3,     1,
-       2,     1,     2,     1,     3,     1,     2,     3,     4,     5,
-       2,     1,     3,     1,     3,     1,     2,     1,     3,     3,
-       4,     3,     0,     5,     4,     1,     2,     2,     3,     1,
-       2,     1,     3,     1,     3,     2,     1,     2,     1,     3,
-       1,     3,     4,     1,     3,     1,     2,     1,     1,     2,
-       3,     2,     3,     3,     4,     2,     3,     3,     4,     1,
-       0,     0,     3,     1,     1,     1,     1,     3,     4,     3,
+       5,     4,     2,     1,     1,     1,     2,     1,     3,     1,
+       3,     3,     1,     2,     1,     2,     1,     3,     1,     2,
+       3,     4,     5,     2,     1,     3,     1,     3,     1,     2,
+       1,     3,     3,     4,     3,     4,     4,     1,     2,     2,
+       3,     1,     2,     1,     3,     1,     3,     2,     1,     2,
+       1,     3,     1,     3,     4,     1,     3,     1,     2,     1,
+       1,     2,     3,     2,     3,     3,     4,     2,     3,     3,
+       4,     1,     1,     1,     1,     1,     1,     3,     4,     3,
        1,     2,     2,     3,     3,     4,     1,     2,     5,     7,
        5,     5,     7,     6,     7,     7,     8,     7,     8,     8,
        9,     3,     2,     2,     2,     3,     1,     3,     1,     3,
@@ -835,7 +963,7 @@ static const yytype_uint8 yyr2[] =
        3,     3,     1,     4,     1,     2,     2,     2,     2,     4,
        1,     1,     1,     1,     1,     1,     1,     4,     3,     4,
        3,     3,     2,     2,     1,     1,     1,     3,     1,     3,
-       1,     1,     1,     1,     1,     1,     0
+       1,     1,     1,     1,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -843,414 +971,440 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,   245,    54,    42,    41,    40,    38,    39,    44,    45,
-      46,    47,    50,    51,    48,    49,    55,    56,    43,    60,
-      61,     0,     0,    95,     0,     2,     4,     5,     0,    27,
-      31,    35,    52,     0,    53,    25,    85,     0,    87,     0,
-      80,     0,    99,    97,    96,     1,     3,   246,   246,    64,
-      25,    29,    28,    33,    32,    36,     0,    59,     0,    25,
-       0,    92,     0,    86,     0,    81,    83,     0,    88,   100,
-      98,    18,     0,     0,     0,     0,    25,    30,    34,    37,
-      69,    71,     0,    62,     0,     0,    25,     7,     0,     0,
-      26,     0,    91,     0,     0,   108,   240,   242,   241,   243,
-     244,     0,     0,     0,     0,    89,   221,   220,   222,   223,
-     224,   225,   183,     0,   181,   184,   186,   188,   190,   192,
-     194,   197,   202,   205,   208,   212,     0,   214,   226,   235,
-     236,   234,    78,     0,     0,     0,    65,    66,    19,     0,
-      67,   110,   168,   212,    13,     0,    70,    72,    58,    63,
-       0,     0,    73,    75,     0,     0,     0,     0,     0,     0,
-     130,     0,     0,     0,     0,     0,   140,   142,    25,   146,
-       0,   129,   133,   130,   134,   135,   136,     0,   166,   234,
-       8,    10,    26,    21,   106,     0,   101,   103,     0,    94,
-       0,   218,     0,   215,   216,   115,     0,     0,    90,     0,
+       0,   225,    37,    25,    24,    23,    21,    22,    27,    28,
+      29,    30,    33,    34,    31,    32,    38,    39,    26,    43,
+      44,     0,     0,    77,     0,     2,     4,     5,     0,    15,
+      17,    19,    35,     0,    36,     0,    68,     0,    70,     0,
+      63,     0,    81,    79,    78,     1,     3,    10,     0,    47,
+      49,    16,    18,    20,     0,    42,     0,    13,     0,     0,
+       6,     0,     0,    69,     0,    64,    66,     0,    71,    82,
+      80,    11,     0,     0,     0,     8,    52,    54,     0,    45,
+       0,     0,   220,   222,   221,   223,   224,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,   217,     0,
-     232,   233,     0,     0,     0,    82,    84,    79,    20,   113,
-       0,   171,   172,   173,   174,   175,   176,   177,   178,   179,
-     180,   170,     0,    14,    16,    76,    68,     0,     0,    57,
-       0,   130,     0,     0,     0,     0,     0,     0,   162,   163,
-     164,     0,   144,   130,   131,   143,   147,   141,     0,   130,
-      11,    23,    22,     0,     0,   105,   117,   107,   118,    93,
-       0,   109,     0,     0,   117,   116,     0,   237,   185,     0,
-     187,   189,   191,   193,   195,   196,   200,   201,   198,   199,
-     203,   204,   206,   207,   209,   210,   211,   231,   228,   238,
-       0,     0,   230,   111,     0,   169,    17,    74,    77,   130,
-     139,     0,     0,     0,     0,     0,     0,   161,   165,   145,
-     132,   167,   137,    24,   125,     0,     0,   121,     0,   119,
-       0,     0,   102,   104,   219,   213,     0,     0,   229,   227,
-     112,   114,   138,   130,   130,   130,     0,     0,     0,     0,
-     126,   120,   122,   127,     0,   123,     0,   182,   239,   148,
-     150,   151,     0,   130,     0,     0,     0,     0,   128,   124,
-     130,     0,   153,   130,   130,     0,   130,     0,     0,   149,
-     152,   154,   155,   130,   157,   130,   130,     0,   156,   158,
-     159,   130,   160
+       0,   120,   122,     0,   201,   200,   202,   203,   204,   205,
+       0,   126,   111,   113,   112,     0,   114,   115,   116,     0,
+     146,   148,   161,   164,   166,   168,   170,   172,   174,   177,
+     182,   185,   188,   192,     0,   194,   206,   215,   216,   214,
+      14,     7,    49,    74,    88,     0,    83,    85,     0,    90,
+      72,   163,     0,   192,   214,    61,     0,     0,     0,    12,
+      48,     0,    50,    92,     9,    53,    55,    41,    46,     0,
+       0,    56,    58,     0,     0,   198,     0,   195,   196,     0,
+       0,     0,     0,     0,     0,     0,     0,   142,   143,   144,
+       0,    97,     0,     0,   124,     0,   123,   127,   121,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,   151,
+     152,   153,   154,   155,   156,   157,   158,   159,   160,   150,
+       0,   197,     0,   212,   213,     0,     0,     0,     0,     0,
+       0,    87,    99,    89,   100,    75,     0,     0,    76,    73,
+      65,    67,    62,    95,     0,    59,    51,     0,     0,    40,
+       0,     0,   119,     0,     0,     0,     0,     0,     0,   141,
+     145,     0,    99,    98,     0,   217,   125,   147,   165,     0,
+     167,   169,   171,   173,   175,   176,   180,   181,   178,   179,
+     183,   184,   186,   187,   189,   190,   191,   149,   211,   208,
+     218,     0,     0,   210,   117,   107,     0,     0,   103,     0,
+     101,     0,     0,    84,    86,    91,    93,     0,    57,    60,
+     199,   118,     0,     0,     0,     0,     0,     0,     0,   193,
+       0,     0,   209,   207,   108,   102,   104,   109,     0,   105,
+       0,    94,    96,   128,   130,   131,     0,     0,     0,     0,
+       0,     0,   162,   219,   110,   106,     0,     0,   133,     0,
+       0,     0,     0,     0,     0,   129,   132,   134,   135,     0,
+     137,     0,     0,     0,   136,   138,   139,     0,   140
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
-      -1,    24,    25,    26,    58,   180,    88,   270,    75,   243,
-     145,   316,    27,   228,    59,   272,   333,    60,   183,   184,
-      52,    77,    54,    78,    79,    29,    30,    31,    32,    33,
-      82,    48,    49,    83,    84,   151,   152,    34,    64,    65,
-      35,    36,    93,    37,    44,   335,   186,   187,    94,   140,
-     230,   196,   336,   278,   169,   170,   330,   171,   172,    87,
-     173,   174,   175,   176,   177,   178,   242,   142,   113,   114,
-     115,   116,   117,   118,   119,   120,   121,   122,   123,   124,
-     143,   126,   127,   128,   310,   129,   130,   131,    71
+      -1,    24,    25,    26,    57,   159,    58,    59,    29,    30,
+      31,    32,    33,    78,    48,    49,    79,    80,   170,   171,
+      34,    64,    65,    35,    36,    37,    44,   306,   146,   147,
+     148,   162,   254,   192,   307,   244,   111,   112,   113,   114,
+     115,   116,   117,   118,   119,   120,   230,   121,   152,   122,
+     123,   124,   125,   126,   127,   128,   129,   130,   131,   132,
+     133,   134,   135,   136,   301,   137,   138,   154
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -226
+#define YYPACT_NINF -230
 static const yytype_int16 yypact[] =
 {
-    1246,  -226,  -226,  -226,  -226,  -226,  -226,  -226,  -226,  -226,
-    -226,  -226,  -226,  -226,  -226,  -226,  -226,  -226,  -226,  -226,
-    -226,    35,    51,   -28,  1195,  -226,  -226,  -226,    50,  1333,
-    1333,  1333,  -226,    41,  -226,   -32,   -38,    43,  -226,    66,
-      23,    26,  -226,  -226,   -28,  -226,  -226,  -226,    49,  -226,
-     138,  -226,  -226,  -226,  -226,  -226,   378,   102,   107,   109,
-    1333,     5,   713,   -38,   127,  -226,    40,    66,  -226,  -226,
-    -226,  -226,    51,    93,   727,   107,   165,  -226,  -226,  -226,
-     378,   378,   320,  -226,   121,   378,   447,  -226,   107,  1333,
-    -226,    50,  -226,  1333,   -17,  -226,  -226,  -226,  -226,  -226,
-    -226,  1096,  1106,  1106,   399,  -226,  -226,  -226,  -226,  -226,
-    -226,  -226,  -226,   146,    44,   163,   167,   164,   180,   278,
-     174,   284,   220,    95,  -226,  -226,  1116,   216,  -226,  -226,
-    -226,  -226,  -226,    66,  1116,   249,  -226,   202,  -226,   727,
-    -226,  -226,  -226,   286,  -226,   107,  -226,  -226,  -226,  -226,
-    1116,    92,  -226,   203,  1095,  1116,   210,   205,   211,   234,
-     693,   260,    66,   268,   269,   813,  -226,  -226,   485,  -226,
-     107,  -226,  -226,   571,  -226,  -226,  -226,   143,  -226,   265,
-    -226,  -226,  -226,  -226,     9,   264,   270,  -226,    66,  -226,
-     399,  -226,  1116,  -226,  -226,   157,   271,   -11,  -226,  1116,
-    1116,  1116,  1116,  1116,  1116,  1116,  1116,  1116,  1116,  1116,
-    1116,  1116,  1116,  1116,  1116,  1116,  1116,  1116,  -226,    66,
-    -226,  -226,   826,  1116,    66,  -226,  -226,  -226,  -226,  -226,
-     253,  -226,  -226,  -226,  -226,  -226,  -226,  -226,  -226,  -226,
-    -226,  -226,  1116,  -226,  -226,  -226,  -226,   121,  1116,  -226,
-     267,   693,  1116,  1116,  1116,   283,   839,   279,  -226,  -226,
-    -226,   149,  -226,   607,  -226,  -226,  -226,  -226,  1116,   693,
-    -226,  -226,  -226,  1174,   849,  -226,    57,  -226,    58,  -226,
-    1312,  -226,   273,  1266,    65,  -226,  1116,  -226,   163,   -14,
-     167,   164,   180,   278,   174,   174,   284,   284,   284,   284,
-     220,   220,    95,    95,  -226,  -226,  -226,  -226,  -226,  -226,
-      -3,   -46,  -226,  -226,   703,  -226,  -226,  -226,  -226,   693,
-    -226,   133,   166,   171,   275,   862,   154,  -226,  -226,  -226,
-    -226,  -226,  -226,  -226,  -226,   276,   277,  -226,   296,    58,
-     554,   948,  -226,  -226,  -226,  -226,  1116,  1116,  -226,  -226,
-    -226,  -226,  -226,   693,   693,   693,  1116,   961,   168,   974,
-    -226,  -226,  -226,  -226,   299,  -226,   300,  -226,  -226,   318,
-    -226,  -226,   173,   693,   179,   987,  1000,   196,  -226,  -226,
-     693,   310,  -226,   693,   693,   184,   693,   185,  1086,  -226,
-    -226,  -226,  -226,   693,  -226,   693,   693,   206,  -226,  -226,
-    -226,   693,  -226
+    1243,  -230,  -230,  -230,  -230,  -230,  -230,  -230,  -230,  -230,
+    -230,  -230,  -230,  -230,  -230,  -230,  -230,  -230,  -230,  -230,
+    -230,    22,    55,    84,   348,  -230,  -230,  -230,    11,  1519,
+    1519,  1519,  -230,    38,  -230,  1461,    26,     9,  -230,     8,
+     -47,   -35,  -230,  -230,    84,  -230,  -230,  -230,   162,  -230,
+    1357,  -230,  -230,  -230,   463,   -10,   398,  -230,  1461,    11,
+    -230,  1291,   762,    26,   121,  -230,    -5,     8,  -230,  -230,
+    -230,  -230,    55,   776,  1461,  -230,   463,   463,  1391,  -230,
+      76,   463,  -230,  -230,  -230,  -230,  -230,  1145,  1155,  1155,
+    1165,     2,     6,    41,    61,   742,    67,     8,    24,    88,
+     862,  -230,  -230,   570,  -230,  -230,  -230,  -230,  -230,  -230,
+     484,  -230,  -230,  -230,  -230,   618,  -230,  -230,  -230,   190,
+    -230,  -230,    -3,   178,   148,   164,   161,   192,   120,   235,
+     185,    79,  -230,   194,  1165,    52,  -230,  -230,  -230,   179,
+    -230,  -230,   209,  -230,    12,   182,   193,  -230,   -46,  -230,
+    -230,  -230,   212,  -230,  -230,  -230,     8,  1165,   217,  -230,
+    -230,   776,  -230,  -230,  -230,  -230,  -230,  -230,  -230,  1165,
+     197,  -230,   224,  1423,   570,  -230,  1165,  -230,  -230,   244,
+     742,  1165,  1165,  1165,   269,   875,   264,  -230,  -230,  -230,
+     208,   -24,   260,   -20,  -230,   656,  -230,  -230,  -230,  1165,
+    1165,  1165,  1165,  1165,  1165,  1165,  1165,  1165,  1165,  1165,
+    1165,  1165,  1165,  1165,  1165,  1165,  1165,  1165,  1165,  -230,
+    -230,  -230,  -230,  -230,  -230,  -230,  -230,  -230,  -230,  -230,
+    1165,  -230,     8,  -230,  -230,   888,  1165,     8,   742,  1223,
+     898,  -230,    66,  -230,    51,  -230,  1498,     8,  -230,  -230,
+    -230,  -230,  -230,  -230,   257,  -230,  -230,    76,  1165,  -230,
+     261,   742,  -230,    77,    93,   104,   263,   911,   215,  -230,
+    -230,  1311,   107,  -230,  1165,  -230,  -230,  -230,   178,    99,
+     148,   164,   161,   192,   120,   120,   235,   235,   235,   235,
+     185,   185,    79,    79,  -230,  -230,  -230,  -230,  -230,  -230,
+    -230,   118,   -29,  -230,  -230,  -230,   267,   268,  -230,   262,
+      51,  1147,   997,  -230,  -230,  -230,  -230,   752,  -230,  -230,
+    -230,  -230,   742,   742,   742,  1165,  1010,   228,  1023,  -230,
+    1165,  1165,  -230,  -230,  -230,  -230,  -230,  -230,   271,  -230,
+     270,  -230,  -230,   290,  -230,  -230,   123,   742,   130,  1036,
+    1049,   251,  -230,  -230,  -230,  -230,   742,   283,  -230,   742,
+     742,   138,   742,   139,  1135,  -230,  -230,  -230,  -230,   742,
+    -230,   742,   742,   167,  -230,  -230,  -230,   742,  -230
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -226,  -226,   328,  -226,  -226,  -226,  -226,  -226,  -226,  -226,
-    -226,  -226,   -44,  -226,   -36,  -226,  -226,   -49,   195,   170,
-    -226,  -226,  -226,  -226,  -226,  -226,    32,    24,  -226,  -226,
-     293,  -226,   307,   -75,   -55,  -226,   134,  -226,   315,   252,
-      -9,   -35,  -226,   -12,  -226,   -90,  -226,   110,  -226,  -135,
-    -226,   197,  -164,  -225,   -53,  -226,  -226,  -226,  -226,   -45,
-     221,  -226,  -226,  -226,   -89,   -65,  -226,   -57,   -63,  -226,
-     192,   191,   198,   194,   190,   118,    84,   114,   115,  -120,
-     -61,  -226,  -226,  -226,  -226,  -226,  -226,     0,   350
+    -230,  -230,   326,  -230,    18,  -230,    64,     5,  -230,    40,
+      31,  -230,  -230,   272,  -230,   280,   -69,   -32,  -230,    98,
+    -230,   291,   205,   -12,   -36,     7,  -230,   -59,  -230,   117,
+    -230,  -154,  -230,   191,  -136,  -229,   -89,  -230,  -230,    87,
+     254,  -230,  -230,  -230,    -7,   -42,  -230,   -58,   -87,  -230,
+     166,   165,   170,   171,   163,   122,    82,   119,   124,  -115,
+      96,  -230,  -230,  -230,  -230,  -230,  -230,     0
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If zero, do what YYDEFACT says.
    If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -131
-static const yytype_int16 yytable[] =
+#define YYTABLE_NINF -1
+static const yytype_uint16 yytable[] =
 {
-      38,   125,    63,   185,   229,   112,   218,   149,     1,   141,
-      89,    43,     1,    41,    76,   197,    90,    16,    17,    50,
-     277,    40,    38,   268,    38,   146,   147,    89,    38,   349,
-     144,   285,    70,    57,    61,    -6,    62,    38,     1,    66,
-     191,   193,   194,   181,     1,   182,     1,    42,    23,   195,
-     168,   339,   188,     1,     1,   268,   189,   346,   268,   339,
-       1,    95,   287,   137,   199,   125,   347,    66,    69,     1,
-     348,   226,    38,   125,   141,   153,   261,   112,    92,   149,
-      81,   273,   137,   274,    38,    23,   179,   245,    80,   125,
-      67,    38,   250,   112,   125,   304,   305,   306,   112,    68,
-     244,   197,    39,   197,    81,    81,    81,   255,    56,    81,
-     134,   289,    80,    80,    80,    22,    47,    80,    72,    89,
-     266,   200,    22,    22,     1,   264,    23,    23,    81,   273,
-     340,   274,   341,    66,   311,   195,    80,   283,   125,   274,
-     125,   125,   125,   125,   125,   125,   125,   125,   125,   125,
-     125,   125,   125,   125,   125,   125,   125,   309,   246,   138,
-     179,   247,   257,   321,   322,   323,   345,   326,   179,    85,
-      28,   215,   276,   179,    86,   275,    -9,   315,    81,   351,
-     216,   217,   201,   284,    38,   318,    80,   125,   281,   207,
-     208,   112,   150,    22,    28,   132,   133,    23,   320,    51,
-      53,    55,   268,   331,   -66,   -12,   353,   -66,    74,   267,
-     266,   338,   268,   125,    81,   328,   332,   112,   268,   307,
-     359,   198,    80,   268,   312,   125,   219,   220,   221,   283,
-      91,   274,   -15,    23,   375,   268,   358,   268,   153,   354,
-     268,    63,   268,   203,   355,   202,   381,    38,   268,   141,
-     364,   179,   383,   268,   268,   209,   210,   393,   395,    91,
-     204,   276,   388,   179,    41,   268,   352,   372,   374,   179,
-     377,   284,    74,    38,   248,   268,    38,   252,   366,   401,
-     125,   251,   368,   253,   112,   125,   385,   387,   222,   367,
-     223,   296,   297,   298,   299,   205,   206,   211,   212,   397,
-     369,   370,   371,   213,   214,   224,   254,   231,   232,   233,
-     234,   235,   236,   237,   238,   239,   240,   227,   133,   179,
-     382,   313,   314,   294,   295,   300,   301,   389,   302,   303,
-     391,   392,   256,   394,   258,   259,   269,   279,   319,   280,
-     398,   324,   399,   400,   286,   327,   344,   356,   402,   360,
-     361,     2,    46,   179,   179,   179,   241,     8,     9,    10,
-      11,    12,    13,    14,    15,    16,    17,    18,    19,    20,
-      21,   362,   378,   179,   380,   379,   390,   271,   154,   136,
-     179,   317,   135,   179,   179,   225,   179,   282,   148,   263,
-     343,   288,   290,   179,   293,   179,   179,   292,    73,     0,
-     291,   179,     1,    96,    97,    98,    99,   100,   101,     2,
-     102,   103,     0,     0,     0,     8,     9,    10,    11,    12,
+      38,    63,   145,   179,   151,    28,   184,   253,   243,   168,
+      41,     1,     1,   310,     1,     1,    50,   200,    27,   231,
+      67,    40,    38,   247,    38,     1,   197,   248,    38,    28,
+      43,   163,   151,    55,    51,    52,    53,    38,    68,    66,
+     199,     1,    27,   310,   165,   166,   333,   142,   271,   199,
+     240,    70,    23,   275,    42,   273,   139,    81,     1,    38,
+     142,   149,   232,   233,   234,   157,   144,    66,   172,     1,
+     251,   191,    38,   180,   201,    69,   140,    47,   181,     1,
+      38,    22,   255,    22,   239,    77,   240,    23,    23,    39,
+     187,   262,   140,   190,    76,   139,   193,   186,    61,   151,
+      62,   294,   295,   296,   168,    54,   197,    77,    77,    77,
+     139,   151,    77,   182,    74,   139,    76,    76,    76,   163,
+     110,    76,    60,   311,   235,   312,   236,    22,   140,    16,
+      17,    23,   241,   183,    77,   208,   209,    75,   239,   185,
+     240,   237,   191,    76,    38,   141,   199,   169,    22,   304,
+     322,   242,    23,   309,   188,   216,    66,   277,   153,   329,
+      23,   164,   199,   342,   217,   218,   323,   193,   199,   193,
+     330,   319,   321,   199,   263,   264,   265,   324,   268,   271,
+     139,   240,   151,   175,   177,   178,   153,   331,   297,   155,
+     156,   332,   199,   300,   279,   139,   357,   202,   272,   199,
+     151,   210,   211,   359,    77,    77,    63,   199,   199,   206,
+     207,   369,   371,    76,    76,   219,   220,   221,   222,   223,
+     224,   225,   226,   227,   228,   340,   203,    41,    71,   302,
+     153,    72,   298,   343,   344,   345,   199,   303,   139,    38,
+     377,   205,    38,   204,   144,   172,   242,   315,   212,   213,
+     238,   144,   338,   153,   151,   245,   198,    38,   358,   199,
+     327,   139,   246,   256,   229,   153,   257,   365,   214,   215,
+     367,   368,   352,   370,   270,   163,   144,   199,   272,    73,
+     374,   328,   375,   376,   199,   252,   156,   249,   378,   353,
+     286,   287,   288,   289,   349,   258,   153,   199,   153,   153,
+     153,   153,   153,   153,   153,   153,   153,   153,   153,   153,
+     153,   153,   153,   153,   153,   261,   144,   364,   346,   348,
+     199,   351,   139,   139,   139,   316,   317,   266,   284,   285,
+     269,   290,   291,   274,   320,   325,   153,   336,   292,   293,
+     334,   335,   361,   363,   354,   355,   356,   139,    45,   366,
+      46,     1,   160,   173,   153,   318,   139,   373,   158,   139,
+     139,   250,   139,   314,   195,   260,   278,   280,   283,   139,
+     153,   139,   139,   281,     0,   282,     0,   139,     0,     2,
+       3,     4,     5,     6,     7,     8,     9,    10,    11,    12,
       13,    14,    15,    16,    17,    18,    19,    20,    21,     0,
-       2,     0,     0,     0,     0,     0,     8,     9,    10,    11,
-      12,    13,    14,    15,    16,    17,    18,    19,    20,    21,
-       1,    96,    97,    98,    99,   100,   101,     0,   102,   103,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,   104,     0,     0,     0,   106,     0,     0,     0,   107,
-       0,     0,   108,   109,     0,     0,   110,   111,     1,    96,
-      97,    98,    99,   100,   101,     0,   102,   103,     0,     0,
-     155,   156,   157,     0,   158,   159,   160,   161,   162,   163,
-     164,   165,     0,   166,  -130,   167,     0,     0,     0,   104,
-       0,     0,     0,   106,     0,     0,     0,   107,     0,     0,
-     108,   109,     0,     0,   110,   111,     0,     0,   155,   156,
-     157,     0,   158,   159,   160,   161,   162,   163,   164,   165,
-       0,   166,  -130,   262,     0,     0,     0,   104,     0,     0,
-       0,   106,     0,     0,     0,   107,     0,     0,   108,   109,
-       0,     0,   110,   111,     1,    96,    97,    98,    99,   100,
-     101,     0,   102,   103,     0,     2,     3,     4,     5,     6,
-       7,     8,     9,    10,    11,    12,    13,    14,    15,    16,
-      17,    18,    19,    20,    21,     0,     0,     0,     0,     0,
-       1,    96,    97,    98,    99,   100,   101,     0,   102,   103,
-       0,     0,     0,     0,   155,   156,   157,   363,   158,   159,
-     160,   161,   162,   163,   164,   165,     0,   166,     0,   265,
-       0,     0,     0,   104,     0,     0,     0,   106,     0,     0,
-       0,   107,     0,     0,   108,   109,     0,     0,   110,   111,
-     155,   156,   157,     0,   158,   159,   160,   161,   162,   163,
-     164,   165,     0,   166,     0,   329,     0,     0,     0,   104,
-       0,     0,     0,   106,     0,     0,     0,   107,     0,     0,
-     108,   109,     0,     0,   110,   111,     1,    96,    97,    98,
-      99,   100,   101,     0,   102,   103,     1,    96,    97,    98,
-      99,   100,   101,     0,   102,   103,     1,    96,    97,    98,
-      99,   100,   101,     0,   102,   103,     0,     0,     0,     0,
-       1,    96,    97,    98,    99,   100,   101,     0,   102,   103,
-       0,     0,     0,     0,     0,     0,   155,   156,   157,     0,
-     158,   159,   160,   161,   162,   163,   164,   165,     0,   166,
-       0,     0,     0,     0,     0,   104,     0,     0,     0,   106,
-     139,   350,     0,   107,     0,   104,   108,   109,     0,   106,
-     110,   111,     0,   107,     0,   104,   108,   109,   105,   106,
-     110,   111,     0,   107,   139,     0,   108,   109,     0,   104,
-     110,   111,     0,   106,     0,     0,     0,   107,     0,     0,
-     108,   109,     0,     0,   110,   111,     1,    96,    97,    98,
-      99,   100,   101,     0,   102,   103,     0,     0,     0,     1,
-      96,    97,    98,    99,   100,   101,     0,   102,   103,     0,
-       0,     0,     1,    96,    97,    98,    99,   100,   101,     0,
-     102,   103,     1,    96,    97,    98,    99,   100,   101,     0,
-     102,   103,     0,     0,     0,     1,    96,    97,    98,    99,
-     100,   101,     0,   102,   103,     0,     0,     0,     0,   260,
-       0,     0,     0,     0,     0,   104,     0,     0,     0,   106,
-       0,     0,     0,   107,     0,     0,   108,   109,   104,   308,
-     110,   111,   106,     0,     0,   325,   107,     0,     0,   108,
-     109,   104,     0,   110,   111,   106,     0,     0,     0,   107,
-       0,   104,   108,   109,   337,   106,   110,   111,   357,   107,
-       0,     0,   108,   109,   104,     0,   110,   111,   106,     0,
-       0,     0,   107,     0,     0,   108,   109,     0,     0,   110,
-     111,     1,    96,    97,    98,    99,   100,   101,     0,   102,
-     103,     0,     0,     0,     1,    96,    97,    98,    99,   100,
-     101,     0,   102,   103,     0,     0,     0,     1,    96,    97,
-      98,    99,   100,   101,     0,   102,   103,     0,     0,     0,
-       1,    96,    97,    98,    99,   100,   101,     0,   102,   103,
-       0,     0,     0,     1,    96,    97,    98,    99,   100,   101,
-       0,   102,   103,     0,     0,     0,     0,     0,     0,     0,
-     104,     0,     0,   365,   106,     0,     0,     0,   107,     0,
-       0,   108,   109,   104,   373,   110,   111,   106,     0,     0,
-     376,   107,     0,     0,   108,   109,   104,     0,   110,   111,
-     106,     0,     0,     0,   107,     0,     0,   108,   109,   104,
-     384,   110,   111,   106,     0,     0,     0,   107,     0,     0,
-     108,   109,   104,   386,   110,   111,   106,     0,     0,     0,
-     107,     0,     0,   108,   109,     0,     0,   110,   111,     1,
-      96,    97,    98,    99,   100,   101,     0,   102,   103,     1,
-      96,    97,    98,    99,   100,   101,     0,   102,   103,     1,
-      96,    97,    98,    99,   100,   101,     0,   102,   103,     1,
-      96,    97,    98,    99,   100,   101,     2,   102,   103,     0,
-       0,     0,     8,     9,    10,    11,    12,    13,    14,    15,
-      16,    17,    18,    19,    20,    21,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,   104,   396,
-       0,     0,   106,   249,     0,     0,   107,     0,   190,   108,
-     109,     0,   106,   110,   111,     0,   107,     1,   192,   108,
-     109,     0,   106,   110,   111,     0,   107,     0,   104,   108,
-     109,     0,   106,   110,   111,    45,   107,     0,     1,   108,
-     109,     0,     0,   110,   111,     2,     3,     4,     5,     6,
-       7,     8,     9,    10,    11,    12,    13,    14,    15,    16,
-      17,    18,    19,    20,    21,     0,     2,     3,     4,     5,
-       6,     7,     8,     9,    10,    11,    12,    13,    14,    15,
-      16,    17,    18,    19,    20,    21,   273,   334,   274,     1,
-      23,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    22,     0,     0,
-       0,    23,     0,     0,     0,     0,     0,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,     0,    22,     0,
-       0,     0,    23,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,   283,   334,
-     274,     0,    23,     2,     3,     4,     5,     6,     7,     8,
-       9,    10,    11,    12,    13,    14,    15,    16,    17,    18,
-      19,    20,    21,   342,     2,     3,     4,     5,     6,     7,
+       0,     1,    82,    83,    84,    85,    86,    87,   153,    88,
+      89,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+      22,     0,     0,     0,    23,     0,   153,     0,     0,     2,
+       3,     4,     5,     6,     7,     8,     9,    10,    11,    12,
+      13,    14,    15,    16,    17,    18,    19,    20,    21,     0,
+       0,    90,    91,    92,     0,    93,    94,    95,    96,    97,
+      98,    99,   100,     0,   101,    56,   102,     0,     0,     0,
+     103,     0,     0,     0,   104,     0,     0,     0,   105,     0,
+       0,   106,   107,     0,     0,   108,   109,     1,    82,    83,
+      84,    85,    86,    87,     2,    88,    89,     0,     0,     0,
        8,     9,    10,    11,    12,    13,    14,    15,    16,    17,
-      18,    19,    20,    21
+      18,    19,    20,    21,     0,     2,     3,     4,     5,     6,
+       7,     8,     9,    10,    11,    12,    13,    14,    15,    16,
+      17,    18,    19,    20,    21,     0,     0,    90,    91,    92,
+       0,    93,    94,    95,    96,    97,    98,    99,   100,     0,
+     101,    56,   194,     0,     0,     0,   103,     0,     0,     0,
+     104,     0,     0,     0,   105,     0,     0,   106,   107,     0,
+       0,   108,   109,     1,    82,    83,    84,    85,    86,    87,
+       0,    88,    89,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     2,     0,     0,     0,     0,     0,     8,     9,    10,
+      11,    12,    13,    14,    15,    16,    17,    18,    19,    20,
+      21,     1,    82,    83,    84,    85,    86,    87,     0,    88,
+      89,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,   103,     0,     0,     0,   104,     0,     0,     0,
+     105,     0,     0,   106,   107,     0,     0,   108,   109,     1,
+      82,    83,    84,    85,    86,    87,     0,    88,    89,     0,
+       0,    90,    91,    92,     0,    93,    94,    95,    96,    97,
+      98,    99,   100,     0,   101,    56,   196,     0,     0,     0,
+     103,     0,     0,     0,   104,     0,     0,     0,   105,     0,
+       0,   106,   107,     0,     0,   108,   109,     0,     0,    90,
+      91,    92,     0,    93,    94,    95,    96,    97,    98,    99,
+     100,     0,   101,    56,   276,     0,     0,     0,   103,     0,
+       0,     0,   104,     0,     0,     0,   105,     0,     0,   106,
+     107,     0,     0,   108,   109,     1,    82,    83,    84,    85,
+      86,    87,     0,    88,    89,     1,    82,    83,    84,    85,
+      86,    87,     0,    88,    89,     1,    82,    83,    84,    85,
+      86,    87,     0,    88,    89,     0,     0,     0,     0,     1,
+      82,    83,    84,    85,    86,    87,     0,    88,    89,     0,
+       0,     0,     0,     0,     0,    90,    91,    92,     0,    93,
+      94,    95,    96,    97,    98,    99,   100,     0,   101,    56,
+       0,     0,     0,     0,   103,     0,     0,     0,   104,   161,
+     341,     0,   105,     0,   103,   106,   107,     0,   104,   108,
+     109,     0,   105,     0,   103,   106,   107,   150,   104,   108,
+     109,     0,   105,   161,     0,   106,   107,     0,   103,   108,
+     109,     0,   104,     0,     0,     0,   105,     0,     0,   106,
+     107,     0,     0,   108,   109,     1,    82,    83,    84,    85,
+      86,    87,     0,    88,    89,     0,     0,     0,     1,    82,
+      83,    84,    85,    86,    87,     0,    88,    89,     0,     0,
+       0,     1,    82,    83,    84,    85,    86,    87,     0,    88,
+      89,     1,    82,    83,    84,    85,    86,    87,     0,    88,
+      89,     0,     0,     0,     1,    82,    83,    84,    85,    86,
+      87,     0,    88,    89,     0,     0,     0,     0,   189,     0,
+       0,     0,     0,     0,   103,     0,     0,     0,   104,     0,
+       0,   267,   105,     0,     0,   106,   107,   103,     0,   108,
+     109,   104,     0,     0,     0,   105,     0,     0,   106,   107,
+     103,   299,   108,   109,   104,     0,     0,     0,   105,     0,
+     103,   106,   107,   308,   104,   108,   109,   326,   105,     0,
+       0,   106,   107,   103,     0,   108,   109,   104,     0,     0,
+       0,   105,     0,     0,   106,   107,     0,     0,   108,   109,
+       1,    82,    83,    84,    85,    86,    87,     0,    88,    89,
+       0,     0,     0,     1,    82,    83,    84,    85,    86,    87,
+       0,    88,    89,     0,     0,     0,     1,    82,    83,    84,
+      85,    86,    87,     0,    88,    89,     0,     0,     0,     1,
+      82,    83,    84,    85,    86,    87,     0,    88,    89,     0,
+       0,     0,     1,    82,    83,    84,    85,    86,    87,     0,
+      88,    89,     0,     0,     0,     0,     0,     0,     0,   103,
+       0,     0,   339,   104,     0,     0,     0,   105,     0,     0,
+     106,   107,   103,   347,   108,   109,   104,     0,     0,   350,
+     105,     0,     0,   106,   107,   103,     0,   108,   109,   104,
+       0,     0,     0,   105,     0,     0,   106,   107,   103,   360,
+     108,   109,   104,     0,     0,     0,   105,     0,     0,   106,
+     107,   103,   362,   108,   109,   104,     0,     0,     0,   105,
+       0,     0,   106,   107,     0,     0,   108,   109,     1,    82,
+      83,    84,    85,    86,    87,     0,    88,    89,     1,    82,
+      83,    84,    85,    86,    87,     0,    88,    89,     1,    82,
+      83,    84,    85,    86,    87,     0,    88,    89,     1,    82,
+      83,    84,    85,    86,    87,     0,    88,    89,     2,     3,
+       4,     5,     6,     7,     8,     9,    10,    11,    12,    13,
+      14,    15,    16,    17,    18,    19,    20,    21,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,   103,   372,     0,
+       0,   104,     0,     0,     0,   105,     0,   174,   106,   107,
+     337,   104,   108,   109,     0,   105,     1,   176,   106,   107,
+       0,   104,   108,   109,     0,   105,     0,   103,   106,   107,
+       0,   104,   108,   109,     0,   105,     1,     0,   106,   107,
+       0,     0,   108,   109,     2,     3,     4,     5,     6,     7,
+       8,     9,    10,    11,    12,    13,    14,    15,    16,    17,
+      18,    19,    20,    21,     2,     3,     4,     5,     6,     7,
+       8,     9,    10,    11,    12,    13,    14,    15,    16,    17,
+      18,    19,    20,    21,     1,   239,   305,   240,     0,    23,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,    22,     0,     0,     0,    23,
+       0,     0,     2,     3,     4,     5,     6,     7,     8,     9,
+      10,    11,    12,    13,    14,    15,    16,    17,    18,    19,
+      20,    21,     2,     3,     4,     5,     6,     7,     8,     9,
+      10,    11,    12,    13,    14,    15,    16,    17,    18,    19,
+      20,    21,     0,     0,   143,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,   271,   305,   240,     0,    23,     2,     3,
+       4,     5,     6,     7,     8,     9,    10,    11,    12,    13,
+      14,    15,    16,    17,    18,    19,    20,    21,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     2,     0,    56,     0,     0,    73,     8,     9,
+      10,    11,    12,    13,    14,    15,    16,    17,    18,    19,
+      20,    21,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     2,     0,     0,     0,     0,   167,
+       8,     9,    10,    11,    12,    13,    14,    15,    16,    17,
+      18,    19,    20,    21,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,   259,     2,     3,     4,     5,     6,     7,     8,     9,
+      10,    11,    12,    13,    14,    15,    16,    17,    18,    19,
+      20,    21,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    56,     2,
+       3,     4,     5,     6,     7,     8,     9,    10,    11,    12,
+      13,    14,    15,    16,    17,    18,    19,    20,    21,   313,
+       2,     3,     4,     5,     6,     7,     8,     9,    10,    11,
+      12,    13,    14,    15,    16,    17,    18,    19,    20,    21
 };
 
 static const yytype_int16 yycheck[] =
 {
-       0,    62,    37,    93,   139,    62,   126,    82,     3,    74,
-      59,    23,     3,    22,    50,   104,    60,    45,    46,    28,
-     184,    21,    22,    69,    24,    80,    81,    76,    28,    75,
-      75,   195,    44,    33,    72,    67,    74,    37,     3,    39,
-     101,   102,   103,    88,     3,    89,     3,    23,    76,   104,
-      86,   276,    69,     3,     3,    69,    73,    71,    69,   284,
-       3,    61,    73,    72,    20,   126,    69,    67,    44,     3,
-      73,   134,    72,   134,   139,    84,   165,   134,    73,   154,
-      56,    72,    91,    74,    84,    76,    86,   150,    56,   150,
-      67,    91,   155,   150,   155,   215,   216,   217,   155,    73,
-     145,   190,    67,   192,    80,    81,    82,   160,    67,    85,
-      70,   200,    80,    81,    82,    72,    66,    85,    69,   168,
-     173,    77,    72,    72,     3,   170,    76,    76,   104,    72,
-      72,    74,    74,   133,   223,   190,   104,    72,   199,    74,
-     201,   202,   203,   204,   205,   206,   207,   208,   209,   210,
-     211,   212,   213,   214,   215,   216,   217,   222,    66,    66,
-     160,    69,   162,   252,   253,   254,   286,   256,   168,    67,
-       0,    76,   184,   173,    67,   184,    67,   242,   154,   314,
-      85,    86,    19,   195,   184,   248,   154,   248,   188,    15,
-      16,   248,    71,    72,    24,    68,    69,    76,   251,    29,
-      30,    31,    69,   268,    66,    67,    73,    69,    70,    66,
-     263,   274,    69,   274,   190,    66,   269,   274,    69,   219,
-      66,    75,   190,    69,   224,   286,    10,    11,    12,    72,
-      60,    74,    67,    76,    66,    69,   325,    69,   247,    73,
-      69,   276,    69,    79,    73,    78,    73,   247,    69,   314,
-     340,   251,    73,    69,    69,    81,    82,    73,    73,    89,
-      80,   273,    66,   263,   273,    69,   319,   356,   357,   269,
-     359,   283,    70,   273,    71,    69,   276,    72,   341,    73,
-     341,    71,   347,    72,   341,   346,   375,   376,    72,   346,
-      74,   207,   208,   209,   210,    17,    18,    13,    14,   388,
-     353,   354,   355,    83,    84,    89,    72,    21,    22,    23,
-      24,    25,    26,    27,    28,    29,    30,    68,    69,   319,
-     373,    68,    69,   205,   206,   211,   212,   380,   213,   214,
-     383,   384,    72,   386,    66,    66,    71,    73,    71,    69,
-     393,    58,   395,   396,    73,    66,    73,    72,   401,    73,
-      73,    31,    24,   353,   354,   355,    70,    37,    38,    39,
-      40,    41,    42,    43,    44,    45,    46,    47,    48,    49,
-      50,    75,    73,   373,    56,    75,    66,   182,    85,    72,
-     380,   247,    67,   383,   384,   133,   386,   190,    68,   168,
-     280,   199,   201,   393,   204,   395,   396,   203,    48,    -1,
-     202,   401,     3,     4,     5,     6,     7,     8,     9,    31,
-      11,    12,    -1,    -1,    -1,    37,    38,    39,    40,    41,
+       0,    37,    61,    90,    62,     0,    95,   161,   144,    78,
+      22,     3,     3,   242,     3,     3,    28,    20,     0,   134,
+      67,    21,    22,    69,    24,     3,   115,    73,    28,    24,
+      23,    73,    90,    33,    29,    30,    31,    37,    73,    39,
+      69,     3,    24,   272,    76,    77,    75,    59,    72,    69,
+      74,    44,    76,    73,    23,   191,    56,    67,     3,    59,
+      72,    61,    10,    11,    12,    70,    61,    67,    80,     3,
+     157,   103,    72,    71,    77,    44,    58,    66,    72,     3,
+      80,    72,   169,    72,    72,    54,    74,    76,    76,    67,
+      66,   180,    74,   100,    54,    95,   103,    97,    72,   157,
+      74,   216,   217,   218,   173,    67,   195,    76,    77,    78,
+     110,   169,    81,    72,    50,   115,    76,    77,    78,   161,
+      56,    81,    35,    72,    72,    74,    74,    72,   110,    45,
+      46,    76,   144,    72,   103,    15,    16,    50,    72,    72,
+      74,    89,   174,   103,   144,    58,    69,    71,    72,   238,
+      73,   144,    76,   240,    66,    76,   156,   199,    62,   274,
+      76,    74,    69,   317,    85,    86,    73,   174,    69,   176,
+      71,   258,   261,    69,   181,   182,   183,    73,   185,    72,
+     180,    74,   240,    87,    88,    89,    90,    69,   230,    68,
+      69,    73,    69,   235,   201,   195,    73,    19,   191,    69,
+     258,    81,    82,    73,   173,   174,   242,    69,    69,    17,
+      18,    73,    73,   173,   174,    21,    22,    23,    24,    25,
+      26,    27,    28,    29,    30,   312,    78,   239,    66,   236,
+     134,    69,   232,   322,   323,   324,    69,   237,   238,   239,
+      73,    80,   242,    79,   239,   257,   239,   247,    13,    14,
+      71,   246,   311,   157,   312,    73,    66,   257,   347,    69,
+     267,   261,    69,    66,    70,   169,    69,   356,    83,    84,
+     359,   360,   330,   362,    66,   317,   271,    69,   271,    70,
+     369,    66,   371,   372,    69,    68,    69,    75,   377,   331,
+     208,   209,   210,   211,    66,    71,   200,    69,   202,   203,
+     204,   205,   206,   207,   208,   209,   210,   211,   212,   213,
+     214,   215,   216,   217,   218,    71,   311,    66,   325,   326,
+      69,   328,   322,   323,   324,    68,    69,    58,   206,   207,
+      66,   212,   213,    73,    73,    72,   240,    75,   214,   215,
+      73,    73,   349,   350,    73,    75,    56,   347,     0,    66,
+      24,     3,    72,    81,   258,   257,   356,   364,    67,   359,
+     360,   156,   362,   246,   110,   174,   200,   202,   205,   369,
+     274,   371,   372,   203,    -1,   204,    -1,   377,    -1,    31,
+      32,    33,    34,    35,    36,    37,    38,    39,    40,    41,
       42,    43,    44,    45,    46,    47,    48,    49,    50,    -1,
-      31,    -1,    -1,    -1,    -1,    -1,    37,    38,    39,    40,
-      41,    42,    43,    44,    45,    46,    47,    48,    49,    50,
-       3,     4,     5,     6,     7,     8,     9,    -1,    11,    12,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    72,    -1,    -1,    -1,    76,    -1,    -1,    -1,    80,
-      -1,    -1,    83,    84,    -1,    -1,    87,    88,     3,     4,
-       5,     6,     7,     8,     9,    -1,    11,    12,    -1,    -1,
-      53,    54,    55,    -1,    57,    58,    59,    60,    61,    62,
-      63,    64,    -1,    66,    67,    68,    -1,    -1,    -1,    72,
-      -1,    -1,    -1,    76,    -1,    -1,    -1,    80,    -1,    -1,
-      83,    84,    -1,    -1,    87,    88,    -1,    -1,    53,    54,
-      55,    -1,    57,    58,    59,    60,    61,    62,    63,    64,
-      -1,    66,    67,    68,    -1,    -1,    -1,    72,    -1,    -1,
-      -1,    76,    -1,    -1,    -1,    80,    -1,    -1,    83,    84,
-      -1,    -1,    87,    88,     3,     4,     5,     6,     7,     8,
-       9,    -1,    11,    12,    -1,    31,    32,    33,    34,    35,
+      -1,     3,     4,     5,     6,     7,     8,     9,   312,    11,
+      12,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      72,    -1,    -1,    -1,    76,    -1,   330,    -1,    -1,    31,
+      32,    33,    34,    35,    36,    37,    38,    39,    40,    41,
+      42,    43,    44,    45,    46,    47,    48,    49,    50,    -1,
+      -1,    53,    54,    55,    -1,    57,    58,    59,    60,    61,
+      62,    63,    64,    -1,    66,    67,    68,    -1,    -1,    -1,
+      72,    -1,    -1,    -1,    76,    -1,    -1,    -1,    80,    -1,
+      -1,    83,    84,    -1,    -1,    87,    88,     3,     4,     5,
+       6,     7,     8,     9,    31,    11,    12,    -1,    -1,    -1,
+      37,    38,    39,    40,    41,    42,    43,    44,    45,    46,
+      47,    48,    49,    50,    -1,    31,    32,    33,    34,    35,
       36,    37,    38,    39,    40,    41,    42,    43,    44,    45,
-      46,    47,    48,    49,    50,    -1,    -1,    -1,    -1,    -1,
-       3,     4,     5,     6,     7,     8,     9,    -1,    11,    12,
-      -1,    -1,    -1,    -1,    53,    54,    55,    73,    57,    58,
-      59,    60,    61,    62,    63,    64,    -1,    66,    -1,    68,
-      -1,    -1,    -1,    72,    -1,    -1,    -1,    76,    -1,    -1,
+      46,    47,    48,    49,    50,    -1,    -1,    53,    54,    55,
+      -1,    57,    58,    59,    60,    61,    62,    63,    64,    -1,
+      66,    67,    68,    -1,    -1,    -1,    72,    -1,    -1,    -1,
+      76,    -1,    -1,    -1,    80,    -1,    -1,    83,    84,    -1,
+      -1,    87,    88,     3,     4,     5,     6,     7,     8,     9,
+      -1,    11,    12,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    31,    -1,    -1,    -1,    -1,    -1,    37,    38,    39,
+      40,    41,    42,    43,    44,    45,    46,    47,    48,    49,
+      50,     3,     4,     5,     6,     7,     8,     9,    -1,    11,
+      12,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    72,    -1,    -1,    -1,    76,    -1,    -1,    -1,
+      80,    -1,    -1,    83,    84,    -1,    -1,    87,    88,     3,
+       4,     5,     6,     7,     8,     9,    -1,    11,    12,    -1,
+      -1,    53,    54,    55,    -1,    57,    58,    59,    60,    61,
+      62,    63,    64,    -1,    66,    67,    68,    -1,    -1,    -1,
+      72,    -1,    -1,    -1,    76,    -1,    -1,    -1,    80,    -1,
+      -1,    83,    84,    -1,    -1,    87,    88,    -1,    -1,    53,
+      54,    55,    -1,    57,    58,    59,    60,    61,    62,    63,
+      64,    -1,    66,    67,    68,    -1,    -1,    -1,    72,    -1,
+      -1,    -1,    76,    -1,    -1,    -1,    80,    -1,    -1,    83,
+      84,    -1,    -1,    87,    88,     3,     4,     5,     6,     7,
+       8,     9,    -1,    11,    12,     3,     4,     5,     6,     7,
+       8,     9,    -1,    11,    12,     3,     4,     5,     6,     7,
+       8,     9,    -1,    11,    12,    -1,    -1,    -1,    -1,     3,
+       4,     5,     6,     7,     8,     9,    -1,    11,    12,    -1,
+      -1,    -1,    -1,    -1,    -1,    53,    54,    55,    -1,    57,
+      58,    59,    60,    61,    62,    63,    64,    -1,    66,    67,
+      -1,    -1,    -1,    -1,    72,    -1,    -1,    -1,    76,    67,
+      68,    -1,    80,    -1,    72,    83,    84,    -1,    76,    87,
+      88,    -1,    80,    -1,    72,    83,    84,    75,    76,    87,
+      88,    -1,    80,    67,    -1,    83,    84,    -1,    72,    87,
+      88,    -1,    76,    -1,    -1,    -1,    80,    -1,    -1,    83,
+      84,    -1,    -1,    87,    88,     3,     4,     5,     6,     7,
+       8,     9,    -1,    11,    12,    -1,    -1,    -1,     3,     4,
+       5,     6,     7,     8,     9,    -1,    11,    12,    -1,    -1,
+      -1,     3,     4,     5,     6,     7,     8,     9,    -1,    11,
+      12,     3,     4,     5,     6,     7,     8,     9,    -1,    11,
+      12,    -1,    -1,    -1,     3,     4,     5,     6,     7,     8,
+       9,    -1,    11,    12,    -1,    -1,    -1,    -1,    66,    -1,
+      -1,    -1,    -1,    -1,    72,    -1,    -1,    -1,    76,    -1,
+      -1,    66,    80,    -1,    -1,    83,    84,    72,    -1,    87,
+      88,    76,    -1,    -1,    -1,    80,    -1,    -1,    83,    84,
+      72,    73,    87,    88,    76,    -1,    -1,    -1,    80,    -1,
+      72,    83,    84,    75,    76,    87,    88,    66,    80,    -1,
+      -1,    83,    84,    72,    -1,    87,    88,    76,    -1,    -1,
       -1,    80,    -1,    -1,    83,    84,    -1,    -1,    87,    88,
-      53,    54,    55,    -1,    57,    58,    59,    60,    61,    62,
-      63,    64,    -1,    66,    -1,    68,    -1,    -1,    -1,    72,
-      -1,    -1,    -1,    76,    -1,    -1,    -1,    80,    -1,    -1,
-      83,    84,    -1,    -1,    87,    88,     3,     4,     5,     6,
-       7,     8,     9,    -1,    11,    12,     3,     4,     5,     6,
-       7,     8,     9,    -1,    11,    12,     3,     4,     5,     6,
-       7,     8,     9,    -1,    11,    12,    -1,    -1,    -1,    -1,
        3,     4,     5,     6,     7,     8,     9,    -1,    11,    12,
-      -1,    -1,    -1,    -1,    -1,    -1,    53,    54,    55,    -1,
-      57,    58,    59,    60,    61,    62,    63,    64,    -1,    66,
-      -1,    -1,    -1,    -1,    -1,    72,    -1,    -1,    -1,    76,
-      67,    68,    -1,    80,    -1,    72,    83,    84,    -1,    76,
-      87,    88,    -1,    80,    -1,    72,    83,    84,    75,    76,
-      87,    88,    -1,    80,    67,    -1,    83,    84,    -1,    72,
-      87,    88,    -1,    76,    -1,    -1,    -1,    80,    -1,    -1,
-      83,    84,    -1,    -1,    87,    88,     3,     4,     5,     6,
+      -1,    -1,    -1,     3,     4,     5,     6,     7,     8,     9,
+      -1,    11,    12,    -1,    -1,    -1,     3,     4,     5,     6,
        7,     8,     9,    -1,    11,    12,    -1,    -1,    -1,     3,
        4,     5,     6,     7,     8,     9,    -1,    11,    12,    -1,
       -1,    -1,     3,     4,     5,     6,     7,     8,     9,    -1,
-      11,    12,     3,     4,     5,     6,     7,     8,     9,    -1,
-      11,    12,    -1,    -1,    -1,     3,     4,     5,     6,     7,
-       8,     9,    -1,    11,    12,    -1,    -1,    -1,    -1,    66,
-      -1,    -1,    -1,    -1,    -1,    72,    -1,    -1,    -1,    76,
+      11,    12,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    72,
+      -1,    -1,    75,    76,    -1,    -1,    -1,    80,    -1,    -1,
+      83,    84,    72,    73,    87,    88,    76,    -1,    -1,    66,
+      80,    -1,    -1,    83,    84,    72,    -1,    87,    88,    76,
       -1,    -1,    -1,    80,    -1,    -1,    83,    84,    72,    73,
-      87,    88,    76,    -1,    -1,    66,    80,    -1,    -1,    83,
-      84,    72,    -1,    87,    88,    76,    -1,    -1,    -1,    80,
-      -1,    72,    83,    84,    75,    76,    87,    88,    66,    80,
-      -1,    -1,    83,    84,    72,    -1,    87,    88,    76,    -1,
-      -1,    -1,    80,    -1,    -1,    83,    84,    -1,    -1,    87,
-      88,     3,     4,     5,     6,     7,     8,     9,    -1,    11,
-      12,    -1,    -1,    -1,     3,     4,     5,     6,     7,     8,
-       9,    -1,    11,    12,    -1,    -1,    -1,     3,     4,     5,
-       6,     7,     8,     9,    -1,    11,    12,    -1,    -1,    -1,
-       3,     4,     5,     6,     7,     8,     9,    -1,    11,    12,
-      -1,    -1,    -1,     3,     4,     5,     6,     7,     8,     9,
-      -1,    11,    12,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      72,    -1,    -1,    75,    76,    -1,    -1,    -1,    80,    -1,
-      -1,    83,    84,    72,    73,    87,    88,    76,    -1,    -1,
-      66,    80,    -1,    -1,    83,    84,    72,    -1,    87,    88,
-      76,    -1,    -1,    -1,    80,    -1,    -1,    83,    84,    72,
-      73,    87,    88,    76,    -1,    -1,    -1,    80,    -1,    -1,
-      83,    84,    72,    73,    87,    88,    76,    -1,    -1,    -1,
-      80,    -1,    -1,    83,    84,    -1,    -1,    87,    88,     3,
-       4,     5,     6,     7,     8,     9,    -1,    11,    12,     3,
-       4,     5,     6,     7,     8,     9,    -1,    11,    12,     3,
-       4,     5,     6,     7,     8,     9,    -1,    11,    12,     3,
-       4,     5,     6,     7,     8,     9,    31,    11,    12,    -1,
-      -1,    -1,    37,    38,    39,    40,    41,    42,    43,    44,
-      45,    46,    47,    48,    49,    50,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    72,    73,
-      -1,    -1,    76,    68,    -1,    -1,    80,    -1,    72,    83,
-      84,    -1,    76,    87,    88,    -1,    80,     3,    72,    83,
-      84,    -1,    76,    87,    88,    -1,    80,    -1,    72,    83,
-      84,    -1,    76,    87,    88,     0,    80,    -1,     3,    83,
-      84,    -1,    -1,    87,    88,    31,    32,    33,    34,    35,
-      36,    37,    38,    39,    40,    41,    42,    43,    44,    45,
-      46,    47,    48,    49,    50,    -1,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
-      45,    46,    47,    48,    49,    50,    72,    73,    74,     3,
-      76,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    72,    -1,    -1,
-      -1,    76,    -1,    -1,    -1,    -1,    -1,    31,    32,    33,
-      34,    35,    36,    37,    38,    39,    40,    41,    42,    43,
-      44,    45,    46,    47,    48,    49,    50,    31,    32,    33,
-      34,    35,    36,    37,    38,    39,    40,    41,    42,    43,
-      44,    45,    46,    47,    48,    49,    50,    -1,    72,    -1,
-      -1,    -1,    76,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    72,    73,
-      74,    -1,    76,    31,    32,    33,    34,    35,    36,    37,
-      38,    39,    40,    41,    42,    43,    44,    45,    46,    47,
-      48,    49,    50,    51,    31,    32,    33,    34,    35,    36,
+      87,    88,    76,    -1,    -1,    -1,    80,    -1,    -1,    83,
+      84,    72,    73,    87,    88,    76,    -1,    -1,    -1,    80,
+      -1,    -1,    83,    84,    -1,    -1,    87,    88,     3,     4,
+       5,     6,     7,     8,     9,    -1,    11,    12,     3,     4,
+       5,     6,     7,     8,     9,    -1,    11,    12,     3,     4,
+       5,     6,     7,     8,     9,    -1,    11,    12,     3,     4,
+       5,     6,     7,     8,     9,    -1,    11,    12,    31,    32,
+      33,    34,    35,    36,    37,    38,    39,    40,    41,    42,
+      43,    44,    45,    46,    47,    48,    49,    50,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    72,    73,    -1,
+      -1,    76,    -1,    -1,    -1,    80,    -1,    72,    83,    84,
+      73,    76,    87,    88,    -1,    80,     3,    72,    83,    84,
+      -1,    76,    87,    88,    -1,    80,    -1,    72,    83,    84,
+      -1,    76,    87,    88,    -1,    80,     3,    -1,    83,    84,
+      -1,    -1,    87,    88,    31,    32,    33,    34,    35,    36,
       37,    38,    39,    40,    41,    42,    43,    44,    45,    46,
-      47,    48,    49,    50
+      47,    48,    49,    50,    31,    32,    33,    34,    35,    36,
+      37,    38,    39,    40,    41,    42,    43,    44,    45,    46,
+      47,    48,    49,    50,     3,    72,    73,    74,    -1,    76,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    72,    -1,    -1,    -1,    76,
+      -1,    -1,    31,    32,    33,    34,    35,    36,    37,    38,
+      39,    40,    41,    42,    43,    44,    45,    46,    47,    48,
+      49,    50,    31,    32,    33,    34,    35,    36,    37,    38,
+      39,    40,    41,    42,    43,    44,    45,    46,    47,    48,
+      49,    50,    -1,    -1,    73,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    72,    73,    74,    -1,    76,    31,    32,
+      33,    34,    35,    36,    37,    38,    39,    40,    41,    42,
+      43,    44,    45,    46,    47,    48,    49,    50,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    31,    -1,    67,    -1,    -1,    70,    37,    38,
+      39,    40,    41,    42,    43,    44,    45,    46,    47,    48,
+      49,    50,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    31,    -1,    -1,    -1,    -1,    68,
+      37,    38,    39,    40,    41,    42,    43,    44,    45,    46,
+      47,    48,    49,    50,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    68,    31,    32,    33,    34,    35,    36,    37,    38,
+      39,    40,    41,    42,    43,    44,    45,    46,    47,    48,
+      49,    50,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    67,    31,
+      32,    33,    34,    35,    36,    37,    38,    39,    40,    41,
+      42,    43,    44,    45,    46,    47,    48,    49,    50,    51,
+      31,    32,    33,    34,    35,    36,    37,    38,    39,    40,
+      41,    42,    43,    44,    45,    46,    47,    48,    49,    50
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -1259,45 +1413,42 @@ static const yytype_uint8 yystos[] =
 {
        0,     3,    31,    32,    33,    34,    35,    36,    37,    38,
       39,    40,    41,    42,    43,    44,    45,    46,    47,    48,
-      49,    50,    72,    76,    91,    92,    93,   102,   109,   115,
-     116,   117,   118,   119,   127,   130,   131,   133,   177,    67,
-     177,   130,   117,   133,   134,     0,    92,    66,   121,   122,
-     130,   109,   110,   109,   112,   109,    67,   177,    94,   104,
-     107,    72,    74,   131,   128,   129,   177,    67,    73,   117,
-     133,   178,    69,   178,    70,    98,   104,   111,   113,   114,
-     116,   117,   120,   123,   124,    67,    67,   149,    96,   107,
-     102,   109,    73,   132,   138,   177,     4,     5,     6,     7,
-       8,     9,    11,    12,    72,    75,    76,    80,    83,    84,
-      87,    88,   157,   158,   159,   160,   161,   162,   163,   164,
-     165,   166,   167,   168,   169,   170,   171,   172,   173,   175,
-     176,   177,    68,    69,    70,   128,   122,   130,    66,    67,
-     139,   155,   157,   170,   149,   100,   124,   124,    68,   123,
-      71,   125,   126,   130,   120,    53,    54,    55,    57,    58,
-      59,    60,    61,    62,    63,    64,    66,    68,   104,   144,
-     145,   147,   148,   150,   151,   152,   153,   154,   155,   177,
-      95,   149,   102,   108,   109,   135,   136,   137,    69,    73,
-      72,   170,    72,   170,   170,   124,   141,   154,    75,    20,
-      77,    19,    78,    79,    80,    17,    18,    15,    16,    81,
-      82,    13,    14,    83,    84,    76,    85,    86,   169,    10,
-      11,    12,    72,    74,    89,   129,   158,    68,   103,   139,
-     140,    21,    22,    23,    24,    25,    26,    27,    28,    29,
-      30,    70,   156,    99,   149,   158,    66,    69,    71,    68,
-     158,    71,    72,    72,    72,   144,    72,   177,    66,    66,
-      66,   154,    68,   150,   149,    68,   144,    66,    69,    71,
-      97,   108,   105,    72,    74,   130,   133,   142,   143,    73,
-      69,   177,   141,    72,   133,   142,    73,    73,   160,   154,
-     161,   162,   163,   164,   165,   165,   166,   166,   166,   166,
-     167,   167,   168,   168,   169,   169,   169,   177,    73,   155,
-     174,   154,   177,    68,    69,   155,   101,   126,   158,    71,
-     144,   154,   154,   154,    58,    66,   154,    66,    66,    68,
-     146,   155,   144,   106,    73,   135,   142,    75,   158,   143,
-      72,    74,    51,   137,    73,   169,    71,    69,    73,    75,
-      68,   139,   144,    73,    73,    73,    72,    66,   154,    66,
-      73,    73,    75,    73,   135,    75,   158,   157,   155,   144,
-     144,   144,   154,    73,   154,    66,    66,   154,    73,    75,
-      56,    73,   144,    73,    73,   154,    73,   154,    66,   144,
-      66,   144,   144,    73,   144,    73,    73,   154,   144,   144,
-     144,    73,   144
+      49,    50,    72,    76,    91,    92,    93,    94,    97,    98,
+      99,   100,   101,   102,   110,   113,   114,   115,   157,    67,
+     157,   113,   100,   115,   116,     0,    92,    66,   104,   105,
+     113,    97,    97,    97,    67,   157,    67,    94,    96,    97,
+     129,    72,    74,   114,   111,   112,   157,    67,    73,   100,
+     115,    66,    69,    70,    96,   129,    99,   100,   103,   106,
+     107,    67,     4,     5,     6,     7,     8,     9,    11,    12,
+      53,    54,    55,    57,    58,    59,    60,    61,    62,    63,
+      64,    66,    68,    72,    76,    80,    83,    84,    87,    88,
+      96,   126,   127,   128,   129,   130,   131,   132,   133,   134,
+     135,   137,   139,   140,   141,   142,   143,   144,   145,   146,
+     147,   148,   149,   150,   151,   152,   153,   155,   156,   157,
+      94,   129,   113,    73,    97,   117,   118,   119,   120,   157,
+      75,   137,   138,   150,   157,    68,    69,    70,   111,    95,
+     105,    67,   121,   135,   129,   107,   107,    68,   106,    71,
+     108,   109,   113,   103,    72,   150,    72,   150,   150,   138,
+      71,    72,    72,    72,   126,    72,   157,    66,    66,    66,
+     134,   107,   123,   134,    68,   130,    68,   126,    66,    69,
+      20,    77,    19,    78,    79,    80,    17,    18,    15,    16,
+      81,    82,    13,    14,    83,    84,    76,    85,    86,    21,
+      22,    23,    24,    25,    26,    27,    28,    29,    30,    70,
+     136,   149,    10,    11,    12,    72,    74,    89,    71,    72,
+      74,   113,   115,   124,   125,    73,    69,    69,    73,    75,
+     112,   138,    68,   121,   122,   138,    66,    69,    71,    68,
+     123,    71,   126,   134,   134,   134,    58,    66,   134,    66,
+      66,    72,   115,   124,    73,    73,    68,   135,   140,   134,
+     141,   142,   143,   144,   145,   145,   146,   146,   146,   146,
+     147,   147,   148,   148,   149,   149,   149,   135,   157,    73,
+     135,   154,   134,   157,   126,    73,   117,   124,    75,   138,
+     125,    72,    74,    51,   119,   157,    68,    69,   109,   138,
+      73,   126,    73,    73,    73,    72,    66,   134,    66,   149,
+      71,    69,    73,    75,    73,    73,    75,    73,   117,    75,
+     138,    68,   121,   126,   126,   126,   134,    73,   134,    66,
+      66,   134,   137,   135,    73,    75,    56,    73,   126,    73,
+      73,   134,    73,   134,    66,   126,    66,   126,   126,    73,
+     126,    73,    73,   134,   126,   126,   126,    73,   126
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -2112,2020 +2263,3148 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 101 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "translation_unit <- external_declaration\n";}}
+#line 309 "ast_c_grammar.y"
+    {
+     translation_unit_node *anode;
+anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
+    (*anode).external_declaration_node_1=(yyvsp[(1) - (1)].external_declaration_val);
+    (*anode).translation_unit_node_1= 0;
+    (yyval.translation_unit_val) = anode;
+    print_translation_unit_node((yyval.translation_unit_val)," ");
+}
     break;
 
   case 3:
-#line 104 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "translation_unit <- translation_unit external_declaration\n";}}
+#line 318 "ast_c_grammar.y"
+    {
+     translation_unit_node *anode;
+anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
+    (*anode).translation_unit_node_1=(yyvsp[(1) - (2)].translation_unit_val);
+    (*anode).external_declaration_node_1=(yyvsp[(2) - (2)].external_declaration_val);
+    (yyval.translation_unit_val) = anode;
+}
     break;
 
   case 4:
-#line 110 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "external_declaration <- function_definition\n";}}
+#line 328 "ast_c_grammar.y"
+    {
+     external_declaration_node *anode;
+anode = (external_declaration_node*) malloc(sizeof(external_declaration_node));
+    (*anode).function_definition_node_1=(yyvsp[(1) - (1)].function_definition_val);
+    (*anode).declaration_node_1= 0;
+    (yyval.external_declaration_val) = anode;
+}
     break;
 
   case 5:
-#line 113 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "external_declaration <- declaration\n";}}
+#line 336 "ast_c_grammar.y"
+    {
+     external_declaration_node *anode;
+anode = (external_declaration_node*) malloc(sizeof(external_declaration_node));
+    (*anode).declaration_node_1=(yyvsp[(1) - (1)].declaration_val);
+    (*anode).function_definition_node_1= 0;
+    (yyval.external_declaration_val) = anode;
+}
     break;
 
   case 6:
-#line 118 "new_c_grammar.y"
-    {st.push();declMode = false;}
+#line 346 "ast_c_grammar.y"
+    {
+     function_definition_node *anode;
+anode = (function_definition_node*) malloc(sizeof(function_definition_node));
+    (*anode).declarator_node_1=(yyvsp[(1) - (2)].declarator_val);
+    (*anode).compound_statement_node_1=(yyvsp[(2) - (2)].compound_statement_val);
+    (*anode).declaration_list_node_1= 0;
+    (*anode).declaration_specifiers_node_1= 0;
+    (yyval.function_definition_val) = anode;
+}
     break;
 
   case 7:
-#line 118 "new_c_grammar.y"
-    {st.pop();}
+#line 356 "ast_c_grammar.y"
+    {
+     function_definition_node *anode;
+anode = (function_definition_node*) malloc(sizeof(function_definition_node));
+    (*anode).declarator_node_1=(yyvsp[(1) - (3)].declarator_val);
+    (*anode).declaration_list_node_1=(yyvsp[(2) - (3)].declaration_list_val);
+    (*anode).compound_statement_node_1=(yyvsp[(3) - (3)].compound_statement_val);
+    (*anode).declaration_specifiers_node_1= 0;
+    (yyval.function_definition_val) = anode;
+}
     break;
 
   case 8:
-#line 119 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "function_definition <- declarator compound_statement\n";}}
+#line 366 "ast_c_grammar.y"
+    {
+     function_definition_node *anode;
+anode = (function_definition_node*) malloc(sizeof(function_definition_node));
+    (*anode).declaration_specifiers_node_1=(yyvsp[(1) - (3)].declaration_specifiers_val);
+    (*anode).declarator_node_1=(yyvsp[(2) - (3)].declarator_val);
+    (*anode).compound_statement_node_1=(yyvsp[(3) - (3)].compound_statement_val);
+    (*anode).declaration_list_node_1= 0;
+    (yyval.function_definition_val) = anode;
+}
     break;
 
   case 9:
-#line 121 "new_c_grammar.y"
-    {st.push();declMode=false;}
+#line 376 "ast_c_grammar.y"
+    {
+     function_definition_node *anode;
+anode = (function_definition_node*) malloc(sizeof(function_definition_node));
+    (*anode).declaration_specifiers_node_1=(yyvsp[(1) - (4)].declaration_specifiers_val);
+    (*anode).declarator_node_1=(yyvsp[(2) - (4)].declarator_val);
+    (*anode).declaration_list_node_1=(yyvsp[(3) - (4)].declaration_list_val);
+    (*anode).compound_statement_node_1=(yyvsp[(4) - (4)].compound_statement_val);
+    (yyval.function_definition_val) = anode;
+}
     break;
 
   case 10:
-#line 121 "new_c_grammar.y"
-    {st.pop();}
+#line 388 "ast_c_grammar.y"
+    {
+     declaration_node *anode;
+anode = (declaration_node*) malloc(sizeof(declaration_node));
+    (*anode).char_lit_1="';'";
+    (*anode).declaration_specifiers_node_1=(yyvsp[(1) - (2)].declaration_specifiers_val);
+    (*anode).init_declarator_list_node_1= 0;
+    (yyval.declaration_val) = anode;
+}
     break;
 
   case 11:
-#line 122 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "function_definition <- declarator declaration_list compound_statement\n";}}
+#line 398 "ast_c_grammar.y"
+    {
+      //we'll be using this to store most of the info about
+      //the object
+      unsigned int new_specs = 0;
+      //we'll need to get the info from the declaration specifiers
+      
+      //this is just to know whether there is another spec node
+      bool anotherSpecifier = true;
+      declaration_specifiers_node * currentSpecNode = (yyvsp[(1) - (3)].declaration_specifiers_val);
+      while(anotherSpecifier)
+	{
+	  if((*currentSpecNode).storage_class_specifier_node_1 != 0)
+	    {
+	      
+	      std::string value = (*(*currentSpecNode).storage_class_specifier_node_1).token_1;
+	      if(value =="auto")
+		{
+		  std::cout<<"I am here"<<std::endl;
+		  new_specs |= xAUTO;
+		}
+	      else if(value == "register")
+		{
+		  new_specs |= xREGISTER;
+		}
+	      else if(value == "static")
+		{
+		  new_specs |= xSTATIC;
+		}
+	      else if(value == "extern")
+		{
+		  new_specs |= xEXTERN;
+		}
+	      else if(value == "typedef")
+		{
+		  new_specs |= xTYPEDEF;
+		}
+	      std::cout<<new_specs<<std::endl;
+	    }
+	  if((*currentSpecNode).type_specifier_node_1 != 0)
+	    {
+
+	      std::string value = (*(*currentSpecNode).type_specifier_node_1).token_1;
+
+	      if(value == "void")
+		{
+		  new_specs |= xVOID;
+		}
+	      else if(value == "char")
+		{
+		  new_specs |= xCHAR;
+		}
+	      else if(value == "short")
+		{
+		  new_specs |= xSHORT;
+		}
+	      else if(value == "int")
+		{
+		  new_specs |= xINT;
+		}
+	      else if(value == "long")
+		{
+		  new_specs |= xLONG;
+		}
+	      else if(value == "float")
+		{
+		  new_specs |= xFLOAT;
+		}
+	      else if(value == "double")
+		{
+		  new_specs |= xDOUBLE;
+		}
+	      else if(value == "signed")
+		{
+		  new_specs  |= xSIGNED;
+		}
+	      else if(value == "unsigned")
+		{
+		  new_specs |= xUNSIGNED; 
+		}
+	      else if(value == "struct")
+		{
+		  new_specs |= xSTRUCT;
+		}
+	      else if(value == "union" )
+		{
+		  new_specs |= xUNION;
+		}
+	      else if(value ==  "enum")
+		{
+		  new_specs  |= xENUM;
+		}
+	      else if(value == "typedef_name")
+		{
+		  new_specs |=  xTYPEDEF_NAME;
+		}
+	    }
+    
+	      
+	  if((*currentSpecNode).type_qualifier_node_1 != 0)
+	    {
+
+	      std::string value = (*(*currentSpecNode).type_qualifier_node_1).token_1;
+	      if(value=="const")
+		{
+		  new_specs |= xCONST;
+		}
+	      else if(value == "volatile")
+		{
+		  new_specs |= xVOLATILE;
+		}
+	      
+	      
+	    }
+	  
+	  if((*currentSpecNode).declaration_specifiers_node_1 != 0)
+	    {
+	      currentSpecNode = (*currentSpecNode).declaration_specifiers_node_1;
+	    }
+	  else
+	    {
+	      anotherSpecifier = false;
+	    }
+	}
+
+      /*
+	at this point new_specifier should have all
+	of the info needed, now we can add this
+	to every value declared
+      */
+      bool anotherDeclarator = true;
+      init_declarator_list_node* currentDeclList = (yyvsp[(2) - (3)].init_declarator_list_val);
+      while(anotherDeclarator)
+	{
+	  /*
+	    lots of thinking has to happen here
+	    function, array pointer etc are all determined at
+	    this stage
+	   */
+	  unsigned int this_spec = new_specs;
+	  init_declarator_node *int_decl = (*currentDeclList).init_declarator_node_1;
+	  declarator_node *decl_node = (*int_decl).declarator_node_1;
+	  
+	  //take care of pointer
+	  if((*decl_node).pointer_node_1 != 0)
+	    {
+	      this_spec |= xPOINTER;
+	    }
+
+	  //almost ready to actually touch the symbol table
+	  direct_declarator_node *dd = (*decl_node).direct_declarator_node_1;
+	  
+	  //follow the direct declarators until we find an identifier
+	  while( (*dd).identifier_node_1 == 0 &&( (*dd).declarator_node_1 == 0))
+	    {
+	      /* arrays
+		 don't forget to deal with constant expressions
+		 either here or elsewhere
+		 also array dimensions etc...
+	      */
+	      if((*dd).char_lit_1 == "'['")
+		{
+		  this_spec |= xARRAY;
+		}
+	      
+
+	      /*functions same thing, 
+		theire may be a lot we want to deal with here
+		
+	       */
+	      if((*dd).char_lit_1 == "'('")
+		{
+		  this_spec |= xFUNCTION;
+		}
+
+
+
+	      //change to end loops
+	      dd = (*dd).direct_declarator_node_1;
+	    }
+
+	  
+	  /*
+	    unless we have to, I don't intend on dealing with '('declaration')'
+	    or unless I really understand what it means ;)
+	   */
+	  if((*dd).declarator_node_1 != 0)
+	    {
+	      std::cout<<"OMG RIGHT NOW WE DON'T DEAL WITH THIS!"<<std::endl;
+	    }
+
+
+	  /*
+	    finally we get to indentifiers!!
+	    don't forget '(' declarator ')' will probably cause
+	    a seg fault
+	   */
+
+	  identifier_node * id_node = (*dd).identifier_node_1;
+
+	  //I forget if I should just be seaching top or all....
+	  SymbolContent *sc = st.searchAll((*id_node).token_1);
+	  (*sc).specs = this_spec;  
+	  //statement to decide whehter or not there are more nodes in the list
+	  if((*currentDeclList).init_declarator_list_node_1 != 0)
+	    {
+	      currentDeclList = (*currentDeclList).init_declarator_list_node_1;
+	    }
+	  else
+	    {
+	      anotherDeclarator = false;
+	    }
+	}
+
+    }
     break;
 
   case 12:
-#line 124 "new_c_grammar.y"
-    {st.push();declMode=false;}
+#line 614 "ast_c_grammar.y"
+    {
+     declaration_node *anode;
+anode = (declaration_node*) malloc(sizeof(declaration_node));
+    (*anode).char_lit_1="';'";
+    (*anode).declaration_specifiers_node_1=(yyvsp[(1) - (4)].declaration_specifiers_val);
+    (*anode).init_declarator_list_node_1=(yyvsp[(2) - (4)].init_declarator_list_val);
+    (yyval.declaration_val) = anode;
+}
     break;
 
   case 13:
-#line 124 "new_c_grammar.y"
-    {st.pop();}
+#line 625 "ast_c_grammar.y"
+    {
+     declaration_list_node *anode;
+anode = (declaration_list_node*) malloc(sizeof(declaration_list_node));
+    (*anode).declaration_node_1=(yyvsp[(1) - (1)].declaration_val);
+    (*anode).declaration_list_node_1= 0;
+    (yyval.declaration_list_val) = anode;
+}
     break;
 
   case 14:
-#line 125 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "function_definition <- declaration_specifiers declarator compound_statement\n";}}
+#line 633 "ast_c_grammar.y"
+    {
+     declaration_list_node *anode;
+anode = (declaration_list_node*) malloc(sizeof(declaration_list_node));
+    (*anode).declaration_list_node_1=(yyvsp[(1) - (2)].declaration_list_val);
+    (*anode).declaration_node_1=(yyvsp[(2) - (2)].declaration_val);
+    (yyval.declaration_list_val) = anode;
+}
     break;
 
   case 15:
-#line 127 "new_c_grammar.y"
-    {st.push();declMode=false;}
+#line 643 "ast_c_grammar.y"
+    {
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).storage_class_specifier_node_1=(yyvsp[(1) - (1)].storage_class_specifier_val);
+    (*anode).declaration_specifiers_node_1= 0;
+    (*anode).type_specifier_node_1= 0;
+    (*anode).type_qualifier_node_1= 0;
+    (yyval.declaration_specifiers_val) = anode;
+}
     break;
 
   case 16:
-#line 127 "new_c_grammar.y"
-    {st.pop();}
+#line 653 "ast_c_grammar.y"
+    {
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).storage_class_specifier_node_1=(yyvsp[(1) - (2)].storage_class_specifier_val);
+    (*anode).declaration_specifiers_node_1=(yyvsp[(2) - (2)].declaration_specifiers_val);
+    (*anode).type_specifier_node_1= 0;
+    (*anode).type_qualifier_node_1= 0;
+    (yyval.declaration_specifiers_val) = anode;
+}
     break;
 
   case 17:
-#line 128 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "function_definition <- declaration_specifiers declarator declaration_list compound_statement\n";}}
+#line 663 "ast_c_grammar.y"
+    {
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).type_specifier_node_1=(yyvsp[(1) - (1)].type_specifier_val);
+    (*anode).storage_class_specifier_node_1= 0;
+    (*anode).declaration_specifiers_node_1= 0;
+    (*anode).type_qualifier_node_1= 0;
+    (yyval.declaration_specifiers_val) = anode;
+}
     break;
 
   case 18:
-#line 134 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "declaration <- declaration_specifiers ';'\n";}}
+#line 673 "ast_c_grammar.y"
+    {
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).type_specifier_node_1=(yyvsp[(1) - (2)].type_specifier_val);
+    (*anode).declaration_specifiers_node_1=(yyvsp[(2) - (2)].declaration_specifiers_val);
+    (*anode).storage_class_specifier_node_1= 0;
+    (*anode).type_qualifier_node_1= 0;
+    (yyval.declaration_specifiers_val) = anode;
+}
     break;
 
   case 19:
-#line 137 "new_c_grammar.y"
+#line 683 "ast_c_grammar.y"
     {
-  declNode dn = *(yyvsp[(2) - (4)].declval);
-  SymbolContent *sc = st.searchAll((*(yyvsp[(2) - (4)].declval)).id);
-  if(sc == 0)
-    {
-      //make this an error later
-      std::cout<<"Warning! trying to use a variable not declared"<<std::endl;
-    }
-  else
-    {
-      SymbolContent newsc;
-      
-      newsc.specs = dn.specs;
-      newsc.lineno = lineCount;
-      st.update((*(yyvsp[(2) - (4)].declval)).id,newsc);
-    }
-  SymbolContent *sn = st.searchAll((*(yyvsp[(2) - (4)].declval)).id);
- }
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).type_qualifier_node_1=(yyvsp[(1) - (1)].type_qualifier_val);
+    (*anode).storage_class_specifier_node_1= 0;
+    (*anode).declaration_specifiers_node_1= 0;
+    (*anode).type_specifier_node_1= 0;
+    (yyval.declaration_specifiers_val) = anode;
+}
     break;
 
   case 20:
-#line 155 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "declaration <- declaration_specifiers init_declarator_list ';'\n";}}
+#line 693 "ast_c_grammar.y"
+    {
+     declaration_specifiers_node *anode;
+anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
+    (*anode).type_qualifier_node_1=(yyvsp[(1) - (2)].type_qualifier_val);
+    (*anode).declaration_specifiers_node_1=(yyvsp[(2) - (2)].declaration_specifiers_val);
+    (*anode).storage_class_specifier_node_1= 0;
+    (*anode).type_specifier_node_1= 0;
+    (yyval.declaration_specifiers_val) = anode;
+}
     break;
 
   case 21:
-#line 160 "new_c_grammar.y"
-    {(yyval.declval) = (yyvsp[(2) - (3)].declval);}
+#line 705 "ast_c_grammar.y"
+    {
+     storage_class_specifier_node *anode;
+anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (yyval.storage_class_specifier_val) = anode;
+}
     break;
 
   case 22:
-#line 161 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "declaration_list <- declaration\n";}}
+#line 712 "ast_c_grammar.y"
+    {
+     storage_class_specifier_node *anode;
+anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (yyval.storage_class_specifier_val) = anode;
+}
     break;
 
   case 23:
-#line 164 "new_c_grammar.y"
+#line 719 "ast_c_grammar.y"
     {
-  declNode dn = *(yyvsp[(3) - (4)].declval);
-  dn.next = (yyvsp[(1) - (4)].declval);
-  (yyval.declval) = &dn;
+     storage_class_specifier_node *anode;
+anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (yyval.storage_class_specifier_val) = anode;
 }
     break;
 
   case 24:
-#line 170 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "declaration_list <- declaration_list declaration\n";}}
+#line 726 "ast_c_grammar.y"
+    {
+     storage_class_specifier_node *anode;
+anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (yyval.storage_class_specifier_val) = anode;
+}
     break;
 
   case 25:
-#line 175 "new_c_grammar.y"
-    {declMode = true;}
+#line 733 "ast_c_grammar.y"
+    {
+     storage_class_specifier_node *anode;
+anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (yyval.storage_class_specifier_val) = anode;
+}
     break;
 
   case 26:
-#line 179 "new_c_grammar.y"
-    {declMode = false;}
+#line 742 "ast_c_grammar.y"
+    {
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
+}
     break;
 
   case 27:
-#line 184 "new_c_grammar.y"
-    {declMode = true;
-if(parseDebug)
-    {parseDebugOut << "declaration_specifiers <- storage_class_specifier\n";}}
+#line 751 "ast_c_grammar.y"
+    {
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
+}
     break;
 
   case 28:
-#line 187 "new_c_grammar.y"
+#line 760 "ast_c_grammar.y"
     {
-  declNode dn;
-  dn.specs = 0;
-  if((yyvsp[(1) - (2)].sval)=="AUTO")
-    {
-      dn.specs |= xAUTO;
-    }
-  else if((yyvsp[(1) - (2)].sval) == "REGISTER")
-    {
-      dn.specs |= xREGISTER;
-    }
-  else if((yyvsp[(1) - (2)].sval) ==  "STATIC")
-    {
-      dn.specs |= xSTATIC;
-    }
-  else if((yyvsp[(1) - (2)].sval) == "EXTERN")
-    {
-      dn.specs |= xEXTERN;
-    }
-  else if((yyvsp[(1) - (2)].sval) ==  "TYPEDEF")
-    {   
-      dn.specs |= xTYPEDEF;
-    }
-    (yyval.declval) = &dn;
- }
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
+}
     break;
 
   case 29:
-#line 214 "new_c_grammar.y"
-    {declMode = true;
-if(parseDebug)
-    {parseDebugOut << "declaration_specifiers <- storage_class_specifier declaration_specifiers\n";}
- }
+#line 769 "ast_c_grammar.y"
+    {
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
+}
     break;
 
   case 30:
-#line 218 "new_c_grammar.y"
+#line 778 "ast_c_grammar.y"
     {
-  declNode dn = *(yyvsp[(2) - (3)].declval);
-  if((yyvsp[(1) - (3)].sval)=="AUTO")
-    {
-      dn.specs |= xAUTO;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "REGISTER")
-    {
-      dn.specs |= xREGISTER;
-    }
-  else if((yyvsp[(1) - (3)].sval) ==  "STATIC")
-    {
-      dn.specs |= xSTATIC;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "EXTERN")
-    {
-      dn.specs |= xEXTERN;
-    }
-  else if((yyvsp[(1) - (3)].sval) ==  "TYPEDEF")
-    {   
-      dn.specs |= xTYPEDEF;
-    }
-    (yyval.declval) = &dn;
- 
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
 }
     break;
 
   case 31:
-#line 245 "new_c_grammar.y"
-    {declMode = true;
-if(parseDebug)
-    {parseDebugOut << "declaration_specifiers <- type_specifier\n";}
-  }
+#line 787 "ast_c_grammar.y"
+    {
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
+}
     break;
 
   case 32:
-#line 249 "new_c_grammar.y"
+#line 796 "ast_c_grammar.y"
     {
-  declNode dn;
-  dn.specs = 0;
-  if((yyvsp[(1) - (2)].sval) == "VOID")
-    {
-      dn.specs |= xVOID;
-    }
-  else if((yyvsp[(1) - (2)].sval) == "CHAR")
-    {
-      dn.specs |= xCHAR;
-    }
-  else if((yyvsp[(1) - (2)].sval) == "SHORT")
-    {
-      dn.specs |= xSHORT;
-    }
-  else if((yyvsp[(1) - (2)].sval) == "INT")
-    {
-      dn.specs |= xINT;
-      }
-  else if((yyvsp[(1) - (2)].sval) == "LONG")
-    {
-      dn.specs |= xLONG;
-    }
-  else if((yyvsp[(1) - (2)].sval) == "FLOAT")
-    {
-      dn.specs |= xFLOAT;
-    }
-  else if((yyvsp[(1) - (2)].sval) == "DOUBLE")
-    {
-      dn.specs |= xDOUBLE;
-    }
-  else if((yyvsp[(1) - (2)].sval) == "SIGNED")
-    {
-      dn.specs  |= xSIGNED;
-    }
-  else if((yyvsp[(1) - (2)].sval) == "UNSIGNED")
-    {
-      dn.specs |= xUNSIGNED; 
-    }
-  else if((yyvsp[(1) - (2)].sval) == "STRUCT")
-    {
-      dn.specs |= xSTRUCT;
-    }
-  else if((yyvsp[(1) - (2)].sval) == "UNION" )
-    {
-      dn.specs |= xUNION;
-    }
-  else if((yyvsp[(1) - (2)].sval) ==  "ENUM")
-    {
-      dn.specs  |= xENUM;
-    }
-  else if((yyvsp[(1) - (2)].sval) == "TYPEDEF_NAME")
-    {
-      dn.specs |=  xTYPEDEF_NAME;
-      }
-(yyval.declval)=&dn;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
 }
     break;
 
   case 33:
-#line 308 "new_c_grammar.y"
-    {declMode = true;
-if(parseDebug)
-    {parseDebugOut << "declaration_specifiers <- type_specifier declaration_specifiers\n";}
- }
+#line 805 "ast_c_grammar.y"
+    {
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
+}
     break;
 
   case 34:
-#line 312 "new_c_grammar.y"
+#line 814 "ast_c_grammar.y"
     {
-     declNode dn = *(yyvsp[(2) - (3)].declval);
- if((yyvsp[(1) - (3)].sval) == "VOID")
-    {
-      dn.specs |= xVOID;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "CHAR")
-    {
-      dn.specs |= xCHAR;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "SHORT")
-    {
-      dn.specs |= xSHORT;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "INT")
-    {
-      dn.specs |= xINT;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "LONG")
-    {
-      dn.specs |= xLONG;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "FLOAT")
-    {
-      dn.specs |= xFLOAT;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "DOUBLE")
-    {
-      dn.specs |= xDOUBLE;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "SIGNED")
-    {
-      dn.specs  |= xSIGNED;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "UNSIGNED")
-    {
-      dn.specs |= xUNSIGNED; 
-    }
-  else if((yyvsp[(1) - (3)].sval) == "STRUCT")
-    {
-      dn.specs |= xSTRUCT;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "UNION" )
-    {
-      dn.specs |= xUNION;
-    }
-  else if((yyvsp[(1) - (3)].sval) ==  "ENUM")
-    {
-      dn.specs  |= xENUM;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "TYPEDEF_NAME")
-    {
-      dn.specs |=  xTYPEDEF_NAME;
-    }
- (yyval.declval) = &dn;
- }
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
+}
     break;
 
   case 35:
-#line 369 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "declaration_specifiers <- type_qualifier\n";}
-  
-  declNode dn;
-  dn.specs = 0;
-  if((yyvsp[(1) - (1)].sval) == "CONST")
+#line 823 "ast_c_grammar.y"
     {
-      dn.specs |= xCONST;
-    }
-  else if((yyvsp[(1) - (1)].sval) == "VOLATILE")
-    {
-      dn.specs |= xVOLATILE;
-    }
-  (yyval.declval) = &dn;
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).struct_or_union_specifier_node_1=(yyvsp[(1) - (1)].struct_or_union_specifier_val);
+    (*anode).token_1= 0;
+    (*anode).enum_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
 }
     break;
 
   case 36:
-#line 385 "new_c_grammar.y"
-    {declMode = true; 
-if(parseDebug)
-    {parseDebugOut << "declaration_specifiers <- type_qualifier declaration_specifiers\n";}
+#line 832 "ast_c_grammar.y"
+    {
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).enum_specifier_node_1=(yyvsp[(1) - (1)].enum_specifier_val);
+    (*anode).token_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
 }
     break;
 
   case 37:
-#line 389 "new_c_grammar.y"
+#line 841 "ast_c_grammar.y"
     {
-  declNode dn  = *(yyvsp[(2) - (3)].declval);
-  if((yyvsp[(1) - (3)].sval) == "CONST")
-    {
-      dn.specs  |= xCONST;
-    }
-  else if((yyvsp[(1) - (3)].sval) == "VOLATILE")
-    {
-      dn.specs |= xVOLATILE;
-      }
-  (yyval.declval) = &dn;
-
+     type_specifier_node *anode;
+anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).enum_specifier_node_1= 0;
+    (*anode).struct_or_union_specifier_node_1= 0;
+    (yyval.type_specifier_val) = anode;
 }
     break;
 
   case 38:
-#line 406 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "storage_class_specifier <- AUTO\n";}
-    (yyval.sval) = "AUTO";}
+#line 852 "ast_c_grammar.y"
+    {
+     type_qualifier_node *anode;
+anode = (type_qualifier_node*) malloc(sizeof(type_qualifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (yyval.type_qualifier_val) = anode;
+}
     break;
 
   case 39:
-#line 410 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "storage_class_specifier <- REGISTER\n";}
-    (yyval.sval) = "REGISTER";}
+#line 859 "ast_c_grammar.y"
+    {
+     type_qualifier_node *anode;
+anode = (type_qualifier_node*) malloc(sizeof(type_qualifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (yyval.type_qualifier_val) = anode;
+}
     break;
 
   case 40:
-#line 414 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "storage_class_specifier <- STATIC\n";}
-    (yyval.sval) = "STATIC";}
+#line 868 "ast_c_grammar.y"
+    {
+     struct_or_union_specifier_node *anode;
+anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifier_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).struct_or_union_node_1=(yyvsp[(1) - (5)].struct_or_union_val);
+    (*anode).identifier_node_1=(yyvsp[(2) - (5)].identifier_val);
+    (*anode).struct_declaration_list_node_1=(yyvsp[(4) - (5)].struct_declaration_list_val);
+    (yyval.struct_or_union_specifier_val) = anode;
+}
     break;
 
   case 41:
-#line 418 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "storage_class_specifier <- EXTERN\n";}
-    (yyval.sval) = "EXTERN";}
+#line 879 "ast_c_grammar.y"
+    {
+     struct_or_union_specifier_node *anode;
+anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifier_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).struct_or_union_node_1=(yyvsp[(1) - (4)].struct_or_union_val);
+    (*anode).struct_declaration_list_node_1=(yyvsp[(3) - (4)].struct_declaration_list_val);
+    (*anode).identifier_node_1= 0;
+    (yyval.struct_or_union_specifier_val) = anode;
+}
     break;
 
   case 42:
-#line 422 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "storage_class_specifier <- TYPEDEF\n";}
-    (yyval.sval) = "TYPEDEF";}
+#line 890 "ast_c_grammar.y"
+    {
+     struct_or_union_specifier_node *anode;
+anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifier_node));
+    (*anode).struct_or_union_node_1=(yyvsp[(1) - (2)].struct_or_union_val);
+    (*anode).identifier_node_1=(yyvsp[(2) - (2)].identifier_val);
+    (*anode).char_lit_1= "";
+    (*anode).struct_declaration_list_node_1= 0;
+    (*anode).char_lit_2= "";
+    (yyval.struct_or_union_specifier_val) = anode;
+}
     break;
 
   case 43:
-#line 429 "new_c_grammar.y"
-    {(yyval.sval) = "VOID";if(parseDebug)
-    {parseDebugOut << "type_specifier <- VOID\n";}
-    (yyval.sval) = "VOID";}
+#line 903 "ast_c_grammar.y"
+    {
+     struct_or_union_node *anode;
+anode = (struct_or_union_node*) malloc(sizeof(struct_or_union_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (yyval.struct_or_union_val) = anode;
+}
     break;
 
   case 44:
-#line 433 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "type_specifier <- CHAR\n";}
-    (yyval.sval) = "CHAR	";}
+#line 910 "ast_c_grammar.y"
+    {
+     struct_or_union_node *anode;
+anode = (struct_or_union_node*) malloc(sizeof(struct_or_union_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (yyval.struct_or_union_val) = anode;
+}
     break;
 
   case 45:
-#line 437 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "type_specifier <- SHORT\n";}
-    (yyval.sval) = "SHORT";
-    if(prevFlag == 12)
-        {uShortFlag = true;
-	    shortFlag = false;
-	    //uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    longFlag = false;
-	    uLongFlag = false;
-	    lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-         prevFlag = 2;}
-    else
-    	   {shortFlag = true;
-    	    //shortFlag = false;
-	    uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    longFlag = false;
-	    uLongFlag = false;
-	    lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-    	   prevFlag = 1;}
-    	    }
+#line 919 "ast_c_grammar.y"
+    {
+     struct_declaration_list_node *anode;
+anode = (struct_declaration_list_node*) malloc(sizeof(struct_declaration_list_node));
+    (*anode).struct_declaration_node_1=(yyvsp[(1) - (1)].struct_declaration_val);
+    (*anode).struct_declaration_list_node_1= 0;
+    (yyval.struct_declaration_list_val) = anode;
+}
     break;
 
   case 46:
-#line 474 "new_c_grammar.y"
-    {if(parseDebug)
-    {parseDebugOut << "type_specifier <- INT\n";}
-    (yyval.sval) = "INT";
-    if(prevFlag == 1)
-        {shortFlag = true;
-         //shortFlag = false;
-	    uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    longFlag = false;
-	    uLongFlag = false;
-	    lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-         prevFlag = 1;}
-    else if(prevFlag == 2)
-        {uShortFlag = true;
-         shortFlag = false;
-	    //uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    longFlag = false;
-	    uLongFlag = false;
-	    lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-         prevFlag = 2;}
-    else if(prevFlag == 5)
-        {longFlag = true;
-         shortFlag = false;
-	    uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    //longFlag = false;
-	    uLongFlag = false;
-	    lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-         prevFlag = 5;}
-    else if(prevFlag == 6)
-        {uLongFlag = true;
-         shortFlag = false;
-	    uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    longFlag = false;
-	    //uLongFlag = false;
-	    lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-         prevFlag = 6;}
-    else if(prevFlag == 7)
-        {lLongFlag = true;
-         shortFlag = false;
-	    uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    longFlag = false;
-	    uLongFlag = false;
-	    //lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-         prevFlag = 7;}
-    else if(prevFlag == 8)
-        {uLLongFlag = true;
-         shortFlag = false;
-	    uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    longFlag = false;
-	    uLongFlag = false;
-	    lLongFlag = false;
-	    //uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-         prevFlag = 8;}
-    else if(prevFlag == 12)
-        {uIntFlag = true;
-         shortFlag = false;
-	    uShortFlag = false;
-	    intFlag = false;
-	    //uIntFlag = false;
-	    longFlag = false;
-	    uLongFlag = false;
-	    lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-         prevFlag = 12;}
-    else
-    	    {intFlag = true;
-    	    shortFlag = false;
-	    uShortFlag = false;
-	    //intFlag = false;
-	    uIntFlag = false;
-	    longFlag = false;
-	    uLongFlag = false;
-	    lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;}
-         }
+#line 927 "ast_c_grammar.y"
+    {
+     struct_declaration_list_node *anode;
+anode = (struct_declaration_list_node*) malloc(sizeof(struct_declaration_list_node));
+    (*anode).struct_declaration_list_node_1=(yyvsp[(1) - (2)].struct_declaration_list_val);
+    (*anode).struct_declaration_node_1=(yyvsp[(2) - (2)].struct_declaration_val);
+    (yyval.struct_declaration_list_val) = anode;
+}
     break;
 
   case 47:
-#line 605 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "type_specifier <- LONG\n";}
-	(yyval.sval) = "LONG";
-	switch(prevFlag)
-	{case 5: lLongFlag = true;
-	    shortFlag = false;
-	    uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    longFlag = false;
-	    uLongFlag = false;
-	    //lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-         prevFlag = 7;
-         break;
-     case 6: uLLongFlag = true;
-         shortFlag = false;
-	    uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    longFlag = false;
-	    uLongFlag = false;
-	    lLongFlag = false;
-	    //uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-     
-         prevFlag = 8;
-         break;
-     case 12: uLongFlag = true;
-     	shortFlag = false;
-	    uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    longFlag = false;
-	    //uLongFlag = false;
-	    lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-         prevFlag = 6;
-         break;    
-     default: longFlag = true;
-         shortFlag = false;
-	    uShortFlag = false;
-	    intFlag = false;
-	    uIntFlag = false;
-	    //longFlag = false;
-	    uLongFlag = false;
-	    lLongFlag = false;
-	    uLLongFlag = false;
-	    floatFlag = false;
-	    doubleFlag = false;
-	    lDoubleFlag = false;
-	    unsignedFlag = false;
-
-         prevFlag = 5;
-      }}
+#line 937 "ast_c_grammar.y"
+    {
+     init_declarator_list_node *anode;
+anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
+    (*anode).init_declarator_node_1=(yyvsp[(1) - (1)].init_declarator_val);
+    (*anode).init_declarator_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.init_declarator_list_val) = anode;
+}
     break;
 
   case 48:
-#line 674 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "type_specifier <- FLOAT\n";}
-	(yyval.sval) = "FLOAT";
-	floatFlag = true;
-	shortFlag = false;
-     uShortFlag = false;
-     intFlag = false;
-     uIntFlag = false;
-     longFlag = false;
-     uLongFlag = false;
-     lLongFlag = false;
-     uLLongFlag = false;
-     //floatFlag = false;
-     doubleFlag = false;
-     lDoubleFlag = false;
-     unsignedFlag = false;
-	prevFlag = 9;}
+#line 946 "ast_c_grammar.y"
+    {
+     init_declarator_list_node *anode;
+anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).init_declarator_list_node_1=(yyvsp[(1) - (3)].init_declarator_list_val);
+    (*anode).init_declarator_node_1=(yyvsp[(3) - (3)].init_declarator_val);
+    (yyval.init_declarator_list_val) = anode;
+}
     break;
 
   case 49:
-#line 692 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "type_specifier <- DOUBLE\n";}
- 	(yyval.sval) = "DOUBLE";
- 	switch(prevFlag)
- 	{case 5:lDoubleFlag = true;
- 	shortFlag = false;
-     uShortFlag = false;
-     intFlag = false;
-     uIntFlag = false;
-     longFlag = false;
-     uLongFlag = false;
-     lLongFlag = false;
-     uLLongFlag = false;
-     floatFlag = false;
-     doubleFlag = false;
-     //lDoubleFlag = false;
-     unsignedFlag = false;
-
- 	 prevFlag = 11;
- 	 break;
- 	default:
- 	 doubleFlag = true;
- 	 shortFlag = false;
-      uShortFlag = false;
-      intFlag = false;
-      uIntFlag = false;
-      longFlag = false;
-      uLongFlag = false;
-      lLongFlag = false;
-      uLLongFlag = false;
-      floatFlag = false;
-      //doubleFlag = false;
-      lDoubleFlag = false;
-      unsignedFlag = false;
-
- 	 prevFlag = 10;
- 	 }}
+#line 957 "ast_c_grammar.y"
+    {
+     init_declarator_node *anode;
+anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
+    (*anode).declarator_node_1=(yyvsp[(1) - (1)].declarator_val);
+    (*anode).initializer_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.init_declarator_val) = anode;
+}
     break;
 
   case 50:
-#line 730 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "type_specifier <- SIGNED\n";}
- 	(yyval.sval) = "SIGNED";}
+#line 966 "ast_c_grammar.y"
+    {
+     init_declarator_node *anode;
+anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
+    (*anode).char_lit_1="'='";
+    (*anode).declarator_node_1=(yyvsp[(1) - (3)].declarator_val);
+    (*anode).initializer_node_1=(yyvsp[(3) - (3)].initializer_val);
+    (yyval.init_declarator_val) = anode;
+}
     break;
 
   case 51:
-#line 734 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "type_specifier <- UNSIGNED\n";}
- 	(yyval.sval) = "UNSIGNED";
- 	prevFlag = 12;}
+#line 977 "ast_c_grammar.y"
+    {
+     struct_declaration_node *anode;
+anode = (struct_declaration_node*) malloc(sizeof(struct_declaration_node));
+    (*anode).char_lit_1="';'";
+    (*anode).specifier_qualifier_list_node_1=(yyvsp[(1) - (3)].specifier_qualifier_list_val);
+    (*anode).struct_declarator_list_node_1=(yyvsp[(2) - (3)].struct_declarator_list_val);
+    (yyval.struct_declaration_val) = anode;
+}
     break;
 
   case 52:
-#line 739 "new_c_grammar.y"
-    {if(parseDebug)
-  	{parseDebugOut << "type_specifier <- struct_or_union_specifier\n";}
-  	(yyval.sval) = "!!STRUCT/UNION";}
+#line 988 "ast_c_grammar.y"
+    {
+     specifier_qualifier_list_node *anode;
+anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
+    (*anode).type_specifier_node_1=(yyvsp[(1) - (1)].type_specifier_val);
+    (*anode).specifier_qualifier_list_node_1= 0;
+    (*anode).type_qualifier_node_1= 0;
+    (yyval.specifier_qualifier_list_val) = anode;
+}
     break;
 
   case 53:
-#line 743 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "type_specifier <- enum_specifier\n";}
- 	(yyval.sval) = "!!ENUM";}
+#line 997 "ast_c_grammar.y"
+    {
+     specifier_qualifier_list_node *anode;
+anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
+    (*anode).type_specifier_node_1=(yyvsp[(1) - (2)].type_specifier_val);
+    (*anode).specifier_qualifier_list_node_1=(yyvsp[(2) - (2)].specifier_qualifier_list_val);
+    (*anode).type_qualifier_node_1= 0;
+    (yyval.specifier_qualifier_list_val) = anode;
+}
     break;
 
   case 54:
-#line 747 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "type_specifier <- TYPEDEF_NAME\n";}
-	(yyval.sval) = "TYPEDEF_NAME";}
+#line 1006 "ast_c_grammar.y"
+    {
+     specifier_qualifier_list_node *anode;
+anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
+    (*anode).type_qualifier_node_1=(yyvsp[(1) - (1)].type_qualifier_val);
+    (*anode).specifier_qualifier_list_node_1= 0;
+    (*anode).type_specifier_node_1= 0;
+    (yyval.specifier_qualifier_list_val) = anode;
+}
     break;
 
   case 55:
-#line 753 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "type_qualifier <- CONST\n";}
-	(yyval.sval) = "CONST";}
+#line 1015 "ast_c_grammar.y"
+    {
+     specifier_qualifier_list_node *anode;
+anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
+    (*anode).type_qualifier_node_1=(yyvsp[(1) - (2)].type_qualifier_val);
+    (*anode).specifier_qualifier_list_node_1=(yyvsp[(2) - (2)].specifier_qualifier_list_val);
+    (*anode).type_specifier_node_1= 0;
+    (yyval.specifier_qualifier_list_val) = anode;
+}
     break;
 
   case 56:
-#line 757 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "type_qualifier <- VOLATILE\n";}
- 	(yyval.sval) = "VOLATILE";}
+#line 1026 "ast_c_grammar.y"
+    {
+     struct_declarator_list_node *anode;
+anode = (struct_declarator_list_node*) malloc(sizeof(struct_declarator_list_node));
+    (*anode).struct_declarator_node_1=(yyvsp[(1) - (1)].struct_declarator_val);
+    (*anode).struct_declarator_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.struct_declarator_list_val) = anode;
+}
     break;
 
   case 57:
-#line 764 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "struct_or_union_specifier <- struct_or_union identifier '{' struct_declaration_list '}'\n";}}
+#line 1035 "ast_c_grammar.y"
+    {
+     struct_declarator_list_node *anode;
+anode = (struct_declarator_list_node*) malloc(sizeof(struct_declarator_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).struct_declarator_list_node_1=(yyvsp[(1) - (3)].struct_declarator_list_val);
+    (*anode).struct_declarator_node_1=(yyvsp[(3) - (3)].struct_declarator_val);
+    (yyval.struct_declarator_list_val) = anode;
+}
     break;
 
   case 58:
-#line 767 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "struct_or_union_specifier <- struct_or_union '{' struct_declaration_list '}'\n";}}
+#line 1046 "ast_c_grammar.y"
+    {
+     struct_declarator_node *anode;
+anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
+    (*anode).declarator_node_1=(yyvsp[(1) - (1)].declarator_val);
+    (*anode).constant_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.struct_declarator_val) = anode;
+}
     break;
 
   case 59:
-#line 770 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "struct_or_union_specifier <- struct_or_union identifier\n";}}
+#line 1055 "ast_c_grammar.y"
+    {
+     struct_declarator_node *anode;
+anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
+    (*anode).char_lit_1="':'";
+    (*anode).constant_expression_node_1=(yyvsp[(2) - (2)].constant_expression_val);
+    (*anode).declarator_node_1= 0;
+    (yyval.struct_declarator_val) = anode;
+}
     break;
 
   case 60:
-#line 776 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "struct_or_union <- STRUCT\n";}
-	(yyval.sval) = "STRUCT";}
+#line 1064 "ast_c_grammar.y"
+    {
+     struct_declarator_node *anode;
+anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
+    (*anode).char_lit_1="':'";
+    (*anode).declarator_node_1=(yyvsp[(1) - (3)].declarator_val);
+    (*anode).constant_expression_node_1=(yyvsp[(3) - (3)].constant_expression_val);
+    (yyval.struct_declarator_val) = anode;
+}
     break;
 
   case 61:
-#line 780 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "struct_or_union <- UNION\n";}
- 	(yyval.sval) = "SIGNED";}
+#line 1075 "ast_c_grammar.y"
+    {
+     enum_specifier_node *anode;
+anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).token_1=(yyvsp[(1) - (4)].sval);
+    (*anode).enumerator_list_node_1=(yyvsp[(3) - (4)].enumerator_list_val);
+    (*anode).identifier_node_1= 0;
+    (yyval.enum_specifier_val) = anode;
+}
     break;
 
   case 62:
-#line 787 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "struct_declaration_list <- struct_declaration\n";}}
+#line 1086 "ast_c_grammar.y"
+    {
+     enum_specifier_node *anode;
+anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).token_1=(yyvsp[(1) - (5)].sval);
+    (*anode).identifier_node_1=(yyvsp[(2) - (5)].identifier_val);
+    (*anode).enumerator_list_node_1=(yyvsp[(4) - (5)].enumerator_list_val);
+    (yyval.enum_specifier_val) = anode;
+}
     break;
 
   case 63:
-#line 790 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "struct_declaration_list <- struct_declaration_list struct_declaration\n";}}
+#line 1097 "ast_c_grammar.y"
+    {
+     enum_specifier_node *anode;
+anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
+    (*anode).token_1=(yyvsp[(1) - (2)].sval);
+    (*anode).identifier_node_1=(yyvsp[(2) - (2)].identifier_val);
+    (*anode).char_lit_1= "";
+    (*anode).enumerator_list_node_1= 0;
+    (*anode).char_lit_2= "";
+    (yyval.enum_specifier_val) = anode;
+}
     break;
 
   case 64:
-#line 796 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "init_declarator_list <- init_declarator\n";}
-	(yyval.declval) = (yyvsp[(1) - (1)].declval);}
+#line 1110 "ast_c_grammar.y"
+    {
+     enumerator_list_node *anode;
+anode = (enumerator_list_node*) malloc(sizeof(enumerator_list_node));
+    (*anode).enumerator_node_1=(yyvsp[(1) - (1)].enumerator_val);
+    (*anode).char_lit_1= "";
+    (*anode).enumerator_list_node_1= 0;
+    (yyval.enumerator_list_val) = anode;
+}
     break;
 
   case 65:
-#line 800 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "init_declarator_list <- init_declarator_list ',' init_declarator\n";}
- 	(yyval.declval) = (yyvsp[(3) - (3)].declval);}
+#line 1119 "ast_c_grammar.y"
+    {
+     enumerator_list_node *anode;
+anode = (enumerator_list_node*) malloc(sizeof(enumerator_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).enumerator_list_node_1=(yyvsp[(1) - (3)].enumerator_list_val);
+    (*anode).enumerator_node_1=(yyvsp[(3) - (3)].enumerator_val);
+    (yyval.enumerator_list_val) = anode;
+}
     break;
 
   case 66:
-#line 807 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "init_declarator <- declarator\n";}
-	(yyval.declval) = (yyvsp[(1) - (1)].declval);}
+#line 1130 "ast_c_grammar.y"
+    {
+     enumerator_node *anode;
+anode = (enumerator_node*) malloc(sizeof(enumerator_node));
+    (*anode).identifier_node_1=(yyvsp[(1) - (1)].identifier_val);
+    (*anode).constant_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.enumerator_val) = anode;
+}
     break;
 
   case 67:
-#line 811 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "init_declarator <- declarator '=' initializer\n";}
- 	(yyval.declval) = (yyvsp[(1) - (3)].declval);}
+#line 1139 "ast_c_grammar.y"
+    {
+     enumerator_node *anode;
+anode = (enumerator_node*) malloc(sizeof(enumerator_node));
+    (*anode).char_lit_1="'='";
+    (*anode).identifier_node_1=(yyvsp[(1) - (3)].identifier_val);
+    (*anode).constant_expression_node_1=(yyvsp[(3) - (3)].constant_expression_val);
+    (yyval.enumerator_val) = anode;
+}
     break;
 
   case 68:
-#line 817 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "struct_declaration <- specifier_qualifier_list struct_declarator_list ';'\n";}}
+#line 1150 "ast_c_grammar.y"
+    {
+     declarator_node *anode;
+anode = (declarator_node*) malloc(sizeof(declarator_node));
+    (*anode).direct_declarator_node_1=(yyvsp[(1) - (1)].direct_declarator_val);
+    (*anode).pointer_node_1= 0;
+    (yyval.declarator_val) = anode;
+}
     break;
 
   case 69:
-#line 823 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "specifier_qualifier_list <- type_specifier\n";}}
+#line 1158 "ast_c_grammar.y"
+    {
+     declarator_node *anode;
+anode = (declarator_node*) malloc(sizeof(declarator_node));
+    (*anode).pointer_node_1=(yyvsp[(1) - (2)].pointer_val);
+    (*anode).direct_declarator_node_1=(yyvsp[(2) - (2)].direct_declarator_val);
+    (yyval.declarator_val) = anode;
+}
     break;
 
   case 70:
-#line 826 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "specifier_qualifier_list <- type_specifier specifier_qualifier_list\n";}}
+#line 1168 "ast_c_grammar.y"
+    {
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).identifier_node_1=(yyvsp[(1) - (1)].identifier_val);
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).direct_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    (*anode).declarator_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).char_lit_2= "";
+    (yyval.direct_declarator_val) = anode;
+}
     break;
 
   case 71:
-#line 829 "new_c_grammar.y"
-    {if(parseDebug)
-	 {parseDebugOut << "specifier_qualifier_list <- type_qualifier\n";}}
+#line 1182 "ast_c_grammar.y"
+    {
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).declarator_node_1=(yyvsp[(2) - (3)].declarator_val);
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).direct_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    (yyval.direct_declarator_val) = anode;
+}
     break;
 
   case 72:
-#line 832 "new_c_grammar.y"
-    {if(parseDebug)
-	 {parseDebugOut << "specifier_qualifier_list <- type_qualifier specifier_qualifier_list\n";}}
+#line 1196 "ast_c_grammar.y"
+    {
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).direct_declarator_node_1=(yyvsp[(1) - (3)].direct_declarator_val);
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (yyval.direct_declarator_val) = anode;
+}
     break;
 
   case 73:
-#line 838 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "struct_declarator_list <- struct_declarator\n";}}
+#line 1210 "ast_c_grammar.y"
+    {
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).direct_declarator_node_1=(yyvsp[(1) - (4)].direct_declarator_val);
+    (*anode).constant_expression_node_1=(yyvsp[(3) - (4)].constant_expression_val);
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).declarator_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (yyval.direct_declarator_val) = anode;
+}
     break;
 
   case 74:
-#line 841 "new_c_grammar.y"
-    {if(parseDebug)
-	 {parseDebugOut << "struct_declarator_list <- struct_declarator_list ',' struct_declarator\n";}}
+#line 1224 "ast_c_grammar.y"
+    {
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).direct_declarator_node_1=(yyvsp[(1) - (3)].direct_declarator_val);
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (yyval.direct_declarator_val) = anode;
+}
     break;
 
   case 75:
-#line 847 "new_c_grammar.y"
-    {if(parseDebug)
-	 {parseDebugOut << "struct_declarator <- declarator\n";}}
+#line 1238 "ast_c_grammar.y"
+    {
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).direct_declarator_node_1=(yyvsp[(1) - (4)].direct_declarator_val);
+    (*anode).parameter_type_list_node_1=(yyvsp[(3) - (4)].parameter_type_list_val);
+    (*anode).declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (yyval.direct_declarator_val) = anode;
+}
     break;
 
   case 76:
-#line 850 "new_c_grammar.y"
-    {if(parseDebug)
-	 {parseDebugOut << "struct_declarator <- ':' constant_expression\n";}}
+#line 1252 "ast_c_grammar.y"
+    {
+     direct_declarator_node *anode;
+anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).direct_declarator_node_1=(yyvsp[(1) - (4)].direct_declarator_val);
+    (*anode).identifier_list_node_1=(yyvsp[(3) - (4)].identifier_list_val);
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (yyval.direct_declarator_val) = anode;
+}
     break;
 
   case 77:
-#line 853 "new_c_grammar.y"
-    {if(parseDebug)
-	 {parseDebugOut << "struct_declarator <- declarator ':' constant_expression\n";}}
+#line 1268 "ast_c_grammar.y"
+    {
+     pointer_node *anode;
+anode = (pointer_node*) malloc(sizeof(pointer_node));
+    (*anode).char_lit_1="'*'";
+    (*anode).pointer_node_1= 0;
+    (*anode).type_qualifier_list_node_1= 0;
+    (yyval.pointer_val) = anode;
+}
     break;
 
   case 78:
-#line 859 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "enum_specifier <- ENUM '{' enumerator_list '}'\n";}}
+#line 1277 "ast_c_grammar.y"
+    {
+     pointer_node *anode;
+anode = (pointer_node*) malloc(sizeof(pointer_node));
+    (*anode).char_lit_1="'*'";
+    (*anode).type_qualifier_list_node_1=(yyvsp[(2) - (2)].type_qualifier_list_val);
+    (*anode).pointer_node_1= 0;
+    (yyval.pointer_val) = anode;
+}
     break;
 
   case 79:
-#line 862 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "enum_specifier <- ENUM identifier '{' enumerator_list '}'\n";}}
+#line 1286 "ast_c_grammar.y"
+    {
+     pointer_node *anode;
+anode = (pointer_node*) malloc(sizeof(pointer_node));
+    (*anode).char_lit_1="'*'";
+    (*anode).pointer_node_1=(yyvsp[(2) - (2)].pointer_val);
+    (*anode).type_qualifier_list_node_1= 0;
+    (yyval.pointer_val) = anode;
+}
     break;
 
   case 80:
-#line 865 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "enum_specifier <- ENUM identifier\n";}}
+#line 1295 "ast_c_grammar.y"
+    {
+     pointer_node *anode;
+anode = (pointer_node*) malloc(sizeof(pointer_node));
+    (*anode).char_lit_1="'*'";
+    (*anode).type_qualifier_list_node_1=(yyvsp[(2) - (3)].type_qualifier_list_val);
+    (*anode).pointer_node_1=(yyvsp[(3) - (3)].pointer_val);
+    (yyval.pointer_val) = anode;
+}
     break;
 
   case 81:
-#line 871 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "enumerator_list <- enumerator\n";}}
+#line 1306 "ast_c_grammar.y"
+    {
+     type_qualifier_list_node *anode;
+anode = (type_qualifier_list_node*) malloc(sizeof(type_qualifier_list_node));
+    (*anode).type_qualifier_node_1=(yyvsp[(1) - (1)].type_qualifier_val);
+    (*anode).type_qualifier_list_node_1= 0;
+    (yyval.type_qualifier_list_val) = anode;
+}
     break;
 
   case 82:
-#line 874 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "enumerator_list <- enumerator_list ',' enumerator\n";}}
+#line 1314 "ast_c_grammar.y"
+    {
+     type_qualifier_list_node *anode;
+anode = (type_qualifier_list_node*) malloc(sizeof(type_qualifier_list_node));
+    (*anode).type_qualifier_list_node_1=(yyvsp[(1) - (2)].type_qualifier_list_val);
+    (*anode).type_qualifier_node_1=(yyvsp[(2) - (2)].type_qualifier_val);
+    (yyval.type_qualifier_list_val) = anode;
+}
     break;
 
   case 83:
-#line 880 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "enumerator <- identifier\n";}}
+#line 1324 "ast_c_grammar.y"
+    {
+     parameter_type_list_node *anode;
+anode = (parameter_type_list_node*) malloc(sizeof(parameter_type_list_node));
+    (*anode).parameter_list_node_1=(yyvsp[(1) - (1)].parameter_list_val);
+    (*anode).token_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.parameter_type_list_val) = anode;
+}
     break;
 
   case 84:
-#line 883 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "enumerator <- identifier '=' constant_expression\n";}}
+#line 1333 "ast_c_grammar.y"
+    {
+     parameter_type_list_node *anode;
+anode = (parameter_type_list_node*) malloc(sizeof(parameter_type_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).token_1=(yyvsp[(3) - (3)].sval);
+    (*anode).parameter_list_node_1=(yyvsp[(1) - (3)].parameter_list_val);
+    (yyval.parameter_type_list_val) = anode;
+}
     break;
 
   case 85:
-#line 890 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "declarator <- direct_declarator\n";}
-	(yyval.declval) = (yyvsp[(1) - (1)].declval);}
+#line 1344 "ast_c_grammar.y"
+    {
+     parameter_list_node *anode;
+anode = (parameter_list_node*) malloc(sizeof(parameter_list_node));
+    (*anode).parameter_declaration_node_1=(yyvsp[(1) - (1)].parameter_declaration_val);
+    (*anode).parameter_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.parameter_list_val) = anode;
+}
     break;
 
   case 86:
-#line 894 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "declarator <- pointer direct_declarator\n";}
-        declNode dn = *(yyvsp[(2) - (2)].declval);
-	dn.specs |= xPOINTER;
-	(yyval.declval) = &dn;
-        }
+#line 1353 "ast_c_grammar.y"
+    {
+     parameter_list_node *anode;
+anode = (parameter_list_node*) malloc(sizeof(parameter_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).parameter_list_node_1=(yyvsp[(1) - (3)].parameter_list_val);
+    (*anode).parameter_declaration_node_1=(yyvsp[(3) - (3)].parameter_declaration_val);
+    (yyval.parameter_list_val) = anode;
+}
     break;
 
   case 87:
-#line 905 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "direct_declarator <- identifier\n";}
-	declNode dn = *(yyvsp[(1) - (1)].declval);
-	dn.next = 0;
-	(yyval.declval) = &dn;
+#line 1364 "ast_c_grammar.y"
+    {
+     parameter_declaration_node *anode;
+anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node));
+    (*anode).declaration_specifiers_node_1=(yyvsp[(1) - (2)].declaration_specifiers_val);
+    (*anode).declarator_node_1=(yyvsp[(2) - (2)].declarator_val);
+    (*anode).abstract_declarator_node_1= 0;
+    (yyval.parameter_declaration_val) = anode;
 }
     break;
 
   case 88:
-#line 912 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "direct_declarator <- '(' declarator ')'\n";}
- 	 declNode dn = *(yyvsp[(2) - (3)].declval);
-	 (yyval.declval) = &dn;
+#line 1373 "ast_c_grammar.y"
+    {
+     parameter_declaration_node *anode;
+anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node));
+    (*anode).declaration_specifiers_node_1=(yyvsp[(1) - (1)].declaration_specifiers_val);
+    (*anode).declarator_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (yyval.parameter_declaration_val) = anode;
 }
     break;
 
   case 89:
-#line 919 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "direct_declarator <- direct_declarator '[' ']'\n";}
- 	 declNode dn = *(yyvsp[(1) - (3)].declval);
-	 dn.specs |= xARRAY;
-	 (yyval.declval)=&dn;
+#line 1382 "ast_c_grammar.y"
+    {
+     parameter_declaration_node *anode;
+anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node));
+    (*anode).declaration_specifiers_node_1=(yyvsp[(1) - (2)].declaration_specifiers_val);
+    (*anode).abstract_declarator_node_1=(yyvsp[(2) - (2)].abstract_declarator_val);
+    (*anode).declarator_node_1= 0;
+    (yyval.parameter_declaration_val) = anode;
 }
     break;
 
   case 90:
-#line 926 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "direct_declarator <- direct_declarator '[' constant_expression ']'\n";}
-        declNode dn = *(yyvsp[(1) - (4)].declval);
-	dn.specs |= xARRAY;
-	(yyval.declval)=&dn;}
+#line 1393 "ast_c_grammar.y"
+    {
+     identifier_list_node *anode;
+anode = (identifier_list_node*) malloc(sizeof(identifier_list_node));
+    (*anode).identifier_node_1=(yyvsp[(1) - (1)].identifier_val);
+    (*anode).char_lit_1= "";
+    (*anode).identifier_list_node_1= 0;
+    (yyval.identifier_list_val) = anode;
+}
     break;
 
   case 91:
-#line 932 "new_c_grammar.y"
-    {std::cout<<"I'm a function!"<<std::endl;
-if(parseDebug)
- 	{parseDebugOut << "direct_declarator <- direct_declarator '(' ')'\n";}
- 	 declNode dn = *(yyvsp[(1) - (3)].declval);
-	 dn.specs |= xFUNCTION;
-	 (yyval.declval)=&dn;
- 	st.push();}
+#line 1402 "ast_c_grammar.y"
+    {
+     identifier_list_node *anode;
+anode = (identifier_list_node*) malloc(sizeof(identifier_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).identifier_list_node_1=(yyvsp[(1) - (3)].identifier_list_val);
+    (*anode).identifier_node_1=(yyvsp[(3) - (3)].identifier_val);
+    (yyval.identifier_list_val) = anode;
+}
     break;
 
   case 92:
-#line 939 "new_c_grammar.y"
-    {st.push();}
+#line 1413 "ast_c_grammar.y"
+    {
+     initializer_node *anode;
+anode = (initializer_node*) malloc(sizeof(initializer_node));
+    (*anode).assignment_expression_node_1=(yyvsp[(1) - (1)].assignment_expression_val);
+    (*anode).initializer_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).char_lit_3= "";
+    (*anode).char_lit_2= "";
+    (yyval.initializer_val) = anode;
+}
     break;
 
   case 93:
-#line 940 "new_c_grammar.y"
-    {std::cout<<"I'm a function!"<<std::endl;
-if(parseDebug)
- 	{parseDebugOut << "direct_declarator <- direct_declarator '(' parameter_type_list ')'\n";}
-   declNode dn = *(yyvsp[(1) - (5)].declval);
-   dn.specs |= xFUNCTION;
-   (yyval.declval)=&dn;
+#line 1424 "ast_c_grammar.y"
+    {
+     initializer_node *anode;
+anode = (initializer_node*) malloc(sizeof(initializer_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).initializer_list_node_1=(yyvsp[(2) - (3)].initializer_list_val);
+    (*anode).assignment_expression_node_1= 0;
+    (*anode).char_lit_3= "";
+    (yyval.initializer_val) = anode;
 }
     break;
 
   case 94:
-#line 948 "new_c_grammar.y"
-    {std::cout<<"I'm a function!"<<std::endl;
-if(parseDebug)
- 	{parseDebugOut << "direct_declarator <- direct_declarator '(' identifier_list ')'\n";}
-  declNode dn = *(yyvsp[(1) - (4)].declval);
-  dn.specs |= xFUNCTION;
-  (yyval.declval)=&dn;
+#line 1435 "ast_c_grammar.y"
+    {
+     initializer_node *anode;
+anode = (initializer_node*) malloc(sizeof(initializer_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="','";
+    (*anode).char_lit_3="'}'";
+    (*anode).initializer_list_node_1=(yyvsp[(2) - (4)].initializer_list_val);
+    (*anode).assignment_expression_node_1= 0;
+    (yyval.initializer_val) = anode;
 }
     break;
 
   case 95:
-#line 959 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "pointer <- '*'\n";}}
+#line 1448 "ast_c_grammar.y"
+    {
+     initializer_list_node *anode;
+anode = (initializer_list_node*) malloc(sizeof(initializer_list_node));
+    (*anode).initializer_node_1=(yyvsp[(1) - (1)].initializer_val);
+    (*anode).initializer_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.initializer_list_val) = anode;
+}
     break;
 
   case 96:
-#line 962 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "pointer <- '*' type_qualifier_list\n";}}
+#line 1457 "ast_c_grammar.y"
+    {
+     initializer_list_node *anode;
+anode = (initializer_list_node*) malloc(sizeof(initializer_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).initializer_list_node_1=(yyvsp[(1) - (3)].initializer_list_val);
+    (*anode).initializer_node_1=(yyvsp[(3) - (3)].initializer_val);
+    (yyval.initializer_list_val) = anode;
+}
     break;
 
   case 97:
-#line 965 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "pointer <- '*' pointer\n";}}
+#line 1468 "ast_c_grammar.y"
+    {
+     type_name_node *anode;
+anode = (type_name_node*) malloc(sizeof(type_name_node));
+    (*anode).specifier_qualifier_list_node_1=(yyvsp[(1) - (1)].specifier_qualifier_list_val);
+    (*anode).abstract_declarator_node_1= 0;
+    (yyval.type_name_val) = anode;
+}
     break;
 
   case 98:
-#line 968 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "pointer <- '*' type_qualifier_list pointer\n";}}
+#line 1476 "ast_c_grammar.y"
+    {
+     type_name_node *anode;
+anode = (type_name_node*) malloc(sizeof(type_name_node));
+    (*anode).specifier_qualifier_list_node_1=(yyvsp[(1) - (2)].specifier_qualifier_list_val);
+    (*anode).abstract_declarator_node_1=(yyvsp[(2) - (2)].abstract_declarator_val);
+    (yyval.type_name_val) = anode;
+}
     break;
 
   case 99:
-#line 974 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "type_qualifier_list <- type_qualifier\n";}}
+#line 1486 "ast_c_grammar.y"
+    {
+     abstract_declarator_node *anode;
+anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
+    (*anode).pointer_node_1=(yyvsp[(1) - (1)].pointer_val);
+    (*anode).direct_abstract_declarator_node_1= 0;
+    (yyval.abstract_declarator_val) = anode;
+}
     break;
 
   case 100:
-#line 977 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "type_qualifier_list <- type_qualifier_list type_qualifier\n";}}
+#line 1494 "ast_c_grammar.y"
+    {
+     abstract_declarator_node *anode;
+anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
+    (*anode).direct_abstract_declarator_node_1=(yyvsp[(1) - (1)].direct_abstract_declarator_val);
+    (*anode).pointer_node_1= 0;
+    (yyval.abstract_declarator_val) = anode;
+}
     break;
 
   case 101:
-#line 983 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "parameter_type_list <- parameter_list\n";}}
+#line 1502 "ast_c_grammar.y"
+    {
+     abstract_declarator_node *anode;
+anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
+    (*anode).pointer_node_1=(yyvsp[(1) - (2)].pointer_val);
+    (*anode).direct_abstract_declarator_node_1=(yyvsp[(2) - (2)].direct_abstract_declarator_val);
+    (yyval.abstract_declarator_val) = anode;
+}
     break;
 
   case 102:
-#line 986 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "parameter_type_list <- parameter_list ',' ELIPSIS\n";}}
+#line 1512 "ast_c_grammar.y"
+    {
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).abstract_declarator_node_1=(yyvsp[(2) - (3)].abstract_declarator_val);
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).direct_abstract_declarator_node_1= 0;
+    (yyval.direct_abstract_declarator_val) = anode;
+}
     break;
 
   case 103:
-#line 992 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "parameter_list <- parameter_declaration\n";}}
+#line 1524 "ast_c_grammar.y"
+    {
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).direct_abstract_declarator_node_1= 0;
+    (yyval.direct_abstract_declarator_val) = anode;
+}
     break;
 
   case 104:
-#line 995 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "parameter_list <- parameter_list ',' parameter_declaration\n";}}
+#line 1536 "ast_c_grammar.y"
+    {
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).constant_expression_node_1=(yyvsp[(2) - (3)].constant_expression_val);
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).direct_abstract_declarator_node_1= 0;
+    (yyval.direct_abstract_declarator_val) = anode;
+}
     break;
 
   case 105:
-#line 1001 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "parameter_declaration <- declaration_specifiers declarator\n";}}
+#line 1548 "ast_c_grammar.y"
+    {
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).direct_abstract_declarator_node_1=(yyvsp[(1) - (3)].direct_abstract_declarator_val);
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (yyval.direct_abstract_declarator_val) = anode;
+}
     break;
 
   case 106:
-#line 1004 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "parameter_declaration <- declaration_specifiers\n";}}
+#line 1560 "ast_c_grammar.y"
+    {
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).direct_abstract_declarator_node_1=(yyvsp[(1) - (4)].direct_abstract_declarator_val);
+    (*anode).constant_expression_node_1=(yyvsp[(3) - (4)].constant_expression_val);
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (yyval.direct_abstract_declarator_val) = anode;
+}
     break;
 
   case 107:
-#line 1007 "new_c_grammar.y"
-    {if(parseDebug)
- {parseDebugOut << "parameter_declaration <- declaration_specifiers abstract_declarator\n";}}
+#line 1572 "ast_c_grammar.y"
+    {
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).direct_abstract_declarator_node_1= 0;
+    (yyval.direct_abstract_declarator_val) = anode;
+}
     break;
 
   case 108:
-#line 1013 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "identifier_list <- identifier\n";}
-
- declNode dn = *(yyvsp[(1) - (1)].declval);
-  (yyval.declval) = &dn;
+#line 1584 "ast_c_grammar.y"
+    {
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).parameter_type_list_node_1=(yyvsp[(2) - (3)].parameter_type_list_val);
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (*anode).direct_abstract_declarator_node_1= 0;
+    (yyval.direct_abstract_declarator_val) = anode;
 }
     break;
 
   case 109:
-#line 1020 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "identifier_list <- identifier_list ',' identifier\n";}
-
-   declNode dn = *(yyvsp[(1) - (3)].declval);
-   dn.next = (yyvsp[(3) - (3)].declval);
-   (yyval.declval) = &dn;
+#line 1596 "ast_c_grammar.y"
+    {
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).direct_abstract_declarator_node_1=(yyvsp[(1) - (3)].direct_abstract_declarator_val);
+    (*anode).parameter_type_list_node_1= 0;
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (yyval.direct_abstract_declarator_val) = anode;
 }
     break;
 
   case 110:
-#line 1031 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "initializer <- assignment_expression\n";}}
+#line 1608 "ast_c_grammar.y"
+    {
+     direct_abstract_declarator_node *anode;
+anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).direct_abstract_declarator_node_1=(yyvsp[(1) - (4)].direct_abstract_declarator_val);
+    (*anode).parameter_type_list_node_1=(yyvsp[(3) - (4)].parameter_type_list_val);
+    (*anode).abstract_declarator_node_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (yyval.direct_abstract_declarator_val) = anode;
+}
     break;
 
   case 111:
-#line 1034 "new_c_grammar.y"
-    {if(parseDebug)
- {parseDebugOut << "initializer <- '{' initializer_list '}'\n";}}
+#line 1622 "ast_c_grammar.y"
+    {
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).labeled_statement_node_1=(yyvsp[(1) - (1)].labeled_statement_val);
+    (*anode).expression_statement_node_1= 0;
+    (*anode).compound_statement_node_1= 0;
+    (*anode).jump_statement_node_1= 0;
+    (*anode).selection_statement_node_1= 0;
+    (*anode).iteration_statement_node_1= 0;
+    (yyval.statement_val) = anode;
+}
     break;
 
   case 112:
-#line 1037 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "initializer <- '{' initializer_list ',' '}'\n";}}
+#line 1634 "ast_c_grammar.y"
+    {
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).compound_statement_node_1=(yyvsp[(1) - (1)].compound_statement_val);
+    (*anode).expression_statement_node_1= 0;
+    (*anode).iteration_statement_node_1= 0;
+    (*anode).jump_statement_node_1= 0;
+    (*anode).selection_statement_node_1= 0;
+    (*anode).labeled_statement_node_1= 0;
+    (yyval.statement_val) = anode;
+}
     break;
 
   case 113:
-#line 1043 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "initializer_list <- initializer\n";}}
+#line 1646 "ast_c_grammar.y"
+    {
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).expression_statement_node_1=(yyvsp[(1) - (1)].expression_statement_val);
+    (*anode).compound_statement_node_1= 0;
+    (*anode).jump_statement_node_1= 0;
+    (*anode).iteration_statement_node_1= 0;
+    (*anode).labeled_statement_node_1= 0;
+    (*anode).selection_statement_node_1= 0;
+    (yyval.statement_val) = anode;
+}
     break;
 
   case 114:
-#line 1046 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "initializer_list <- initializer_list ',' initializer\n";}}
+#line 1658 "ast_c_grammar.y"
+    {
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).selection_statement_node_1=(yyvsp[(1) - (1)].selection_statement_val);
+    (*anode).expression_statement_node_1= 0;
+    (*anode).compound_statement_node_1= 0;
+    (*anode).jump_statement_node_1= 0;
+    (*anode).iteration_statement_node_1= 0;
+    (*anode).labeled_statement_node_1= 0;
+    (yyval.statement_val) = anode;
+}
     break;
 
   case 115:
-#line 1052 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "type_name <- specifier_qualifier_list\n";}}
+#line 1670 "ast_c_grammar.y"
+    {
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).iteration_statement_node_1=(yyvsp[(1) - (1)].iteration_statement_val);
+    (*anode).expression_statement_node_1= 0;
+    (*anode).compound_statement_node_1= 0;
+    (*anode).jump_statement_node_1= 0;
+    (*anode).selection_statement_node_1= 0;
+    (*anode).labeled_statement_node_1= 0;
+    (yyval.statement_val) = anode;
+}
     break;
 
   case 116:
-#line 1055 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "type_name <- specifier_qualifier_list abstract_declarator\n";}}
+#line 1682 "ast_c_grammar.y"
+    {
+     statement_node *anode;
+anode = (statement_node*) malloc(sizeof(statement_node));
+    (*anode).jump_statement_node_1=(yyvsp[(1) - (1)].jump_statement_val);
+    (*anode).expression_statement_node_1= 0;
+    (*anode).compound_statement_node_1= 0;
+    (*anode).iteration_statement_node_1= 0;
+    (*anode).selection_statement_node_1= 0;
+    (*anode).labeled_statement_node_1= 0;
+    (yyval.statement_val) = anode;
+}
     break;
 
   case 117:
-#line 1061 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "abstract_declarator <- pointer\n";}}
+#line 1696 "ast_c_grammar.y"
+    {
+     labeled_statement_node *anode;
+anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
+    (*anode).char_lit_1="':'";
+    (*anode).identifier_node_1=(yyvsp[(1) - (3)].identifier_val);
+    (*anode).statement_node_1=(yyvsp[(3) - (3)].statement_val);
+    (*anode).token_1= 0;
+    (*anode).constant_expression_node_1= 0;
+    (yyval.labeled_statement_val) = anode;
+}
     break;
 
   case 118:
-#line 1064 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "abstract_declarator <- direct_abstract_declarator\n";}}
+#line 1707 "ast_c_grammar.y"
+    {
+     labeled_statement_node *anode;
+anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
+    (*anode).char_lit_1="':'";
+    (*anode).token_1=(yyvsp[(1) - (4)].sval);
+    (*anode).constant_expression_node_1=(yyvsp[(2) - (4)].constant_expression_val);
+    (*anode).statement_node_1=(yyvsp[(4) - (4)].statement_val);
+    (*anode).identifier_node_1= 0;
+    (yyval.labeled_statement_val) = anode;
+}
     break;
 
   case 119:
-#line 1067 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "abstract_declarator <- pointer direct_abstract_declarator\n";}}
+#line 1718 "ast_c_grammar.y"
+    {
+     labeled_statement_node *anode;
+anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
+    (*anode).char_lit_1="':'";
+    (*anode).token_1=(yyvsp[(1) - (3)].sval);
+    (*anode).statement_node_1=(yyvsp[(3) - (3)].statement_val);
+    (*anode).constant_expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (yyval.labeled_statement_val) = anode;
+}
     break;
 
   case 120:
-#line 1073 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "direct_abstract_declarator <- '(' abstract_declarator ')'\n";}}
+#line 1731 "ast_c_grammar.y"
+    {
+     expression_statement_node *anode;
+anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).expression_node_1= 0;
+    (yyval.expression_statement_val) = anode;
+}
     break;
 
   case 121:
-#line 1076 "new_c_grammar.y"
-    {if(parseDebug)
- {parseDebugOut << "direct_abstract_declarator <- '[' ']'\n";}}
+#line 1739 "ast_c_grammar.y"
+    {
+     expression_statement_node *anode;
+anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).expression_node_1=(yyvsp[(1) - (2)].expression_val);
+    (yyval.expression_statement_val) = anode;
+}
     break;
 
   case 122:
-#line 1079 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "direct_abstract_declarator <- '[' constant_expression ']'\n";}}
+#line 1749 "ast_c_grammar.y"
+    {
+     compound_statement_node *anode;
+anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).declaration_list_node_1= 0;
+    (*anode).statement_list_node_1= 0;
+    (yyval.compound_statement_val) = anode;
+}
     break;
 
   case 123:
-#line 1082 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '[' ']'\n";}}
+#line 1759 "ast_c_grammar.y"
+    {
+     compound_statement_node *anode;
+anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).statement_list_node_1=(yyvsp[(2) - (3)].statement_list_val);
+    (*anode).declaration_list_node_1= 0;
+    (yyval.compound_statement_val) = anode;
+}
     break;
 
   case 124:
-#line 1085 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '[' constant_expression ']'\n";}}
+#line 1769 "ast_c_grammar.y"
+    {
+     compound_statement_node *anode;
+anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).declaration_list_node_1=(yyvsp[(2) - (3)].declaration_list_val);
+    (*anode).statement_list_node_1= 0;
+    (yyval.compound_statement_val) = anode;
+}
     break;
 
   case 125:
-#line 1088 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "direct_abstract_declarator <- '(' ')'\n";}}
+#line 1779 "ast_c_grammar.y"
+    {
+     compound_statement_node *anode;
+anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
+    (*anode).char_lit_1="'{'";
+    (*anode).char_lit_2="'}'";
+    (*anode).declaration_list_node_1=(yyvsp[(2) - (4)].declaration_list_val);
+    (*anode).statement_list_node_1=(yyvsp[(3) - (4)].statement_list_val);
+    (yyval.compound_statement_val) = anode;
+}
     break;
 
   case 126:
-#line 1091 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "direct_abstract_declarator <- '(' parameter_type_list ')'\n";}}
+#line 1791 "ast_c_grammar.y"
+    {
+     statement_list_node *anode;
+anode = (statement_list_node*) malloc(sizeof(statement_list_node));
+    (*anode).statement_node_1=(yyvsp[(1) - (1)].statement_val);
+    (*anode).statement_list_node_1= 0;
+    (yyval.statement_list_val) = anode;
+}
     break;
 
   case 127:
-#line 1094 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '(' ')'\n";}}
+#line 1799 "ast_c_grammar.y"
+    {
+     statement_list_node *anode;
+anode = (statement_list_node*) malloc(sizeof(statement_list_node));
+    (*anode).statement_list_node_1=(yyvsp[(1) - (2)].statement_list_val);
+    (*anode).statement_node_1=(yyvsp[(2) - (2)].statement_val);
+    (yyval.statement_list_val) = anode;
+}
     break;
 
   case 128:
-#line 1097 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "direct_abstract_declarator <- direct_abstract_declarator '(' parameter_type_list ')'\n";}}
+#line 1809 "ast_c_grammar.y"
+    {
+     selection_statement_node *anode;
+anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).token_1=(yyvsp[(1) - (5)].sval);
+    (*anode).expression_node_1=(yyvsp[(3) - (5)].expression_val);
+    (*anode).statement_node_1=(yyvsp[(5) - (5)].statement_val);
+    (*anode).token_2= 0;
+    (*anode).statement_node_2= 0;
+    (yyval.selection_statement_val) = anode;
+}
     break;
 
   case 129:
-#line 1103 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "statement <- labeled_statement\n";}}
+#line 1822 "ast_c_grammar.y"
+    {
+     selection_statement_node *anode;
+anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).token_1=(yyvsp[(1) - (7)].sval);
+    (*anode).token_2=(yyvsp[(6) - (7)].sval);
+    (*anode).expression_node_1=(yyvsp[(3) - (7)].expression_val);
+    (*anode).statement_node_1=(yyvsp[(5) - (7)].statement_val);
+    (*anode).statement_node_2=(yyvsp[(5) - (7)].statement_val);
+    (*anode).statement_node_1=(yyvsp[(5) - (7)].statement_val);
+    (yyval.selection_statement_val) = anode;
+}
     break;
 
   case 130:
-#line 1105 "new_c_grammar.y"
-    {st.push();}
+#line 1836 "ast_c_grammar.y"
+    {
+     selection_statement_node *anode;
+anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).token_1=(yyvsp[(1) - (5)].sval);
+    (*anode).expression_node_1=(yyvsp[(3) - (5)].expression_val);
+    (*anode).statement_node_1=(yyvsp[(5) - (5)].statement_val);
+    (*anode).token_2= 0;
+    (*anode).statement_node_2= 0;
+    (yyval.selection_statement_val) = anode;
+}
     break;
 
   case 131:
-#line 1105 "new_c_grammar.y"
-    {st.pop();}
+#line 1851 "ast_c_grammar.y"
+    {
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).token_1=(yyvsp[(1) - (5)].sval);
+    (*anode).expression_node_1=(yyvsp[(3) - (5)].expression_val);
+    (*anode).statement_node_1=(yyvsp[(5) - (5)].statement_val);
+    (*anode).char_lit_4= "";
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    (*anode).char_lit_3= "";
+    (*anode).token_2= 0;
+    (yyval.iteration_statement_val) = anode;
+}
     break;
 
   case 132:
-#line 1106 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "statement <- compound_statement\n";}}
+#line 1867 "ast_c_grammar.y"
+    {
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).char_lit_3="';'";
+    (*anode).token_1=(yyvsp[(1) - (7)].sval);
+    (*anode).token_2=(yyvsp[(3) - (7)].sval);
+    (*anode).statement_node_1=(yyvsp[(2) - (7)].statement_val);
+    (*anode).expression_node_1=(yyvsp[(5) - (7)].expression_val);
+    (*anode).char_lit_4= "";
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    (yyval.iteration_statement_val) = anode;
+}
     break;
 
   case 133:
-#line 1109 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "statement <- expression_statement\n";}}
+#line 1883 "ast_c_grammar.y"
+    {
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=(yyvsp[(1) - (6)].sval);
+    (*anode).statement_node_1=(yyvsp[(6) - (6)].statement_val);
+    (*anode).expression_node_1= 0;
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    (*anode).token_2= 0;
+    (yyval.iteration_statement_val) = anode;
+}
     break;
 
   case 134:
-#line 1112 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "statement <- selection_statement\n";}}
+#line 1899 "ast_c_grammar.y"
+    {
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=(yyvsp[(1) - (7)].sval);
+    (*anode).expression_node_1=(yyvsp[(5) - (7)].expression_val);
+    (*anode).statement_node_1=(yyvsp[(7) - (7)].statement_val);
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    (*anode).token_2= 0;
+    (yyval.iteration_statement_val) = anode;
+}
     break;
 
   case 135:
-#line 1115 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "statement <- iteration_statement\n";}}
+#line 1915 "ast_c_grammar.y"
+    {
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=(yyvsp[(1) - (7)].sval);
+    (*anode).expression_node_1=(yyvsp[(4) - (7)].expression_val);
+    (*anode).statement_node_1=(yyvsp[(7) - (7)].statement_val);
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    (*anode).token_2= 0;
+    (yyval.iteration_statement_val) = anode;
+}
     break;
 
   case 136:
-#line 1118 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "statement <- jump_statement\n";}}
+#line 1931 "ast_c_grammar.y"
+    {
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=(yyvsp[(1) - (8)].sval);
+    (*anode).expression_node_1=(yyvsp[(4) - (8)].expression_val);
+    (*anode).expression_node_2=(yyvsp[(4) - (8)].expression_val);
+    (*anode).expression_node_1=(yyvsp[(4) - (8)].expression_val);
+    (*anode).statement_node_1=(yyvsp[(8) - (8)].statement_val);
+    (*anode).expression_node_3= 0;
+    (*anode).token_2= 0;
+    (yyval.iteration_statement_val) = anode;
+}
     break;
 
   case 137:
-#line 1124 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "labeled_statement <- identifier ':' statement\n";}}
+#line 1948 "ast_c_grammar.y"
+    {
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=(yyvsp[(1) - (7)].sval);
+    (*anode).expression_node_1=(yyvsp[(3) - (7)].expression_val);
+    (*anode).statement_node_1=(yyvsp[(7) - (7)].statement_val);
+    (*anode).expression_node_3= 0;
+    (*anode).expression_node_2= 0;
+    (*anode).token_2= 0;
+    (yyval.iteration_statement_val) = anode;
+}
     break;
 
   case 138:
-#line 1127 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "labeled_statement <- CASE constant_expression ':' statement\n";}}
+#line 1964 "ast_c_grammar.y"
+    {
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=(yyvsp[(1) - (8)].sval);
+    (*anode).expression_node_1=(yyvsp[(3) - (8)].expression_val);
+    (*anode).expression_node_2=(yyvsp[(3) - (8)].expression_val);
+    (*anode).expression_node_1=(yyvsp[(3) - (8)].expression_val);
+    (*anode).statement_node_1=(yyvsp[(8) - (8)].statement_val);
+    (*anode).expression_node_3= 0;
+    (*anode).token_2= 0;
+    (yyval.iteration_statement_val) = anode;
+}
     break;
 
   case 139:
-#line 1130 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "labeled_statement <- DEFAULT ':' statement\n";}}
+#line 1981 "ast_c_grammar.y"
+    {
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=(yyvsp[(1) - (8)].sval);
+    (*anode).expression_node_1=(yyvsp[(3) - (8)].expression_val);
+    (*anode).expression_node_2=(yyvsp[(3) - (8)].expression_val);
+    (*anode).expression_node_1=(yyvsp[(3) - (8)].expression_val);
+    (*anode).statement_node_1=(yyvsp[(8) - (8)].statement_val);
+    (*anode).expression_node_3= 0;
+    (*anode).token_2= 0;
+    (yyval.iteration_statement_val) = anode;
+}
     break;
 
   case 140:
-#line 1136 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "expression_statement <- ';'\n";}}
+#line 1998 "ast_c_grammar.y"
+    {
+     iteration_statement_node *anode;
+anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="';'";
+    (*anode).char_lit_3="';'";
+    (*anode).char_lit_4="')'";
+    (*anode).token_1=(yyvsp[(1) - (9)].sval);
+    (*anode).expression_node_1=(yyvsp[(3) - (9)].expression_val);
+    (*anode).expression_node_2=(yyvsp[(3) - (9)].expression_val);
+    (*anode).expression_node_3=(yyvsp[(3) - (9)].expression_val);
+    (*anode).expression_node_1=(yyvsp[(3) - (9)].expression_val);
+    (*anode).expression_node_2=(yyvsp[(3) - (9)].expression_val);
+    (*anode).expression_node_1=(yyvsp[(3) - (9)].expression_val);
+    (*anode).statement_node_1=(yyvsp[(9) - (9)].statement_val);
+    (*anode).token_2= 0;
+    (yyval.iteration_statement_val) = anode;
+}
     break;
 
   case 141:
-#line 1139 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "expression_statement <- expression ';'\n";}}
+#line 2019 "ast_c_grammar.y"
+    {
+     jump_statement_node *anode;
+anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).token_1=(yyvsp[(1) - (3)].sval);
+    (*anode).identifier_node_1=(yyvsp[(2) - (3)].identifier_val);
+    (*anode).expression_node_1= 0;
+    (yyval.jump_statement_val) = anode;
+}
     break;
 
   case 142:
-#line 1145 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "compound_statement <- '{' '}'\n";}}
+#line 2029 "ast_c_grammar.y"
+    {
+     jump_statement_node *anode;
+anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).token_1=(yyvsp[(1) - (2)].sval);
+    (*anode).expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (yyval.jump_statement_val) = anode;
+}
     break;
 
   case 143:
-#line 1148 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "compound_statement <- '{' statement_list '}'\n";}}
+#line 2039 "ast_c_grammar.y"
+    {
+     jump_statement_node *anode;
+anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).token_1=(yyvsp[(1) - (2)].sval);
+    (*anode).expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (yyval.jump_statement_val) = anode;
+}
     break;
 
   case 144:
-#line 1151 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "compound_statement <- '{' declaration_list '}'\n";}}
+#line 2049 "ast_c_grammar.y"
+    {
+     jump_statement_node *anode;
+anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).token_1=(yyvsp[(1) - (2)].sval);
+    (*anode).expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (yyval.jump_statement_val) = anode;
+}
     break;
 
   case 145:
-#line 1154 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "compound_statement <- '{' declaration_list statement_list '}'\n";}}
+#line 2059 "ast_c_grammar.y"
+    {
+     jump_statement_node *anode;
+anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
+    (*anode).char_lit_1="';'";
+    (*anode).token_1=(yyvsp[(1) - (3)].sval);
+    (*anode).expression_node_1=(yyvsp[(2) - (3)].expression_val);
+    (*anode).identifier_node_1= 0;
+    (yyval.jump_statement_val) = anode;
+}
     break;
 
   case 146:
-#line 1160 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "statement_list <- statement\n";}}
+#line 2071 "ast_c_grammar.y"
+    {
+     expression_node *anode;
+anode = (expression_node*) malloc(sizeof(expression_node));
+    (*anode).assignment_expression_node_1=(yyvsp[(1) - (1)].assignment_expression_val);
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.expression_val) = anode;
+}
     break;
 
   case 147:
-#line 1163 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "statement_list <- statement_list statement\n";}}
+#line 2080 "ast_c_grammar.y"
+    {
+     expression_node *anode;
+anode = (expression_node*) malloc(sizeof(expression_node));
+    (*anode).char_lit_1="','";
+    (*anode).expression_node_1=(yyvsp[(1) - (3)].expression_val);
+    (*anode).assignment_expression_node_1=(yyvsp[(3) - (3)].assignment_expression_val);
+    (yyval.expression_val) = anode;
+}
     break;
 
   case 148:
-#line 1169 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "selection_statement <- IF '(' expression ')' statement\n";}}
+#line 2091 "ast_c_grammar.y"
+    {
+     assignment_expression_node *anode;
+anode = (assignment_expression_node*) malloc(sizeof(assignment_expression_node));
+    (*anode).conditional_expression_node_1=(yyvsp[(1) - (1)].conditional_expression_val);
+    (*anode).assignment_operator_node_1= 0;
+    (*anode).unary_expression_node_1= 0;
+    (*anode).assignment_expression_node_1= 0;
+    (yyval.assignment_expression_val) = anode;
+}
     break;
 
   case 149:
-#line 1172 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "selection_statement <- IF '(' expression ')' statement ELSE statement\n";}}
+#line 2101 "ast_c_grammar.y"
+    {
+     assignment_expression_node *anode;
+anode = (assignment_expression_node*) malloc(sizeof(assignment_expression_node));
+    (*anode).unary_expression_node_1=(yyvsp[(1) - (3)].unary_expression_val);
+    (*anode).assignment_operator_node_1=(yyvsp[(2) - (3)].assignment_operator_val);
+    (*anode).assignment_expression_node_1=(yyvsp[(3) - (3)].assignment_expression_val);
+    (*anode).conditional_expression_node_1= 0;
+    (yyval.assignment_expression_val) = anode;
+}
     break;
 
   case 150:
-#line 1175 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "selection_statement <- SWITCH '(' expression ')' statement\n";}}
+#line 2113 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).char_lit_1="'='";
+    (*anode).token_1= 0;
+    (yyval.assignment_operator_val) = anode;
+}
     break;
 
   case 151:
-#line 1181 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "iteration_statement <- WHILE '(' expression ')' statement\n";}}
+#line 2121 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).char_lit_1= "";
+    (yyval.assignment_operator_val) = anode;
+}
     break;
 
   case 152:
-#line 1184 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "iteration_statement <- DO statement WHILE '(' expression ')' ';'\n";}}
+#line 2129 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).char_lit_1= "";
+    (yyval.assignment_operator_val) = anode;
+}
     break;
 
   case 153:
-#line 1187 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "iteration_statement <- FOR '(' ';' ';' ')' statement\n";}}
+#line 2137 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).char_lit_1= "";
+    (yyval.assignment_operator_val) = anode;
+}
     break;
 
   case 154:
-#line 1190 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "iteration_statement <- FOR '(' ';' ';' expression ')' statement\n";}}
+#line 2145 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).char_lit_1= "";
+    (yyval.assignment_operator_val) = anode;
+}
     break;
 
   case 155:
-#line 1193 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "iteration_statement <- FOR '(' ';' expression ';' ')' statement\n";}}
+#line 2153 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).char_lit_1= "";
+    (yyval.assignment_operator_val) = anode;
+}
     break;
 
   case 156:
-#line 1196 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "iteration_statement <- FOR '(' ';' expression ';' expression ')' statement\n";}}
+#line 2161 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).char_lit_1= "";
+    (yyval.assignment_operator_val) = anode;
+}
     break;
 
   case 157:
-#line 1199 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "iteration_statement <- FOR '(' expression ';' ';' ')' statement\n";}}
+#line 2169 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).char_lit_1= "";
+    (yyval.assignment_operator_val) = anode;
+}
     break;
 
   case 158:
-#line 1202 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "iteration_statement <- FOR '(' expression ';' ';' expression ')' statement\n";}}
+#line 2177 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).char_lit_1= "";
+    (yyval.assignment_operator_val) = anode;
+}
     break;
 
   case 159:
-#line 1205 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "iteration_statement <- FOR '(' expression ';' expression ';' ')' statement\n";}}
+#line 2185 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).char_lit_1= "";
+    (yyval.assignment_operator_val) = anode;
+}
     break;
 
   case 160:
-#line 1208 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "iteration_statement <- FOR '(' expression ';' expression ';' expression ')' statement\n";}}
+#line 2193 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).char_lit_1= "";
+    (yyval.assignment_operator_val) = anode;
+}
     break;
 
   case 161:
-#line 1214 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "jump_statement <- GOTO identifier ';'\n";}}
+#line 2203 "ast_c_grammar.y"
+    {
+     conditional_expression_node *anode;
+anode = (conditional_expression_node*) malloc(sizeof(conditional_expression_node));
+    (*anode).logical_or_expression_node_1=(yyvsp[(1) - (1)].logical_or_expression_val);
+    (*anode).expression_node_1= 0;
+    (*anode).conditional_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).char_lit_2= "";
+    (yyval.conditional_expression_val) = anode;
+}
     break;
 
   case 162:
-#line 1217 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "jump_statement <- CONTINUE ';'\n";}}
+#line 2214 "ast_c_grammar.y"
+    {
+     conditional_expression_node *anode;
+anode = (conditional_expression_node*) malloc(sizeof(conditional_expression_node));
+    (*anode).char_lit_1="'?'";
+    (*anode).char_lit_2="':'";
+    (*anode).logical_or_expression_node_1=(yyvsp[(1) - (5)].logical_or_expression_val);
+    (*anode).expression_node_1=(yyvsp[(3) - (5)].expression_val);
+    (*anode).conditional_expression_node_1=(yyvsp[(5) - (5)].conditional_expression_val);
+    (yyval.conditional_expression_val) = anode;
+}
     break;
 
   case 163:
-#line 1220 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "jump_statement <- BREAK ';'\n";}}
+#line 2227 "ast_c_grammar.y"
+    {
+     constant_expression_node *anode;
+anode = (constant_expression_node*) malloc(sizeof(constant_expression_node));
+    (*anode).conditional_expression_node_1=(yyvsp[(1) - (1)].conditional_expression_val);
+    (yyval.constant_expression_val) = anode;
+}
     break;
 
   case 164:
-#line 1223 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "jump_statement <- RETURN ';'\n";}}
+#line 2236 "ast_c_grammar.y"
+    {
+     logical_or_expression_node *anode;
+anode = (logical_or_expression_node*) malloc(sizeof(logical_or_expression_node));
+    (*anode).logical_and_expression_node_1=(yyvsp[(1) - (1)].logical_and_expression_val);
+    (*anode).token_1= 0;
+    (*anode).logical_or_expression_node_1= 0;
+    (yyval.logical_or_expression_val) = anode;
+}
     break;
 
   case 165:
-#line 1226 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "jump_statement <- RETURN expression ';'\n";}}
+#line 2245 "ast_c_grammar.y"
+    {
+     logical_or_expression_node *anode;
+anode = (logical_or_expression_node*) malloc(sizeof(logical_or_expression_node));
+    (*anode).token_1=(yyvsp[(2) - (3)].sval);
+    (*anode).logical_or_expression_node_1=(yyvsp[(1) - (3)].logical_or_expression_val);
+    (*anode).logical_and_expression_node_1=(yyvsp[(3) - (3)].logical_and_expression_val);
+    (yyval.logical_or_expression_val) = anode;
+}
     break;
 
   case 166:
-#line 1232 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "expression <- assignment_expression\n";}}
+#line 2256 "ast_c_grammar.y"
+    {
+     logical_and_expression_node *anode;
+anode = (logical_and_expression_node*) malloc(sizeof(logical_and_expression_node));
+    (*anode).inclusive_or_expression_node_1=(yyvsp[(1) - (1)].inclusive_or_expression_val);
+    (*anode).token_1= 0;
+    (*anode).logical_and_expression_node_1= 0;
+    (yyval.logical_and_expression_val) = anode;
+}
     break;
 
   case 167:
-#line 1235 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "expression <- expression ',' assignment_expression\n";}}
+#line 2265 "ast_c_grammar.y"
+    {
+     logical_and_expression_node *anode;
+anode = (logical_and_expression_node*) malloc(sizeof(logical_and_expression_node));
+    (*anode).token_1=(yyvsp[(2) - (3)].sval);
+    (*anode).logical_and_expression_node_1=(yyvsp[(1) - (3)].logical_and_expression_val);
+    (*anode).inclusive_or_expression_node_1=(yyvsp[(3) - (3)].inclusive_or_expression_val);
+    (yyval.logical_and_expression_val) = anode;
+}
     break;
 
   case 168:
-#line 1241 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "assignment_expression <- conditional_expression\n";}}
+#line 2276 "ast_c_grammar.y"
+    {
+     inclusive_or_expression_node *anode;
+anode = (inclusive_or_expression_node*) malloc(sizeof(inclusive_or_expression_node));
+    (*anode).exclusive_or_expression_node_1=(yyvsp[(1) - (1)].exclusive_or_expression_val);
+    (*anode).inclusive_or_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.inclusive_or_expression_val) = anode;
+}
     break;
 
   case 169:
-#line 1244 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "assignment_expression <- unary_expression assignment_operator assignment_expression\n";}}
+#line 2285 "ast_c_grammar.y"
+    {
+     inclusive_or_expression_node *anode;
+anode = (inclusive_or_expression_node*) malloc(sizeof(inclusive_or_expression_node));
+    (*anode).char_lit_1="'|'";
+    (*anode).inclusive_or_expression_node_1=(yyvsp[(1) - (3)].inclusive_or_expression_val);
+    (*anode).exclusive_or_expression_node_1=(yyvsp[(3) - (3)].exclusive_or_expression_val);
+    (yyval.inclusive_or_expression_val) = anode;
+}
     break;
 
   case 170:
-#line 1250 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "assignment_operator <- '='\n";}}
+#line 2296 "ast_c_grammar.y"
+    {
+     exclusive_or_expression_node *anode;
+anode = (exclusive_or_expression_node*) malloc(sizeof(exclusive_or_expression_node));
+    (*anode).and_expression_node_1=(yyvsp[(1) - (1)].and_expression_val);
+    (*anode).char_lit_1= "";
+    (*anode).exclusive_or_expression_node_1= 0;
+    (yyval.exclusive_or_expression_val) = anode;
+}
     break;
 
   case 171:
-#line 1253 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "assignment_operator <- MUL_ASSIGN\n";}}
+#line 2305 "ast_c_grammar.y"
+    {
+     exclusive_or_expression_node *anode;
+anode = (exclusive_or_expression_node*) malloc(sizeof(exclusive_or_expression_node));
+    (*anode).char_lit_1="'^'";
+    (*anode).exclusive_or_expression_node_1=(yyvsp[(1) - (3)].exclusive_or_expression_val);
+    (*anode).and_expression_node_1=(yyvsp[(3) - (3)].and_expression_val);
+    (yyval.exclusive_or_expression_val) = anode;
+}
     break;
 
   case 172:
-#line 1256 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "assignment_operator <- DIV_ASSIGN\n";}}
+#line 2316 "ast_c_grammar.y"
+    {
+     and_expression_node *anode;
+anode = (and_expression_node*) malloc(sizeof(and_expression_node));
+    (*anode).equality_expression_node_1=(yyvsp[(1) - (1)].equality_expression_val);
+    (*anode).and_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.and_expression_val) = anode;
+}
     break;
 
   case 173:
-#line 1259 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "assignment_operator <- MOD_ASSIGN\n";}}
+#line 2325 "ast_c_grammar.y"
+    {
+     and_expression_node *anode;
+anode = (and_expression_node*) malloc(sizeof(and_expression_node));
+    (*anode).char_lit_1="'&'";
+    (*anode).and_expression_node_1=(yyvsp[(1) - (3)].and_expression_val);
+    (*anode).equality_expression_node_1=(yyvsp[(3) - (3)].equality_expression_val);
+    (yyval.and_expression_val) = anode;
+}
     break;
 
   case 174:
-#line 1262 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "assignment_operator <- ADD_ASSIGN\n";}}
+#line 2336 "ast_c_grammar.y"
+    {
+     equality_expression_node *anode;
+anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
+    (*anode).relational_expression_node_1=(yyvsp[(1) - (1)].relational_expression_val);
+    (*anode).token_1= 0;
+    (*anode).equality_expression_node_1= 0;
+    (yyval.equality_expression_val) = anode;
+}
     break;
 
   case 175:
-#line 1265 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "assignment_operator <- SUB_ASSIGN\n";}}
+#line 2345 "ast_c_grammar.y"
+    {
+     equality_expression_node *anode;
+anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
+    (*anode).token_1=(yyvsp[(2) - (3)].sval);
+    (*anode).equality_expression_node_1=(yyvsp[(1) - (3)].equality_expression_val);
+    (*anode).relational_expression_node_1=(yyvsp[(3) - (3)].relational_expression_val);
+    (yyval.equality_expression_val) = anode;
+}
     break;
 
   case 176:
-#line 1268 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "assignment_operator <- LEFT_ASSIGN\n";}}
+#line 2354 "ast_c_grammar.y"
+    {
+     equality_expression_node *anode;
+anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
+    (*anode).token_1=(yyvsp[(2) - (3)].sval);
+    (*anode).equality_expression_node_1=(yyvsp[(1) - (3)].equality_expression_val);
+    (*anode).relational_expression_node_1=(yyvsp[(3) - (3)].relational_expression_val);
+    (yyval.equality_expression_val) = anode;
+}
     break;
 
   case 177:
-#line 1271 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "assignment_operator <- RIGHT_ASSIGN\n";}}
+#line 2365 "ast_c_grammar.y"
+    {
+     relational_expression_node *anode;
+anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
+    (*anode).shift_expression_node_1=(yyvsp[(1) - (1)].shift_expression_val);
+    (*anode).token_1= 0;
+    (*anode).relational_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.relational_expression_val) = anode;
+}
     break;
 
   case 178:
-#line 1274 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "assignment_operator <- AND_ASSIGN\n";}}
+#line 2375 "ast_c_grammar.y"
+    {
+     relational_expression_node *anode;
+anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
+    (*anode).char_lit_1="'<'";
+    (*anode).relational_expression_node_1=(yyvsp[(1) - (3)].relational_expression_val);
+    (*anode).shift_expression_node_1=(yyvsp[(3) - (3)].shift_expression_val);
+    (*anode).token_1= 0;
+    (yyval.relational_expression_val) = anode;
+}
     break;
 
   case 179:
-#line 1277 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "assignment_operator <- XOR_ASSIGN\n";}}
+#line 2385 "ast_c_grammar.y"
+    {
+     relational_expression_node *anode;
+anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
+    (*anode).char_lit_1="'>'";
+    (*anode).relational_expression_node_1=(yyvsp[(1) - (3)].relational_expression_val);
+    (*anode).shift_expression_node_1=(yyvsp[(3) - (3)].shift_expression_val);
+    (*anode).token_1= 0;
+    (yyval.relational_expression_val) = anode;
+}
     break;
 
   case 180:
-#line 1280 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "assignment_operator <- OR_ASSIGN\n";}}
+#line 2395 "ast_c_grammar.y"
+    {
+     relational_expression_node *anode;
+anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
+    (*anode).token_1=(yyvsp[(2) - (3)].sval);
+    (*anode).relational_expression_node_1=(yyvsp[(1) - (3)].relational_expression_val);
+    (*anode).shift_expression_node_1=(yyvsp[(3) - (3)].shift_expression_val);
+    (*anode).char_lit_1= "";
+    (yyval.relational_expression_val) = anode;
+}
     break;
 
   case 181:
-#line 1286 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "conditional_expression <- logical_or_expression\n";}}
+#line 2405 "ast_c_grammar.y"
+    {
+     relational_expression_node *anode;
+anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
+    (*anode).token_1=(yyvsp[(2) - (3)].sval);
+    (*anode).relational_expression_node_1=(yyvsp[(1) - (3)].relational_expression_val);
+    (*anode).shift_expression_node_1=(yyvsp[(3) - (3)].shift_expression_val);
+    (*anode).char_lit_1= "";
+    (yyval.relational_expression_val) = anode;
+}
     break;
 
   case 182:
-#line 1289 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "conditional_expression <- logical_or_expression '?' expression ':' conditional_expression\n";}}
+#line 2417 "ast_c_grammar.y"
+    {
+     shift_expression_node *anode;
+anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
+    (*anode).additive_expression_node_1=(yyvsp[(1) - (1)].additive_expression_val);
+    (*anode).token_1= 0;
+    (*anode).shift_expression_node_1= 0;
+    (yyval.shift_expression_val) = anode;
+}
     break;
 
   case 183:
-#line 1295 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "constant_expression <- conditional_expression\n";}}
+#line 2426 "ast_c_grammar.y"
+    {
+     shift_expression_node *anode;
+anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
+    (*anode).token_1=(yyvsp[(2) - (3)].sval);
+    (*anode).shift_expression_node_1=(yyvsp[(1) - (3)].shift_expression_val);
+    (*anode).additive_expression_node_1=(yyvsp[(3) - (3)].additive_expression_val);
+    (yyval.shift_expression_val) = anode;
+}
     break;
 
   case 184:
-#line 1301 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "logical_or_expression <- logical_and_expression\n";}}
+#line 2435 "ast_c_grammar.y"
+    {
+     shift_expression_node *anode;
+anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
+    (*anode).token_1=(yyvsp[(2) - (3)].sval);
+    (*anode).shift_expression_node_1=(yyvsp[(1) - (3)].shift_expression_val);
+    (*anode).additive_expression_node_1=(yyvsp[(3) - (3)].additive_expression_val);
+    (yyval.shift_expression_val) = anode;
+}
     break;
 
   case 185:
-#line 1304 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "logical_or_expression <- logical_or_expression OR_OP logical_and_expression\n";}}
+#line 2446 "ast_c_grammar.y"
+    {
+     additive_expression_node *anode;
+anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
+    (*anode).multiplicative_expression_node_1=(yyvsp[(1) - (1)].multiplicative_expression_val);
+    (*anode).additive_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.additive_expression_val) = anode;
+}
     break;
 
   case 186:
-#line 1310 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "logical_and_expression <- inclusive_or_expression\n";}}
+#line 2455 "ast_c_grammar.y"
+    {
+     additive_expression_node *anode;
+anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
+    (*anode).char_lit_1="'+'";
+    (*anode).additive_expression_node_1=(yyvsp[(1) - (3)].additive_expression_val);
+    (*anode).multiplicative_expression_node_1=(yyvsp[(3) - (3)].multiplicative_expression_val);
+    (yyval.additive_expression_val) = anode;
+}
     break;
 
   case 187:
-#line 1313 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "logical_and_expression <- logical_and_expression AND_OP inclusive_or_expression\n";}}
+#line 2464 "ast_c_grammar.y"
+    {
+     additive_expression_node *anode;
+anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
+    (*anode).char_lit_1="'-'";
+    (*anode).additive_expression_node_1=(yyvsp[(1) - (3)].additive_expression_val);
+    (*anode).multiplicative_expression_node_1=(yyvsp[(3) - (3)].multiplicative_expression_val);
+    (yyval.additive_expression_val) = anode;
+}
     break;
 
   case 188:
-#line 1319 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "inclusive_or_expression <- exclusive_or_expression\n";}}
+#line 2475 "ast_c_grammar.y"
+    {
+     multiplicative_expression_node *anode;
+anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
+    (*anode).cast_expression_node_1=(yyvsp[(1) - (1)].cast_expression_val);
+    (*anode).multiplicative_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (yyval.multiplicative_expression_val) = anode;
+}
     break;
 
   case 189:
-#line 1322 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "inclusive_or_expression <- inclusive_or_expression '|' exclusive_or_expression\n";}}
+#line 2484 "ast_c_grammar.y"
+    {
+     multiplicative_expression_node *anode;
+anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
+    (*anode).char_lit_1="'*'";
+    (*anode).multiplicative_expression_node_1=(yyvsp[(1) - (3)].multiplicative_expression_val);
+    (*anode).cast_expression_node_1=(yyvsp[(3) - (3)].cast_expression_val);
+    (yyval.multiplicative_expression_val) = anode;
+}
     break;
 
   case 190:
-#line 1328 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "exclusive_or_expression <- and_expression\n";}}
+#line 2493 "ast_c_grammar.y"
+    {
+     multiplicative_expression_node *anode;
+anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
+    (*anode).char_lit_1="'/'";
+    (*anode).multiplicative_expression_node_1=(yyvsp[(1) - (3)].multiplicative_expression_val);
+    (*anode).cast_expression_node_1=(yyvsp[(3) - (3)].cast_expression_val);
+    (yyval.multiplicative_expression_val) = anode;
+}
     break;
 
   case 191:
-#line 1331 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "exclusive_or_expression <- exclusive_or_expression '^' and_expression\n";}}
+#line 2502 "ast_c_grammar.y"
+    {
+     multiplicative_expression_node *anode;
+anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
+    (*anode).char_lit_1="'%'";
+    (*anode).multiplicative_expression_node_1=(yyvsp[(1) - (3)].multiplicative_expression_val);
+    (*anode).cast_expression_node_1=(yyvsp[(3) - (3)].cast_expression_val);
+    (yyval.multiplicative_expression_val) = anode;
+}
     break;
 
   case 192:
-#line 1337 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "and_expression <- equality_expression\n";}}
+#line 2513 "ast_c_grammar.y"
+    {
+     cast_expression_node *anode;
+anode = (cast_expression_node*) malloc(sizeof(cast_expression_node));
+    (*anode).unary_expression_node_1=(yyvsp[(1) - (1)].unary_expression_val);
+    (*anode).char_lit_2= "";
+    (*anode).char_lit_1= "";
+    (*anode).type_name_node_1= 0;
+    (*anode).cast_expression_node_1= 0;
+    (yyval.cast_expression_val) = anode;
+}
     break;
 
   case 193:
-#line 1340 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "and_expression <- and_expression '&' equality_expression\n";}}
+#line 2524 "ast_c_grammar.y"
+    {
+     cast_expression_node *anode;
+anode = (cast_expression_node*) malloc(sizeof(cast_expression_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).type_name_node_1=(yyvsp[(2) - (4)].type_name_val);
+    (*anode).cast_expression_node_1=(yyvsp[(4) - (4)].cast_expression_val);
+    (*anode).unary_expression_node_1= 0;
+    (yyval.cast_expression_val) = anode;
+}
     break;
 
   case 194:
-#line 1346 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "equality_expression <- relational_expression\n";}}
+#line 2537 "ast_c_grammar.y"
+    {
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).postfix_expression_node_1=(yyvsp[(1) - (1)].postfix_expression_val);
+    (*anode).type_name_node_1= 0;
+    (*anode).token_1= 0;
+    (*anode).unary_operator_node_1= 0;
+    (*anode).cast_expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).unary_expression_node_1= 0;
+    (*anode).char_lit_2= "";
+    (yyval.unary_expression_val) = anode;
+}
     break;
 
   case 195:
-#line 1349 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "equality_expression <- equality_expression EQ_OP relational_expression\n";}}
+#line 2551 "ast_c_grammar.y"
+    {
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).token_1=(yyvsp[(1) - (2)].sval);
+    (*anode).unary_expression_node_1=(yyvsp[(2) - (2)].unary_expression_val);
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).type_name_node_1= 0;
+    (*anode).unary_operator_node_1= 0;
+    (*anode).char_lit_2= "";
+    (*anode).char_lit_1= "";
+    (*anode).cast_expression_node_1= 0;
+    (yyval.unary_expression_val) = anode;
+}
     break;
 
   case 196:
-#line 1352 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "equality_expression <- equality_expression NE_OP relational_expression\n";}}
+#line 2565 "ast_c_grammar.y"
+    {
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).token_1=(yyvsp[(1) - (2)].sval);
+    (*anode).unary_expression_node_1=(yyvsp[(2) - (2)].unary_expression_val);
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).type_name_node_1= 0;
+    (*anode).unary_operator_node_1= 0;
+    (*anode).char_lit_2= "";
+    (*anode).char_lit_1= "";
+    (*anode).cast_expression_node_1= 0;
+    (yyval.unary_expression_val) = anode;
+}
     break;
 
   case 197:
-#line 1358 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "relational_expression <- shift_expression\n";}}
+#line 2579 "ast_c_grammar.y"
+    {
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).unary_operator_node_1=(yyvsp[(1) - (2)].unary_operator_val);
+    (*anode).cast_expression_node_1=(yyvsp[(2) - (2)].cast_expression_val);
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).type_name_node_1= 0;
+    (*anode).token_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).unary_expression_node_1= 0;
+    (*anode).char_lit_2= "";
+    (yyval.unary_expression_val) = anode;
+}
     break;
 
   case 198:
-#line 1361 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "relational_expression <- relational_expression '<' shift_expression\n";}}
+#line 2593 "ast_c_grammar.y"
+    {
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).token_1=(yyvsp[(1) - (2)].sval);
+    (*anode).unary_expression_node_1=(yyvsp[(2) - (2)].unary_expression_val);
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).type_name_node_1= 0;
+    (*anode).unary_operator_node_1= 0;
+    (*anode).char_lit_2= "";
+    (*anode).char_lit_1= "";
+    (*anode).cast_expression_node_1= 0;
+    (yyval.unary_expression_val) = anode;
+}
     break;
 
   case 199:
-#line 1364 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "relational_expression <- relational_expression '>' shift_expression\n";}}
+#line 2607 "ast_c_grammar.y"
+    {
+     unary_expression_node *anode;
+anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).token_1=(yyvsp[(1) - (4)].sval);
+    (*anode).type_name_node_1=(yyvsp[(3) - (4)].type_name_val);
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).unary_operator_node_1= 0;
+    (*anode).unary_expression_node_1= 0;
+    (*anode).cast_expression_node_1= 0;
+    (yyval.unary_expression_val) = anode;
+}
     break;
 
   case 200:
-#line 1367 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "relational_expression <- relational_expression LE_OP shift_expression\n";}}
+#line 2623 "ast_c_grammar.y"
+    {
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'&'";
+    (yyval.unary_operator_val) = anode;
+}
     break;
 
   case 201:
-#line 1370 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "relational_expression <- relational_expression GE_OP shift_expression\n";}}
+#line 2630 "ast_c_grammar.y"
+    {
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'*'";
+    (yyval.unary_operator_val) = anode;
+}
     break;
 
   case 202:
-#line 1376 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "shift_expression <- additive_expression\n";}}
+#line 2637 "ast_c_grammar.y"
+    {
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'+'";
+    (yyval.unary_operator_val) = anode;
+}
     break;
 
   case 203:
-#line 1379 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "shift_expression <- shift_expression LEFT_OP additive_expression\n";}}
+#line 2644 "ast_c_grammar.y"
+    {
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'-'";
+    (yyval.unary_operator_val) = anode;
+}
     break;
 
   case 204:
-#line 1382 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "shift_expression <- shift_expression RIGHT_OP additive_expression\n";}}
+#line 2651 "ast_c_grammar.y"
+    {
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'~'";
+    (yyval.unary_operator_val) = anode;
+}
     break;
 
   case 205:
-#line 1388 "new_c_grammar.y"
-    {if(parseDebug)
-{parseDebugOut << "additive_expression <- multiplicative_expression\n";}}
+#line 2658 "ast_c_grammar.y"
+    {
+     unary_operator_node *anode;
+anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
+    (*anode).char_lit_1="'!'";
+    (yyval.unary_operator_val) = anode;
+}
     break;
 
   case 206:
-#line 1391 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "additive_expression <- additive_expression '+' multiplicative_expression\n";}}
+#line 2667 "ast_c_grammar.y"
+    {
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).primary_expression_node_1=(yyvsp[(1) - (1)].primary_expression_val);
+    (*anode).postfix_expression_node_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).token_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).identifier_node_1= 0;
+    (*anode).char_lit_2= "";
+    (yyval.postfix_expression_val) = anode;
+}
     break;
 
   case 207:
-#line 1394 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "additive_expression <- additive_expression '-' multiplicative_expression\n";}}
+#line 2681 "ast_c_grammar.y"
+    {
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).char_lit_1="'['";
+    (*anode).char_lit_2="']'";
+    (*anode).postfix_expression_node_1=(yyvsp[(1) - (4)].postfix_expression_val);
+    (*anode).expression_node_1=(yyvsp[(3) - (4)].expression_val);
+    (*anode).token_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).primary_expression_node_1= 0;
+    (yyval.postfix_expression_val) = anode;
+}
     break;
 
   case 208:
-#line 1400 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "multiplicative_expression <- cast_expression\n";}}
+#line 2695 "ast_c_grammar.y"
+    {
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).postfix_expression_node_1=(yyvsp[(1) - (3)].postfix_expression_val);
+    (*anode).token_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).primary_expression_node_1= 0;
+    (yyval.postfix_expression_val) = anode;
+}
     break;
 
   case 209:
-#line 1403 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "multiplicative_expression <- multiplicative_expression '*' cast_expression\n";}}
+#line 2709 "ast_c_grammar.y"
+    {
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).postfix_expression_node_1=(yyvsp[(1) - (4)].postfix_expression_val);
+    (*anode).argument_expression_list_node_1=(yyvsp[(3) - (4)].argument_expression_list_val);
+    (*anode).token_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).primary_expression_node_1= 0;
+    (yyval.postfix_expression_val) = anode;
+}
     break;
 
   case 210:
-#line 1406 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "multiplicative_expression <- multiplicative_expression '/' cast_expression\n";}}
+#line 2723 "ast_c_grammar.y"
+    {
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).char_lit_1="'.'";
+    (*anode).postfix_expression_node_1=(yyvsp[(1) - (3)].postfix_expression_val);
+    (*anode).identifier_node_1=(yyvsp[(3) - (3)].identifier_val);
+    (*anode).token_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).char_lit_2= "";
+    (*anode).primary_expression_node_1= 0;
+    (yyval.postfix_expression_val) = anode;
+}
     break;
 
   case 211:
-#line 1409 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "multiplicative_expression <- multiplicative_expression '%' cast_expression\n";}}
+#line 2737 "ast_c_grammar.y"
+    {
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).token_1=(yyvsp[(2) - (3)].sval);
+    (*anode).postfix_expression_node_1=(yyvsp[(1) - (3)].postfix_expression_val);
+    (*anode).identifier_node_1=(yyvsp[(3) - (3)].identifier_val);
+    (*anode).expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).char_lit_2= "";
+    (*anode).primary_expression_node_1= 0;
+    (yyval.postfix_expression_val) = anode;
+}
     break;
 
   case 212:
-#line 1415 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "cast_expression <- unary_expression\n";}}
+#line 2751 "ast_c_grammar.y"
+    {
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).token_1=(yyvsp[(2) - (2)].sval);
+    (*anode).postfix_expression_node_1=(yyvsp[(1) - (2)].postfix_expression_val);
+    (*anode).primary_expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).identifier_node_1= 0;
+    (*anode).char_lit_2= "";
+    (yyval.postfix_expression_val) = anode;
+}
     break;
 
   case 213:
-#line 1418 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "cast_expression <- '(' type_name ')' cast_expression\n";}}
+#line 2765 "ast_c_grammar.y"
+    {
+     postfix_expression_node *anode;
+anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+    (*anode).token_1=(yyvsp[(2) - (2)].sval);
+    (*anode).postfix_expression_node_1=(yyvsp[(1) - (2)].postfix_expression_val);
+    (*anode).primary_expression_node_1= 0;
+    (*anode).argument_expression_list_node_1= 0;
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).identifier_node_1= 0;
+    (*anode).char_lit_2= "";
+    (yyval.postfix_expression_val) = anode;
+}
     break;
 
   case 214:
-#line 1424 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "unary_expression <- postfix_expression\n";}}
+#line 2781 "ast_c_grammar.y"
+    {
+     primary_expression_node *anode;
+anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
+    (*anode).identifier_node_1=(yyvsp[(1) - (1)].identifier_val);
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).char_lit_2= "";
+    (*anode).constant_node_1= 0;
+    (*anode).string_node_1= 0;
+    (yyval.primary_expression_val) = anode;
+}
     break;
 
   case 215:
-#line 1427 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "unary_expression <- INC_OP unary_expression\n";}}
+#line 2793 "ast_c_grammar.y"
+    {
+     primary_expression_node *anode;
+anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
+    (*anode).constant_node_1=(yyvsp[(1) - (1)].constant_val);
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_2= "";
+    (*anode).char_lit_1= "";
+    (*anode).identifier_node_1= 0;
+    (*anode).string_node_1= 0;
+    (yyval.primary_expression_val) = anode;
+}
     break;
 
   case 216:
-#line 1430 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "unary_expression <- DEC_OP unary_expression\n";}}
+#line 2805 "ast_c_grammar.y"
+    {
+     primary_expression_node *anode;
+anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
+    (*anode).string_node_1=(yyvsp[(1) - (1)].string_val);
+    (*anode).expression_node_1= 0;
+    (*anode).char_lit_1= "";
+    (*anode).constant_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).char_lit_2= "";
+    (yyval.primary_expression_val) = anode;
+}
     break;
 
   case 217:
-#line 1433 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "unary_expression <- unary_operator cast_expression\n";}}
+#line 2817 "ast_c_grammar.y"
+    {
+     primary_expression_node *anode;
+anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
+    (*anode).char_lit_1="'('";
+    (*anode).char_lit_2="')'";
+    (*anode).expression_node_1=(yyvsp[(2) - (3)].expression_val);
+    (*anode).constant_node_1= 0;
+    (*anode).identifier_node_1= 0;
+    (*anode).string_node_1= 0;
+    (yyval.primary_expression_val) = anode;
+}
     break;
 
   case 218:
-#line 1436 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "unary_expression <- SIZEOF unary_expression\n";}}
+#line 2831 "ast_c_grammar.y"
+    {
+     argument_expression_list_node *anode;
+anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_node));
+    (*anode).assignment_expression_node_1=(yyvsp[(1) - (1)].assignment_expression_val);
+    (*anode).char_lit_1= "";
+    (*anode).argument_expression_list_node_1= 0;
+    (yyval.argument_expression_list_val) = anode;
+}
     break;
 
   case 219:
-#line 1439 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "unary_expression <- SIZEOF '(' type_name ')'\n";}}
+#line 2840 "ast_c_grammar.y"
+    {
+     argument_expression_list_node *anode;
+anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_node));
+    (*anode).char_lit_1="','";
+    (*anode).argument_expression_list_node_1=(yyvsp[(1) - (3)].argument_expression_list_val);
+    (*anode).assignment_expression_node_1=(yyvsp[(3) - (3)].assignment_expression_val);
+    (yyval.argument_expression_list_val) = anode;
+}
     break;
 
   case 220:
-#line 1445 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "unary_operator <- '&'\n";}}
+#line 2851 "ast_c_grammar.y"
+    {
+     constant_node *anode;
+anode = (constant_node*) malloc(sizeof(constant_node));
+    (*anode).int_token_1=(yyvsp[(1) - (1)].ival);
+ 
+    (*anode).token_1 = "";
+    (*anode).char_token_1 = 0;
+    (*anode).dec_token_1 = 0; //just so we can know this is an int
+    (yyval.constant_val) = anode;
+}
     break;
 
   case 221:
-#line 1448 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "unary_operator <- '*'\n";}}
+#line 2862 "ast_c_grammar.y"
+    {
+     constant_node *anode;
+     anode = (constant_node*) malloc(sizeof(constant_node));
+     (*anode).char_token_1 = (yyvsp[(1) - (1)].cval);
+     (*anode).token_1 = "";
+     (*anode).int_token_1 = 0;
+     (*anode).dec_token_1 = 0;
+     (yyval.constant_val) = anode;
+}
     break;
 
   case 222:
-#line 1451 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "unary_operator <- '+'\n";}}
+#line 2872 "ast_c_grammar.y"
+    {
+     constant_node *anode;
+anode = (constant_node*) malloc(sizeof(constant_node));
+    (*anode).dec_token_1=(yyvsp[(1) - (1)].dval);
+    (*anode).token_1 = 0;
+    (*anode).int_token_1 = 0;
+    (*anode).char_token_1 = 0;
+    (yyval.constant_val) = anode;
+}
     break;
 
   case 223:
-#line 1454 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "unary_operator <- '-'\n";}}
+#line 2882 "ast_c_grammar.y"
+    {
+     constant_node *anode;
+anode = (constant_node*) malloc(sizeof(constant_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).int_token_1 = 0;
+    (*anode).dec_token_1 = 0;
+    (yyval.constant_val) = anode;
+}
     break;
 
   case 224:
-#line 1457 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "unary_operator <- '~'\n";}}
+#line 2893 "ast_c_grammar.y"
+    {
+     string_node *anode;
+anode = (string_node*) malloc(sizeof(string_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (yyval.string_val) = anode;
+}
     break;
 
   case 225:
-#line 1460 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "unary_operator <- '!'\n";}}
-    break;
-
-  case 226:
-#line 1466 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "postfix_expression <- primary_expression\n";}}
-    break;
-
-  case 227:
-#line 1469 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "postfix_expression <- postfix_expression '[' expression ']'\n";}}
-    break;
-
-  case 228:
-#line 1472 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "postfix_expression <- postfix_expression '(' ')'\n";}}
-    break;
-
-  case 229:
-#line 1475 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "postfix_expression <- postfix_expression '(' argument_expression_list ')'\n";}}
-    break;
-
-  case 230:
-#line 1478 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "postfix_expression <- postfix_expression '.' identifier\n";}}
-    break;
-
-  case 231:
-#line 1481 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "postfix_expression <- postfix_expression PTR_OP identifier\n";}}
-    break;
-
-  case 232:
-#line 1484 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "postfix_expression <- postfix_expression INC_OP\n";}}
-    break;
-
-  case 233:
-#line 1487 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "postfix_expression <- postfix_expression DEC_OP\n";}}
-    break;
-
-  case 234:
-#line 1493 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "primary_expression <- identifier\n";}}
-    break;
-
-  case 235:
-#line 1496 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "primary_expression <- constant\n";}}
-    break;
-
-  case 236:
-#line 1499 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "primary_expression <- string\n";}}
-    break;
-
-  case 237:
-#line 1502 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "primary_expression <- '(' expression ')'\n";}}
-    break;
-
-  case 238:
-#line 1508 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "argument_expression_list <- assignment_expression\n";}}
-    break;
-
-  case 239:
-#line 1511 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "argument_expression_list <- argument_expression_list ',' assignment_expression\n";}}
-    break;
-
-  case 240:
-#line 1517 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "constant <- INTEGER_CONSTANT\n";}}
-    break;
-
-  case 241:
-#line 1520 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "constant <- CHARACTER_CONSTANT\n";}}
-    break;
-
-  case 242:
-#line 1523 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "constant <- FLOATING_CONSTANT\n";}}
-    break;
-
-  case 243:
-#line 1526 "new_c_grammar.y"
-    {if(parseDebug)
- 	{parseDebugOut << "constant <- ENUMERATION_CONSTANT\n";}}
-    break;
-
-  case 244:
-#line 1532 "new_c_grammar.y"
-    {if(parseDebug)
-	{parseDebugOut << "string <- STRING_LITERAL\n";}}
-    break;
-
-  case 245:
-#line 1538 "new_c_grammar.y"
+#line 2902 "ast_c_grammar.y"
     {
-	   declNode dn;
-	   dn.id = (yyvsp[(1) - (1)].sval);
-	   (yyval.declval) = &dn;
-	   if(parseDebug)
-	     {parseDebugOut << "identifier  <- IDENTIFIER\n";}
-	   if(undeclVar || redeclVar) 
-	    	{return 1;}
-	 }
-    break;
-
-  case 246:
-#line 1550 "new_c_grammar.y"
-    { prevFlag = 0;
-	   }
+     identifier_node *anode;
+anode = (identifier_node*) malloc(sizeof(identifier_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (yyval.identifier_val) = anode;
+}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 4129 "y.tab.c"
+#line 5408 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -4339,7 +5618,7 @@ yyreturn:
 }
 
 
-#line 1552 "new_c_grammar.y"
+#line 2911 "ast_c_grammar.y"
 
 
 #include <stdio.h>
@@ -4348,6 +5627,695 @@ extern char yytext[];
 extern int column;
 
 
+
+void print_translation_unit_node(translation_unit_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");translation_unit_node aNode = *ptr;
+std::cout <<spacing<<"(translation_unit_node\n";
+   if(aNode.external_declaration_node_1 != 0)
+    { print_external_declaration_node (aNode.external_declaration_node_1,spacing);}
+   if(aNode.translation_unit_node_1 != 0)
+    { print_translation_unit_node (aNode.translation_unit_node_1,spacing);}
+std::cout<<")";
+}
+void print_external_declaration_node(external_declaration_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");external_declaration_node aNode = *ptr;
+std::cout <<spacing<<"(external_declaration_node\n";
+   if(aNode.declaration_node_1 != 0)
+    { print_declaration_node (aNode.declaration_node_1,spacing);}
+   if(aNode.function_definition_node_1 != 0)
+    { print_function_definition_node (aNode.function_definition_node_1,spacing);}
+std::cout<<")";
+}
+void print_function_definition_node(function_definition_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");function_definition_node aNode = *ptr;
+std::cout <<spacing<<"(function_definition_node\n";
+   if(aNode.declarator_node_1 != 0)
+    { print_declarator_node (aNode.declarator_node_1,spacing);}
+   if(aNode.declaration_list_node_1 != 0)
+    { print_declaration_list_node (aNode.declaration_list_node_1,spacing);}
+   if(aNode.declaration_specifiers_node_1 != 0)
+    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1,spacing);}
+   if(aNode.compound_statement_node_1 != 0)
+    { print_compound_statement_node (aNode.compound_statement_node_1,spacing);}
+std::cout<<")";
+}
+void print_declaration_node(declaration_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");declaration_node aNode = *ptr;
+std::cout <<spacing<<"(declaration_node\n";
+   if(aNode.init_declarator_list_node_1 != 0)
+    { print_init_declarator_list_node (aNode.init_declarator_list_node_1,spacing);}
+   if(aNode.declaration_specifiers_node_1 != 0)
+    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1,spacing);}
+std::cout<<")";
+}
+void print_declaration_list_node(declaration_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");declaration_list_node aNode = *ptr;
+std::cout <<spacing<<"(declaration_list_node\n";
+   if(aNode.declaration_node_1 != 0)
+    { print_declaration_node (aNode.declaration_node_1,spacing);}
+   if(aNode.declaration_list_node_1 != 0)
+    { print_declaration_list_node (aNode.declaration_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_declaration_specifiers_node(declaration_specifiers_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");declaration_specifiers_node aNode = *ptr;
+std::cout <<spacing<<"(declaration_specifiers_node\n";
+   if(aNode.storage_class_specifier_node_1 != 0)
+    { print_storage_class_specifier_node (aNode.storage_class_specifier_node_1,spacing);}
+   if(aNode.declaration_specifiers_node_1 != 0)
+    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1,spacing);}
+   if(aNode.type_specifier_node_1 != 0)
+    { print_type_specifier_node (aNode.type_specifier_node_1,spacing);}
+   if(aNode.type_qualifier_node_1 != 0)
+    { print_type_qualifier_node (aNode.type_qualifier_node_1,spacing);}
+std::cout<<")";
+}
+void print_storage_class_specifier_node(storage_class_specifier_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");storage_class_specifier_node aNode = *ptr;
+std::cout <<spacing<<"(storage_class_specifier_node\n";
+std::cout<<")";
+}
+void print_type_specifier_node(type_specifier_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");type_specifier_node aNode = *ptr;
+std::cout <<spacing<<"(type_specifier_node\n";
+   if(aNode.enum_specifier_node_1 != 0)
+    { print_enum_specifier_node (aNode.enum_specifier_node_1,spacing);}
+   if(aNode.struct_or_union_specifier_node_1 != 0)
+    { print_struct_or_union_specifier_node (aNode.struct_or_union_specifier_node_1,spacing);}
+std::cout<<")";
+}
+void print_type_qualifier_node(type_qualifier_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");type_qualifier_node aNode = *ptr;
+std::cout <<spacing<<"(type_qualifier_node\n";
+std::cout<<")";
+}
+void print_struct_or_union_specifier_node(struct_or_union_specifier_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");struct_or_union_specifier_node aNode = *ptr;
+std::cout <<spacing<<"(struct_or_union_specifier_node\n";
+   if(aNode.struct_declaration_list_node_1 != 0)
+    { print_struct_declaration_list_node (aNode.struct_declaration_list_node_1,spacing);}
+   if(aNode.identifier_node_1 != 0)
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
+   if(aNode.struct_or_union_node_1 != 0)
+    { print_struct_or_union_node (aNode.struct_or_union_node_1,spacing);}
+std::cout<<")";
+}
+void print_struct_or_union_node(struct_or_union_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");struct_or_union_node aNode = *ptr;
+std::cout <<spacing<<"(struct_or_union_node\n";
+std::cout<<")";
+}
+void print_struct_declaration_list_node(struct_declaration_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");struct_declaration_list_node aNode = *ptr;
+std::cout <<spacing<<"(struct_declaration_list_node\n";
+   if(aNode.struct_declaration_node_1 != 0)
+    { print_struct_declaration_node (aNode.struct_declaration_node_1,spacing);}
+   if(aNode.struct_declaration_list_node_1 != 0)
+    { print_struct_declaration_list_node (aNode.struct_declaration_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_init_declarator_list_node(init_declarator_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");init_declarator_list_node aNode = *ptr;
+std::cout <<spacing<<"(init_declarator_list_node\n";
+   if(aNode.init_declarator_node_1 != 0)
+    { print_init_declarator_node (aNode.init_declarator_node_1,spacing);}
+   if(aNode.init_declarator_list_node_1 != 0)
+    { print_init_declarator_list_node (aNode.init_declarator_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_init_declarator_node(init_declarator_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");init_declarator_node aNode = *ptr;
+std::cout <<spacing<<"(init_declarator_node\n";
+   if(aNode.declarator_node_1 != 0)
+    { print_declarator_node (aNode.declarator_node_1,spacing);}
+   if(aNode.initializer_node_1 != 0)
+    { print_initializer_node (aNode.initializer_node_1,spacing);}
+std::cout<<")";
+}
+void print_struct_declaration_node(struct_declaration_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");struct_declaration_node aNode = *ptr;
+std::cout <<spacing<<"(struct_declaration_node\n";
+   if(aNode.specifier_qualifier_list_node_1 != 0)
+    { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1,spacing);}
+   if(aNode.struct_declarator_list_node_1 != 0)
+    { print_struct_declarator_list_node (aNode.struct_declarator_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_specifier_qualifier_list_node(specifier_qualifier_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");specifier_qualifier_list_node aNode = *ptr;
+std::cout <<spacing<<"(specifier_qualifier_list_node\n";
+   if(aNode.specifier_qualifier_list_node_1 != 0)
+    { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1,spacing);}
+   if(aNode.type_specifier_node_1 != 0)
+    { print_type_specifier_node (aNode.type_specifier_node_1,spacing);}
+   if(aNode.type_qualifier_node_1 != 0)
+    { print_type_qualifier_node (aNode.type_qualifier_node_1,spacing);}
+std::cout<<")";
+}
+void print_struct_declarator_list_node(struct_declarator_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");struct_declarator_list_node aNode = *ptr;
+std::cout <<spacing<<"(struct_declarator_list_node\n";
+   if(aNode.struct_declarator_list_node_1 != 0)
+    { print_struct_declarator_list_node (aNode.struct_declarator_list_node_1,spacing);}
+   if(aNode.struct_declarator_node_1 != 0)
+    { print_struct_declarator_node (aNode.struct_declarator_node_1,spacing);}
+std::cout<<")";
+}
+void print_struct_declarator_node(struct_declarator_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");struct_declarator_node aNode = *ptr;
+std::cout <<spacing<<"(struct_declarator_node\n";
+   if(aNode.declarator_node_1 != 0)
+    { print_declarator_node (aNode.declarator_node_1,spacing);}
+   if(aNode.constant_expression_node_1 != 0)
+    { print_constant_expression_node (aNode.constant_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_enum_specifier_node(enum_specifier_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");enum_specifier_node aNode = *ptr;
+std::cout <<spacing<<"(enum_specifier_node\n";
+   if(aNode.identifier_node_1 != 0)
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
+   if(aNode.enumerator_list_node_1 != 0)
+    { print_enumerator_list_node (aNode.enumerator_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_enumerator_list_node(enumerator_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");enumerator_list_node aNode = *ptr;
+std::cout <<spacing<<"(enumerator_list_node\n";
+   if(aNode.enumerator_node_1 != 0)
+    { print_enumerator_node (aNode.enumerator_node_1,spacing);}
+   if(aNode.enumerator_list_node_1 != 0)
+    { print_enumerator_list_node (aNode.enumerator_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_enumerator_node(enumerator_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");enumerator_node aNode = *ptr;
+std::cout <<spacing<<"(enumerator_node\n";
+   if(aNode.constant_expression_node_1 != 0)
+    { print_constant_expression_node (aNode.constant_expression_node_1,spacing);}
+   if(aNode.identifier_node_1 != 0)
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
+std::cout<<")";
+}
+void print_declarator_node(declarator_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");declarator_node aNode = *ptr;
+std::cout <<spacing<<"(declarator_node\n";
+   if(aNode.direct_declarator_node_1 != 0)
+    { print_direct_declarator_node (aNode.direct_declarator_node_1,spacing);}
+   if(aNode.pointer_node_1 != 0)
+    { print_pointer_node (aNode.pointer_node_1,spacing);}
+std::cout<<")";
+}
+void print_direct_declarator_node(direct_declarator_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");direct_declarator_node aNode = *ptr;
+std::cout <<spacing<<"(direct_declarator_node\n";
+   if(aNode.parameter_type_list_node_1 != 0)
+    { print_parameter_type_list_node (aNode.parameter_type_list_node_1,spacing);}
+   if(aNode.direct_declarator_node_1 != 0)
+    { print_direct_declarator_node (aNode.direct_declarator_node_1,spacing);}
+   if(aNode.constant_expression_node_1 != 0)
+    { print_constant_expression_node (aNode.constant_expression_node_1,spacing);}
+   if(aNode.identifier_list_node_1 != 0)
+    { print_identifier_list_node (aNode.identifier_list_node_1,spacing);}
+   if(aNode.declarator_node_1 != 0)
+    { print_declarator_node (aNode.declarator_node_1,spacing);}
+   if(aNode.identifier_node_1 != 0)
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
+std::cout<<")";
+}
+void print_pointer_node(pointer_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");pointer_node aNode = *ptr;
+std::cout <<spacing<<"(pointer_node\n";
+   if(aNode.pointer_node_1 != 0)
+    { print_pointer_node (aNode.pointer_node_1,spacing);}
+   if(aNode.type_qualifier_list_node_1 != 0)
+    { print_type_qualifier_list_node (aNode.type_qualifier_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_type_qualifier_list_node(type_qualifier_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");type_qualifier_list_node aNode = *ptr;
+std::cout <<spacing<<"(type_qualifier_list_node\n";
+   if(aNode.type_qualifier_node_1 != 0)
+    { print_type_qualifier_node (aNode.type_qualifier_node_1,spacing);}
+   if(aNode.type_qualifier_list_node_1 != 0)
+    { print_type_qualifier_list_node (aNode.type_qualifier_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_parameter_type_list_node(parameter_type_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");parameter_type_list_node aNode = *ptr;
+std::cout <<spacing<<"(parameter_type_list_node\n";
+   if(aNode.parameter_list_node_1 != 0)
+    { print_parameter_list_node (aNode.parameter_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_parameter_list_node(parameter_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");parameter_list_node aNode = *ptr;
+std::cout <<spacing<<"(parameter_list_node\n";
+   if(aNode.parameter_list_node_1 != 0)
+    { print_parameter_list_node (aNode.parameter_list_node_1,spacing);}
+   if(aNode.parameter_declaration_node_1 != 0)
+    { print_parameter_declaration_node (aNode.parameter_declaration_node_1,spacing);}
+std::cout<<")";
+}
+void print_parameter_declaration_node(parameter_declaration_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");parameter_declaration_node aNode = *ptr;
+std::cout <<spacing<<"(parameter_declaration_node\n";
+   if(aNode.declarator_node_1 != 0)
+    { print_declarator_node (aNode.declarator_node_1,spacing);}
+   if(aNode.declaration_specifiers_node_1 != 0)
+    { print_declaration_specifiers_node (aNode.declaration_specifiers_node_1,spacing);}
+   if(aNode.abstract_declarator_node_1 != 0)
+    { print_abstract_declarator_node (aNode.abstract_declarator_node_1,spacing);}
+std::cout<<")";
+}
+void print_identifier_list_node(identifier_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");identifier_list_node aNode = *ptr;
+std::cout <<spacing<<"(identifier_list_node\n";
+   if(aNode.identifier_node_1 != 0)
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
+   if(aNode.identifier_list_node_1 != 0)
+    { print_identifier_list_node (aNode.identifier_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_initializer_node(initializer_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");initializer_node aNode = *ptr;
+std::cout <<spacing<<"(initializer_node\n";
+   if(aNode.initializer_list_node_1 != 0)
+    { print_initializer_list_node (aNode.initializer_list_node_1,spacing);}
+   if(aNode.assignment_expression_node_1 != 0)
+    { print_assignment_expression_node (aNode.assignment_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_initializer_list_node(initializer_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");initializer_list_node aNode = *ptr;
+std::cout <<spacing<<"(initializer_list_node\n";
+   if(aNode.initializer_node_1 != 0)
+    { print_initializer_node (aNode.initializer_node_1,spacing);}
+   if(aNode.initializer_list_node_1 != 0)
+    { print_initializer_list_node (aNode.initializer_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_type_name_node(type_name_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");type_name_node aNode = *ptr;
+std::cout <<spacing<<"(type_name_node\n";
+   if(aNode.specifier_qualifier_list_node_1 != 0)
+    { print_specifier_qualifier_list_node (aNode.specifier_qualifier_list_node_1,spacing);}
+   if(aNode.abstract_declarator_node_1 != 0)
+    { print_abstract_declarator_node (aNode.abstract_declarator_node_1,spacing);}
+std::cout<<")";
+}
+void print_abstract_declarator_node(abstract_declarator_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");abstract_declarator_node aNode = *ptr;
+std::cout <<spacing<<"(abstract_declarator_node\n";
+   if(aNode.direct_abstract_declarator_node_1 != 0)
+    { print_direct_abstract_declarator_node (aNode.direct_abstract_declarator_node_1,spacing);}
+   if(aNode.pointer_node_1 != 0)
+    { print_pointer_node (aNode.pointer_node_1,spacing);}
+std::cout<<")";
+}
+void print_direct_abstract_declarator_node(direct_abstract_declarator_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");direct_abstract_declarator_node aNode = *ptr;
+std::cout <<spacing<<"(direct_abstract_declarator_node\n";
+   if(aNode.parameter_type_list_node_1 != 0)
+    { print_parameter_type_list_node (aNode.parameter_type_list_node_1,spacing);}
+   if(aNode.abstract_declarator_node_1 != 0)
+    { print_abstract_declarator_node (aNode.abstract_declarator_node_1,spacing);}
+   if(aNode.constant_expression_node_1 != 0)
+    { print_constant_expression_node (aNode.constant_expression_node_1,spacing);}
+   if(aNode.direct_abstract_declarator_node_1 != 0)
+    { print_direct_abstract_declarator_node (aNode.direct_abstract_declarator_node_1,spacing);}
+std::cout<<")";
+}
+void print_statement_node(statement_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");statement_node aNode = *ptr;
+std::cout <<spacing<<"(statement_node\n";
+   if(aNode.expression_statement_node_1 != 0)
+    { print_expression_statement_node (aNode.expression_statement_node_1,spacing);}
+   if(aNode.jump_statement_node_1 != 0)
+    { print_jump_statement_node (aNode.jump_statement_node_1,spacing);}
+   if(aNode.labeled_statement_node_1 != 0)
+    { print_labeled_statement_node (aNode.labeled_statement_node_1,spacing);}
+   if(aNode.compound_statement_node_1 != 0)
+    { print_compound_statement_node (aNode.compound_statement_node_1,spacing);}
+   if(aNode.iteration_statement_node_1 != 0)
+    { print_iteration_statement_node (aNode.iteration_statement_node_1,spacing);}
+   if(aNode.selection_statement_node_1 != 0)
+    { print_selection_statement_node (aNode.selection_statement_node_1,spacing);}
+std::cout<<")";
+}
+void print_labeled_statement_node(labeled_statement_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");labeled_statement_node aNode = *ptr;
+std::cout <<spacing<<"(labeled_statement_node\n";
+   if(aNode.constant_expression_node_1 != 0)
+    { print_constant_expression_node (aNode.constant_expression_node_1,spacing);}
+   if(aNode.identifier_node_1 != 0)
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
+   if(aNode.statement_node_1 != 0)
+    { print_statement_node (aNode.statement_node_1,spacing);}
+std::cout<<")";
+}
+void print_expression_statement_node(expression_statement_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");expression_statement_node aNode = *ptr;
+std::cout <<spacing<<"(expression_statement_node\n";
+   if(aNode.expression_node_1 != 0)
+    { print_expression_node (aNode.expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_compound_statement_node(compound_statement_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");compound_statement_node aNode = *ptr;
+std::cout <<spacing<<"(compound_statement_node\n";
+   if(aNode.statement_list_node_1 != 0)
+    { print_statement_list_node (aNode.statement_list_node_1,spacing);}
+   if(aNode.declaration_list_node_1 != 0)
+    { print_declaration_list_node (aNode.declaration_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_statement_list_node(statement_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");statement_list_node aNode = *ptr;
+std::cout <<spacing<<"(statement_list_node\n";
+   if(aNode.statement_list_node_1 != 0)
+    { print_statement_list_node (aNode.statement_list_node_1,spacing);}
+   if(aNode.statement_node_1 != 0)
+    { print_statement_node (aNode.statement_node_1,spacing);}
+std::cout<<")";
+}
+void print_selection_statement_node(selection_statement_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");selection_statement_node aNode = *ptr;
+std::cout <<spacing<<"(selection_statement_node\n";
+   if(aNode.statement_node_2 != 0)
+    { print_statement_node (aNode.statement_node_2,spacing);}
+   if(aNode.statement_node_1 != 0)
+    { print_statement_node (aNode.statement_node_1,spacing);}
+   if(aNode.expression_node_1 != 0)
+    { print_expression_node (aNode.expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_iteration_statement_node(iteration_statement_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");iteration_statement_node aNode = *ptr;
+std::cout <<spacing<<"(iteration_statement_node\n";
+   if(aNode.expression_node_2 != 0)
+    { print_expression_node (aNode.expression_node_2,spacing);}
+   if(aNode.statement_node_1 != 0)
+    { print_statement_node (aNode.statement_node_1,spacing);}
+   if(aNode.expression_node_1 != 0)
+    { print_expression_node (aNode.expression_node_1,spacing);}
+   if(aNode.expression_node_3 != 0)
+    { print_expression_node (aNode.expression_node_3,spacing);}
+std::cout<<")";
+}
+void print_jump_statement_node(jump_statement_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");jump_statement_node aNode = *ptr;
+std::cout <<spacing<<"(jump_statement_node\n";
+   if(aNode.expression_node_1 != 0)
+    { print_expression_node (aNode.expression_node_1,spacing);}
+   if(aNode.identifier_node_1 != 0)
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
+std::cout<<")";
+}
+void print_expression_node(expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");expression_node aNode = *ptr;
+std::cout <<spacing<<"(expression_node\n";
+   if(aNode.expression_node_1 != 0)
+    { print_expression_node (aNode.expression_node_1,spacing);}
+   if(aNode.assignment_expression_node_1 != 0)
+    { print_assignment_expression_node (aNode.assignment_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_assignment_expression_node(assignment_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");assignment_expression_node aNode = *ptr;
+std::cout <<spacing<<"(assignment_expression_node\n";
+   if(aNode.conditional_expression_node_1 != 0)
+    { print_conditional_expression_node (aNode.conditional_expression_node_1,spacing);}
+   if(aNode.assignment_operator_node_1 != 0)
+    { print_assignment_operator_node (aNode.assignment_operator_node_1,spacing);}
+   if(aNode.unary_expression_node_1 != 0)
+    { print_unary_expression_node (aNode.unary_expression_node_1,spacing);}
+   if(aNode.assignment_expression_node_1 != 0)
+    { print_assignment_expression_node (aNode.assignment_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_assignment_operator_node(assignment_operator_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");assignment_operator_node aNode = *ptr;
+std::cout <<spacing<<"(assignment_operator_node\n";
+std::cout<<")";
+}
+void print_conditional_expression_node(conditional_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");conditional_expression_node aNode = *ptr;
+std::cout <<spacing<<"(conditional_expression_node\n";
+   if(aNode.expression_node_1 != 0)
+    { print_expression_node (aNode.expression_node_1,spacing);}
+   if(aNode.conditional_expression_node_1 != 0)
+    { print_conditional_expression_node (aNode.conditional_expression_node_1,spacing);}
+   if(aNode.logical_or_expression_node_1 != 0)
+    { print_logical_or_expression_node (aNode.logical_or_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_constant_expression_node(constant_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");constant_expression_node aNode = *ptr;
+std::cout <<spacing<<"(constant_expression_node\n";
+   if(aNode.conditional_expression_node_1 != 0)
+    { print_conditional_expression_node (aNode.conditional_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_logical_or_expression_node(logical_or_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");logical_or_expression_node aNode = *ptr;
+std::cout <<spacing<<"(logical_or_expression_node\n";
+   if(aNode.logical_or_expression_node_1 != 0)
+    { print_logical_or_expression_node (aNode.logical_or_expression_node_1,spacing);}
+   if(aNode.logical_and_expression_node_1 != 0)
+    { print_logical_and_expression_node (aNode.logical_and_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_logical_and_expression_node(logical_and_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");logical_and_expression_node aNode = *ptr;
+std::cout <<spacing<<"(logical_and_expression_node\n";
+   if(aNode.inclusive_or_expression_node_1 != 0)
+    { print_inclusive_or_expression_node (aNode.inclusive_or_expression_node_1,spacing);}
+   if(aNode.logical_and_expression_node_1 != 0)
+    { print_logical_and_expression_node (aNode.logical_and_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_inclusive_or_expression_node(inclusive_or_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");inclusive_or_expression_node aNode = *ptr;
+std::cout <<spacing<<"(inclusive_or_expression_node\n";
+   if(aNode.inclusive_or_expression_node_1 != 0)
+    { print_inclusive_or_expression_node (aNode.inclusive_or_expression_node_1,spacing);}
+   if(aNode.exclusive_or_expression_node_1 != 0)
+    { print_exclusive_or_expression_node (aNode.exclusive_or_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_exclusive_or_expression_node(exclusive_or_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");exclusive_or_expression_node aNode = *ptr;
+std::cout <<spacing<<"(exclusive_or_expression_node\n";
+   if(aNode.and_expression_node_1 != 0)
+    { print_and_expression_node (aNode.and_expression_node_1,spacing);}
+   if(aNode.exclusive_or_expression_node_1 != 0)
+    { print_exclusive_or_expression_node (aNode.exclusive_or_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_and_expression_node(and_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");and_expression_node aNode = *ptr;
+std::cout <<spacing<<"(and_expression_node\n";
+   if(aNode.equality_expression_node_1 != 0)
+    { print_equality_expression_node (aNode.equality_expression_node_1,spacing);}
+   if(aNode.and_expression_node_1 != 0)
+    { print_and_expression_node (aNode.and_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_equality_expression_node(equality_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");equality_expression_node aNode = *ptr;
+std::cout <<spacing<<"(equality_expression_node\n";
+   if(aNode.equality_expression_node_1 != 0)
+    { print_equality_expression_node (aNode.equality_expression_node_1,spacing);}
+   if(aNode.relational_expression_node_1 != 0)
+    { print_relational_expression_node (aNode.relational_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_relational_expression_node(relational_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");relational_expression_node aNode = *ptr;
+std::cout <<spacing<<"(relational_expression_node\n";
+   if(aNode.relational_expression_node_1 != 0)
+    { print_relational_expression_node (aNode.relational_expression_node_1,spacing);}
+   if(aNode.shift_expression_node_1 != 0)
+    { print_shift_expression_node (aNode.shift_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_shift_expression_node(shift_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");shift_expression_node aNode = *ptr;
+std::cout <<spacing<<"(shift_expression_node\n";
+   if(aNode.additive_expression_node_1 != 0)
+    { print_additive_expression_node (aNode.additive_expression_node_1,spacing);}
+   if(aNode.shift_expression_node_1 != 0)
+    { print_shift_expression_node (aNode.shift_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_additive_expression_node(additive_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");additive_expression_node aNode = *ptr;
+std::cout <<spacing<<"(additive_expression_node\n";
+   if(aNode.multiplicative_expression_node_1 != 0)
+    { print_multiplicative_expression_node (aNode.multiplicative_expression_node_1,spacing);}
+   if(aNode.additive_expression_node_1 != 0)
+    { print_additive_expression_node (aNode.additive_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_multiplicative_expression_node(multiplicative_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");multiplicative_expression_node aNode = *ptr;
+std::cout <<spacing<<"(multiplicative_expression_node\n";
+   if(aNode.multiplicative_expression_node_1 != 0)
+    { print_multiplicative_expression_node (aNode.multiplicative_expression_node_1,spacing);}
+   if(aNode.cast_expression_node_1 != 0)
+    { print_cast_expression_node (aNode.cast_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_cast_expression_node(cast_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");cast_expression_node aNode = *ptr;
+std::cout <<spacing<<"(cast_expression_node\n";
+   if(aNode.cast_expression_node_1 != 0)
+    { print_cast_expression_node (aNode.cast_expression_node_1,spacing);}
+   if(aNode.type_name_node_1 != 0)
+    { print_type_name_node (aNode.type_name_node_1,spacing);}
+   if(aNode.unary_expression_node_1 != 0)
+    { print_unary_expression_node (aNode.unary_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_unary_expression_node(unary_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");unary_expression_node aNode = *ptr;
+std::cout <<spacing<<"(unary_expression_node\n";
+   if(aNode.postfix_expression_node_1 != 0)
+    { print_postfix_expression_node (aNode.postfix_expression_node_1,spacing);}
+   if(aNode.type_name_node_1 != 0)
+    { print_type_name_node (aNode.type_name_node_1,spacing);}
+   if(aNode.unary_operator_node_1 != 0)
+    { print_unary_operator_node (aNode.unary_operator_node_1,spacing);}
+   if(aNode.unary_expression_node_1 != 0)
+    { print_unary_expression_node (aNode.unary_expression_node_1,spacing);}
+   if(aNode.cast_expression_node_1 != 0)
+    { print_cast_expression_node (aNode.cast_expression_node_1,spacing);}
+std::cout<<")";
+}
+void print_unary_operator_node(unary_operator_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");unary_operator_node aNode = *ptr;
+std::cout <<spacing<<"(unary_operator_node\n";
+std::cout<<")";
+}
+void print_postfix_expression_node(postfix_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");postfix_expression_node aNode = *ptr;
+std::cout <<spacing<<"(postfix_expression_node\n";
+   if(aNode.postfix_expression_node_1 != 0)
+    { print_postfix_expression_node (aNode.postfix_expression_node_1,spacing);}
+   if(aNode.primary_expression_node_1 != 0)
+    { print_primary_expression_node (aNode.primary_expression_node_1,spacing);}
+   if(aNode.argument_expression_list_node_1 != 0)
+    { print_argument_expression_list_node (aNode.argument_expression_list_node_1,spacing);}
+   if(aNode.expression_node_1 != 0)
+    { print_expression_node (aNode.expression_node_1,spacing);}
+   if(aNode.identifier_node_1 != 0)
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
+std::cout<<")";
+}
+void print_primary_expression_node(primary_expression_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");primary_expression_node aNode = *ptr;
+std::cout <<spacing<<"(primary_expression_node\n";
+   if(aNode.constant_node_1 != 0)
+    { print_constant_node (aNode.constant_node_1,spacing);}
+   if(aNode.expression_node_1 != 0)
+    { print_expression_node (aNode.expression_node_1,spacing);}
+   if(aNode.string_node_1 != 0)
+    { print_string_node (aNode.string_node_1,spacing);}
+   if(aNode.identifier_node_1 != 0)
+    { print_identifier_node (aNode.identifier_node_1,spacing);}
+std::cout<<")";
+}
+void print_argument_expression_list_node(argument_expression_list_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");argument_expression_list_node aNode = *ptr;
+std::cout <<spacing<<"(argument_expression_list_node\n";
+   if(aNode.assignment_expression_node_1 != 0)
+    { print_assignment_expression_node (aNode.assignment_expression_node_1,spacing);}
+   if(aNode.argument_expression_list_node_1 != 0)
+    { print_argument_expression_list_node (aNode.argument_expression_list_node_1,spacing);}
+std::cout<<")";
+}
+void print_constant_node(constant_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");constant_node aNode = *ptr;
+std::cout <<spacing<<"(constant_node\n";
+std::cout<<")";
+}
+void print_string_node(string_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");string_node aNode = *ptr;
+std::cout <<spacing<<"(string_node\n";
+std::cout<<")";
+}
+void print_identifier_node(identifier_node *ptr, std::string indent)
+{
+    std::string spacing = indent.append("    ");identifier_node aNode = *ptr;
+std::cout <<spacing<<"(identifier_node\n";
+std::cout<<")";
+}
 
 /*
 yyerror(s)
