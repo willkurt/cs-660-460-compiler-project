@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <iostream>
   /* #include "SymbolTable.hpp" */
+struct ast_root ast;
 
 extern SymbolTable st;
 extern bool parseDebug;
@@ -55,7 +56,7 @@ bool unsignedFlag;
 
 extern bool parseDebug;
 extern std::ofstream parseDebugOut;
-
+void print_ast_root(ast_root *ptr);
 void print_translation_unit_node(translation_unit_node *ptr, std::string indent);
 void print_external_declaration_node(external_declaration_node *ptr, std::string indent);
 void print_function_definition_node(function_definition_node *ptr, std::string indent);
@@ -312,6 +313,7 @@ anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
     (*anode).external_declaration_node_1=$1;
     (*anode).translation_unit_node_1= 0;
     $$ = anode;
+    ast.root = anode;
 
 }
     |translation_unit external_declaration
@@ -321,7 +323,7 @@ anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
     (*anode).translation_unit_node_1=$1;
     (*anode).external_declaration_node_1=$2;
     $$ = anode;
-    /* print_translation_unit_node($$," ");*/
+    ast.root = anode;
 }
     ;
 external_declaration
@@ -2916,7 +2918,10 @@ anode = (identifier_node*) malloc(sizeof(identifier_node));
 extern char yytext[];
 extern int column;
 
-
+void print_ast_root(ast_root *ptr)
+{
+  print_translation_unit_node((*ptr).root," ");
+}
 
 void print_translation_unit_node(translation_unit_node *ptr, std::string indent)
 {

@@ -15,6 +15,7 @@
 #include "y.tab.h"
 #include <errno.h>
 
+
 extern int errno;
 
 extern bool declMode;

@@ -21,6 +21,8 @@ std::ofstream parseDebugOut;
 extern int lineCount;
 extern int currentCharDepth;
 extern char *yytext;
+extern struct ast_root ast;
+extern void print_ast_root(ast_root *ptr);
 /*debug outputs we're worried about initially are:
  * -d with l or s or p (for lexer, symboltable, parser)
  *
@@ -74,6 +76,8 @@ int main(int argc, char* argv[])
   //after parse close everything up
   lexDebugOut.close();
   parseDebugOut.close();
+
+  print_ast_root(&ast);
 }
 
 int yywrap()
