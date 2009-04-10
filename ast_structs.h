@@ -1,6 +1,10 @@
 #ifndef AST_STRUCTS_H
 #define AST_STRUCTS_H
 
+struct ast_root{
+  struct translation_unit_node *root;
+};
+
 struct translation_unit_node {
 struct external_declaration_node *external_declaration_node_1;
 struct translation_unit_node *translation_unit_node_1;

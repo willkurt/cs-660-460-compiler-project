@@ -312,7 +312,7 @@ anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
     (*anode).external_declaration_node_1=$1;
     (*anode).translation_unit_node_1= 0;
     $$ = anode;
-    print_translation_unit_node($$," ");
+
 }
     |translation_unit external_declaration
 {
@@ -321,6 +321,7 @@ anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
     (*anode).translation_unit_node_1=$1;
     (*anode).external_declaration_node_1=$2;
     $$ = anode;
+    /* print_translation_unit_node($$," ");*/
 }
     ;
 external_declaration
@@ -621,20 +622,20 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
 }
     ;
 declaration_list
-    :declaration
+:{declMode=true;}declaration
 {
      declaration_list_node *anode;
 anode = (declaration_list_node*) malloc(sizeof(declaration_list_node));
-    (*anode).declaration_node_1=$1;
+    (*anode).declaration_node_1=$2;
     (*anode).declaration_list_node_1= 0;
     $$ = anode;
 }
-    |declaration_list declaration
+|declaration_list{declMode=true;} declaration
 {
      declaration_list_node *anode;
 anode = (declaration_list_node*) malloc(sizeof(declaration_list_node));
     (*anode).declaration_list_node_1=$1;
-    (*anode).declaration_node_1=$2;
+    (*anode).declaration_node_1=$3;
     $$ = anode;
 }
     ;
@@ -933,7 +934,7 @@ anode = (struct_declaration_list_node*) malloc(sizeof(struct_declaration_list_no
 }
     ;
 init_declarator_list
-    :init_declarator
+:init_declarator
 {
      init_declarator_list_node *anode;
 anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
@@ -942,7 +943,7 @@ anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
     (*anode).char_lit_1= "";
     $$ = anode;
 }
-    |init_declarator_list ',' init_declarator
+|init_declarator_list ',' init_declarator 
 {
      init_declarator_list_node *anode;
 anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
@@ -962,13 +963,13 @@ anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
     (*anode).char_lit_1= "";
     $$ = anode;
 }
-    |declarator '=' initializer
+|declarator '='{declMode = false;} initializer
 {
      init_declarator_node *anode;
 anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
     (*anode).char_lit_1="'='";
     (*anode).declarator_node_1=$1;
-    (*anode).initializer_node_1=$3;
+    (*anode).initializer_node_1=$4;
     $$ = anode;
 }
     ;
@@ -1320,7 +1321,7 @@ anode = (type_qualifier_list_node*) malloc(sizeof(type_qualifier_list_node));
 }
     ;
 parameter_type_list
-    :parameter_list
+:parameter_list{declMode=false;}
 {
      parameter_type_list_node *anode;
 anode = (parameter_type_list_node*) malloc(sizeof(parameter_type_list_node));
@@ -1329,7 +1330,7 @@ anode = (parameter_type_list_node*) malloc(sizeof(parameter_type_list_node));
     (*anode).char_lit_1= "";
     $$ = anode;
 }
-    |parameter_list ',' ELIPSIS
+|parameter_list ',' ELIPSIS {declMode=false;}
 {
      parameter_type_list_node *anode;
 anode = (parameter_type_list_node*) malloc(sizeof(parameter_type_list_node));
@@ -1727,7 +1728,7 @@ anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
 }
     ;
 expression_statement
-    :';'
+:';'{declMode = false;}
 {
      expression_statement_node *anode;
 anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
@@ -1735,7 +1736,7 @@ anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
     (*anode).expression_node_1= 0;
     $$ = anode;
 }
-    |expression ';'
+|expression ';'{declMode = false;}
 {
      expression_statement_node *anode;
 anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
