@@ -23,6 +23,7 @@ extern int currentCharDepth;
 extern char *yytext;
 extern struct ast_root ast;
 extern void print_ast_root(ast_root *ptr);
+extern std::string ast_3ac(ast_root *ptr);
 /*debug outputs we're worried about initially are:
  * -d with l or s or p (for lexer, symboltable, parser)
  *
@@ -78,6 +79,9 @@ int main(int argc, char* argv[])
   parseDebugOut.close();
 
   print_ast_root(&ast);
+  std::cout<<"3ac printing...:"<<std::endl;
+  std::cout<<ast_3ac(&ast)<<std::endl;
+  std::cout<<"is working!"<<std::endl;
 }
 
 int yywrap()

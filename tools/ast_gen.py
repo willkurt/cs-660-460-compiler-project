@@ -34,6 +34,8 @@ def main():
     type_val_string = ""
     c_structs = "#ifndef AST_STRUCTS_H\n#define AST_STRUCTS_H\n\n"
     print_decl = "#ifndef PRINT_DECLS_H\n#include <iostream>\n#define PRINT_DECLS_H\n\n"
+    tac_decl = ""
+    tac_defs = ""
     print_defs = ""
     body = ""
     for obj in g_objects:
@@ -42,9 +44,13 @@ def main():
         c_structs += obj.c_struct()+"\n"
         print_decl += obj.print_decl()
         print_defs += obj.print_stmnt()
+        tac_decl += obj.tac_decl()
+        tac_defs += obj.tac_stmnt()
         body += obj.rule_to_string(True)
 
     c_structs += "\n\n#endif"
+    print_decl += "\n/*****/\n\n"
+    print_decl+= tac_decl
     print_decl += "\n\n#endif"
     structs.write(c_structs)
     print_decls.write(print_decl)
@@ -61,6 +67,10 @@ def main():
     out.write("/************/\n")
     out.write("\n")
     out.write(print_defs)
+    out.write("\n")
+    out.write("/************/\n")
+    out.write("\n")
+    out.write(tac_defs)
     core.close()
     structs.close()
     print_decls.close()

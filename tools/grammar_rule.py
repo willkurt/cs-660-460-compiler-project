@@ -110,7 +110,9 @@ class GrammarRule:
     def print_decl(self):
         return "void print_"+self.struct_name+"("+self.struct_name+" *ptr, std::string indent);\n"
    
-   
+    #create 3ac dcl
+    def tac_decl(self):
+        return "std::string "+self.struct_name+"_3ac("+self.struct_name+" *ptr);\n"
 
 #i'm going to try to run this with count intead
  #create the print statement
@@ -128,8 +130,17 @@ class GrammarRule:
         stmnt_str+="}\n"
         return stmnt_str
     
-    
-            
+    def tac_stmnt(self): 
+        stmnt_str = "std::string "+self.struct_name+"_3ac("+self.struct_name+" *ptr)\n{\n    "
+        stmnt_str += self.struct_name + " aNode = *ptr;\n"
+        stmnt_str += "std::string rstring = \"\";"
+        for each in self.struct_vars:
+            #later we can change this
+            if("_node_" in each):
+                stmnt_str+="   if(aNode."+each+" != 0)\n    { rstring +="+each[:-2]+"_3ac(aNode."+each+");}\n"
+        stmnt_str+="\nreturn rstring;\n"
+        stmnt_str+="}\n"
+        return stmnt_str
 
     #create the yylval for the union
     def yylval(self):

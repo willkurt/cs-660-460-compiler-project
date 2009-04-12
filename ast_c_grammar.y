@@ -124,6 +124,74 @@ void print_constant_node(constant_node *ptr, std::string indent);
 void print_string_node(string_node *ptr, std::string indent);
 void print_identifier_node(identifier_node *ptr, std::string indent);
 
+std::string ast_3ac(ast_root *ptr);
+std::string translation_unit_node_3ac(translation_unit_node *ptr);
+std::string external_declaration_node_3ac(external_declaration_node *ptr);
+std::string function_definition_node_3ac(function_definition_node *ptr);
+std::string declaration_node_3ac(declaration_node *ptr);
+std::string declaration_list_node_3ac(declaration_list_node *ptr);
+std::string declaration_specifiers_node_3ac(declaration_specifiers_node *ptr);
+std::string storage_class_specifier_node_3ac(storage_class_specifier_node *ptr);
+std::string type_specifier_node_3ac(type_specifier_node *ptr);
+std::string type_qualifier_node_3ac(type_qualifier_node *ptr);
+std::string struct_or_union_specifier_node_3ac(struct_or_union_specifier_node *ptr);
+std::string struct_or_union_node_3ac(struct_or_union_node *ptr);
+std::string struct_declaration_list_node_3ac(struct_declaration_list_node *ptr);
+std::string init_declarator_list_node_3ac(init_declarator_list_node *ptr);
+std::string init_declarator_node_3ac(init_declarator_node *ptr);
+std::string struct_declaration_node_3ac(struct_declaration_node *ptr);
+std::string specifier_qualifier_list_node_3ac(specifier_qualifier_list_node *ptr);
+std::string struct_declarator_list_node_3ac(struct_declarator_list_node *ptr);
+std::string struct_declarator_node_3ac(struct_declarator_node *ptr);
+std::string enum_specifier_node_3ac(enum_specifier_node *ptr);
+std::string enumerator_list_node_3ac(enumerator_list_node *ptr);
+std::string enumerator_node_3ac(enumerator_node *ptr);
+std::string declarator_node_3ac(declarator_node *ptr);
+std::string direct_declarator_node_3ac(direct_declarator_node *ptr);
+std::string pointer_node_3ac(pointer_node *ptr);
+std::string type_qualifier_list_node_3ac(type_qualifier_list_node *ptr);
+std::string parameter_type_list_node_3ac(parameter_type_list_node *ptr);
+std::string parameter_list_node_3ac(parameter_list_node *ptr);
+std::string parameter_declaration_node_3ac(parameter_declaration_node *ptr);
+std::string identifier_list_node_3ac(identifier_list_node *ptr);
+std::string initializer_node_3ac(initializer_node *ptr);
+std::string initializer_list_node_3ac(initializer_list_node *ptr);
+std::string type_name_node_3ac(type_name_node *ptr);
+std::string abstract_declarator_node_3ac(abstract_declarator_node *ptr);
+std::string direct_abstract_declarator_node_3ac(direct_abstract_declarator_node *ptr);
+std::string statement_node_3ac(statement_node *ptr);
+std::string labeled_statement_node_3ac(labeled_statement_node *ptr);
+std::string expression_statement_node_3ac(expression_statement_node *ptr);
+std::string compound_statement_node_3ac(compound_statement_node *ptr);
+std::string statement_list_node_3ac(statement_list_node *ptr);
+std::string selection_statement_node_3ac(selection_statement_node *ptr);
+std::string iteration_statement_node_3ac(iteration_statement_node *ptr);
+std::string jump_statement_node_3ac(jump_statement_node *ptr);
+std::string expression_node_3ac(expression_node *ptr);
+std::string assignment_expression_node_3ac(assignment_expression_node *ptr);
+std::string assignment_operator_node_3ac(assignment_operator_node *ptr);
+std::string conditional_expression_node_3ac(conditional_expression_node *ptr);
+std::string constant_expression_node_3ac(constant_expression_node *ptr);
+std::string logical_or_expression_node_3ac(logical_or_expression_node *ptr);
+std::string logical_and_expression_node_3ac(logical_and_expression_node *ptr);
+std::string inclusive_or_expression_node_3ac(inclusive_or_expression_node *ptr);
+std::string exclusive_or_expression_node_3ac(exclusive_or_expression_node *ptr);
+std::string and_expression_node_3ac(and_expression_node *ptr);
+std::string equality_expression_node_3ac(equality_expression_node *ptr);
+std::string relational_expression_node_3ac(relational_expression_node *ptr);
+std::string shift_expression_node_3ac(shift_expression_node *ptr);
+std::string additive_expression_node_3ac(additive_expression_node *ptr);
+std::string multiplicative_expression_node_3ac(multiplicative_expression_node *ptr);
+std::string cast_expression_node_3ac(cast_expression_node *ptr);
+std::string unary_expression_node_3ac(unary_expression_node *ptr);
+std::string unary_operator_node_3ac(unary_operator_node *ptr);
+std::string postfix_expression_node_3ac(postfix_expression_node *ptr);
+std::string primary_expression_node_3ac(primary_expression_node *ptr);
+std::string argument_expression_list_node_3ac(argument_expression_list_node *ptr);
+std::string constant_node_3ac(constant_node *ptr);
+std::string string_node_3ac(string_node *ptr);
+std::string identifier_node_3ac(identifier_node *ptr);
+
 
 
  %}
@@ -3611,6 +3679,703 @@ void print_identifier_node(identifier_node *ptr, std::string indent)
 std::cout <<spacing<<"(identifier_node\n";
 std::cout<<")";
 }
+
+
+
+std::string ast_3ac(ast_root *ptr)
+{
+  std::string rstring = translation_unit_node_3ac((*ptr).root);
+  return rstring;
+}
+
+std::string translation_unit_node_3ac(translation_unit_node *ptr)
+{
+    translation_unit_node aNode = *ptr;
+std::string rstring = "";   if(aNode.external_declaration_node_1 != 0)
+    { rstring +=external_declaration_node_3ac(aNode.external_declaration_node_1);}
+   if(aNode.translation_unit_node_1 != 0)
+    { rstring +=translation_unit_node_3ac(aNode.translation_unit_node_1);}
+return rstring;
+}
+std::string external_declaration_node_3ac(external_declaration_node *ptr)
+{
+    external_declaration_node aNode = *ptr;
+std::string rstring = "";   if(aNode.declaration_node_1 != 0)
+    { rstring +=declaration_node_3ac(aNode.declaration_node_1);}
+   if(aNode.function_definition_node_1 != 0)
+    { rstring +=function_definition_node_3ac(aNode.function_definition_node_1);}
+
+return rstring;
+}
+std::string function_definition_node_3ac(function_definition_node *ptr)
+{
+    function_definition_node aNode = *ptr;
+std::string rstring = "";   if(aNode.declarator_node_1 != 0)
+    { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
+   if(aNode.declaration_list_node_1 != 0)
+    { rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);}
+   if(aNode.declaration_specifiers_node_1 != 0)
+    { rstring +=declaration_specifiers_node_3ac(aNode.declaration_specifiers_node_1);}
+   if(aNode.compound_statement_node_1 != 0)
+    { rstring +=compound_statement_node_3ac(aNode.compound_statement_node_1);}
+
+return rstring;
+}
+std::string declaration_node_3ac(declaration_node *ptr)
+{
+    declaration_node aNode = *ptr;
+std::string rstring = "";   if(aNode.init_declarator_list_node_1 != 0)
+    { rstring +=init_declarator_list_node_3ac(aNode.init_declarator_list_node_1);}
+   if(aNode.declaration_specifiers_node_1 != 0)
+    { rstring +=declaration_specifiers_node_3ac(aNode.declaration_specifiers_node_1);}
+
+return rstring;
+}
+std::string declaration_list_node_3ac(declaration_list_node *ptr)
+{
+    declaration_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.declaration_node_1 != 0)
+    { rstring +=declaration_node_3ac(aNode.declaration_node_1);}
+   if(aNode.declaration_list_node_1 != 0)
+    { rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);}
+
+return rstring;
+}
+std::string declaration_specifiers_node_3ac(declaration_specifiers_node *ptr)
+{
+    declaration_specifiers_node aNode = *ptr;
+std::string rstring = "";   if(aNode.storage_class_specifier_node_1 != 0)
+    { rstring +=storage_class_specifier_node_3ac(aNode.storage_class_specifier_node_1);}
+   if(aNode.declaration_specifiers_node_1 != 0)
+    { rstring +=declaration_specifiers_node_3ac(aNode.declaration_specifiers_node_1);}
+   if(aNode.type_specifier_node_1 != 0)
+    { rstring +=type_specifier_node_3ac(aNode.type_specifier_node_1);}
+   if(aNode.type_qualifier_node_1 != 0)
+    { rstring +=type_qualifier_node_3ac(aNode.type_qualifier_node_1);}
+
+return rstring;
+}
+std::string storage_class_specifier_node_3ac(storage_class_specifier_node *ptr)
+{
+    storage_class_specifier_node aNode = *ptr;
+std::string rstring = "";
+return rstring;
+}
+std::string type_specifier_node_3ac(type_specifier_node *ptr)
+{
+    type_specifier_node aNode = *ptr;
+std::string rstring = "";   if(aNode.enum_specifier_node_1 != 0)
+    { rstring +=enum_specifier_node_3ac(aNode.enum_specifier_node_1);}
+   if(aNode.struct_or_union_specifier_node_1 != 0)
+    { rstring +=struct_or_union_specifier_node_3ac(aNode.struct_or_union_specifier_node_1);}
+
+return rstring;
+}
+std::string type_qualifier_node_3ac(type_qualifier_node *ptr)
+{
+    type_qualifier_node aNode = *ptr;
+std::string rstring = "";
+return rstring;
+}
+std::string struct_or_union_specifier_node_3ac(struct_or_union_specifier_node *ptr)
+{
+    struct_or_union_specifier_node aNode = *ptr;
+std::string rstring = "";   if(aNode.struct_declaration_list_node_1 != 0)
+    { rstring +=struct_declaration_list_node_3ac(aNode.struct_declaration_list_node_1);}
+   if(aNode.identifier_node_1 != 0)
+    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
+   if(aNode.struct_or_union_node_1 != 0)
+    { rstring +=struct_or_union_node_3ac(aNode.struct_or_union_node_1);}
+
+return rstring;
+}
+std::string struct_or_union_node_3ac(struct_or_union_node *ptr)
+{
+    struct_or_union_node aNode = *ptr;
+std::string rstring = "";
+return rstring;
+}
+std::string struct_declaration_list_node_3ac(struct_declaration_list_node *ptr)
+{
+    struct_declaration_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.struct_declaration_node_1 != 0)
+    { rstring +=struct_declaration_node_3ac(aNode.struct_declaration_node_1);}
+   if(aNode.struct_declaration_list_node_1 != 0)
+    { rstring +=struct_declaration_list_node_3ac(aNode.struct_declaration_list_node_1);}
+
+return rstring;
+}
+std::string init_declarator_list_node_3ac(init_declarator_list_node *ptr)
+{
+    init_declarator_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.init_declarator_node_1 != 0)
+    { rstring +=init_declarator_node_3ac(aNode.init_declarator_node_1);}
+   if(aNode.init_declarator_list_node_1 != 0)
+    { rstring +=init_declarator_list_node_3ac(aNode.init_declarator_list_node_1);}
+
+return rstring;
+}
+std::string init_declarator_node_3ac(init_declarator_node *ptr)
+{
+    init_declarator_node aNode = *ptr;
+std::string rstring = "";   if(aNode.declarator_node_1 != 0)
+    { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
+   if(aNode.initializer_node_1 != 0)
+    { rstring +=initializer_node_3ac(aNode.initializer_node_1);}
+
+return rstring;
+}
+std::string struct_declaration_node_3ac(struct_declaration_node *ptr)
+{
+    struct_declaration_node aNode = *ptr;
+std::string rstring = "";   if(aNode.specifier_qualifier_list_node_1 != 0)
+    { rstring +=specifier_qualifier_list_node_3ac(aNode.specifier_qualifier_list_node_1);}
+   if(aNode.struct_declarator_list_node_1 != 0)
+    { rstring +=struct_declarator_list_node_3ac(aNode.struct_declarator_list_node_1);}
+
+return rstring;
+}
+std::string specifier_qualifier_list_node_3ac(specifier_qualifier_list_node *ptr)
+{
+    specifier_qualifier_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.specifier_qualifier_list_node_1 != 0)
+    { rstring +=specifier_qualifier_list_node_3ac(aNode.specifier_qualifier_list_node_1);}
+   if(aNode.type_specifier_node_1 != 0)
+    { rstring +=type_specifier_node_3ac(aNode.type_specifier_node_1);}
+   if(aNode.type_qualifier_node_1 != 0)
+    { rstring +=type_qualifier_node_3ac(aNode.type_qualifier_node_1);}
+
+return rstring;
+}
+std::string struct_declarator_list_node_3ac(struct_declarator_list_node *ptr)
+{
+    struct_declarator_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.struct_declarator_list_node_1 != 0)
+    { rstring +=struct_declarator_list_node_3ac(aNode.struct_declarator_list_node_1);}
+   if(aNode.struct_declarator_node_1 != 0)
+    { rstring +=struct_declarator_node_3ac(aNode.struct_declarator_node_1);}
+
+return rstring;
+}
+std::string struct_declarator_node_3ac(struct_declarator_node *ptr)
+{
+    struct_declarator_node aNode = *ptr;
+std::string rstring = "";   if(aNode.declarator_node_1 != 0)
+    { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
+   if(aNode.constant_expression_node_1 != 0)
+    { rstring +=constant_expression_node_3ac(aNode.constant_expression_node_1);}
+
+return rstring;
+}
+std::string enum_specifier_node_3ac(enum_specifier_node *ptr)
+{
+    enum_specifier_node aNode = *ptr;
+std::string rstring = "";   if(aNode.identifier_node_1 != 0)
+    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
+   if(aNode.enumerator_list_node_1 != 0)
+    { rstring +=enumerator_list_node_3ac(aNode.enumerator_list_node_1);}
+
+return rstring;
+}
+std::string enumerator_list_node_3ac(enumerator_list_node *ptr)
+{
+    enumerator_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.enumerator_node_1 != 0)
+    { rstring +=enumerator_node_3ac(aNode.enumerator_node_1);}
+   if(aNode.enumerator_list_node_1 != 0)
+    { rstring +=enumerator_list_node_3ac(aNode.enumerator_list_node_1);}
+
+return rstring;
+}
+std::string enumerator_node_3ac(enumerator_node *ptr)
+{
+    enumerator_node aNode = *ptr;
+std::string rstring = "";   if(aNode.constant_expression_node_1 != 0)
+    { rstring +=constant_expression_node_3ac(aNode.constant_expression_node_1);}
+   if(aNode.identifier_node_1 != 0)
+    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
+
+return rstring;
+}
+std::string declarator_node_3ac(declarator_node *ptr)
+{
+    declarator_node aNode = *ptr;
+std::string rstring = "";   if(aNode.direct_declarator_node_1 != 0)
+    { rstring +=direct_declarator_node_3ac(aNode.direct_declarator_node_1);}
+   if(aNode.pointer_node_1 != 0)
+    { rstring +=pointer_node_3ac(aNode.pointer_node_1);}
+
+return rstring;
+}
+std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
+{
+    direct_declarator_node aNode = *ptr;
+std::string rstring = "";   if(aNode.parameter_type_list_node_1 != 0)
+    { rstring +=parameter_type_list_node_3ac(aNode.parameter_type_list_node_1);}
+   if(aNode.direct_declarator_node_1 != 0)
+    { rstring +=direct_declarator_node_3ac(aNode.direct_declarator_node_1);}
+   if(aNode.constant_expression_node_1 != 0)
+    { rstring +=constant_expression_node_3ac(aNode.constant_expression_node_1);}
+   if(aNode.identifier_list_node_1 != 0)
+    { rstring +=identifier_list_node_3ac(aNode.identifier_list_node_1);}
+   if(aNode.declarator_node_1 != 0)
+    { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
+   if(aNode.identifier_node_1 != 0)
+    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
+
+return rstring;
+}
+std::string pointer_node_3ac(pointer_node *ptr)
+{
+    pointer_node aNode = *ptr;
+std::string rstring = "";   if(aNode.pointer_node_1 != 0)
+    { rstring +=pointer_node_3ac(aNode.pointer_node_1);}
+   if(aNode.type_qualifier_list_node_1 != 0)
+    { rstring +=type_qualifier_list_node_3ac(aNode.type_qualifier_list_node_1);}
+
+return rstring;
+}
+std::string type_qualifier_list_node_3ac(type_qualifier_list_node *ptr)
+{
+    type_qualifier_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.type_qualifier_node_1 != 0)
+    { rstring +=type_qualifier_node_3ac(aNode.type_qualifier_node_1);}
+   if(aNode.type_qualifier_list_node_1 != 0)
+    { rstring +=type_qualifier_list_node_3ac(aNode.type_qualifier_list_node_1);}
+
+return rstring;
+}
+std::string parameter_type_list_node_3ac(parameter_type_list_node *ptr)
+{
+    parameter_type_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.parameter_list_node_1 != 0)
+    { rstring +=parameter_list_node_3ac(aNode.parameter_list_node_1);}
+
+return rstring;
+}
+std::string parameter_list_node_3ac(parameter_list_node *ptr)
+{
+    parameter_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.parameter_list_node_1 != 0)
+    { rstring +=parameter_list_node_3ac(aNode.parameter_list_node_1);}
+   if(aNode.parameter_declaration_node_1 != 0)
+    { rstring +=parameter_declaration_node_3ac(aNode.parameter_declaration_node_1);}
+
+return rstring;
+}
+std::string parameter_declaration_node_3ac(parameter_declaration_node *ptr)
+{
+    parameter_declaration_node aNode = *ptr;
+std::string rstring = "";   if(aNode.declarator_node_1 != 0)
+    { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
+   if(aNode.declaration_specifiers_node_1 != 0)
+    { rstring +=declaration_specifiers_node_3ac(aNode.declaration_specifiers_node_1);}
+   if(aNode.abstract_declarator_node_1 != 0)
+    { rstring +=abstract_declarator_node_3ac(aNode.abstract_declarator_node_1);}
+
+return rstring;
+}
+std::string identifier_list_node_3ac(identifier_list_node *ptr)
+{
+    identifier_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.identifier_node_1 != 0)
+    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
+   if(aNode.identifier_list_node_1 != 0)
+    { rstring +=identifier_list_node_3ac(aNode.identifier_list_node_1);}
+
+return rstring;
+}
+std::string initializer_node_3ac(initializer_node *ptr)
+{
+    initializer_node aNode = *ptr;
+std::string rstring = "";   if(aNode.initializer_list_node_1 != 0)
+    { rstring +=initializer_list_node_3ac(aNode.initializer_list_node_1);}
+   if(aNode.assignment_expression_node_1 != 0)
+    { rstring +=assignment_expression_node_3ac(aNode.assignment_expression_node_1);}
+
+return rstring;
+}
+std::string initializer_list_node_3ac(initializer_list_node *ptr)
+{
+    initializer_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.initializer_node_1 != 0)
+    { rstring +=initializer_node_3ac(aNode.initializer_node_1);}
+   if(aNode.initializer_list_node_1 != 0)
+    { rstring +=initializer_list_node_3ac(aNode.initializer_list_node_1);}
+
+return rstring;
+}
+std::string type_name_node_3ac(type_name_node *ptr)
+{
+    type_name_node aNode = *ptr;
+std::string rstring = "";   if(aNode.specifier_qualifier_list_node_1 != 0)
+    { rstring +=specifier_qualifier_list_node_3ac(aNode.specifier_qualifier_list_node_1);}
+   if(aNode.abstract_declarator_node_1 != 0)
+    { rstring +=abstract_declarator_node_3ac(aNode.abstract_declarator_node_1);}
+
+return rstring;
+}
+std::string abstract_declarator_node_3ac(abstract_declarator_node *ptr)
+{
+    abstract_declarator_node aNode = *ptr;
+std::string rstring = "";   if(aNode.direct_abstract_declarator_node_1 != 0)
+    { rstring +=direct_abstract_declarator_node_3ac(aNode.direct_abstract_declarator_node_1);}
+   if(aNode.pointer_node_1 != 0)
+    { rstring +=pointer_node_3ac(aNode.pointer_node_1);}
+
+return rstring;
+}
+std::string direct_abstract_declarator_node_3ac(direct_abstract_declarator_node *ptr)
+{
+    direct_abstract_declarator_node aNode = *ptr;
+std::string rstring = "";   if(aNode.parameter_type_list_node_1 != 0)
+    { rstring +=parameter_type_list_node_3ac(aNode.parameter_type_list_node_1);}
+   if(aNode.abstract_declarator_node_1 != 0)
+    { rstring +=abstract_declarator_node_3ac(aNode.abstract_declarator_node_1);}
+   if(aNode.constant_expression_node_1 != 0)
+    { rstring +=constant_expression_node_3ac(aNode.constant_expression_node_1);}
+   if(aNode.direct_abstract_declarator_node_1 != 0)
+    { rstring +=direct_abstract_declarator_node_3ac(aNode.direct_abstract_declarator_node_1);}
+
+return rstring;
+}
+std::string statement_node_3ac(statement_node *ptr)
+{
+    statement_node aNode = *ptr;
+std::string rstring = "";   if(aNode.expression_statement_node_1 != 0)
+    { rstring +=expression_statement_node_3ac(aNode.expression_statement_node_1);}
+   if(aNode.jump_statement_node_1 != 0)
+    { rstring +=jump_statement_node_3ac(aNode.jump_statement_node_1);}
+   if(aNode.labeled_statement_node_1 != 0)
+    { rstring +=labeled_statement_node_3ac(aNode.labeled_statement_node_1);}
+   if(aNode.compound_statement_node_1 != 0)
+    { rstring +=compound_statement_node_3ac(aNode.compound_statement_node_1);}
+   if(aNode.iteration_statement_node_1 != 0)
+    { rstring +=iteration_statement_node_3ac(aNode.iteration_statement_node_1);}
+   if(aNode.selection_statement_node_1 != 0)
+    { rstring +=selection_statement_node_3ac(aNode.selection_statement_node_1);}
+
+return rstring;
+}
+std::string labeled_statement_node_3ac(labeled_statement_node *ptr)
+{
+    labeled_statement_node aNode = *ptr;
+std::string rstring = "";   if(aNode.constant_expression_node_1 != 0)
+    { rstring +=constant_expression_node_3ac(aNode.constant_expression_node_1);}
+   if(aNode.identifier_node_1 != 0)
+    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
+   if(aNode.statement_node_1 != 0)
+    { rstring +=statement_node_3ac(aNode.statement_node_1);}
+
+return rstring;
+}
+std::string expression_statement_node_3ac(expression_statement_node *ptr)
+{
+    expression_statement_node aNode = *ptr;
+std::string rstring = "";   if(aNode.expression_node_1 != 0)
+    { rstring +=expression_node_3ac(aNode.expression_node_1);}
+
+return rstring;
+}
+std::string compound_statement_node_3ac(compound_statement_node *ptr)
+{
+    compound_statement_node aNode = *ptr;
+std::string rstring = "";   if(aNode.statement_list_node_1 != 0)
+    { rstring +=statement_list_node_3ac(aNode.statement_list_node_1);}
+   if(aNode.declaration_list_node_1 != 0)
+    { rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);}
+
+return rstring;
+}
+std::string statement_list_node_3ac(statement_list_node *ptr)
+{
+    statement_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.statement_list_node_1 != 0)
+    { rstring +=statement_list_node_3ac(aNode.statement_list_node_1);}
+   if(aNode.statement_node_1 != 0)
+    { rstring +=statement_node_3ac(aNode.statement_node_1);}
+
+return rstring;
+}
+std::string selection_statement_node_3ac(selection_statement_node *ptr)
+{
+    selection_statement_node aNode = *ptr;
+std::string rstring = "";   if(aNode.statement_node_2 != 0)
+    { rstring +=statement_node_3ac(aNode.statement_node_2);}
+   if(aNode.statement_node_1 != 0)
+    { rstring +=statement_node_3ac(aNode.statement_node_1);}
+   if(aNode.expression_node_1 != 0)
+    { rstring +=expression_node_3ac(aNode.expression_node_1);}
+
+return rstring;
+}
+std::string iteration_statement_node_3ac(iteration_statement_node *ptr)
+{
+    iteration_statement_node aNode = *ptr;
+std::string rstring = "";   if(aNode.expression_node_2 != 0)
+    { rstring +=expression_node_3ac(aNode.expression_node_2);}
+   if(aNode.statement_node_1 != 0)
+    { rstring +=statement_node_3ac(aNode.statement_node_1);}
+   if(aNode.expression_node_1 != 0)
+    { rstring +=expression_node_3ac(aNode.expression_node_1);}
+   if(aNode.expression_node_3 != 0)
+    { rstring +=expression_node_3ac(aNode.expression_node_3);}
+
+return rstring;
+}
+std::string jump_statement_node_3ac(jump_statement_node *ptr)
+{
+    jump_statement_node aNode = *ptr;
+std::string rstring = "";   if(aNode.expression_node_1 != 0)
+    { rstring +=expression_node_3ac(aNode.expression_node_1);}
+   if(aNode.identifier_node_1 != 0)
+    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
+
+return rstring;
+}
+std::string expression_node_3ac(expression_node *ptr)
+{
+    expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.expression_node_1 != 0)
+    { rstring +=expression_node_3ac(aNode.expression_node_1);}
+   if(aNode.assignment_expression_node_1 != 0)
+    { rstring +=assignment_expression_node_3ac(aNode.assignment_expression_node_1);}
+
+return rstring;
+}
+std::string assignment_expression_node_3ac(assignment_expression_node *ptr)
+{
+    assignment_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.conditional_expression_node_1 != 0)
+    { rstring +=conditional_expression_node_3ac(aNode.conditional_expression_node_1);}
+   if(aNode.assignment_operator_node_1 != 0)
+    { rstring +=assignment_operator_node_3ac(aNode.assignment_operator_node_1);}
+   if(aNode.unary_expression_node_1 != 0)
+    { rstring +=unary_expression_node_3ac(aNode.unary_expression_node_1);}
+   if(aNode.assignment_expression_node_1 != 0)
+    { rstring +=assignment_expression_node_3ac(aNode.assignment_expression_node_1);}
+
+return rstring;
+}
+std::string assignment_operator_node_3ac(assignment_operator_node *ptr)
+{
+    assignment_operator_node aNode = *ptr;
+std::string rstring = "";
+return rstring;
+}
+std::string conditional_expression_node_3ac(conditional_expression_node *ptr)
+{
+    conditional_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.expression_node_1 != 0)
+    { rstring +=expression_node_3ac(aNode.expression_node_1);}
+   if(aNode.conditional_expression_node_1 != 0)
+    { rstring +=conditional_expression_node_3ac(aNode.conditional_expression_node_1);}
+   if(aNode.logical_or_expression_node_1 != 0)
+    { rstring +=logical_or_expression_node_3ac(aNode.logical_or_expression_node_1);}
+
+return rstring;
+}
+std::string constant_expression_node_3ac(constant_expression_node *ptr)
+{
+    constant_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.conditional_expression_node_1 != 0)
+    { rstring +=conditional_expression_node_3ac(aNode.conditional_expression_node_1);}
+
+return rstring;
+}
+std::string logical_or_expression_node_3ac(logical_or_expression_node *ptr)
+{
+    logical_or_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.logical_or_expression_node_1 != 0)
+    { rstring +=logical_or_expression_node_3ac(aNode.logical_or_expression_node_1);}
+   if(aNode.logical_and_expression_node_1 != 0)
+    { rstring +=logical_and_expression_node_3ac(aNode.logical_and_expression_node_1);}
+
+return rstring;
+}
+std::string logical_and_expression_node_3ac(logical_and_expression_node *ptr)
+{
+    logical_and_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.inclusive_or_expression_node_1 != 0)
+    { rstring +=inclusive_or_expression_node_3ac(aNode.inclusive_or_expression_node_1);}
+   if(aNode.logical_and_expression_node_1 != 0)
+    { rstring +=logical_and_expression_node_3ac(aNode.logical_and_expression_node_1);}
+
+return rstring;
+}
+std::string inclusive_or_expression_node_3ac(inclusive_or_expression_node *ptr)
+{
+    inclusive_or_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.inclusive_or_expression_node_1 != 0)
+    { rstring +=inclusive_or_expression_node_3ac(aNode.inclusive_or_expression_node_1);}
+   if(aNode.exclusive_or_expression_node_1 != 0)
+    { rstring +=exclusive_or_expression_node_3ac(aNode.exclusive_or_expression_node_1);}
+
+return rstring;
+}
+std::string exclusive_or_expression_node_3ac(exclusive_or_expression_node *ptr)
+{
+    exclusive_or_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.and_expression_node_1 != 0)
+    { rstring +=and_expression_node_3ac(aNode.and_expression_node_1);}
+   if(aNode.exclusive_or_expression_node_1 != 0)
+    { rstring +=exclusive_or_expression_node_3ac(aNode.exclusive_or_expression_node_1);}
+
+return rstring;
+}
+std::string and_expression_node_3ac(and_expression_node *ptr)
+{
+    and_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.equality_expression_node_1 != 0)
+    { rstring +=equality_expression_node_3ac(aNode.equality_expression_node_1);}
+   if(aNode.and_expression_node_1 != 0)
+    { rstring +=and_expression_node_3ac(aNode.and_expression_node_1);}
+
+return rstring;
+}
+std::string equality_expression_node_3ac(equality_expression_node *ptr)
+{
+    equality_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.equality_expression_node_1 != 0)
+    { rstring +=equality_expression_node_3ac(aNode.equality_expression_node_1);}
+   if(aNode.relational_expression_node_1 != 0)
+    { rstring +=relational_expression_node_3ac(aNode.relational_expression_node_1);}
+
+return rstring;
+}
+std::string relational_expression_node_3ac(relational_expression_node *ptr)
+{
+    relational_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.relational_expression_node_1 != 0)
+    { rstring +=relational_expression_node_3ac(aNode.relational_expression_node_1);}
+   if(aNode.shift_expression_node_1 != 0)
+    { rstring +=shift_expression_node_3ac(aNode.shift_expression_node_1);}
+
+return rstring;
+}
+std::string shift_expression_node_3ac(shift_expression_node *ptr)
+{
+    shift_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.additive_expression_node_1 != 0)
+    { rstring +=additive_expression_node_3ac(aNode.additive_expression_node_1);}
+   if(aNode.shift_expression_node_1 != 0)
+    { rstring +=shift_expression_node_3ac(aNode.shift_expression_node_1);}
+
+return rstring;
+}
+std::string additive_expression_node_3ac(additive_expression_node *ptr)
+{
+    additive_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.multiplicative_expression_node_1 != 0)
+    { rstring +=multiplicative_expression_node_3ac(aNode.multiplicative_expression_node_1);}
+   if(aNode.additive_expression_node_1 != 0)
+    { rstring +=additive_expression_node_3ac(aNode.additive_expression_node_1);}
+
+return rstring;
+}
+std::string multiplicative_expression_node_3ac(multiplicative_expression_node *ptr)
+{
+    multiplicative_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.multiplicative_expression_node_1 != 0)
+    { rstring +=multiplicative_expression_node_3ac(aNode.multiplicative_expression_node_1);}
+   if(aNode.cast_expression_node_1 != 0)
+    { rstring +=cast_expression_node_3ac(aNode.cast_expression_node_1);}
+
+return rstring;
+}
+std::string cast_expression_node_3ac(cast_expression_node *ptr)
+{
+    cast_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.cast_expression_node_1 != 0)
+    { rstring +=cast_expression_node_3ac(aNode.cast_expression_node_1);}
+   if(aNode.type_name_node_1 != 0)
+    { rstring +=type_name_node_3ac(aNode.type_name_node_1);}
+   if(aNode.unary_expression_node_1 != 0)
+    { rstring +=unary_expression_node_3ac(aNode.unary_expression_node_1);}
+
+return rstring;
+}
+std::string unary_expression_node_3ac(unary_expression_node *ptr)
+{
+    unary_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.postfix_expression_node_1 != 0)
+    { rstring +=postfix_expression_node_3ac(aNode.postfix_expression_node_1);}
+   if(aNode.type_name_node_1 != 0)
+    { rstring +=type_name_node_3ac(aNode.type_name_node_1);}
+   if(aNode.unary_operator_node_1 != 0)
+    { rstring +=unary_operator_node_3ac(aNode.unary_operator_node_1);}
+   if(aNode.unary_expression_node_1 != 0)
+    { rstring +=unary_expression_node_3ac(aNode.unary_expression_node_1);}
+   if(aNode.cast_expression_node_1 != 0)
+    { rstring +=cast_expression_node_3ac(aNode.cast_expression_node_1);}
+
+return rstring;
+}
+std::string unary_operator_node_3ac(unary_operator_node *ptr)
+{
+    unary_operator_node aNode = *ptr;
+std::string rstring = "";
+return rstring;
+}
+std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
+{
+    postfix_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.postfix_expression_node_1 != 0)
+    { rstring +=postfix_expression_node_3ac(aNode.postfix_expression_node_1);}
+   if(aNode.primary_expression_node_1 != 0)
+    { rstring +=primary_expression_node_3ac(aNode.primary_expression_node_1);}
+   if(aNode.argument_expression_list_node_1 != 0)
+    { rstring +=argument_expression_list_node_3ac(aNode.argument_expression_list_node_1);}
+   if(aNode.expression_node_1 != 0)
+    { rstring +=expression_node_3ac(aNode.expression_node_1);}
+   if(aNode.identifier_node_1 != 0)
+    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
+
+return rstring;
+}
+std::string primary_expression_node_3ac(primary_expression_node *ptr)
+{
+    primary_expression_node aNode = *ptr;
+std::string rstring = "";   if(aNode.constant_node_1 != 0)
+    { rstring +=constant_node_3ac(aNode.constant_node_1);}
+   if(aNode.expression_node_1 != 0)
+    { rstring +=expression_node_3ac(aNode.expression_node_1);}
+   if(aNode.string_node_1 != 0)
+    { rstring +=string_node_3ac(aNode.string_node_1);}
+   if(aNode.identifier_node_1 != 0)
+    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
+
+return rstring;
+}
+std::string argument_expression_list_node_3ac(argument_expression_list_node *ptr)
+{
+    argument_expression_list_node aNode = *ptr;
+std::string rstring = "";   if(aNode.assignment_expression_node_1 != 0)
+    { rstring +=assignment_expression_node_3ac(aNode.assignment_expression_node_1);}
+   if(aNode.argument_expression_list_node_1 != 0)
+    { rstring +=argument_expression_list_node_3ac(aNode.argument_expression_list_node_1);}
+
+return rstring;
+}
+std::string constant_node_3ac(constant_node *ptr)
+{
+    constant_node aNode = *ptr;
+std::string rstring = "";
+return rstring;
+}
+std::string string_node_3ac(string_node *ptr)
+{
+    string_node aNode = *ptr;
+std::string rstring = "";
+return rstring;
+}
+std::string identifier_node_3ac(identifier_node *ptr)
+{
+    identifier_node aNode = *ptr;
+std::string rstring = "";
+return rstring;
+}
+
 
 /*
 yyerror(s)
