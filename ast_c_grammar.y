@@ -16,6 +16,9 @@ extern bool declMode;
 extern bool undeclVar;
 extern bool redeclVar;
 
+/* this is used for generating 3ac */
+ int currentTemp = 0;
+
 /* this is going to be refactored away */
 struct declNode{
   char* id;
@@ -2920,6 +2923,7 @@ anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_
 constant
     :INTEGER_CONSTANT
 {
+  std::cout<<$1<<std::endl;
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
     (*anode).int_token_1=$1;
@@ -2931,6 +2935,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
 }
     |CHARACTER_CONSTANT
 {
+  std::cout<<$1<<std::endl;
      constant_node *anode;
      anode = (constant_node*) malloc(sizeof(constant_node));
      (*anode).char_token_1 = $1;
@@ -2941,6 +2946,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
 }
     |FLOATING_CONSTANT
 {
+  std::cout<<$1<<std::endl;
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
     (*anode).dec_token_1=$1;
@@ -3700,7 +3706,7 @@ return rstring;
 std::string external_declaration_node_3ac(external_declaration_node *ptr)
 {
     external_declaration_node aNode = *ptr;
-std::string rstring = "";   if(aNode.declaration_node_1 != 0)
+    std::string rstring = "";   if(aNode.declaration_node_1 != 0)
     { rstring +=declaration_node_3ac(aNode.declaration_node_1);}
    if(aNode.function_definition_node_1 != 0)
     { rstring +=function_definition_node_3ac(aNode.function_definition_node_1);}
@@ -4275,12 +4281,16 @@ return rstring;
 }
 std::string multiplicative_expression_node_3ac(multiplicative_expression_node *ptr)
 {
+  /*for right now, I just want to get the basics down, so T will be replaced with T-x 
+    where 'x' is the appropriate number
+  */
     multiplicative_expression_node aNode = *ptr;
-std::string rstring = "";   if(aNode.multiplicative_expression_node_1 != 0)
-    { rstring +=multiplicative_expression_node_3ac(aNode.multiplicative_expression_node_1);}
-   if(aNode.cast_expression_node_1 != 0)
+std::string rstring = "T := ";   
+  if(aNode.cast_expression_node_1 != 0 && aNode.multiplicative_expression_node_1 == 0)
     { rstring +=cast_expression_node_3ac(aNode.cast_expression_node_1);}
-
+  else if(aNode.multiplicative_expression_node_1 != 0)
+    { rstring += multiplicative_expression_node_3ac(aNode.multiplicative_expression_node_1)+" * T";}
+ 
 return rstring;
 }
 std::string cast_expression_node_3ac(cast_expression_node *ptr)
@@ -4360,7 +4370,18 @@ return rstring;
 std::string constant_node_3ac(constant_node *ptr)
 {
     constant_node aNode = *ptr;
-std::string rstring = "";
+    std::string rstring = "";
+  if(aNode.token_1 != "")
+    {
+      rstring += aNode.token_1;
+    }
+  else if(aNode.int_token_1 != 0)
+    {
+      std::stringstream ss;
+      std::cout<<aNode.int_token_1;
+      ss<<aNode.int_token_1;
+      rstring += ss.str();
+    }
 return rstring;
 }
 std::string string_node_3ac(string_node *ptr)

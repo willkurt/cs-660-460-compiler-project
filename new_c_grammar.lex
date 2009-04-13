@@ -463,14 +463,15 @@ currentCharDepth += yyleng;return ('?'); }
 
 
 {float_const}    {
-
+  /* some of this seems to be left out from the last merge */
   if(floatFlag)
   	{yylval.dval = strtof(yytext, 0);}
   else if(doubleFlag)
   	{yylval.dval = strtod(yytext, 0);}
   else if(lDoubleFlag)
   	{yylval.dval = strtold(yytext, 0);}
-  
+  else
+    {yylval.dval = strtof(yytext,0);}
 
   if (errno == ERANGE && floatFlag)
   {
@@ -498,7 +499,7 @@ currentCharDepth += yyleng;return ('?'); }
   if(lexDebug){lexDebugOut << "FLOATING_CONSTANT("<<yylval.dval<<")";}
   currentCharDepth += yyleng;return (FLOATING_CONSTANT); } 
 {integer}        {
-
+  yylval.ival = atoi(yytext);
   if(shortFlag)
   	{yylval.dval = strtol(yytext, 0, 0);
   	if(yylval.dval > 32767)

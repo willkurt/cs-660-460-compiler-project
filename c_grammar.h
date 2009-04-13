@@ -8,7 +8,7 @@
 #include "SymbolTable.hpp"
 #include "symbol_content.hpp"
 #include <fstream>
-
+#include <sstream>
 
 extern "C"{
   int yyparse();
