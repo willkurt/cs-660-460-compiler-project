@@ -19,6 +19,26 @@ extern bool redeclVar;
 /* this is used for generating 3ac */
  int currentTemp = 0;
 
+ std::string getCurrentTemp()
+   {
+     std::stringstream ss;
+     ss<<"T-"<<currentTemp;
+     return ss.str();
+   }
+
+ std::string getLastTemp()
+   {
+     std::stringstream ss;
+     ss<<"T-"<<(currentTemp-1);
+     return ss.str();
+   }
+
+ std::string getNextTemp()
+   {
+     std::stringstream ss;
+     ss<<"T-"<<(currentTemp+1);
+     return ss.str();
+   }
 /* this is going to be refactored away */
 struct declNode{
   char* id;
@@ -4294,12 +4314,14 @@ std::string multiplicative_expression_node_3ac(multiplicative_expression_node *p
   else if(next != 0 && (*next).multiplicative_expression_node_1 != 0)
     {
       rstring += multiplicative_expression_node_3ac(next);
-      rstring += "T := T * "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n"; 
+      rstring += getCurrentTemp()+" := "+getLastTemp()+" * "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n"; 
+      currentTemp++;
     }
   /* this is the case where the next is a cast_expression_node alone */
   else
     {
-      rstring += "T := "+cast_expression_node_3ac((*next).cast_expression_node_1)+" * "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n";
+      rstring += getCurrentTemp()+" := "+cast_expression_node_3ac((*next).cast_expression_node_1)+" * "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n";
+      currentTemp++;
     }
  
 return rstring;
@@ -4389,7 +4411,6 @@ std::string constant_node_3ac(constant_node *ptr)
   else if(aNode.int_token_1 != 0)
     {
       std::stringstream ss;
-      std::cout<<aNode.int_token_1;
       ss<<aNode.int_token_1;
       rstring += ss.str();
     }
