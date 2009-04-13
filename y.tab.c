@@ -929,8 +929,8 @@ static const yytype_uint16 yyrline[] =
     2499,  2508,  2519,  2528,  2537,  2548,  2557,  2566,  2575,  2586,
     2597,  2610,  2624,  2638,  2652,  2666,  2680,  2696,  2703,  2710,
     2717,  2724,  2731,  2740,  2754,  2768,  2782,  2796,  2810,  2824,
-    2838,  2854,  2866,  2878,  2890,  2904,  2913,  2924,  2936,  2947,
-    2958,  2969,  2978
+    2838,  2854,  2866,  2878,  2890,  2904,  2913,  2924,  2935,  2945,
+    2955,  2966,  2975
 };
 #endif
 
@@ -5539,7 +5539,6 @@ anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_
   case 247:
 #line 2925 "ast_c_grammar.y"
     {
-  std::cout<<(yyvsp[(1) - (1)].ival)<<std::endl;
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
     (*anode).int_token_1=(yyvsp[(1) - (1)].ival);
@@ -5552,9 +5551,8 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 248:
-#line 2937 "ast_c_grammar.y"
+#line 2936 "ast_c_grammar.y"
     {
-  std::cout<<(yyvsp[(1) - (1)].cval)<<std::endl;
      constant_node *anode;
      anode = (constant_node*) malloc(sizeof(constant_node));
      (*anode).char_token_1 = (yyvsp[(1) - (1)].cval);
@@ -5566,9 +5564,8 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 249:
-#line 2948 "ast_c_grammar.y"
+#line 2946 "ast_c_grammar.y"
     {
-  std::cout<<(yyvsp[(1) - (1)].dval)<<std::endl;
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
     (*anode).dec_token_1=(yyvsp[(1) - (1)].dval);
@@ -5580,7 +5577,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 250:
-#line 2959 "ast_c_grammar.y"
+#line 2956 "ast_c_grammar.y"
     {
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
@@ -5592,7 +5589,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 251:
-#line 2970 "ast_c_grammar.y"
+#line 2967 "ast_c_grammar.y"
     {
      string_node *anode;
 anode = (string_node*) malloc(sizeof(string_node));
@@ -5602,7 +5599,7 @@ anode = (string_node*) malloc(sizeof(string_node));
     break;
 
   case 252:
-#line 2979 "ast_c_grammar.y"
+#line 2976 "ast_c_grammar.y"
     {
      identifier_node *anode;
 anode = (identifier_node*) malloc(sizeof(identifier_node));
@@ -5613,7 +5610,7 @@ anode = (identifier_node*) malloc(sizeof(identifier_node));
 
 
 /* Line 1267 of yacc.c.  */
-#line 5617 "y.tab.c"
+#line 5614 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -5827,7 +5824,7 @@ yyreturn:
 }
 
 
-#line 2988 "ast_c_grammar.y"
+#line 2985 "ast_c_grammar.y"
 
 
 #include <stdio.h>
@@ -7126,13 +7123,27 @@ std::string multiplicative_expression_node_3ac(multiplicative_expression_node *p
 {
   /*for right now, I just want to get the basics down, so T will be replaced with T-x 
     where 'x' is the appropriate number
+
+    later of we'll have to do much more thinking re: cast_expressions... for now
+    I just want this to work, even in the most primative fashion
   */
     multiplicative_expression_node aNode = *ptr;
-std::string rstring = "T := ";   
-  if(aNode.cast_expression_node_1 != 0 && aNode.multiplicative_expression_node_1 == 0)
-    { rstring +=cast_expression_node_3ac(aNode.cast_expression_node_1);}
-  else if(aNode.multiplicative_expression_node_1 != 0)
-    { rstring += multiplicative_expression_node_3ac(aNode.multiplicative_expression_node_1)+" * T";}
+    multiplicative_expression_node *next = aNode.multiplicative_expression_node_1;
+    std::string rstring = "";   
+  if(aNode.cast_expression_node_1 != 0 && next == 0)
+    {
+      rstring += cast_expression_node_3ac(aNode.cast_expression_node_1);
+    }
+  else if(next != 0 && (*next).multiplicative_expression_node_1 != 0)
+    {
+      rstring += multiplicative_expression_node_3ac(next);
+      rstring += "T := T * "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n"; 
+    }
+  /* this is the case where the next is a cast_expression_node alone */
+  else
+    {
+      rstring += "T := "+cast_expression_node_3ac((*next).cast_expression_node_1)+" * "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n";
+    }
  
 return rstring;
 }

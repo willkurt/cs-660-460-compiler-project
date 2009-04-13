@@ -2923,7 +2923,6 @@ anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_
 constant
     :INTEGER_CONSTANT
 {
-  std::cout<<$1<<std::endl;
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
     (*anode).int_token_1=$1;
@@ -2935,7 +2934,6 @@ anode = (constant_node*) malloc(sizeof(constant_node));
 }
     |CHARACTER_CONSTANT
 {
-  std::cout<<$1<<std::endl;
      constant_node *anode;
      anode = (constant_node*) malloc(sizeof(constant_node));
      (*anode).char_token_1 = $1;
@@ -2946,7 +2944,6 @@ anode = (constant_node*) malloc(sizeof(constant_node));
 }
     |FLOATING_CONSTANT
 {
-  std::cout<<$1<<std::endl;
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
     (*anode).dec_token_1=$1;
@@ -4283,13 +4280,27 @@ std::string multiplicative_expression_node_3ac(multiplicative_expression_node *p
 {
   /*for right now, I just want to get the basics down, so T will be replaced with T-x 
     where 'x' is the appropriate number
+
+    later of we'll have to do much more thinking re: cast_expressions... for now
+    I just want this to work, even in the most primative fashion
   */
     multiplicative_expression_node aNode = *ptr;
-std::string rstring = "T := ";   
-  if(aNode.cast_expression_node_1 != 0 && aNode.multiplicative_expression_node_1 == 0)
-    { rstring +=cast_expression_node_3ac(aNode.cast_expression_node_1);}
-  else if(aNode.multiplicative_expression_node_1 != 0)
-    { rstring += multiplicative_expression_node_3ac(aNode.multiplicative_expression_node_1)+" * T";}
+    multiplicative_expression_node *next = aNode.multiplicative_expression_node_1;
+    std::string rstring = "";   
+  if(aNode.cast_expression_node_1 != 0 && next == 0)
+    {
+      rstring += cast_expression_node_3ac(aNode.cast_expression_node_1);
+    }
+  else if(next != 0 && (*next).multiplicative_expression_node_1 != 0)
+    {
+      rstring += multiplicative_expression_node_3ac(next);
+      rstring += "T := T * "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n"; 
+    }
+  /* this is the case where the next is a cast_expression_node alone */
+  else
+    {
+      rstring += "T := "+cast_expression_node_3ac((*next).cast_expression_node_1)+" * "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n";
+    }
  
 return rstring;
 }
