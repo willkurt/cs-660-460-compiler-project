@@ -4289,12 +4289,22 @@ return rstring;
 std::string additive_expression_node_3ac(additive_expression_node *ptr)
 {
     additive_expression_node aNode = *ptr;
-std::string rstring = "";   if(aNode.multiplicative_expression_node_1 != 0)
-    { rstring +=multiplicative_expression_node_3ac(aNode.multiplicative_expression_node_1);}
-   if(aNode.additive_expression_node_1 != 0)
-    { rstring +=additive_expression_node_3ac(aNode.additive_expression_node_1);}
-
-return rstring;
+std::string rstring = "";   
+ 
+if( aNode.additive_expression_node_1 == 0)
+  {
+    rstring += multiplicative_expression_node_3ac(aNode.multiplicative_expression_node_1);
+  }
+/*case where we have an additive node */
+ else
+   {
+     rstring+=multiplicative_expression_node_3ac(aNode.multiplicative_expression_node_1);
+     std::string endmulti = getLastTemp();
+     rstring+=additive_expression_node_3ac(aNode.additive_expression_node_1);
+     rstring += getCurrentTemp()+" := "+getLastTemp()+" "+aNode.char_lit_1[1]+" "+endmulti+"\n";
+     currentTemp++;
+   }
+ return rstring;
 }
 std::string multiplicative_expression_node_3ac(multiplicative_expression_node *ptr)
 {
@@ -4309,20 +4319,17 @@ std::string multiplicative_expression_node_3ac(multiplicative_expression_node *p
     std::string rstring = "";   
   if(aNode.cast_expression_node_1 != 0 && next == 0)
     {
-      rstring += cast_expression_node_3ac(aNode.cast_expression_node_1);
+      rstring += cast_expression_node_3ac(aNode.cast_expression_node_1); 
     }
-  else if(next != 0 && (*next).multiplicative_expression_node_1 != 0)
+  else if(next != 0) 
     {
       rstring += multiplicative_expression_node_3ac(next);
-      rstring += getCurrentTemp()+" := "+getLastTemp()+" "+aNode.char_lit_1[1]+" "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n"; 
+      std::string multitemp = getLastTemp();
+      rstring += cast_expression_node_3ac(aNode.cast_expression_node_1);
+	rstring += getCurrentTemp()+" := "+multitemp+" "+aNode.char_lit_1[1]+" "+getLastTemp()+"\n"; 
       currentTemp++;
     }
-  /* this is the case where the next is a cast_expression_node alone */
-  else
-    {
-      rstring += getCurrentTemp()+" := "+cast_expression_node_3ac((*next).cast_expression_node_1)+" "+aNode.char_lit_1[1]+" "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n";
-      currentTemp++;
-    }
+  /* there should be not else */
  
 return rstring;
 }
@@ -4334,7 +4341,9 @@ std::string rstring = "";   if(aNode.cast_expression_node_1 != 0)
    if(aNode.type_name_node_1 != 0)
     { rstring +=type_name_node_3ac(aNode.type_name_node_1);}
    if(aNode.unary_expression_node_1 != 0)
-    { rstring +=unary_expression_node_3ac(aNode.unary_expression_node_1);}
+     { rstring += getCurrentTemp()+" := "+unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
+       currentTemp++;
+     }
 
 return rstring;
 }
