@@ -4314,13 +4314,13 @@ std::string multiplicative_expression_node_3ac(multiplicative_expression_node *p
   else if(next != 0 && (*next).multiplicative_expression_node_1 != 0)
     {
       rstring += multiplicative_expression_node_3ac(next);
-      rstring += getCurrentTemp()+" := "+getLastTemp()+" * "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n"; 
+      rstring += getCurrentTemp()+" := "+getLastTemp()+" "+aNode.char_lit_1[1]+" "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n"; 
       currentTemp++;
     }
   /* this is the case where the next is a cast_expression_node alone */
   else
     {
-      rstring += getCurrentTemp()+" := "+cast_expression_node_3ac((*next).cast_expression_node_1)+" * "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n";
+      rstring += getCurrentTemp()+" := "+cast_expression_node_3ac((*next).cast_expression_node_1)+" "+aNode.char_lit_1[1]+" "+cast_expression_node_3ac(aNode.cast_expression_node_1)+"\n";
       currentTemp++;
     }
  
