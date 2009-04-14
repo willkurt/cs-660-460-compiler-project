@@ -478,7 +478,7 @@ anode = (function_definition_node*) malloc(sizeof(function_definition_node));
 }
     ;
 declaration
-    :declaration_specifiers ';'
+:declaration_specifiers ';'{declMode=false;}
 {
      declaration_node *anode;
 anode = (declaration_node*) malloc(sizeof(declaration_node));
@@ -487,7 +487,7 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
     (*anode).init_declarator_list_node_1= 0;
     $$ = anode;
 }
-    |declaration_specifiers init_declarator_list ';'
+|declaration_specifiers init_declarator_list ';'{declMode = false;}
      //st code
     {
       //we'll be using this to store most of the info about
@@ -506,7 +506,6 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
 	      std::string value = (*(*currentSpecNode).storage_class_specifier_node_1).token_1;
 	      if(value =="auto")
 		{
-		  std::cout<<"I am here"<<std::endl;
 		  new_specs |= xAUTO;
 		}
 	      else if(value == "register")
@@ -525,7 +524,6 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
 		{
 		  new_specs |= xTYPEDEF;
 		}
-	      std::cout<<new_specs<<std::endl;
 	    }
 	  if((*currentSpecNode).type_specifier_node_1 != 0)
 	    {
@@ -795,35 +793,35 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
 }
     ;
 storage_class_specifier 
-    :AUTO
+    :AUTO {declMode = true;}
 {
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
     (*anode).token_1=$1;
     $$ = anode;
 }
-    |REGISTER
+    |REGISTER {declMode = true;}
 {
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
     (*anode).token_1=$1;
     $$ = anode;
 }
-    |STATIC
+    |STATIC {declMode = true;}
 {
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
     (*anode).token_1=$1;
     $$ = anode;
 }
-    |EXTERN
+    |EXTERN {declMode = true;}
 {
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
     (*anode).token_1=$1;
     $$ = anode;
 }
-    |TYPEDEF
+    |TYPEDEF {declMode = true;}
 {
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
@@ -832,7 +830,7 @@ anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_no
 }
     ;
 type_specifier
-    :VOID
+    :VOID {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -841,7 +839,7 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     (*anode).struct_or_union_specifier_node_1= 0;
     $$ = anode;
 }
-    |CHAR
+    |CHAR {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -850,7 +848,7 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     (*anode).struct_or_union_specifier_node_1= 0;
     $$ = anode;
 }
-    |SHORT
+    |SHORT {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -859,7 +857,7 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     (*anode).struct_or_union_specifier_node_1= 0;
     $$ = anode;
 }
-    |INT
+|INT {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -868,7 +866,7 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     (*anode).struct_or_union_specifier_node_1= 0;
     $$ = anode;
 }
-    |LONG
+    |LONG {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -877,7 +875,7 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     (*anode).struct_or_union_specifier_node_1= 0;
     $$ = anode;
 }
-    |FLOAT
+    |FLOAT {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -886,7 +884,7 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     (*anode).struct_or_union_specifier_node_1= 0;
     $$ = anode;
 }
-    |DOUBLE
+    |DOUBLE {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -895,7 +893,7 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     (*anode).struct_or_union_specifier_node_1= 0;
     $$ = anode;
 }
-    |SIGNED
+    |SIGNED {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -904,7 +902,7 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     (*anode).struct_or_union_specifier_node_1= 0;
     $$ = anode;
 }
-    |UNSIGNED
+    |UNSIGNED {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -913,7 +911,7 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     (*anode).struct_or_union_specifier_node_1= 0;
     $$ = anode;
 }
-    |struct_or_union_specifier
+    |struct_or_union_specifier {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -922,7 +920,7 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     (*anode).enum_specifier_node_1= 0;
     $$ = anode;
 }
-    |enum_specifier
+    |enum_specifier {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -931,7 +929,7 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     (*anode).struct_or_union_specifier_node_1= 0;
     $$ = anode;
 }
-    |TYPEDEF_NAME
+    |TYPEDEF_NAME {declMode = true;}
 {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -942,14 +940,14 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
 }
     ;
 type_qualifier
-    :CONST
+    :CONST {declMode = true;}
 {
      type_qualifier_node *anode;
 anode = (type_qualifier_node*) malloc(sizeof(type_qualifier_node));
     (*anode).token_1=$1;
     $$ = anode;
 }
-    |VOLATILE
+    |VOLATILE {declMode = true;}
 {
      type_qualifier_node *anode;
 anode = (type_qualifier_node*) malloc(sizeof(type_qualifier_node));
@@ -993,14 +991,14 @@ anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifie
 }
     ;
 struct_or_union
-    :STRUCT
+    :STRUCT {declMode = true;}
 {
      struct_or_union_node *anode;
 anode = (struct_or_union_node*) malloc(sizeof(struct_or_union_node));
     (*anode).token_1=$1;
     $$ = anode;
 }
-    |UNION
+    |UNION {declMode = true;}
 {
      struct_or_union_node *anode;
 anode = (struct_or_union_node*) malloc(sizeof(struct_or_union_node));
@@ -4434,8 +4432,8 @@ return rstring;
 std::string identifier_node_3ac(identifier_node *ptr)
 {
     identifier_node aNode = *ptr;
-std::string rstring = "";
-return rstring;
+    std::string rstring = aNode.token_1;
+    return rstring;
 }
 
 
