@@ -6706,10 +6706,18 @@ std::string ast_3ac(ast_root *ptr)
 std::string translation_unit_node_3ac(translation_unit_node *ptr)
 {
     translation_unit_node aNode = *ptr;
-std::string rstring = "";   if(aNode.external_declaration_node_1 != 0)
-    { rstring +=external_declaration_node_3ac(aNode.external_declaration_node_1);}
+std::string rstring = "";  
+
+
    if(aNode.translation_unit_node_1 != 0)
-    { rstring +=translation_unit_node_3ac(aNode.translation_unit_node_1);}
+     {
+      rstring +=translation_unit_node_3ac(aNode.translation_unit_node_1);
+      rstring +=external_declaration_node_3ac(aNode.external_declaration_node_1);
+     }
+   else
+     {
+       rstring +=external_declaration_node_3ac(aNode.external_declaration_node_1);
+     }
 return rstring;
 }
 std::string external_declaration_node_3ac(external_declaration_node *ptr)
