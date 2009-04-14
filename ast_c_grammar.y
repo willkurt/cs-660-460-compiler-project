@@ -4350,12 +4350,25 @@ std::string unary_expression_node_3ac(unary_expression_node *ptr)
     unary_expression_node aNode = *ptr;
 std::string rstring = "";   if(aNode.postfix_expression_node_1 != 0)
     { rstring +=postfix_expression_node_3ac(aNode.postfix_expression_node_1);}
-   if(aNode.type_name_node_1 != 0)
-    { rstring +=type_name_node_3ac(aNode.type_name_node_1);}
-   if(aNode.unary_operator_node_1 != 0)
-    { rstring +=unary_operator_node_3ac(aNode.unary_operator_node_1);}
+//  if(aNode.type_name_node_1 != 0)
+//  { rstring +=type_name_node_3ac(aNode.type_name_node_1);}
+//   if(aNode.unary_operator_node_1 != 0)
+//    { rstring +=unary_operator_node_3ac(aNode.unary_operator_node_1);}
    if(aNode.unary_expression_node_1 != 0)
-    { rstring +=unary_expression_node_3ac(aNode.unary_expression_node_1);}
+    { 
+      std::string op;
+      if(aNode.token_1 == "++")
+	{
+	  op = "inc";
+	}
+      else
+	{
+	  op = "dec";
+	}
+      rstring += getCurrentTemp()+":= "+op+" "+unary_expression_node_3ac(aNode.unary_expression_node_1);
+      currentTemp++;
+      
+}
    if(aNode.cast_expression_node_1 != 0)
     { rstring +=cast_expression_node_3ac(aNode.cast_expression_node_1);}
 
