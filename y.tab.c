@@ -6823,9 +6823,10 @@ return rstring;
 std::string init_declarator_list_node_3ac(init_declarator_list_node *ptr)
 {
     init_declarator_list_node aNode = *ptr;
-std::string rstring = "";   if(aNode.init_declarator_node_1 != 0)
+std::string rstring = "";   
+if(aNode.init_declarator_node_1 != 0)
     { rstring +=init_declarator_node_3ac(aNode.init_declarator_node_1);}
-   if(aNode.init_declarator_list_node_1 != 0)
+if(aNode.init_declarator_list_node_1 != 0)
     { rstring +=init_declarator_list_node_3ac(aNode.init_declarator_list_node_1);}
 
 return rstring;
@@ -6833,10 +6834,15 @@ return rstring;
 std::string init_declarator_node_3ac(init_declarator_node *ptr)
 {
     init_declarator_node aNode = *ptr;
-std::string rstring = "";   if(aNode.declarator_node_1 != 0)
+    std::string rstring = "";   
+    if(aNode.declarator_node_1 != 0 && aNode.initializer_node_1 == 0)
     { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
-   if(aNode.initializer_node_1 != 0)
-    { rstring +=initializer_node_3ac(aNode.initializer_node_1);}
+    
+    if(aNode.initializer_node_1 != 0)
+    { 
+      rstring +=initializer_node_3ac(aNode.initializer_node_1);
+      rstring += declarator_node_3ac(aNode.declarator_node_1)+" := "+getLastTemp()+"\n";
+    }
 
 return rstring;
 }
@@ -7360,6 +7366,7 @@ std::string rstring = "";   if(aNode.postfix_expression_node_1 != 0)
 	  op = "dec";
 	}
       rstring += getCurrentTemp()+":= "+op+" "+unary_expression_node_3ac(aNode.unary_expression_node_1);
+      currentTemp++;
       
 }
    if(aNode.cast_expression_node_1 != 0)
