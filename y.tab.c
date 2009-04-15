@@ -7314,12 +7314,7 @@ if( aNode.additive_expression_node_1 == 0)
 }
 std::string multiplicative_expression_node_3ac(multiplicative_expression_node *ptr)
 {
-  /*for right now, I just want to get the basics down, so T will be replaced with T-x 
-    where 'x' is the appropriate number
 
-    later of we'll have to do much more thinking re: cast_expressions... for now
-    I just want this to work, even in the most primative fashion
-  */
     multiplicative_expression_node aNode = *ptr;
     multiplicative_expression_node *next = aNode.multiplicative_expression_node_1;
     std::string rstring = "";   
@@ -7373,8 +7368,9 @@ std::string rstring = "";   if(aNode.postfix_expression_node_1 != 0)
 	{
 	  op = "dec";
 	}
-      rstring += getCurrentTemp()+":= "+op+" "+unary_expression_node_3ac(aNode.unary_expression_node_1);
-      currentTemp++;
+      
+      rstring+=unary_expression_node_3ac(aNode.unary_expression_node_1);
+      
       
 }
    if(aNode.cast_expression_node_1 != 0)
@@ -7390,18 +7386,35 @@ return rstring;
 }
 std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
 {
-    postfix_expression_node aNode = *ptr;
-std::string rstring = "";   if(aNode.postfix_expression_node_1 != 0)
-    { rstring +=postfix_expression_node_3ac(aNode.postfix_expression_node_1);}
-   if(aNode.primary_expression_node_1 != 0)
-    { rstring +=primary_expression_node_3ac(aNode.primary_expression_node_1);}
-   if(aNode.argument_expression_list_node_1 != 0)
-    { rstring +=argument_expression_list_node_3ac(aNode.argument_expression_list_node_1);}
-   if(aNode.expression_node_1 != 0)
-    { rstring +=expression_node_3ac(aNode.expression_node_1);}
-   if(aNode.identifier_node_1 != 0)
-    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
-
+  postfix_expression_node aNode = *ptr;
+  std::string rstring = "";
+  if(aNode.primary_expression_node_1 != 0)
+      {
+	rstring+=primary_expression_node_3ac(aNode.primary_expression_node_1);
+      }
+  if(aNode.postfix_expression_node_1 != 0 && aNode.token_1 != "")
+    {
+      /*
+	this may be making some wrong assumptions about what we cand do
+	with post fix ops, it only 
+	allows x++, not x++++ or x[expresion]++ etc.
+      */
+      std::string op_token = aNode.token_1;
+      std::string op;
+      std::string id = postfix_expression_node_3ac(aNode.postfix_expression_node_1);
+      if(op_token == "++")
+	{
+	    op = "inc";
+	}
+	else
+	  {
+	    op = "dec";
+	  }
+      
+      rstring+=id+"\n";
+      rstring+=op+" "+id;
+    }
+  
 return rstring;
 }
 std::string primary_expression_node_3ac(primary_expression_node *ptr)
