@@ -4366,16 +4366,19 @@ std::string rstring = "";   if(aNode.postfix_expression_node_1 != 0)
    if(aNode.unary_expression_node_1 != 0)
     { 
       std::string op;
-      if(aNode.token_1 == "++")
+      std::string token_1 = aNode.token_1;
+      if(token_1=="++")
 	{
-	  op = "inc";
+	  op = "+";
 	}
       else
 	{
-	  op = "dec";
+	  op = "-";
 	}
       
-      rstring+=unary_expression_node_3ac(aNode.unary_expression_node_1);
+      std::string id = unary_expression_node_3ac(aNode.unary_expression_node_1);
+      rstring+=id+" "+op+" 1\n";
+      rstring+=id+" := "+id+" "+op+" "+" 1";
       
       
 }
@@ -4410,15 +4413,18 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
       std::string id = postfix_expression_node_3ac(aNode.postfix_expression_node_1);
       if(op_token == "++")
 	{
-	    op = "inc";
+	    op = "+";
 	}
 	else
 	  {
-	    op = "dec";
+	    op = "-";
 	  }
-      
+      /*
+	not sure if this 100% the correct way to do uninary operator
+	... need to refresh on asm, but it's easy enough to fix ;)
+       */
       rstring+=id+"\n";
-      rstring+=op+" "+id;
+      rstring+=id+" := "+id+" "+op+" "+" 1";
     }
   
 return rstring;
