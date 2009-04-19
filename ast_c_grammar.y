@@ -18,25 +18,47 @@ extern bool redeclVar;
 
 /* this is used for generating 3ac */
  int currentTemp = 0;
+ int currentLoop = 0;
 
  std::string getCurrentTemp()
    {
      std::stringstream ss;
-     ss<<"T-"<<currentTemp;
+     ss<<"T"<<currentTemp;
      return ss.str();
    }
 
  std::string getLastTemp()
    {
      std::stringstream ss;
-     ss<<"T-"<<(currentTemp-1);
+     ss<<"T"<<(currentTemp-1);
      return ss.str();
    }
 
  std::string getNextTemp()
    {
      std::stringstream ss;
-     ss<<"T-"<<(currentTemp+1);
+     ss<<"T"<<(currentTemp+1);
+     return ss.str();
+   }
+
+std::string getCurrentLoop()
+   {
+     std::stringstream ss;
+     ss<<"L"<<currentTemp;
+     return ss.str();
+   }
+
+ std::string getLastLoop()
+   {
+     std::stringstream ss;
+     ss<<"L"<<(currentTemp-1);
+     return ss.str();
+   }
+
+ std::string getNextLoop()
+   {
+     std::stringstream ss;
+     ss<<"L"<<(currentTemp+1);
      return ss.str();
    }
 /* this is going to be refactored away */
@@ -1920,8 +1942,7 @@ anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
     (*anode).token_2=$6;
     (*anode).expression_node_1=$3;
     (*anode).statement_node_1=$5;
-    (*anode).statement_node_2=$5;
-    (*anode).statement_node_1=$5;
+    (*anode).statement_node_2=$7;
     $$ = anode;
 }
     |SWITCH '(' expression ')' statement
@@ -4135,12 +4156,13 @@ return rstring;
 std::string selection_statement_node_3ac(selection_statement_node *ptr)
 {
     selection_statement_node aNode = *ptr;
-std::string rstring = "";   if(aNode.statement_node_2 != 0)
-    { rstring +=statement_node_3ac(aNode.statement_node_2);}
-   if(aNode.statement_node_1 != 0)
-    { rstring +=statement_node_3ac(aNode.statement_node_1);}
-   if(aNode.expression_node_1 != 0)
-    { rstring +=expression_node_3ac(aNode.expression_node_1);}
+    std::string rstring = "";   
+    if(aNode.statement_node_2 != 0)
+      { rstring +=statement_node_3ac(aNode.statement_node_2);}
+    if(aNode.statement_node_1 != 0)
+      { rstring +=statement_node_3ac(aNode.statement_node_1);}
+    if(aNode.expression_node_1 != 0)
+      { rstring +=expression_node_3ac(aNode.expression_node_1);}
 
 return rstring;
 }
