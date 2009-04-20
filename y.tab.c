@@ -7164,8 +7164,8 @@ std::string selection_statement_node_3ac(selection_statement_node *ptr)
     rstring += expression_node_3ac(aNode.expression_node_1);
     rstring += "\nEND EXPRESSION MAGIC 0/1 to temp\n";
     rstring += "ifFalse "+getLastTemp()+" goto "+elseLabel+"\n";
-    rstring += "goto "+elseLabel+"\n";
     rstring += statement_node_3ac(aNode.statement_node_1);
+    rstring += "goto "+endLabel;
     rstring += ":"+elseLabel+" ";
     if(aNode.statement_node_2 != 0)
       {
@@ -7254,21 +7254,38 @@ std::string logical_or_expression_node_3ac(logical_or_expression_node *ptr)
 {
   logical_or_expression_node aNode = *ptr;
   std::string rstring = "";   
-  if(aNode.logical_or_expression_node_1 != 0)
-    { rstring +=logical_or_expression_node_3ac(aNode.logical_or_expression_node_1);}
-  if(aNode.logical_and_expression_node_1 != 0)
+  if(aNode.logical_or_expression_node_1 == 0)
     { rstring +=logical_and_expression_node_3ac(aNode.logical_and_expression_node_1);}
+  else
+    { 
+      std::string exp2 = getCurrentTemp();
+      rstring +=logical_and_expression_node_3ac(aNode.logical_and_expression_node_1);
+      std::string exp1 = getCurrentTemp();
+      rstring += logical_or_expression_node_3ac(aNode.logical_or_expression_node_1);
+      rstring += getCurrentTemp()+" := "+exp1+" OR "+exp2+"\n";
+      currentTemp++;
+
+    }
+  
   return rstring;
 }
 std::string logical_and_expression_node_3ac(logical_and_expression_node *ptr)
 {
-    logical_and_expression_node aNode = *ptr;
-    std::string rstring = "";   
-    if(aNode.inclusive_or_expression_node_1 != 0)
-      { rstring +=inclusive_or_expression_node_3ac(aNode.inclusive_or_expression_node_1);}
-    if(aNode.logical_and_expression_node_1 != 0)
-      { rstring +=logical_and_expression_node_3ac(aNode.logical_and_expression_node_1);}
-return rstring;
+  logical_and_expression_node aNode = *ptr;
+  std::string rstring = "";   
+  if(aNode.logical_and_expression_node_1 == 0)
+    { rstring +=inclusive_or_expression_node_3ac(aNode.inclusive_or_expression_node_1);}
+  else
+    { 
+      std::string exp2 = getCurrentTemp();
+      rstring +=inclusive_or_expression_node_3ac(aNode.inclusive_or_expression_node_1);
+      std::string exp1 = getCurrentTemp();
+      rstring += logical_and_expression_node_3ac(aNode.logical_and_expression_node_1);
+      rstring += getCurrentTemp()+" := "+exp1+" AND "+exp2+"\n";
+      currentTemp++;
+    }
+  
+  return rstring;
 }
 std::string inclusive_or_expression_node_3ac(inclusive_or_expression_node *ptr)
 {
