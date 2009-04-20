@@ -7193,7 +7193,21 @@ std::string iteration_statement_node_3ac(iteration_statement_node *ptr)
 	rstring += expression_node_3ac(aNode.expression_node_1);
 	rstring += "ifFalse "+getLastTemp()+" goto "+endLabel+"\n";
 	rstring += statement_node_3ac(aNode.statement_node_1);
-	rstring += "goto "+startLabel;
+	rstring += "goto "+startLabel+"\n";
+	rstring += ":"+endLabel+"\n";
+	
+      }
+    else if (loopType == "do")
+      {
+	std::string startLabel = getCurrentLabel();
+	currentLabel++;
+	std::string endLabel = getCurrentLabel();
+	currentLabel++;
+	rstring += ":"+startLabel+"\n";
+	rstring += statement_node_3ac(aNode.statement_node_1);
+	rstring += expression_node_3ac(aNode.expression_node_1);
+	rstring += "ifFalse "+getLastTemp()+" goto "+endLabel+"\n";
+	rstring += "goto "+startLabel+"\n";
 	rstring += ":"+endLabel+"\n";
 	
       }
