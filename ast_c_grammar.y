@@ -4162,14 +4162,23 @@ std::string selection_statement_node_3ac(selection_statement_node *ptr)
 {
     selection_statement_node aNode = *ptr;
     std::string rstring = "";
-    std::string endif = getCurrentLabel();
+    std::string elseLabel = getCurrentLabel();
+    currentLabel++;
+    std::string endLabel = getCurrentLabel();
     currentLabel++;
     rstring += "\nSOME EXPRESSION MAGIC 0/1 to temp\n";
     rstring += expression_node_3ac(aNode.expression_node_1);
     rstring += "\nEND EXPRESSION MAGIC 0/1 to temp\n";
-    rstring += "ifFalse "+getLastTemp()+" goto "+endif+"\n";
+    rstring += "ifFalse "+getLastTemp()+" goto "+elseLabel+"\n";
+    rstring += "goto "+elseLabel+"\n";
     rstring += statement_node_3ac(aNode.statement_node_1);
-    rstring += ":"+endif;
+    rstring += ":"+elseLabel+" ";
+    if(aNode.statement_node_2 != 0)
+      {
+	rstring+=statement_node_3ac(aNode.statement_node_1);
+      }
+    rstring += "goto "+endLabel+"\n";
+    rstring += ":"+endLabel;
 
 return rstring;
 }
@@ -4316,7 +4325,7 @@ std::string equality_expression_node_3ac(equality_expression_node *ptr)
       rstring+= relational_expression_node_3ac(aNode.relational_expression_node_1);
       std::string exp1 = getCurrentTemp();
       rstring+= equality_expression_node_3ac(aNode.equality_expression_node_1);
-      rstring+="if "+exp1+" == "+exp2+" goto "+trueLabel+"\n";
+      rstring+="if "+exp1+" "+aNode.token_1+" "+exp2+" goto "+trueLabel+"\n";
       rstring+="goto "+falseLabel+"\n";
       rstring+=":"+trueLabel+" "+getCurrentTemp()+" := 1\n";
       rstring+="goto "+endLabel+"\n";
