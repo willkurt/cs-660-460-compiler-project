@@ -18,7 +18,7 @@ extern bool redeclVar;
 
 /* this is used for generating 3ac */
  int currentTemp = 0;
- int currentLoop = 0;
+ int currentLabel = 0;
 
  std::string getCurrentTemp()
    {
@@ -41,24 +41,24 @@ extern bool redeclVar;
      return ss.str();
    }
 
-std::string getCurrentLoop()
+std::string getCurrentLabel()
    {
      std::stringstream ss;
-     ss<<"L"<<currentTemp;
+     ss<<"L"<<currentLabel;
      return ss.str();
    }
 
- std::string getLastLoop()
+ std::string getLastLabel()
    {
      std::stringstream ss;
-     ss<<"L"<<(currentTemp-1);
+     ss<<"L"<<(currentLabel-1);
      return ss.str();
    }
 
- std::string getNextLoop()
+ std::string getNextLabel()
    {
      std::stringstream ss;
-     ss<<"L"<<(currentTemp+1);
+     ss<<"L"<<(currentLabel+1);
      return ss.str();
    }
 /* this is going to be refactored away */
@@ -3760,10 +3760,13 @@ return rstring;
 std::string function_definition_node_3ac(function_definition_node *ptr)
 {
     function_definition_node aNode = *ptr;
-std::string rstring = "";   if(aNode.declarator_node_1 != 0)
-    { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
+std::string rstring = "";   
+
    if(aNode.declaration_list_node_1 != 0)
-    { rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);}
+    {
+      rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);}
+   if(aNode.declarator_node_1 != 0)
+    { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
    if(aNode.declaration_specifiers_node_1 != 0)
     { rstring +=declaration_specifiers_node_3ac(aNode.declaration_specifiers_node_1);}
    if(aNode.compound_statement_node_1 != 0)
@@ -3784,10 +3787,12 @@ return rstring;
 std::string declaration_list_node_3ac(declaration_list_node *ptr)
 {
     declaration_list_node aNode = *ptr;
-std::string rstring = "";   if(aNode.declaration_node_1 != 0)
-    { rstring +=declaration_node_3ac(aNode.declaration_node_1);}
-   if(aNode.declaration_list_node_1 != 0)
+    std::string rstring = "";   
+    if(aNode.declaration_list_node_1 != 0)
     { rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);}
+    if(aNode.declaration_node_1 != 0)
+    { rstring +=declaration_node_3ac(aNode.declaration_node_1);}
+
 
 return rstring;
 }
@@ -4156,13 +4161,13 @@ return rstring;
 std::string selection_statement_node_3ac(selection_statement_node *ptr)
 {
     selection_statement_node aNode = *ptr;
-    std::string rstring = "";   
-    if(aNode.statement_node_2 != 0)
-      { rstring +=statement_node_3ac(aNode.statement_node_2);}
-    if(aNode.statement_node_1 != 0)
-      { rstring +=statement_node_3ac(aNode.statement_node_1);}
-    if(aNode.expression_node_1 != 0)
-      { rstring +=expression_node_3ac(aNode.expression_node_1);}
+    std::string rstring = "";
+    std::string endif = getCurrentLabel();
+    currentLabel++;
+    rstring += "SOME EXPRESSION MAGIC 0/1 to temp\n";
+    rstring += "bz "+getLastTemp()+", "+endif+"\n";
+    rstring += statement_node_3ac(aNode.statement_node_1);
+    rstring += ":"+endif;
 
 return rstring;
 }
