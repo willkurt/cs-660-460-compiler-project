@@ -4213,7 +4213,7 @@ std::string iteration_statement_node_3ac(iteration_statement_node *ptr)
 	rstring += statement_node_3ac(aNode.statement_node_1);
 	rstring += expression_node_3ac(aNode.expression_node_1);
 	rstring += "ifFalse "+getLastTemp()+" goto "+endLabel+"\n";
-	rstring += "goto "+startLabel+"\n";
+	rstring += " goto "+startLabel+"\n";
 	rstring += ":"+endLabel+"\n";
 	
       }
@@ -4233,12 +4233,12 @@ std::string iteration_statement_node_3ac(iteration_statement_node *ptr)
 	rstring += ":"+startLabel+"\n";
 	/*loop statement*/
 	rstring += expression_node_3ac(aNode.expression_node_2);
-	rstring += "ifFalse "+getLastTemp()+"goto "+endLabel+"\n";
+	rstring += "ifFalse "+getLastTemp()+" goto "+endLabel+"\n";
 	/*statement*/
 	rstring += statement_node_3ac(aNode.statement_node_1);
 	/*update*/
 	rstring += expression_node_3ac(aNode.expression_node_3);
-	rstring += "goto "+startLabel+"\n";
+	rstring += " goto "+startLabel+"\n";
 	rstring += ":"+endLabel+"\n";
       }
     return rstring;

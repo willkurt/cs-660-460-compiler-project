@@ -77,8 +77,10 @@ int main(int argc, char* argv[])
   //after parse close everything up
   lexDebugOut.close();
   parseDebugOut.close();
-
+  if(parseDebug)
+    {
   print_ast_root(&ast);
+    }
   std::cout<<"3ac printing...:"<<std::endl;
   std::cout<<ast_3ac(&ast)<<std::endl;
   std::cout<<"is working!"<<std::endl;
