@@ -7158,8 +7158,10 @@ std::string selection_statement_node_3ac(selection_statement_node *ptr)
     std::string rstring = "";
     std::string endif = getCurrentLabel();
     currentLabel++;
-    rstring += "SOME EXPRESSION MAGIC 0/1 to temp\n";
-    rstring += "bz "+getLastTemp()+", "+endif+"\n";
+    rstring += "\nSOME EXPRESSION MAGIC 0/1 to temp\n";
+    rstring += expression_node_3ac(aNode.expression_node_1);
+    rstring += "\nEND EXPRESSION MAGIC 0/1 to temp\n";
+    rstring += "ifFalse "+getLastTemp()+" goto "+endif+"\n";
     rstring += statement_node_3ac(aNode.statement_node_1);
     rstring += ":"+endif;
 
@@ -7241,22 +7243,22 @@ return rstring;
 }
 std::string logical_or_expression_node_3ac(logical_or_expression_node *ptr)
 {
-    logical_or_expression_node aNode = *ptr;
-std::string rstring = "";   if(aNode.logical_or_expression_node_1 != 0)
+  logical_or_expression_node aNode = *ptr;
+  std::string rstring = "";   
+  if(aNode.logical_or_expression_node_1 != 0)
     { rstring +=logical_or_expression_node_3ac(aNode.logical_or_expression_node_1);}
-   if(aNode.logical_and_expression_node_1 != 0)
+  if(aNode.logical_and_expression_node_1 != 0)
     { rstring +=logical_and_expression_node_3ac(aNode.logical_and_expression_node_1);}
-
-return rstring;
+  return rstring;
 }
 std::string logical_and_expression_node_3ac(logical_and_expression_node *ptr)
 {
     logical_and_expression_node aNode = *ptr;
-std::string rstring = "";   if(aNode.inclusive_or_expression_node_1 != 0)
-    { rstring +=inclusive_or_expression_node_3ac(aNode.inclusive_or_expression_node_1);}
-   if(aNode.logical_and_expression_node_1 != 0)
-    { rstring +=logical_and_expression_node_3ac(aNode.logical_and_expression_node_1);}
-
+    std::string rstring = "";   
+    if(aNode.inclusive_or_expression_node_1 != 0)
+      { rstring +=inclusive_or_expression_node_3ac(aNode.inclusive_or_expression_node_1);}
+    if(aNode.logical_and_expression_node_1 != 0)
+      { rstring +=logical_and_expression_node_3ac(aNode.logical_and_expression_node_1);}
 return rstring;
 }
 std::string inclusive_or_expression_node_3ac(inclusive_or_expression_node *ptr)
@@ -7281,33 +7283,56 @@ return rstring;
 }
 std::string and_expression_node_3ac(and_expression_node *ptr)
 {
-    and_expression_node aNode = *ptr;
-std::string rstring = "";   if(aNode.equality_expression_node_1 != 0)
+  and_expression_node aNode = *ptr;
+  std::string rstring = "";   
+  if(aNode.equality_expression_node_1 != 0)
     { rstring +=equality_expression_node_3ac(aNode.equality_expression_node_1);}
-   if(aNode.and_expression_node_1 != 0)
+  if(aNode.and_expression_node_1 != 0)
     { rstring +=and_expression_node_3ac(aNode.and_expression_node_1);}
 
 return rstring;
 }
 std::string equality_expression_node_3ac(equality_expression_node *ptr)
 {
-    equality_expression_node aNode = *ptr;
-std::string rstring = "";   if(aNode.equality_expression_node_1 != 0)
-    { rstring +=equality_expression_node_3ac(aNode.equality_expression_node_1);}
-   if(aNode.relational_expression_node_1 != 0)
-    { rstring +=relational_expression_node_3ac(aNode.relational_expression_node_1);}
-
-return rstring;
+  equality_expression_node aNode = *ptr;
+  std::string rstring = "";   
+  if(aNode.equality_expression_node_1 == 0)
+    { rstring +=relational_expression_node_3ac(aNode.relational_expression_node_1);} 
+  else
+    {
+      std::string trueLabel = getCurrentLabel();
+      currentLabel++;
+      std::string falseLabel = getCurrentLabel();
+      currentLabel++;
+      std::string endLabel = getCurrentLabel();
+      currentLabel++;
+      std::string exp2 = getCurrentTemp();
+      rstring+= relational_expression_node_3ac(aNode.relational_expression_node_1);
+      std::string exp1 = getCurrentTemp();
+      rstring+= equality_expression_node_3ac(aNode.equality_expression_node_1);
+      rstring+="if "+exp1+" == "+exp2+" goto "+trueLabel+"\n";
+      rstring+="goto "+falseLabel+"\n";
+      rstring+=":"+trueLabel+" "+getCurrentTemp()+" := 1\n";
+      rstring+="goto "+endLabel+"\n";
+      rstring+=":"+falseLabel+" "+getCurrentTemp()+" := 0\n";
+      rstring+="goto "+endLabel+"\n";
+      rstring+=":"+endLabel+"\n";
+      currentTemp++;
+      
+    }
+  
+  
+  return rstring;
 }
 std::string relational_expression_node_3ac(relational_expression_node *ptr)
 {
     relational_expression_node aNode = *ptr;
-std::string rstring = "";   if(aNode.relational_expression_node_1 != 0)
-    { rstring +=relational_expression_node_3ac(aNode.relational_expression_node_1);}
-   if(aNode.shift_expression_node_1 != 0)
-    { rstring +=shift_expression_node_3ac(aNode.shift_expression_node_1);}
-
-return rstring;
+    std::string rstring = "";   
+    if(aNode.relational_expression_node_1 != 0)
+      { rstring +=relational_expression_node_3ac(aNode.relational_expression_node_1);}
+    if(aNode.shift_expression_node_1 != 0)
+      { rstring +=shift_expression_node_3ac(aNode.shift_expression_node_1);}
+    return rstring;
 }
 std::string shift_expression_node_3ac(shift_expression_node *ptr)
 {
@@ -7322,12 +7347,12 @@ return rstring;
 std::string additive_expression_node_3ac(additive_expression_node *ptr)
 {
     additive_expression_node aNode = *ptr;
-std::string rstring = "";   
+    std::string rstring = "";   
  
-if( aNode.additive_expression_node_1 == 0)
-  {
-    rstring += multiplicative_expression_node_3ac(aNode.multiplicative_expression_node_1);
-  }
+    if( aNode.additive_expression_node_1 == 0)
+      {
+	rstring += multiplicative_expression_node_3ac(aNode.multiplicative_expression_node_1);
+      }
 /*case where we have an additive node */
  else
    {
