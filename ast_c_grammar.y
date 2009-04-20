@@ -4141,12 +4141,18 @@ return rstring;
 std::string compound_statement_node_3ac(compound_statement_node *ptr)
 {
     compound_statement_node aNode = *ptr;
-std::string rstring = "";   if(aNode.statement_list_node_1 != 0)
-    { rstring +=statement_list_node_3ac(aNode.statement_list_node_1);}
-   if(aNode.declaration_list_node_1 != 0)
-    { rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);}
+    std::string rstring = "";   
+    if(aNode.statement_list_node_1 != 0 && aNode.declaration_list_node_1 != 0)
+      {
+	rstring += declaration_list_node_3ac(aNode.declaration_list_node_1);
+	rstring += statement_list_node_3ac(aNode.statement_list_node_1);
+      }
+    else if(aNode.statement_list_node_1 != 0)
+      { rstring +=statement_list_node_3ac(aNode.statement_list_node_1);}
+    else if(aNode.declaration_list_node_1 != 0)
+      { rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);}
 
-return rstring;
+    return rstring;
 }
 std::string statement_list_node_3ac(statement_list_node *ptr)
 {
