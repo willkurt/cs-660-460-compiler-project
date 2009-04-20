@@ -2050,8 +2050,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     (*anode).char_lit_4="')'";
     (*anode).token_1=$1;
     (*anode).expression_node_1=$4;
-    (*anode).expression_node_2=$4;
-    (*anode).expression_node_1=$4;
+    (*anode).expression_node_2=$6;
     (*anode).statement_node_1=$8;
     (*anode).expression_node_3= 0;
     (*anode).token_2= 0;
@@ -2100,8 +2099,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     (*anode).char_lit_4="')'";
     (*anode).token_1=$1;
     (*anode).expression_node_1=$3;
-    (*anode).expression_node_2=$3;
-    (*anode).expression_node_1=$3;
+    (*anode).expression_node_2=$5;
     (*anode).statement_node_1=$8;
     (*anode).expression_node_3= 0;
     (*anode).token_2= 0;
@@ -2117,11 +2115,8 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     (*anode).char_lit_4="')'";
     (*anode).token_1=$1;
     (*anode).expression_node_1=$3;
-    (*anode).expression_node_2=$3;
-    (*anode).expression_node_3=$3;
-    (*anode).expression_node_1=$3;
-    (*anode).expression_node_2=$3;
-    (*anode).expression_node_1=$3;
+    (*anode).expression_node_2=$5;
+    (*anode).expression_node_3=$7;
     (*anode).statement_node_1=$9;
     (*anode).token_2= 0;
     $$ = anode;
@@ -4191,16 +4186,24 @@ return rstring;
 std::string iteration_statement_node_3ac(iteration_statement_node *ptr)
 {
     iteration_statement_node aNode = *ptr;
-std::string rstring = "";   if(aNode.expression_node_2 != 0)
-    { rstring +=expression_node_3ac(aNode.expression_node_2);}
-   if(aNode.statement_node_1 != 0)
-    { rstring +=statement_node_3ac(aNode.statement_node_1);}
-   if(aNode.expression_node_1 != 0)
-    { rstring +=expression_node_3ac(aNode.expression_node_1);}
-   if(aNode.expression_node_3 != 0)
-    { rstring +=expression_node_3ac(aNode.expression_node_3);}
-
-return rstring;
+    std::string rstring = "";  
+    /*while loop*/
+    std::string loopType = aNode.token_1;
+    if(loopType == "while")
+      {
+	std::string startLabel = getCurrentLabel();
+	currentLabel++;
+	std::string endLabel = getCurrentLabel();
+	currentLabel++;
+	rstring += ":"+startLabel+"\n";
+	rstring += expression_node_3ac(aNode.expression_node_1);
+	rstring += "ifFalse "+getLastTemp()+" goto "+endLabel+"\n";
+	rstring += statement_node_3ac(aNode.statement_node_1);
+	rstring += "goto "+startLabel+"\n";
+	rstring += ":"+endLabel+"\n";
+	
+      }
+    return rstring;
 }
 std::string jump_statement_node_3ac(jump_statement_node *ptr)
 {
