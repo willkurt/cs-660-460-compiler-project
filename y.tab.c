@@ -7211,6 +7211,30 @@ std::string iteration_statement_node_3ac(iteration_statement_node *ptr)
 	rstring += ":"+endLabel+"\n";
 	
       }
+    /*
+      for this project the only type of for loop i'm worried about
+      is the standard for loop, none of the many other
+      legal variants
+     */
+    else if (loopType == "for")
+      {
+	std::string startLabel = getCurrentLabel();
+	currentLabel++;
+	std::string endLabel = getCurrentLabel();
+	currentLabel++;
+	/*initializiation*/
+	rstring += expression_node_3ac(aNode.expression_node_1);
+	rstring += ":"+startLabel+"\n";
+	/*loop statement*/
+	rstring += expression_node_3ac(aNode.expression_node_2);
+	rstring += "ifFalse "+getLastTemp()+"goto "+endLabel+"\n";
+	/*statement*/
+	rstring += statement_node_3ac(aNode.statement_node_1);
+	/*update*/
+	rstring += expression_node_3ac(aNode.expression_node_3);
+	rstring += "goto "+startLabel+"\n";
+	rstring += ":"+endLabel+"\n";
+      }
     return rstring;
 }
 std::string jump_statement_node_3ac(jump_statement_node *ptr)
