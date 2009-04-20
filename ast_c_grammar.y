@@ -4341,13 +4341,46 @@ std::string equality_expression_node_3ac(equality_expression_node *ptr)
 }
 std::string relational_expression_node_3ac(relational_expression_node *ptr)
 {
+
     relational_expression_node aNode = *ptr;
     std::string rstring = "";   
-    if(aNode.relational_expression_node_1 != 0)
-      { rstring +=relational_expression_node_3ac(aNode.relational_expression_node_1);}
-    if(aNode.shift_expression_node_1 != 0)
-      { rstring +=shift_expression_node_3ac(aNode.shift_expression_node_1);}
-    return rstring;
+     if(aNode.relational_expression_node_1 == 0)
+       { 
+	 rstring +=shift_expression_node_3ac(aNode.shift_expression_node_1);} 
+     else
+       {
+	 std::string relop;
+	 if(aNode.token_1 == 0)
+	   {
+	     relop = aNode.char_lit_1[1];
+	   }
+	 else
+	   {
+	     relop = aNode.token_1;
+	   }
+	 std::string trueLabel = getCurrentLabel();
+	 currentLabel++;
+	 std::string falseLabel = getCurrentLabel();
+	 currentLabel++;
+	 std::string endLabel = getCurrentLabel();
+	 currentLabel++;
+	 std::string exp2 = getCurrentTemp();
+	 rstring+= shift_expression_node_3ac(aNode.shift_expression_node_1);
+	 std::string exp1 = getCurrentTemp();
+	 rstring+= relational_expression_node_3ac(aNode.relational_expression_node_1);
+	 rstring+="if "+exp1+" "+relop+" "+exp2+" goto "+trueLabel+"\n";
+	 rstring+="goto "+falseLabel+"\n";
+	 rstring+=":"+trueLabel+" "+getCurrentTemp()+" := 1\n";
+	 rstring+="goto "+endLabel+"\n";
+	 rstring+=":"+falseLabel+" "+getCurrentTemp()+" := 0\n";
+	 rstring+="goto "+endLabel+"\n";
+	 rstring+=":"+endLabel+"\n";
+	 currentTemp++;
+      
+    }
+  
+  
+  return rstring;
 }
 std::string shift_expression_node_3ac(shift_expression_node *ptr)
 {
