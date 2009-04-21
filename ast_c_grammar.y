@@ -3755,19 +3755,19 @@ return rstring;
 std::string function_definition_node_3ac(function_definition_node *ptr)
 {
     function_definition_node aNode = *ptr;
-std::string rstring = "";   
-
-   if(aNode.declaration_list_node_1 != 0)
-    {
+    std::string rstring = "function \n";   
+    if(aNode.declaration_list_node_1 != 0)
+      {
       rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);}
-   if(aNode.declarator_node_1 != 0)
-    { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
-   if(aNode.declaration_specifiers_node_1 != 0)
-    { rstring +=declaration_specifiers_node_3ac(aNode.declaration_specifiers_node_1);}
-   if(aNode.compound_statement_node_1 != 0)
-    { rstring +=compound_statement_node_3ac(aNode.compound_statement_node_1);}
-
-return rstring;
+    if(aNode.declarator_node_1 != 0)
+      { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
+    if(aNode.declaration_specifiers_node_1 != 0)
+      { rstring +=declaration_specifiers_node_3ac(aNode.declaration_specifiers_node_1);}
+    if(aNode.compound_statement_node_1 != 0)
+      { rstring +=compound_statement_node_3ac(aNode.compound_statement_node_1);}
+    
+    rstring+="end function";
+    return rstring;
 }
 std::string declaration_node_3ac(declaration_node *ptr)
 {
@@ -3871,8 +3871,9 @@ std::string init_declarator_node_3ac(init_declarator_node *ptr)
     init_declarator_node aNode = *ptr;
     std::string rstring = "";   
     if(aNode.declarator_node_1 != 0 && aNode.initializer_node_1 == 0)
-    { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
-    
+    { 
+      rstring +=declarator_node_3ac(aNode.declarator_node_1);
+    }
     if(aNode.initializer_node_1 != 0)
     { 
       rstring +=initializer_node_3ac(aNode.initializer_node_1);
@@ -3966,20 +3967,14 @@ return rstring;
 std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
 {
     direct_declarator_node aNode = *ptr;
-std::string rstring = "";   if(aNode.parameter_type_list_node_1 != 0)
-    { rstring +=parameter_type_list_node_3ac(aNode.parameter_type_list_node_1);}
-   if(aNode.direct_declarator_node_1 != 0)
-    { rstring +=direct_declarator_node_3ac(aNode.direct_declarator_node_1);}
-   if(aNode.constant_expression_node_1 != 0)
-    { rstring +=constant_expression_node_3ac(aNode.constant_expression_node_1);}
-   if(aNode.identifier_list_node_1 != 0)
-    { rstring +=identifier_list_node_3ac(aNode.identifier_list_node_1);}
-   if(aNode.declarator_node_1 != 0)
-    { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
-   if(aNode.identifier_node_1 != 0)
-    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
+    std::string rstring = "";   
+    if(aNode.identifier_node_1 != 0)
+      {
+	rstring += "declare "+identifier_node_3ac(aNode.identifier_node_1)+" type_here_later\n";
+	rstring += identifier_node_3ac(aNode.identifier_node_1);
+      }
 
-return rstring;
+    return rstring;
 }
 std::string pointer_node_3ac(pointer_node *ptr)
 {
@@ -4167,9 +4162,9 @@ std::string selection_statement_node_3ac(selection_statement_node *ptr)
     currentLabel++;
     std::string endLabel = getCurrentLabel();
     currentLabel++;
-    rstring += "\nSOME EXPRESSION MAGIC 0/1 to temp\n";
+    rstring += "\ncondition start\n";
     rstring += expression_node_3ac(aNode.expression_node_1);
-    rstring += "\nEND EXPRESSION MAGIC 0/1 to temp\n";
+    rstring += "\ncondition end\n";
     rstring += "ifFalse "+getLastTemp()+" goto "+elseLabel+"\n";
     rstring += statement_node_3ac(aNode.statement_node_1);
     rstring += "goto "+endLabel;
@@ -4266,14 +4261,23 @@ return rstring;
 std::string assignment_expression_node_3ac(assignment_expression_node *ptr)
 {
     assignment_expression_node aNode = *ptr;
-std::string rstring = "";   if(aNode.conditional_expression_node_1 != 0)
+std::string rstring = "";   
+ if(aNode.conditional_expression_node_1 != 0)
     { rstring +=conditional_expression_node_3ac(aNode.conditional_expression_node_1);}
-   if(aNode.assignment_operator_node_1 != 0)
-    { rstring +=assignment_operator_node_3ac(aNode.assignment_operator_node_1);}
-   if(aNode.unary_expression_node_1 != 0)
-    { rstring +=unary_expression_node_3ac(aNode.unary_expression_node_1);}
-   if(aNode.assignment_expression_node_1 != 0)
-    { rstring +=assignment_expression_node_3ac(aNode.assignment_expression_node_1);}
+ else
+   {
+     std::string op;
+     if((*aNode.assignment_operator_node_1).token_1 == 0)
+       {
+	 op = "=";
+       }
+     else
+       {
+		 op = "do later!";
+       }
+     rstring += assignment_expression_node_3ac(aNode.assignment_expression_node_1);
+     rstring += unary_expression_node_3ac(aNode.unary_expression_node_1)+" "+op+" "+getLastTemp()+"\n";
+   }
 
 return rstring;
 }
