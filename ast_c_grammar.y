@@ -3755,7 +3755,7 @@ return rstring;
 std::string function_definition_node_3ac(function_definition_node *ptr)
 {
     function_definition_node aNode = *ptr;
-    std::string rstring = "function \n";   
+    std::string rstring = "";   
     if(aNode.declaration_list_node_1 != 0)
       {
       rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);}
@@ -3876,8 +3876,12 @@ std::string init_declarator_node_3ac(init_declarator_node *ptr)
     }
     if(aNode.initializer_node_1 != 0)
     { 
+      /*assuming that this must have an identifier.. double check later if errors*/
+      direct_declarator_node ddnode  = *(*aNode.declarator_node_1).direct_declarator_node_1;
+      std::string id = identifier_node_3ac(ddnode.identifier_node_1);
+
       rstring +=initializer_node_3ac(aNode.initializer_node_1);
-      rstring += declarator_node_3ac(aNode.declarator_node_1)+" := "+getLastTemp()+"\n";
+      rstring += id+" := "+getLastTemp()+"\n";
     }
 
 return rstring;
@@ -3971,7 +3975,21 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
     if(aNode.identifier_node_1 != 0)
       {
 	rstring += "declare "+identifier_node_3ac(aNode.identifier_node_1)+" type_here_later\n";
-	rstring += identifier_node_3ac(aNode.identifier_node_1);
+      }
+    /* function definitions */
+    else if (aNode.char_lit_1 == "'('")
+      {
+	/* this declarator node should always have an identifier node*/
+	std::string funcId = identifier_node_3ac((*aNode.direct_declarator_node_1).identifier_node_1);
+	rstring += "function "+funcId+" type_here_later\n";
+	if(aNode.identifier_list_node_1 != 0)
+	  {
+	   rstring+= identifier_list_node_3ac(aNode.identifier_list_node_1);
+	  }
+	else if(aNode.parameter_type_list_node_1 != 0)
+	  {
+	    rstring += parameter_type_list_node_3ac(aNode.parameter_type_list_node_1);
+	  }
       }
 
     return rstring;
@@ -4258,6 +4276,7 @@ std::string rstring = "";   if(aNode.expression_node_1 != 0)
 
 return rstring;
 }
+
 std::string assignment_expression_node_3ac(assignment_expression_node *ptr)
 {
     assignment_expression_node aNode = *ptr;
