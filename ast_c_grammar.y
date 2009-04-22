@@ -20,6 +20,16 @@ extern bool redeclVar;
  int currentTemp = 0;
  int currentLabel = 0;
 
+ /*wrote this one after the ones below it
+   explain why this isn't used in those
+ */
+ std::string intToStr(int x)
+ {
+   std::stringstream ss;
+   ss<<x;
+   return ss.str();
+ }
+
  std::string getCurrentTemp()
    {
      std::stringstream ss;
@@ -61,6 +71,35 @@ std::string getCurrentLabel()
      ss<<"L"<<(currentLabel+1);
      return ss.str();
    }
+
+
+/* for getting the integer value of a constant in a constant expression 
+   used in declaring arrays
+ */
+ int getConstantExpressionInt(constant_expression_node *aNode)
+ {
+   /*this is a moment were awesome granularity can be a pain */
+   
+   conditional_expression_node *condexp = (*aNode).conditional_expression_node_1;
+   logical_or_expression_node *logicorexp = (*condexp).logical_or_expression_node_1;
+   logical_and_expression_node *logicandexp = (*logicorexp).logical_and_expression_node_1;
+   inclusive_or_expression_node *incorexp = (*logicandexp).inclusive_or_expression_node_1;
+   exclusive_or_expression_node *excorexp = (*incorexp).exclusive_or_expression_node_1;
+   and_expression_node *andexp = (*excorexp).and_expression_node_1;
+   equality_expression_node *equalexp = (*andexp).equality_expression_node_1;
+   relational_expression_node *relexp = (*equalexp).relational_expression_node_1;
+   shift_expression_node *shiftexp = (*relexp).shift_expression_node_1;
+   additive_expression_node *addexp = (*shiftexp).additive_expression_node_1;
+   multiplicative_expression_node *mulexp = (*addexp).multiplicative_expression_node_1;
+   cast_expression_node *castexp = (*mulexp).cast_expression_node_1;
+   unary_expression_node *unaryexp = (*castexp).unary_expression_node_1;
+   postfix_expression_node *postexp = (*unaryexp).postfix_expression_node_1;
+   primary_expression_node *primeexp = (*postexp).primary_expression_node_1;
+   constant_node *constnode = (*primeexp).constant_node_1;
+   return (*constnode).int_token_1;
+   
+ }
+
 /* this is going to be refactored away */
 struct declNode{
   char* id;
@@ -3971,7 +4010,8 @@ return rstring;
 std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
 {
     direct_declarator_node aNode = *ptr;
-    std::string rstring = "";   
+    std::string rstring = "";
+    /* standard declarations */
     if(aNode.identifier_node_1 != 0)
       {
 	rstring += "declare "+identifier_node_3ac(aNode.identifier_node_1)+" type_here_later\n";
@@ -3990,6 +4030,23 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
 	  {
 	    rstring += parameter_type_list_node_3ac(aNode.parameter_type_list_node_1);
 	  }
+      }
+    /* array declarations:
+       we're assuming all arrays we deal with are of a type declard with a constant
+    */
+    else if (aNode.constant_expression_node_1 != 0)
+      {
+	direct_declarator_node *current = &aNode;
+	int space = 1;
+	while((*current).identifier_node_1 == 0)
+	  {
+	    int dimensionSize = getConstantExpressionInt((*current).constant_expression_node_1);
+	    space = space*dimensionSize;
+	    current = (*current).direct_declarator_node_1;
+	  }
+
+	std::string id = identifier_node_3ac((*current).identifier_node_1);
+	rstring += "declare "+id+" type_size * "+intToStr(space)+"\n";
       }
 
     return rstring;
