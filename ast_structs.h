@@ -415,7 +415,7 @@ char *char_lit_1;
 struct argument_expression_list_node *argument_expression_list_node_1;
 };
 
-/* constand node is a little unique
+/* constant node is a little unique
    as it can actually have a variety of values
    for it's tokens
    token_x will still be assumed to be
@@ -437,9 +437,15 @@ char *token_1;
 };
 
 struct identifier_node {
-char *token_1;
+  char *token_1;
+  int specs;
+  struct array_const_node *ac_node;
+  
 };
 
-
+struct array_const_node {
+  struct array_const_node *next;
+  int value;
+};
 
 #endif

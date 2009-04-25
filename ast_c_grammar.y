@@ -1107,24 +1107,24 @@ anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
     ;
 init_declarator
     :declarator
-{
-     init_declarator_node *anode;
-anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
-    (*anode).declarator_node_1=$1;
-    (*anode).initializer_node_1= 0;
-    (*anode).char_lit_1= "";
-    $$ = anode;
-}
+    {
+      init_declarator_node *anode;
+      anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
+     (*anode).declarator_node_1=$1;
+     (*anode).initializer_node_1= 0;
+     (*anode).char_lit_1= "";
+     $$ = anode;
+    }
 |declarator '='{declMode = false;} initializer
 {
-     init_declarator_node *anode;
-anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
-    (*anode).char_lit_1="'='";
-    (*anode).declarator_node_1=$1;
-    (*anode).initializer_node_1=$4;
-    $$ = anode;
+  init_declarator_node *anode;
+  anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
+  (*anode).char_lit_1="'='";
+  (*anode).declarator_node_1=$1;
+  (*anode).initializer_node_1=$4;
+  $$ = anode;
 }
-    ;
+;
 struct_declaration
     :specifier_qualifier_list struct_declarator_list ';'
 {
@@ -1302,10 +1302,31 @@ declarator
     :direct_declarator
 {
      declarator_node *anode;
-anode = (declarator_node*) malloc(sizeof(declarator_node));
+     anode = (declarator_node*) malloc(sizeof(declarator_node));
     (*anode).direct_declarator_node_1=$1;
     (*anode).pointer_node_1= 0;
     $$ = anode;
+    
+    if((*$1).constant_expression_node_1 != 0)
+      {
+	direct_declarator_node *dd = $1;
+	array_const_node *ac;
+	ac = (array_const_node*) malloc(sizeof(array_const_node));
+	(*ac).value = getConstantExpressionInt((*$1).constant_expression_node_1);
+	(*ac).next = 0;
+	array_const_node *acLast = ac;
+	dd = (*dd).direct_declarator_node_1;
+	while((*dd).constant_expression_node_1 != 0)
+	  {
+	    ac = (array_const_node*) malloc(sizeof(array_const_node));
+	    (*ac).value = getConstantExpressionInt((*dd).constant_expression_node_1);
+	    (*ac).next = acLast;
+	    acLast = ac;
+	    dd = (*dd).direct_declarator_node_1;
+	  }
+	identifier_node *inode = (*dd).identifier_node_1;
+	(*inode).ac_node = acLast;
+      }
 }
     |pointer direct_declarator
 {
@@ -1318,103 +1339,103 @@ anode = (declarator_node*) malloc(sizeof(declarator_node));
     ;
 direct_declarator
     :identifier
-{
-     direct_declarator_node *anode;
-anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
-    (*anode).identifier_node_1=$1;
-    (*anode).parameter_type_list_node_1= 0;
-    (*anode).direct_declarator_node_1= 0;
-    (*anode).constant_expression_node_1= 0;
-    (*anode).identifier_list_node_1= 0;
-    (*anode).declarator_node_1= 0;
-    (*anode).char_lit_1= "";
-    (*anode).char_lit_2= "";
-    $$ = anode;
-}
+    {
+      direct_declarator_node *anode;
+      anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+      (*anode).identifier_node_1=$1;
+      (*anode).parameter_type_list_node_1= 0;
+      (*anode).direct_declarator_node_1= 0;
+      (*anode).constant_expression_node_1= 0;
+      (*anode).identifier_list_node_1= 0;
+      (*anode).declarator_node_1= 0;
+      (*anode).char_lit_1= "";
+      (*anode).char_lit_2= "";
+      $$ = anode;
+    }
     |'(' declarator ')'
-{
-     direct_declarator_node *anode;
-anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
-    (*anode).char_lit_1="'('";
-    (*anode).char_lit_2="')'";
-    (*anode).declarator_node_1=$2;
-    (*anode).parameter_type_list_node_1= 0;
-    (*anode).identifier_node_1= 0;
-    (*anode).direct_declarator_node_1= 0;
-    (*anode).constant_expression_node_1= 0;
-    (*anode).identifier_list_node_1= 0;
-    $$ = anode;
-}
+    {
+      direct_declarator_node *anode;
+      anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+      (*anode).char_lit_1="'('";
+      (*anode).char_lit_2="')'";
+      (*anode).declarator_node_1=$2;
+      (*anode).parameter_type_list_node_1= 0;
+      (*anode).identifier_node_1= 0;
+      (*anode).direct_declarator_node_1= 0;
+      (*anode).constant_expression_node_1= 0;
+      (*anode).identifier_list_node_1= 0;
+      $$ = anode;
+    }
     |direct_declarator '[' ']'
-{
-     direct_declarator_node *anode;
-anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
-    (*anode).char_lit_1="'['";
-    (*anode).char_lit_2="']'";
-    (*anode).direct_declarator_node_1=$1;
-    (*anode).parameter_type_list_node_1= 0;
-    (*anode).declarator_node_1= 0;
-    (*anode).constant_expression_node_1= 0;
-    (*anode).identifier_list_node_1= 0;
-    (*anode).identifier_node_1= 0;
-    $$ = anode;
-}
+    {
+      direct_declarator_node *anode;
+      anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+      (*anode).char_lit_1="'['";
+      (*anode).char_lit_2="']'";
+      (*anode).direct_declarator_node_1=$1;
+      (*anode).parameter_type_list_node_1= 0;
+      (*anode).declarator_node_1= 0;
+      (*anode).constant_expression_node_1= 0;
+      (*anode).identifier_list_node_1= 0;
+      (*anode).identifier_node_1= 0;
+      $$ = anode;
+    }
     |direct_declarator '[' constant_expression ']'
-{
-     direct_declarator_node *anode;
-anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
-    (*anode).char_lit_1="'['";
-    (*anode).char_lit_2="']'";
-    (*anode).direct_declarator_node_1=$1;
-    (*anode).constant_expression_node_1=$3;
-    (*anode).parameter_type_list_node_1= 0;
-    (*anode).declarator_node_1= 0;
-    (*anode).identifier_list_node_1= 0;
-    (*anode).identifier_node_1= 0;
-    $$ = anode;
-}
-|direct_declarator '('{st.push();} ')'
-{
-     direct_declarator_node *anode;
-anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
-    (*anode).char_lit_1="'('";
-    (*anode).char_lit_2="')'";
-    (*anode).direct_declarator_node_1=$1;
-    (*anode).parameter_type_list_node_1= 0;
-    (*anode).declarator_node_1= 0;
-    (*anode).constant_expression_node_1= 0;
-    (*anode).identifier_list_node_1= 0;
-    (*anode).identifier_node_1= 0;
-    $$ = anode;
-}
-|direct_declarator '(' {st.push();}parameter_type_list ')'
-{
-     direct_declarator_node *anode;
-anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
-    (*anode).char_lit_1="'('";
-    (*anode).char_lit_2="')'";
-    (*anode).direct_declarator_node_1=$1;
-    (*anode).parameter_type_list_node_1=$4;
-    (*anode).declarator_node_1= 0;
-    (*anode).constant_expression_node_1= 0;
-    (*anode).identifier_list_node_1= 0;
-    (*anode).identifier_node_1= 0;
-    $$ = anode;
-}
-|direct_declarator '('{st.push();} identifier_list ')'
-{
-     direct_declarator_node *anode;
-anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
-    (*anode).char_lit_1="'('";
-    (*anode).char_lit_2="')'";
-    (*anode).direct_declarator_node_1=$1;
-    (*anode).identifier_list_node_1=$4;
-    (*anode).parameter_type_list_node_1= 0;
-    (*anode).declarator_node_1= 0;
-    (*anode).constant_expression_node_1= 0;
-    (*anode).identifier_node_1= 0;
-    $$ = anode;
-}
+    {
+      direct_declarator_node *anode;
+      anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+      (*anode).char_lit_1="'['";
+      (*anode).char_lit_2="']'";
+      (*anode).direct_declarator_node_1=$1;
+      (*anode).constant_expression_node_1=$3;
+      (*anode).parameter_type_list_node_1= 0;
+      (*anode).declarator_node_1= 0;
+      (*anode).identifier_list_node_1= 0;
+      (*anode).identifier_node_1= 0;
+      $$ = anode;
+    }
+    |direct_declarator '('{st.push();} ')'
+    {
+      direct_declarator_node *anode;
+      anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+      (*anode).char_lit_1="'('";
+      (*anode).char_lit_2="')'";
+      (*anode).direct_declarator_node_1=$1;
+      (*anode).parameter_type_list_node_1= 0;
+      (*anode).declarator_node_1= 0;
+      (*anode).constant_expression_node_1= 0;
+      (*anode).identifier_list_node_1= 0;
+      (*anode).identifier_node_1= 0;
+      $$ = anode;
+    }
+    |direct_declarator '(' {st.push();}parameter_type_list ')'
+    {
+      direct_declarator_node *anode;
+      anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+      (*anode).char_lit_1="'('";
+      (*anode).char_lit_2="')'";
+      (*anode).direct_declarator_node_1=$1;
+      (*anode).parameter_type_list_node_1=$4;
+      (*anode).declarator_node_1= 0;
+      (*anode).constant_expression_node_1= 0;
+      (*anode).identifier_list_node_1= 0;
+      (*anode).identifier_node_1= 0;
+      $$ = anode;
+    }
+    |direct_declarator '('{st.push();} identifier_list ')'
+    {
+      direct_declarator_node *anode;
+      anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
+      (*anode).char_lit_1="'('";
+      (*anode).char_lit_2="')'";
+      (*anode).direct_declarator_node_1=$1;
+      (*anode).identifier_list_node_1=$4;
+      (*anode).parameter_type_list_node_1= 0;
+      (*anode).declarator_node_1= 0;
+      (*anode).constant_expression_node_1= 0;
+      (*anode).identifier_node_1= 0;
+      $$ = anode;
+    }
     ;
 pointer
     :'*'
@@ -3048,9 +3069,11 @@ identifier
     :IDENTIFIER
 {
      identifier_node *anode;
-anode = (identifier_node*) malloc(sizeof(identifier_node));
-    (*anode).token_1=$1;
-    $$ = anode;
+     anode = (identifier_node*) malloc(sizeof(identifier_node));
+     (*anode).token_1=$1;\
+     (*anode).specs = 0;
+     (*anode).ac_node = 0;
+     $$ = anode;
 }
     ;
 
@@ -4639,7 +4662,7 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
       {
 	rstring+=primary_expression_node_3ac(aNode.primary_expression_node_1);
       }
-  if(aNode.postfix_expression_node_1 != 0 && aNode.token_1 != "")
+  else if(aNode.postfix_expression_node_1 != 0 && aNode.token_1 != "")
     {
       /*
 	this may be making some wrong assumptions about what we cand do
