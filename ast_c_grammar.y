@@ -747,6 +747,10 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
 
 	  identifier_node * id_node = (*dd).identifier_node_1;
 
+	  
+	  //now I never have to look it up, or rebuild the symboltable!
+	  (*id_node).specs = this_spec;
+
 	  //I forget if I should just be seaching top or all....
 	  SymbolContent *sc = st.searchAll((*id_node).token_1);
 	  (*sc).specs = this_spec;  
