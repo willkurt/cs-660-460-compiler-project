@@ -72,6 +72,45 @@ std::string getCurrentLabel()
      return ss.str();
    }
 
+std::string getTypeFromSpecInt(int specs)
+  {
+
+    //int is a sensible default
+    std::string type_string = "int";
+    if(specs & xVOID)
+      {
+	type_string = "void";
+      }
+    if(specs & xCHAR)
+      {
+	type_string = "char";
+      }
+    if(specs & xSHORT)
+      {
+	 type_string = "short";
+      }
+    if(specs & xINT)
+      {
+	 type_string = "int";
+      }
+    if(specs & xLONG)
+      {
+	 type_string = "long";
+      }
+    if(specs & xFLOAT)
+      {
+	type_string = "float";
+      }
+    if(specs & xDOUBLE)
+      {
+	type_string = "double";
+      }
+    
+    
+    return type_string;
+    
+  
+  }
 
 /* for getting the integer value of a constant in a constant expression 
    used in declaring arrays
@@ -4041,14 +4080,14 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
     /* standard declarations */
     if(aNode.identifier_node_1 != 0)
       {
-	rstring += "declare "+identifier_node_3ac(aNode.identifier_node_1)+" type_here_later\n";
+	rstring += "declare "+identifier_node_3ac(aNode.identifier_node_1)+" "+getTypeFromSpecInt((*aNode.identifier_node_1).specs)+"_size";
       }
     /* function definitions */
     else if (aNode.char_lit_1 == "'('")
       {
 	/* this declarator node should always have an identifier node*/
 	std::string funcId = identifier_node_3ac((*aNode.direct_declarator_node_1).identifier_node_1);
-	rstring += "function "+funcId+" type_here_later\n";
+	rstring += "function "+funcId+" "+getTypeFromSpecInt((*(*aNode.direct_declarator_node_1).identifier_node_1).specs)+"_size\n";
 	if(aNode.identifier_list_node_1 != 0)
 	  {
 	   rstring+= identifier_list_node_3ac(aNode.identifier_list_node_1);
@@ -4073,7 +4112,7 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
 	  }
 
 	std::string id = identifier_node_3ac((*current).identifier_node_1);
-	rstring += "declare "+id+" type_size * "+intToStr(space)+"\n";
+	rstring += "declare "+id+" "+getTypeFromSpecInt((*(*current).identifier_node_1).specs)+"_size * "+intToStr(space)+"\n";
       }
 
     return rstring;
