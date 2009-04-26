@@ -6992,7 +6992,7 @@ std::string init_declarator_node_3ac(init_declarator_node *ptr)
     }
     if(aNode.initializer_node_1 != 0)
     { 
-      rstring +=declarator_node_3ac(aNode.declarator_node_1);
+      rstring +=declarator_node_3ac(aNode.declarator_node_1)+"\n";
       /*assuming that this must have an identifier.. double check later if errors*/
       direct_declarator_node ddnode  = *(*aNode.declarator_node_1).direct_declarator_node_1;
       std::string id = identifier_node_3ac(ddnode.identifier_node_1);

@@ -18,6 +18,7 @@ bool redeclVar = false;
 
 std::ofstream lexDebugOut;
 std::ofstream parseDebugOut;
+std::ofstream tacOut;
 extern int lineCount;
 extern int currentCharDepth;
 extern char *yytext;
@@ -40,6 +41,7 @@ int main(int argc, char* argv[])
   //for now we'll create these even if we don't use it
   lexDebugOut.open("lexdebug.log");
   parseDebugOut.open("parsedebug.log");
+  tacOut.open("3ac.txt");
   //evaluate the debug arguments
   //debug must be the first argument
   //also more error check would certainly not hurt
@@ -81,8 +83,10 @@ int main(int argc, char* argv[])
     {
   print_ast_root(&ast);
     }
+  std::string tac = ast_3ac(&ast);
   std::cout<<"3ac printing...:"<<std::endl;
-  std::cout<<ast_3ac(&ast)<<std::endl;
+  std::cout<<tac<<std::endl;
+  tacOut<<tac;
   std::cout<<"is working!"<<std::endl;
 }
 
