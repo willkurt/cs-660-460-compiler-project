@@ -7662,8 +7662,18 @@ std::string rstring = "";   if(aNode.cast_expression_node_1 != 0)
    if(aNode.type_name_node_1 != 0)
     { rstring +=type_name_node_3ac(aNode.type_name_node_1);}
    if(aNode.unary_expression_node_1 != 0)
-     { rstring += getCurrentTemp()+" := "+unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
+     { 
+       /*first if is for arrays*/
+       if((*aNode.unary_expression_node_1).postfix_expression_node_1 != 0 &&
+	  (*(*aNode.unary_expression_node_1).postfix_expression_node_1).expression_node_1 != 0)
+	 {
+	   rstring += unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
+	 }
+       else
+	 {
+       rstring += getCurrentTemp()+" := "+unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
        currentTemp++;
+	 }
      }
 
 return rstring;
@@ -7673,10 +7683,6 @@ std::string unary_expression_node_3ac(unary_expression_node *ptr)
     unary_expression_node aNode = *ptr;
 std::string rstring = "";   if(aNode.postfix_expression_node_1 != 0)
     { rstring +=postfix_expression_node_3ac(aNode.postfix_expression_node_1);}
-//  if(aNode.type_name_node_1 != 0)
-//  { rstring +=type_name_node_3ac(aNode.type_name_node_1);}
-//   if(aNode.unary_operator_node_1 != 0)
-//    { rstring +=unary_operator_node_3ac(aNode.unary_operator_node_1);}
    if(aNode.unary_expression_node_1 != 0)
     { 
       std::string op;
@@ -7772,8 +7778,8 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
 	}
       id = (*(*iter).primary_expression_node_1).identifier_node_1;
       array_const_node *this_ac = (*id).ac_node;
-      std::cout<<"ha:"<<this_ac<<std::endl;
       postfix_expression_node *current = &aNode;
+      std::string lastSum = "0";
       while(dimensions > 0)
 	{
 	  rstring += "\n*********\n";
@@ -7784,7 +7790,6 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
 	  array_const_node *loop_ac = this_ac;
 	  while(loop_ac != 0)
 	    {
-	      std::cout<<"Wooohooo!";
 	      if(skip<=0)
 		{
 		  multiplier *= (*loop_ac).value;
@@ -7793,13 +7798,21 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
 	      loop_ac = (*loop_ac).next;
 	      
 	    }
-	  rstring += getCurrentTemp()+" := "+intToStr(multiplier)+" * "+getLastTemp();
+	  rstring += getCurrentTemp()+" := "+intToStr(multiplier)+" * "+getLastTemp()+"\n";
 	  currentTemp++;
-
+	  
+	  rstring += getCurrentTemp()+" := "+lastSum+" + "+getLastTemp()+"\n";
+	  currentTemp++;
+	  lastSum = getLastTemp();
+	  
 	  current = (*current).postfix_expression_node_1;
 	  dimensions--;
 	}
+      rstring+=getCurrentTemp()+" := "+lastSum+" * "+getTypeFromSpecInt((*id).specs)+"_type\n";
+      currentTemp++;
       
+      rstring+=getCurrentTemp()+" := "+(*id).token_1+" offset "+getLastTemp()+"\n";
+      currentTemp++;
      
     }
   
