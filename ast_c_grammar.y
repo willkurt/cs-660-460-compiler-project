@@ -4433,8 +4433,20 @@ std::string rstring = "";
        {
 		 op = "do later!";
        }
-     rstring += assignment_expression_node_3ac(aNode.assignment_expression_node_1);
-     rstring += unary_expression_node_3ac(aNode.unary_expression_node_1)+" "+op+" "+getLastTemp()+"\n";
+     /*first if is for arrays*/
+     if((*aNode.unary_expression_node_1).postfix_expression_node_1 != 0 &&
+	(*(*aNode.unary_expression_node_1).postfix_expression_node_1).expression_node_1 != 0)
+       {
+	 rstring += assignment_expression_node_3ac(aNode.assignment_expression_node_1);
+	 std::string assmnt = getLastTemp(); 
+	 rstring += unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
+	 rstring+=getLastTemp()+" "+op+" "+assmnt+"\n";
+       }
+     else
+       {
+	 rstring += assignment_expression_node_3ac(aNode.assignment_expression_node_1);
+	 rstring += unary_expression_node_3ac(aNode.unary_expression_node_1)+" "+op+" "+getLastTemp()+"\n";
+       }   
    }
 
 return rstring;
