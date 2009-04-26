@@ -77,6 +77,9 @@ std::string getTypeFromSpecInt(int specs)
 
     //int is a sensible default
     std::string type_string = "int";
+
+    //right now, we just use the last as the 
+    //actual in the event to 2 values being assigned
     if(specs & xVOID)
       {
 	type_string = "void";
@@ -789,10 +792,12 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
 	  
 	  //now I never have to look it up, or rebuild the symboltable!
 	  (*id_node).specs = this_spec;
-
+	  
+	 	  
 	  //I forget if I should just be seaching top or all....
 	  SymbolContent *sc = st.searchAll((*id_node).token_1);
-	  (*sc).specs = this_spec;  
+	  (*sc).specs = this_spec;
+	  (*sc).ac_node = (*id_node).ac_node;
 	  //statement to decide whehter or not there are more nodes in the list
 	  if((*currentDeclList).init_declarator_list_node_1 != 0)
 	    {
@@ -3113,9 +3118,20 @@ identifier
 {
      identifier_node *anode;
      anode = (identifier_node*) malloc(sizeof(identifier_node));
-     (*anode).token_1=$1;\
-     (*anode).specs = 0;
-     (*anode).ac_node = 0;
+     (*anode).token_1=$1;
+     if(declMode)
+       {
+	 (*anode).specs = 0;
+	 (*anode).ac_node = 0;
+       }
+     else
+       {
+	 //get stuff symbol table and put in here
+	 //for future use!
+	 SymbolContent *sc = st.searchAll($1);
+	 (*anode).specs = (*sc).specs;
+	 (*anode).ac_node = (*sc).ac_node;
+       }
      $$ = anode;
 }
     ;
@@ -4705,7 +4721,7 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
       {
 	rstring+=primary_expression_node_3ac(aNode.primary_expression_node_1);
       }
-  else if(aNode.postfix_expression_node_1 != 0 && aNode.token_1 != "")
+  else if(aNode.postfix_expression_node_1 != 0 && aNode.token_1 != "" && aNode.expression_node_1 == 0)
     {
       /*
 	this may be making some wrong assumptions about what we cand do
@@ -4729,6 +4745,68 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
        */
       rstring+=id+"\n";
       rstring+=id+" := "+id+" "+op+" "+" 1";
+    }
+
+  /*arrays
+    for 
+    a[x][y]
+    a[i][j] 
+    is
+    a offset (i*y+j)*type_size
+
+    for
+    b[x][y][z]
+    b[i][j][k]
+    is
+    b offset (i*y*z+j*z+k)*type_size
+
+    also not that all sorts of error checking can happen here.
+
+   */
+  else if(aNode.expression_node_1 != 0)
+    {
+      identifier_node *id;
+      
+
+      //get that identifer node
+      postfix_expression_node *iter = &aNode;
+      int dimensions = 0;
+      while((*iter).primary_expression_node_1 == 0)
+	{
+	  dimensions++;
+	  iter = (*iter).postfix_expression_node_1;
+	}
+      id = (*(*iter).primary_expression_node_1).identifier_node_1;
+      array_const_node *this_ac = (*id).ac_node;
+      std::cout<<"ha:"<<this_ac<<std::endl;
+      postfix_expression_node *current = &aNode;
+      while(dimensions > 0)
+	{
+	  rstring += "\n*********\n";
+	  rstring+=expression_node_3ac((*current).expression_node_1);
+	  rstring += "\n*********\n";
+	  int skip = dimensions;
+	  int multiplier = 1;
+	  array_const_node *loop_ac = this_ac;
+	  while(loop_ac != 0)
+	    {
+	      std::cout<<"Wooohooo!";
+	      if(skip<=0)
+		{
+		  multiplier *= (*loop_ac).value;
+		}
+	      skip--;
+	      loop_ac = (*loop_ac).next;
+	      
+	    }
+	  rstring += getCurrentTemp()+" := "+intToStr(multiplier)+" * "+getLastTemp();
+	  currentTemp++;
+
+	  current = (*current).postfix_expression_node_1;
+	  dimensions--;
+	}
+      
+     
     }
   
 return rstring;

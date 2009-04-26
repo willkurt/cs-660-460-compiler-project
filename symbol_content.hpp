@@ -21,6 +21,7 @@ enum specDefs {xAUTO = 01,xREGISTER = 02, xSTATIC = 04,xEXTERN = 16,
 struct SymbolContent
 {
   unsigned int specs;
+  struct array_const_node *ac_node;
   int lineno;
 };
 
