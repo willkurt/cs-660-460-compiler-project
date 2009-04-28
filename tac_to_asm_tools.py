@@ -83,12 +83,58 @@ class TAC_file:
     #returns a string of asm
     #does most of the heavy lifting
     def line_to_asm(self, tac_line):
-        pass
+        """
+        if though I generally don't like them
+        a long if elif statement might work here since 
+        there is a relativley small set of operations
+        that need to be done
+        """
+        #need this because of issues with immediate values
+        intp = '[0-9]+'
+
+        line = tac_line.replace(" ","")
+        line = line.replace(":=","=") #i didn't really need :=
+        if( '+' in line):
+            dest,rest = line.split("=")
+            op1,op2 = rest.split("+")
+            oper = "add"
+            if(re.match(intp,op1) or re.match(intp,op2)):
+                oper ="addi"
+            return oper+" "+dest+", "+op1+", "+op2
+        #pretty much the same for sub
+        if( '-' in line):
+            dest,rest = line.split("=")
+            op1,op2 = rest.split("-")
+            oper = "sub"
+            if(re.match(intp,op1) or re.match(intp,op2)):
+                oper ="subi"
+            return oper+" "+dest+", "+op1+", "+op2
+        
+        """
+        this will actually require 2 lines
+        also I'm not sure if mips mult can handle
+        immediate values, if not we'll just have to
+        grab some regs and replace... meaning
+        upto 4 lines of code from this
+        """
+        if( '*' in line):
+            dest,rest = line.split("=")
+            op1,op2 = rest.split("-")
+            oper = "mult"
+            rstring = oper+" "+op1+", "+op2+"\n"
+            #yep only worried about 32 bit multlo
+            rsting += "mflo "+dest
+        #don't for get div stuff want ot make sure mult work right first
+
+            
+
+        #if we fail to do anything return the tac_line
+        return tac_line
     
-    def to_asm(self,destination):
+    def to_asm(self):
         #make sure asm_lines is empty
         self.asm_lines = []
-        for each in tac_lines:
+        for each in self.tac_lines:
             self.asm_lines.append(self.line_to_asm(each))
         
 
