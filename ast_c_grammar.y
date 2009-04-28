@@ -4098,7 +4098,7 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
     /* standard declarations */
     if(aNode.identifier_node_1 != 0)
       {
-	rstring += "declare "+identifier_node_3ac(aNode.identifier_node_1)+" "+getTypeFromSpecInt((*aNode.identifier_node_1).specs)+"_size";
+	rstring += "declare "+identifier_node_3ac(aNode.identifier_node_1)+" "+getTypeFromSpecInt((*aNode.identifier_node_1).specs)+"_size\n";
       }
     /* function definitions */
     else if (aNode.char_lit_1 == "'('")
