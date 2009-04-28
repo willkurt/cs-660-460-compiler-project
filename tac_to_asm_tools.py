@@ -94,6 +94,9 @@ class TAC_file:
 
         line = tac_line.replace(" ","")
         line = line.replace(":=","=") #i didn't really need :=
+
+#addition and subtraction
+
         if( '+' in line):
             dest,rest = line.split("=")
             op1,op2 = rest.split("+")
@@ -102,29 +105,75 @@ class TAC_file:
                 oper ="addi"
             return oper+" "+dest+", "+op1+", "+op2
         #pretty much the same for sub
-        if( '-' in line):
+        elif( '-' in line):
             dest,rest = line.split("=")
             op1,op2 = rest.split("-")
             oper = "sub"
             if(re.match(intp,op1) or re.match(intp,op2)):
                 oper ="subi"
             return oper+" "+dest+", "+op1+", "+op2
-        
-        """
-        this will actually require 2 lines
-        also I'm not sure if mips mult can handle
-        immediate values, if not we'll just have to
-        grab some regs and replace... meaning
-        upto 4 lines of code from this
-        """
-        if( '*' in line):
+
+#multiplication division modulo        
+        elif( '*' in line):
             dest,rest = line.split("=")
-            op1,op2 = rest.split("-")
+            op1,op2 = rest.split("*")
             oper = "mult"
             rstring = oper+" "+op1+", "+op2+"\n"
             #yep only worried about 32 bit multlo
-            rsting += "mflo "+dest
-        #don't for get div stuff want ot make sure mult work right first
+            rstring += "mflo "+dest
+            return rstring
+
+        elif( '/' in line):
+            dest,rest = line.split("=")
+            op1,op2 = rest.split("/")
+            oper = "div"
+            rstring = oper+" "+op1+", "+op2+"\n"
+            #yep only worried about 32 bit multlo
+            rstring += "mflo "+dest
+            return rstring
+            
+        #modulo is the same as div accept 
+        #value is in mfhi
+        elif( '%' in line):
+            dest,rest = line.split("=")
+            op1,op2 = rest.split("%")
+            oper = "div"
+            rstring = oper+" "+op1+", "+op2+"\n"
+            #yep only worried about 32 bit multlo
+            rstring += "mfhi "+dest
+            return rstring
+
+#if statements
+        elif("ifFalse" in line):
+            #do this later
+            pass
+        elif("if" in line):
+            stmnt = line.replace("if","")
+            compare, loop_dest = stmnt.split("goto")
+            if("==" in compare):
+                oper = "beq"
+                op1,op2 = compare.split("==")
+            elif("!=" in compare):
+                oper = "bne"
+                op1,op2 = compare.split("!=")
+            elif("<=" in compare):
+                oper = "ble"
+                op1,op2 = compare.split("<=")
+            elif(">=" in compare):
+                oper = "bge"
+                op1,op2 = compare.split(">=")
+            elif(">" in compare):
+                oper = "bgt"
+                op1,op2 = compare.split(">")
+            elif("<" in compare):
+                oper = "blt"
+                op1,op2 = compare.split("<")
+            rstring = oper+" "+op1+", "+op2+", "+loop_dest
+            return rstring
+
+#goto (must be handled after all other cases with gotos inthem)
+        elif("goto" in line):
+            return "b "+line.split("goto")[1]
 
             
 
