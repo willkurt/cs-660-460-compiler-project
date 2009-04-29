@@ -4327,13 +4327,13 @@ std::string selection_statement_node_3ac(selection_statement_node *ptr)
     rstring += "ifFalse "+getLastTemp()+" goto "+elseLabel+"\n";
     rstring += statement_node_3ac(aNode.statement_node_1);
     rstring += "goto "+endLabel;
-    rstring += ":"+elseLabel+" ";
+    rstring += elseLabel+": \n";
     if(aNode.statement_node_2 != 0)
       {
 	rstring+=statement_node_3ac(aNode.statement_node_1);
       }
     rstring += "goto "+endLabel+"\n";
-    rstring += ":"+endLabel;
+    rstring += endLabel+": \n";
 
 return rstring;
 }
@@ -4349,12 +4349,12 @@ std::string iteration_statement_node_3ac(iteration_statement_node *ptr)
 	currentLabel++;
 	std::string endLabel = getCurrentLabel();
 	currentLabel++;
-	rstring += ":"+startLabel+"\n";
+	rstring += startLabel+":\n";
 	rstring += expression_node_3ac(aNode.expression_node_1);
 	rstring += "ifFalse "+getLastTemp()+" goto "+endLabel+"\n";
 	rstring += statement_node_3ac(aNode.statement_node_1);
 	rstring += "goto "+startLabel+"\n";
-	rstring += ":"+endLabel+"\n";
+	rstring += endLabel+":\n";
 	
       }
     else if (loopType == "do")
@@ -4363,12 +4363,12 @@ std::string iteration_statement_node_3ac(iteration_statement_node *ptr)
 	currentLabel++;
 	std::string endLabel = getCurrentLabel();
 	currentLabel++;
-	rstring += ":"+startLabel+"\n";
+	rstring += startLabel+":\n";
 	rstring += statement_node_3ac(aNode.statement_node_1);
 	rstring += expression_node_3ac(aNode.expression_node_1);
 	rstring += "ifFalse "+getLastTemp()+" goto "+endLabel+"\n";
 	rstring += " goto "+startLabel+"\n";
-	rstring += ":"+endLabel+"\n";
+	rstring += endLabel+":\n";
 	
       }
     /*
@@ -4384,7 +4384,7 @@ std::string iteration_statement_node_3ac(iteration_statement_node *ptr)
 	currentLabel++;
 	/*initializiation*/
 	rstring += expression_node_3ac(aNode.expression_node_1);
-	rstring += ":"+startLabel+"\n";
+	rstring += startLabel+":\n";
 	/*loop statement*/
 	rstring += expression_node_3ac(aNode.expression_node_2);
 	rstring += "ifFalse "+getLastTemp()+" goto "+endLabel+"\n";
@@ -4393,7 +4393,7 @@ std::string iteration_statement_node_3ac(iteration_statement_node *ptr)
 	/*update*/
 	rstring += expression_node_3ac(aNode.expression_node_3);
 	rstring += " goto "+startLabel+"\n";
-	rstring += ":"+endLabel+"\n";
+	rstring += endLabel+":\n";
       }
     return rstring;
 }
@@ -4567,11 +4567,11 @@ std::string equality_expression_node_3ac(equality_expression_node *ptr)
       rstring+= equality_expression_node_3ac(aNode.equality_expression_node_1);
       rstring+="if "+exp1+" "+aNode.token_1+" "+exp2+" goto "+trueLabel+"\n";
       rstring+="goto "+falseLabel+"\n";
-      rstring+=":"+trueLabel+" "+getCurrentTemp()+" := 1\n";
+      rstring+=trueLabel+":\n "+getCurrentTemp()+" := 1\n";
       rstring+="goto "+endLabel+"\n";
-      rstring+=":"+falseLabel+" "+getCurrentTemp()+" := 0\n";
+      rstring+=falseLabel+":\n "+getCurrentTemp()+" := 0\n";
       rstring+="goto "+endLabel+"\n";
-      rstring+=":"+endLabel+"\n";
+      rstring+=endLabel+":\n";
       currentTemp++;
       
     }
@@ -4610,11 +4610,11 @@ std::string relational_expression_node_3ac(relational_expression_node *ptr)
 	 rstring+= relational_expression_node_3ac(aNode.relational_expression_node_1);
 	 rstring+="if "+exp1+" "+relop+" "+exp2+" goto "+trueLabel+"\n";
 	 rstring+="goto "+falseLabel+"\n";
-	 rstring+=":"+trueLabel+" "+getCurrentTemp()+" := 1\n";
+	 rstring+= trueLabel+":\n"+getCurrentTemp()+" := 1\n";
 	 rstring+="goto "+endLabel+"\n";
-	 rstring+=":"+falseLabel+" "+getCurrentTemp()+" := 0\n";
+	 rstring+=falseLabel+":\n"+getCurrentTemp()+" := 0\n";
 	 rstring+="goto "+endLabel+"\n";
-	 rstring+=":"+endLabel+"\n";
+	 rstring+=endLabel+":\n";
 	 currentTemp++;
       
     }
