@@ -145,8 +145,11 @@ class TAC_file:
 
 #if statements
         elif("ifFalse" in line):
-            #do this later
-            pass
+            stmnt = line.replace("ifFalse","")
+            op1, loop_dest = stmnd.split("goto")
+            rstring = "bz "+op1+", "+loop_dest
+            return rstring
+           
         elif("if" in line):
             stmnt = line.replace("if","")
             compare, loop_dest = stmnt.split("goto")
@@ -175,6 +178,15 @@ class TAC_file:
         elif("goto" in line):
             return "b "+line.split("goto")[1]
 
+#by this point all other things with an '=' should be done
+        elif("=" in line):
+            dest,value = line.split("=")
+            #ad more to this later for more interest type stuff
+            if(re.search(intp,value)):
+                oper = "li"
+            else:
+                oper = "la"
+            return oper+" "+dest+", "+value
             
 
         #if we fail to do anything return the tac_line
