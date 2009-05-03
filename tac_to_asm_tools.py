@@ -146,8 +146,8 @@ class TAC_file:
 #if statements
         elif("ifFalse" in line):
             stmnt = line.replace("ifFalse","")
-            op1, loop_dest = stmnd.split("goto")
-            rstring = "bz "+op1+", "+loop_dest
+            op1, loop_dest = stmnt.split("goto")
+            rstring = "beqz "+op1+", "+loop_dest
             return rstring
            
         elif("if" in line):
@@ -178,17 +178,55 @@ class TAC_file:
         elif("goto" in line):
             return "b "+line.split("goto")[1]
 
+
+#assignment
 #by this point all other things with an '=' should be done
         elif("=" in line):
+            rstring = ""
             dest,value = line.split("=")
-            #ad more to this later for more interest type stuff
-            if(re.search(intp,value)):
-                oper = "li"
-            else:
-                oper = "la"
-            return oper+" "+dest+", "+value
-            
+            #assingment is actually reasonably complicated
+            if(dest[0] != "$"): #not dealing with reg, hence var
+                #case 1: var = reg
+                #  sw reg, var
+                if(value[0] == "$"): #reg
+                    #I'm not sure were this '\n' is coming from
+                    value = value.strip('\n')
+                    rstring = "sw "+value+", "+dest
+                #case 2: var = imm
+                # li newReg, imm
+                # sw newReg, var
+                elif(re.match(intp,value)):
+                    newReg = self.regs.next_reg()
+                    rstring = "li "+newReg+", "+value+"\n"
+                    rstring += "sw "+newReg+", "+dest
+                    self.regs.free_reg(newReg)
 
+                else: #must be a var
+                    
+                #I'm not even 100% this happens in my 3ac
+                #case 3: var = var
+                    newReg = self.regs.next_reg()
+                    rstring = "lw "+newReg+", "+value+"\n"
+                    rstring = "sw "+newReg+", "+dest
+                    self.regs.free_reg(newReg) 
+            else: #this is the case of reg assignment
+                #case 4: reg = reg
+                #la reg, reg
+                if(value[0] == "$"): #reg
+                     rstring = "la "+dest+", "+value  
+                #case 5: reg = imm
+                #li reg, imm
+                elif(re.match(intp,value)):
+                    rstring = "li "+dest+", "+value
+                    
+               
+                #case 6: reg = var
+                #lw reg, var
+                else: #must be a var
+                    rstring = "lw "+dest+", "+value
+            
+                
+            return rstring
         #if we fail to do anything return the tac_line
         return tac_line
     
@@ -197,7 +235,13 @@ class TAC_file:
         self.asm_lines = []
         for each in self.tac_lines:
             self.asm_lines.append(self.line_to_asm(each))
-        
+            
+    def write_asm(self,file_name):
+        self.replace_all_temps()
+        self.to_asm()
+        f = open(file_name,'w')
+        f.write("\n".join(self.asm_lines))
+        f.close()
 
     def find_next_temp_value(self):
         pattern = 'T[0-9]+'
