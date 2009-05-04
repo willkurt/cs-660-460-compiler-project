@@ -77,9 +77,7 @@ class TAC_file:
         #no need to keep an open file stream through all this
         in_file.close()
     
-    #goes through the lines and replaces temps with registers
-    def assign_temps_to_regs(self):
-        pass
+
 
     #returns a string of asm
     #does most of the heavy lifting
@@ -97,9 +95,13 @@ class TAC_file:
         line = line.replace(":=","=") #i didn't really need :=
 
         if("offset" in line):
+            rstring = ""
             dest,rest = line.split("=")
+            base,offset = rest.split("offset")
+            rstring += "la "+dest+", "+base+"\n"
+            rstring += "add "+dest+", "+dest+", "+offset
             self.addresses.append(dest)
-            return "#"+line
+            return rstring
         elif("declare" in line):
             return "#"+line
 #addition and subtraction
@@ -241,18 +243,37 @@ class TAC_file:
                     rstring = "lw "+newReg+", "+value+"\n"
                     rstring = "sw "+newReg+", "+dest
                     self.regs.free_reg(newReg) 
+            elif(dest in self.addresses):
+                #case were it's really an address
+                #case a: add = add
+                if(value in self.addresses):
+                    rstring = "sw ("+value+"), ("+dest+")"
+                #case b: add = reg
+                elif(value[0] == "$")
+                    rstring = "sw "+value+", ("+dest+")"
+                    
+                elif(re.match(intp,value)):
+                    newReg = self.regs.next_reg()
+                    rstring = "li "+newReg+", "+value+"\n"
+                    rstring += "sw "+newReg+", ("+dest+")"
+                    self.regs.free_reg(newReg)
+                else: #must be a var
+                    newReg = self.regs.next_reg()
+                    rstring = "lw "+newReg+", "+value+"\n"
+                    rstring = "sw "+newReg+", "+"("+dest+")"
+                    self.regs.free_reg(newReg)
             else: #this is the case of reg assignment
-                #case 4: reg = reg
+                #case x: reg = reg
                 #la reg, reg
                 if(value[0] == "$"): #reg
                      rstring = "la "+dest+", "+value  
-                #case 5: reg = imm
+                #case y: reg = imm
                 #li reg, imm
                 elif(re.match(intp,value)):
                     rstring = "li "+dest+", "+value
                     
                
-                #case 6: reg = var
+                #case z: reg = var
                 #lw reg, var
                 else: #must be a var
                     rstring = "lw "+dest+", "+value
