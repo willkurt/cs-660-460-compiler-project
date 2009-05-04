@@ -77,7 +77,8 @@ class TAC_file:
         #no need to keep an open file stream through all this
         in_file.close()
     
-
+    
+        
 
     #returns a string of asm
     #does most of the heavy lifting
@@ -305,7 +306,8 @@ class TAC_file:
             
     def write_asm(self,file_name):
         self.replace_type_info()
-        self.replace_all_temps()
+       # self.replace_all_temps()
+        self.smarter_reg_allocation()
         self.to_asm()
         f = open(file_name,'w')
         f.write("\n".join(self.asm_lines))
@@ -343,13 +345,40 @@ class TAC_file:
             return temp_to_replace
         else:
             return None
-
+    
     def replace_all_temps(self):
         while(self.replace_next_value()):
             pass #should work
         
       
-              
+    
+    #a more efficent version of replace_all_temps
+    #no temp should be seen more than 2x
+    #so after it has been replaced a secondtime
+    #it is okay to re alloc the reg after it has been
+    #replaced a seond time
+    def smarter_reg_allocation(self):
+        #for this pass we make an assumption that
+        #spaces are still good delimiters.
+        temp = []
+        used_dict = {}
+        pattern = 'T[0-9]+' #shouldn't have length issues like earlier
+        for line in self.tac_lines:
+            print line
+            line_list = line.split(" ")
+            for each in line_list:
+                if(re.match(pattern, each)):
+                    each = each.strip()
+                    if(each in used_dict.keys()):
+                        line = line.replace(each,used_dict[each])
+                        self.regs.free_reg(used_dict[each])
+                    else:
+                        nextReg = self.regs.next_reg()
+                        used_dict[each] = nextReg
+                        line = line.replace(each,nextReg)
+            temp.append(line)
+        print used_dict
+        self.tac_lines = temp
                
               
                    
