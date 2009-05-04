@@ -72,6 +72,7 @@ class TAC_file:
         in_file = open(filename,'r')
         self.tac_lines = in_file.readlines()
         self.asm_lines = []
+        self.addresses = [] #stores registers that are actually addresses
         self.regs = Registers()
         #no need to keep an open file stream through all this
         in_file.close()
@@ -95,9 +96,15 @@ class TAC_file:
         line = tac_line.replace(" ","")
         line = line.replace(":=","=") #i didn't really need :=
 
+        if("offset" in line):
+            dest,rest = line.split("=")
+            self.addresses.append(dest)
+            return "#"+line
+        elif("declare" in line):
+            return "#"+line
 #addition and subtraction
-
-        if( '+' in line):
+        
+        elif( '+' in line):
             dest,rest = line.split("=")
             op1,op2 = rest.split("+")
             oper = "add"
@@ -228,23 +235,39 @@ class TAC_file:
                 
             return rstring
         #if we fail to do anything return the tac_line
-        return tac_line
+        return "#"+tac_line #comment out the lines not used
     
     def to_asm(self):
         #make sure asm_lines is empty
         self.asm_lines = []
         for each in self.tac_lines:
+            print each
             self.asm_lines.append(self.line_to_asm(each))
             
     def write_asm(self,file_name):
+        self.replace_type_info()
         self.replace_all_temps()
         self.to_asm()
         f = open(file_name,'w')
         f.write("\n".join(self.asm_lines))
         f.close()
 
+#some preprocessor stuff
+    def replace_type_info(self):
+        for x in range(len(self.tac_lines)):
+            if("int_size" in self.tac_lines[x]):
+                self.tac_lines[x] = self.tac_lines[x].replace("int_size","4")
+            if("int_type" in self.tac_lines[x]):
+                self.tac_lines[x] = self.tac_lines[x].replace("int_type","4")
+
+
     def find_next_temp_value(self):
         pattern = 'T[0-9]+'
+        patternlong = 'T[0-9][0-9]' #for longer ones, python regex stops at shorted
+        for line in self.tac_lines:
+            if(re.search(patternlong,line)):
+                print line+"yahoo!!!"
+                return re.search(patternlong,line).group()
         for line in self.tac_lines:
             if(re.search(pattern,line)):
                 return re.search(pattern,line).group()
@@ -253,7 +276,6 @@ class TAC_file:
     #returns the value of the temp replaced
     def replace_next_value(self):
         temp_to_replace = self.find_next_temp_value()
-        print temp_to_replace
         temporary_tac_lines = []
         if(temp_to_replace):
             next_reg = self.regs.next_reg() 
