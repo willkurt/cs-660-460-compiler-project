@@ -115,7 +115,7 @@ class TAC_file:
             newReg = ""
            
             if(re.match(intp,op1)):
-                newReg = self.regs.next_reg()
+                newReg = self.regs.next_saved_temp()
                 rstring += "li "+newReg+", "+op1+"\n"
                 op1 = newReg
                 self.regs.free_reg(newReg)
@@ -142,11 +142,11 @@ class TAC_file:
             newReg1 = ""
             newReg2 = ""
             if(re.match(intp,op1)):
-                newReg1 = self.regs.next_reg()
+                newReg1 = self.regs.next_saved_temp()
                 rstring += "li "+newReg1+", "+op1+"\n"
                 op1 = newReg1
             if(re.match(intp,op2)):
-                newReg2 = self.regs.next_reg()
+                newReg2 = self.regs.next_saved_temp()
                 rstring += "li "+newReg2+", "+op2+"\n"
                 op2 = newReg2
             rstring += oper+" "+op1+", "+op2+"\n"
@@ -227,7 +227,9 @@ class TAC_file:
                 # lw newReg, add
                 # sw newReg, var
                 if(value in self.addresses):
-                    newReg = self.regs.next_reg()
+                    #remove it from the address as it has been used
+                    self.addresses.remove(value)
+                    newReg = self.regs.next_saved_temp()
                     rstring = "lw "+newReg+", ("+value+")\n"
                     rstring += "sw "+newReg+", "+dest
                     self.regs.free_reg(newReg)
@@ -241,7 +243,7 @@ class TAC_file:
                 # li newReg, imm
                 # sw newReg, var
                 elif(re.match(intp,value)):
-                    newReg = self.regs.next_reg()
+                    newReg = self.regs.next_saved_temp()
                     rstring = "li "+newReg+", "+value+"\n"
                     rstring += "sw "+newReg+", "+dest
                     self.regs.free_reg(newReg)
@@ -250,26 +252,31 @@ class TAC_file:
                     
                 #I'm not even 100% this happens in my 3ac
                 #case 3: var = var
-                    newReg = self.regs.next_reg()
+                    newReg = self.regs.next_saved_temp()
                     rstring = "lw "+newReg+", "+value+"\n"
                     rstring = "sw "+newReg+", "+dest
                     self.regs.free_reg(newReg) 
             elif(dest in self.addresses):
+                #if an addressed reg is used
+                #it should be removed
+                self.addresses.remove(dest)
                 #case were it's really an address
                 #case a: add = add
+              
                 if(value in self.addresses):
+                    self.addresses.remove(value)
                     rstring = "sw ("+value+"), ("+dest+")"
                 #case b: add = reg
                 elif(value[0] == "$"):
                     rstring = "sw "+value+", ("+dest+")"
                     
                 elif(re.match(intp,value)):
-                    newReg = self.regs.next_reg()
+                    newReg = self.regs.next_saved_temp()
                     rstring = "li "+newReg+", "+value+"\n"
                     rstring += "sw "+newReg+", ("+dest+")"
                     self.regs.free_reg(newReg)
                 else: #must be a var
-                    newReg = self.regs.next_reg()
+                    newReg = self.regs.next_saved_temp()
                     rstring = "lw "+newReg+", "+value+"\n"
                     rstring = "sw "+newReg+", "+"("+dest+")"
                     self.regs.free_reg(newReg)
@@ -277,6 +284,7 @@ class TAC_file:
                 #case : reg = add
                 # lw reg, (add)
                 if(value in self.addresses):
+                    self.addresses.remove(value)
                     rstring = "lw "+dest+", ("+value+")"
                 #case x: reg = reg
                 #la reg, reg
@@ -364,20 +372,21 @@ class TAC_file:
         used_dict = {}
         pattern = 'T[0-9]+' #shouldn't have length issues like earlier
         for line in self.tac_lines:
-            print line
+            to_free = []
             line_list = line.split(" ")
             for each in line_list:
                 if(re.match(pattern, each)):
                     each = each.strip()
                     if(each in used_dict.keys()):
                         line = line.replace(each,used_dict[each])
-                        self.regs.free_reg(used_dict[each])
+                        to_free.append(used_dict[each])
                     else:
                         nextReg = self.regs.next_reg()
                         used_dict[each] = nextReg
                         line = line.replace(each,nextReg)
+            for item in to_free:
+                self.regs.free_reg(item)
             temp.append(line)
-        print used_dict
         self.tac_lines = temp
                
               
