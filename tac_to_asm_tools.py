@@ -108,10 +108,20 @@ class TAC_file:
             dest,rest = line.split("=")
             op1,op2 = rest.split("+")
             oper = "add"
-            if(re.match(intp,op1) or re.match(intp,op2)):
+            rstring = ""
+            newReg = ""
+           
+            if(re.match(intp,op1)):
+                newReg = self.regs.next_reg()
+                rstring += "li "+newReg+", "+op1+"\n"
+                op1 = newReg
+                self.regs.free_reg(newReg)
+           
+            if(re.match(intp,op2)):
                 oper ="addi"
-            return oper+" "+dest+", "+op1+", "+op2
-        #pretty much the same for sub
+            rstring += oper+" "+dest+", "+op1+", "+op2
+            return rstring
+        #pretty much the same for sub need to make the same fixes
         elif( '-' in line):
             dest,rest = line.split("=")
             op1,op2 = rest.split("-")
