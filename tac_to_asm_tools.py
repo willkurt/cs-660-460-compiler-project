@@ -125,11 +125,26 @@ class TAC_file:
             dest,rest = line.split("=")
             op1,op2 = rest.split("*")
             oper = "mult"
-            rstring = oper+" "+op1+", "+op2+"\n"
+            rstring = ""
+            newReg1 = ""
+            newReg2 = ""
+            if(re.match(intp,op1)):
+                newReg1 = self.regs.next_reg()
+                rstring += "li "+newReg1+", "+op1+"\n"
+                op1 = newReg1
+            if(re.match(intp,op2)):
+                newReg2 = self.regs.next_reg()
+                rstring += "li "+newReg2+", "+op2+"\n"
+                op2 = newReg2
+            rstring += oper+" "+op1+", "+op2+"\n"
             #yep only worried about 32 bit multlo
             rstring += "mflo "+dest
+            if(newReg1 != ""):
+                self.regs.free_reg(newReg1)
+            if(newReg2 != ""):
+                self.regs.free_reg(newReg2)
             return rstring
-
+#need to add previous correction to / and %
         elif( '/' in line):
             dest,rest = line.split("=")
             op1,op2 = rest.split("/")
