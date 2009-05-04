@@ -218,11 +218,21 @@ class TAC_file:
         elif("=" in line):
             rstring = ""
             dest,value = line.split("=")
+            if("\n" in value):
+                value = value.replace("\n","")
             #assingment is actually reasonably complicated
             if(dest[0] != "$"): #not dealing with reg, hence var
+                #case 0: var == add
+                # lw newReg, add
+                # sw newReg, var
+                if(value in self.addresses):
+                    newReg = self.regs.next_reg()
+                    rstring = "lw "+newReg+", ("+value+")\n"
+                    rstring += "sw "+newReg+", "+dest
+                    self.regs.free_reg(newReg)
                 #case 1: var = reg
                 #  sw reg, var
-                if(value[0] == "$"): #reg
+                elif(value[0] == "$"): #reg
                     #I'm not sure were this '\n' is coming from
                     value = value.strip('\n')
                     rstring = "sw "+value+", "+dest
@@ -249,7 +259,7 @@ class TAC_file:
                 if(value in self.addresses):
                     rstring = "sw ("+value+"), ("+dest+")"
                 #case b: add = reg
-                elif(value[0] == "$")
+                elif(value[0] == "$"):
                     rstring = "sw "+value+", ("+dest+")"
                     
                 elif(re.match(intp,value)):
@@ -263,9 +273,13 @@ class TAC_file:
                     rstring = "sw "+newReg+", "+"("+dest+")"
                     self.regs.free_reg(newReg)
             else: #this is the case of reg assignment
+                #case : reg = add
+                # lw reg, (add)
+                if(value in self.addresses):
+                    rstring = "lw "+dest+", ("+value+")"
                 #case x: reg = reg
                 #la reg, reg
-                if(value[0] == "$"): #reg
+                elif(value[0] == "$"): #reg
                      rstring = "la "+dest+", "+value  
                 #case y: reg = imm
                 #li reg, imm
@@ -287,7 +301,6 @@ class TAC_file:
         #make sure asm_lines is empty
         self.asm_lines = []
         for each in self.tac_lines:
-            print each
             self.asm_lines.append(self.line_to_asm(each))
             
     def write_asm(self,file_name):
@@ -312,7 +325,6 @@ class TAC_file:
         patternlong = 'T[0-9][0-9]' #for longer ones, python regex stops at shorted
         for line in self.tac_lines:
             if(re.search(patternlong,line)):
-                print line+"yahoo!!!"
                 return re.search(patternlong,line).group()
         for line in self.tac_lines:
             if(re.search(pattern,line)):
