@@ -7690,6 +7690,12 @@ std::string rstring = "";   if(aNode.cast_expression_node_1 != 0)
 	 {
 	   rstring += unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
 	 }
+       /*second if for function calls */
+       else if((*aNode.unary_expression_node_1).postfix_expression_node_1 != 0 &&
+	  (*(*aNode.unary_expression_node_1).postfix_expression_node_1).char_lit_1 == "'('")
+	 {
+	   rstring += unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
+	 }
        else
 	 {
 	   rstring += getCurrentTemp()+" := "+unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
