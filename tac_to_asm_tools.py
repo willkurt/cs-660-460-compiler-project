@@ -96,7 +96,7 @@ class TAC_file:
         line = line.replace(":=","=") #i didn't really need :=
 
         if("offset" in line):
-            rstring = ""
+            rstring = "#"+tac_line
             dest,rest = line.split("=")
             base,offset = rest.split("offset")
             rstring += "la "+dest+", "+base+"\n"
@@ -104,14 +104,15 @@ class TAC_file:
             self.addresses.append(dest)
             return rstring
         elif("declare" in line):
-            return "#"+line
+            rstring =  "#"+line+"\n"
+            return rstring
 #addition and subtraction
         
         elif( '+' in line):
             dest,rest = line.split("=")
             op1,op2 = rest.split("+")
             oper = "add"
-            rstring = ""
+            rstring = "#"+line+"\n"
             newReg = ""
            
             if(re.match(intp,op1)):
@@ -126,28 +127,41 @@ class TAC_file:
             return rstring
         #pretty much the same for sub need to make the same fixes
         elif( '-' in line):
+            rstring = "#"+tac_line
             dest,rest = line.split("=")
             op1,op2 = rest.split("-")
             oper = "sub"
             if(re.match(intp,op1) or re.match(intp,op2)):
                 oper ="subi"
-            return oper+" "+dest+", "+op1+", "+op2
+            rstring += oper+" "+dest+", "+op1+", "+op2
+            return rstring
 
 #multiplication division modulo        
         elif( '*' in line):
             dest,rest = line.split("=")
             op1,op2 = rest.split("*")
+            op2 = op2.strip()
             oper = "mult"
-            rstring = ""
+            rstring = "#"+tac_line
             newReg1 = ""
             newReg2 = ""
             if(re.match(intp,op1)):
                 newReg1 = self.regs.next_saved_temp()
                 rstring += "li "+newReg1+", "+op1+"\n"
                 op1 = newReg1
+            elif(op1 in self.addresses):
+                self.addresses.remove(op1)
+                newReg1 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg1+" ("+op1+")\n"
+                op1 = newReg1
             if(re.match(intp,op2)):
                 newReg2 = self.regs.next_saved_temp()
                 rstring += "li "+newReg2+", "+op2+"\n"
+                op2 = newReg2
+            elif(op2 in self.addresses):
+                self.addresses.remove(op2)
+                newReg2 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg2+" ("+op2+")\n"
                 op2 = newReg2
             rstring += oper+" "+op1+", "+op2+"\n"
             #yep only worried about 32 bit multlo
@@ -162,7 +176,8 @@ class TAC_file:
             dest,rest = line.split("=")
             op1,op2 = rest.split("/")
             oper = "div"
-            rstring = oper+" "+op1+", "+op2+"\n"
+            rstring = "#"+tac_line
+            rstring += oper+" "+op1+", "+op2+"\n"
             #yep only worried about 32 bit multlo
             rstring += "mflo "+dest
             return rstring
@@ -173,7 +188,8 @@ class TAC_file:
             dest,rest = line.split("=")
             op1,op2 = rest.split("%")
             oper = "div"
-            rstring = oper+" "+op1+", "+op2+"\n"
+            rstring = "#"+tac_line
+            rstring += oper+" "+op1+", "+op2+"\n"
             #yep only worried about 32 bit multlo
             rstring += "mfhi "+dest
             return rstring
@@ -182,12 +198,14 @@ class TAC_file:
         elif("ifFalse" in line):
             stmnt = line.replace("ifFalse","")
             op1, loop_dest = stmnt.split("goto")
+            rstring = "#"+tac_line
             rstring = "beqz "+op1+", "+loop_dest
             return rstring
            
         elif("if" in line):
             stmnt = line.replace("if","")
             compare, loop_dest = stmnt.split("goto")
+            rstring = "#"+tac_line
             if("==" in compare):
                 oper = "beq"
                 op1,op2 = compare.split("==")
@@ -206,18 +224,19 @@ class TAC_file:
             elif("<" in compare):
                 oper = "blt"
                 op1,op2 = compare.split("<")
-            rstring = oper+" "+op1+", "+op2+", "+loop_dest
+            rstring += oper+" "+op1+", "+op2+", "+loop_dest
             return rstring
 
 #goto (must be handled after all other cases with gotos inthem)
         elif("goto" in line):
-            return "b "+line.split("goto")[1]
-
+            rstring = "#"+tac_line
+            rstring += "b "+line.split("goto")[1]
+            return rstring
 
 #assignment
 #by this point all other things with an '=' should be done
         elif("=" in line):
-            rstring = ""
+            rstring = "#"+tac_line
             dest,value = line.split("=")
             if("\n" in value):
                 value = value.replace("\n","")
@@ -230,7 +249,7 @@ class TAC_file:
                     #remove it from the address as it has been used
                     self.addresses.remove(value)
                     newReg = self.regs.next_saved_temp()
-                    rstring = "lw "+newReg+", ("+value+")\n"
+                    rstring += "lw "+newReg+", ("+value+")\n"
                     rstring += "sw "+newReg+", "+dest
                     self.regs.free_reg(newReg)
                 #case 1: var = reg
@@ -238,13 +257,13 @@ class TAC_file:
                 elif(value[0] == "$"): #reg
                     #I'm not sure were this '\n' is coming from
                     value = value.strip('\n')
-                    rstring = "sw "+value+", "+dest
+                    rstring += "sw "+value+", "+dest
                 #case 2: var = imm
                 # li newReg, imm
                 # sw newReg, var
                 elif(re.match(intp,value)):
                     newReg = self.regs.next_saved_temp()
-                    rstring = "li "+newReg+", "+value+"\n"
+                    rstring += "li "+newReg+", "+value+"\n"
                     rstring += "sw "+newReg+", "+dest
                     self.regs.free_reg(newReg)
 
@@ -253,8 +272,8 @@ class TAC_file:
                 #I'm not even 100% this happens in my 3ac
                 #case 3: var = var
                     newReg = self.regs.next_saved_temp()
-                    rstring = "lw "+newReg+", "+value+"\n"
-                    rstring = "sw "+newReg+", "+dest
+                    rstring += "lw "+newReg+", "+value+"\n"
+                    rstring += "sw "+newReg+", "+dest
                     self.regs.free_reg(newReg) 
             elif(dest in self.addresses):
                 #if an addressed reg is used
@@ -265,41 +284,41 @@ class TAC_file:
               
                 if(value in self.addresses):
                     self.addresses.remove(value)
-                    rstring = "sw ("+value+"), ("+dest+")"
+                    rstring += "sw ("+value+"), ("+dest+")"
                 #case b: add = reg
                 elif(value[0] == "$"):
-                    rstring = "sw "+value+", ("+dest+")"
+                    rstring += "sw "+value+", ("+dest+")"
                     
                 elif(re.match(intp,value)):
                     newReg = self.regs.next_saved_temp()
-                    rstring = "li "+newReg+", "+value+"\n"
+                    rstring += "li "+newReg+", "+value+"\n"
                     rstring += "sw "+newReg+", ("+dest+")"
                     self.regs.free_reg(newReg)
                 else: #must be a var
                     newReg = self.regs.next_saved_temp()
-                    rstring = "lw "+newReg+", "+value+"\n"
-                    rstring = "sw "+newReg+", "+"("+dest+")"
+                    rstring += "lw "+newReg+", "+value+"\n"
+                    rstring += "sw "+newReg+", "+"("+dest+")"
                     self.regs.free_reg(newReg)
             else: #this is the case of reg assignment
                 #case : reg = add
                 # lw reg, (add)
                 if(value in self.addresses):
                     self.addresses.remove(value)
-                    rstring = "lw "+dest+", ("+value+")"
+                    rstring += "lw "+dest+", ("+value+")"
                 #case x: reg = reg
                 #la reg, reg
                 elif(value[0] == "$"): #reg
-                     rstring = "la "+dest+", "+value  
+                     rstring += "la "+dest+", "+value  
                 #case y: reg = imm
                 #li reg, imm
                 elif(re.match(intp,value)):
-                    rstring = "li "+dest+", "+value
+                    rstring += "li "+dest+", "+value
                     
                
                 #case z: reg = var
                 #lw reg, var
                 else: #must be a var
-                    rstring = "lw "+dest+", "+value
+                    rstring += "lw "+dest+", "+value
             
                 
             return rstring
