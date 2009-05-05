@@ -2909,15 +2909,17 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
 }
     |postfix_expression '(' ')'
 {
+  /*I dont' know why this doesn't work right, but do note the hack to 
+    get the identifier node correct*/
      postfix_expression_node *anode;
-anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+     anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     (*anode).char_lit_1="'('";
     (*anode).char_lit_2="')'";
-    (*anode).postfix_expression_node_1=$1;
+    (*anode).postfix_expression_node_1 = 0; //was $1
     (*anode).token_1= 0;
     (*anode).expression_node_1= 0;
     (*anode).argument_expression_list_node_1= 0;
-    (*anode).identifier_node_1= 0;
+    (*anode).identifier_node_1= (*(*$1).primary_expression_node_1).identifier_node_1;
     (*anode).primary_expression_node_1= 0;
     $$ = anode;
 }
@@ -2927,11 +2929,11 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     (*anode).char_lit_1="'('";
     (*anode).char_lit_2="')'";
-    (*anode).postfix_expression_node_1=$1;
+    (*anode).postfix_expression_node_1=0;
     (*anode).argument_expression_list_node_1=$3;
     (*anode).token_1= 0;
     (*anode).expression_node_1= 0;
-    (*anode).identifier_node_1= 0;
+    (*anode).identifier_node_1= (*(*$1).primary_expression_node_1).identifier_node_1;
     (*anode).primary_expression_node_1= 0;
     $$ = anode;
 }
@@ -3116,23 +3118,28 @@ anode = (string_node*) malloc(sizeof(string_node));
 identifier
     :IDENTIFIER
 {
-     identifier_node *anode;
-     anode = (identifier_node*) malloc(sizeof(identifier_node));
-     (*anode).token_1=$1;
-     if(declMode)
+  identifier_node *anode;
+  anode = (identifier_node*) malloc(sizeof(identifier_node));
+  (*anode).token_1=$1;
+  if(declMode)
        {
 	 (*anode).specs = 0;
 	 (*anode).ac_node = 0;
        }
-     else
-       {
-	 //get stuff symbol table and put in here
-	 //for future use!
-	 SymbolContent *sc = st.searchAll($1);
-	 (*anode).specs = (*sc).specs;
-	 (*anode).ac_node = (*sc).ac_node;
-       }
-     $$ = anode;
+  else
+    {
+	 
+      //get stuff symbol table and put in here
+      //for future use!
+      SymbolContent *sc = st.searchAll($1);
+      if (sc != 0)
+	{
+	  (*anode).specs = (*sc).specs;
+	  (*anode).ac_node = (*sc).ac_node;
+	}
+	 
+    }
+  $$ = anode;
 }
     ;
 
@@ -4098,7 +4105,7 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
     /* standard declarations */
     if(aNode.identifier_node_1 != 0)
       {
-	rstring += "declare "+identifier_node_3ac(aNode.identifier_node_1)+" "+getTypeFromSpecInt((*aNode.identifier_node_1).specs)+"_size\n";
+	rstring += "declare "+identifier_node_3ac(aNode.identifier_node_1)+" | "+getTypeFromSpecInt((*aNode.identifier_node_1).specs)+"_size\n";
       }
     /* function definitions */
     else if (aNode.char_lit_1 == "'('")
@@ -4130,7 +4137,7 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
 	  }
 
 	std::string id = identifier_node_3ac((*current).identifier_node_1);
-	rstring += "declare "+id+" "+getTypeFromSpecInt((*(*current).identifier_node_1).specs)+"_size * "+intToStr(space)+"\n";
+	rstring += "declare "+id+" | "+getTypeFromSpecInt((*(*current).identifier_node_1).specs)+"_size * "+intToStr(space)+"\n";
       }
 
     return rstring;
@@ -4691,8 +4698,8 @@ std::string rstring = "";   if(aNode.cast_expression_node_1 != 0)
 	 }
        else
 	 {
-       rstring += getCurrentTemp()+" := "+unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
-       currentTemp++;
+	   rstring += getCurrentTemp()+" := "+unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
+	   currentTemp++;
 	 }
      }
 
@@ -4701,30 +4708,33 @@ return rstring;
 std::string unary_expression_node_3ac(unary_expression_node *ptr)
 {
     unary_expression_node aNode = *ptr;
-std::string rstring = "";   if(aNode.postfix_expression_node_1 != 0)
-    { rstring +=postfix_expression_node_3ac(aNode.postfix_expression_node_1);}
-   if(aNode.unary_expression_node_1 != 0)
-    { 
-      std::string op;
-      std::string token_1 = aNode.token_1;
-      if(token_1=="++")
-	{
-	  op = "+";
-	}
-      else
-	{
-	  op = "-";
-	}
+std::string rstring = "";  
+ if(aNode.postfix_expression_node_1 != 0)
+   { 
+     rstring += postfix_expression_node_3ac(aNode.postfix_expression_node_1);
+   }
+ if(aNode.unary_expression_node_1 != 0)
+   { 
+     std::string op;
+     std::string token_1 = aNode.token_1;
+     if(token_1=="++")
+       {
+	 op = "+";
+       }
+     else
+       {
+	 op = "-";
+       }
       
-      std::string id = unary_expression_node_3ac(aNode.unary_expression_node_1);
-      rstring+=id+" "+op+" 1\n";
-      rstring+=id+" := "+id+" "+op+" "+" 1";
+     std::string id = unary_expression_node_3ac(aNode.unary_expression_node_1);
+     rstring+=id+" "+op+" 1\n";
+     rstring+=id+" := "+id+" "+op+" "+" 1";
       
-      
-}
-   if(aNode.cast_expression_node_1 != 0)
-    { rstring +=cast_expression_node_3ac(aNode.cast_expression_node_1);}
-
+     
+   }
+ if(aNode.cast_expression_node_1 != 0)
+   { rstring +=cast_expression_node_3ac(aNode.cast_expression_node_1);}
+ 
 return rstring;
 }
 std::string unary_operator_node_3ac(unary_operator_node *ptr)
@@ -4833,6 +4843,13 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
       currentTemp++;
      
     }
+
+  /* function calls */
+  else if(aNode.char_lit_1 == "'('")
+    {
+      rstring += "funcall "+identifier_node_3ac(aNode.identifier_node_1);
+    }
+ 
   
 return rstring;
 }

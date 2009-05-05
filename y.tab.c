@@ -1059,9 +1059,9 @@ static const yytype_uint16 yyrline[] =
     2511,  2520,  2531,  2540,  2551,  2560,  2569,  2580,  2590,  2600,
     2610,  2620,  2632,  2641,  2650,  2661,  2670,  2679,  2690,  2699,
     2708,  2717,  2728,  2739,  2752,  2766,  2780,  2794,  2808,  2822,
-    2838,  2845,  2852,  2859,  2866,  2873,  2882,  2896,  2910,  2924,
-    2938,  2952,  2966,  2980,  2996,  3008,  3020,  3032,  3046,  3055,
-    3066,  3077,  3087,  3097,  3108,  3117
+    2838,  2845,  2852,  2859,  2866,  2873,  2882,  2896,  2910,  2926,
+    2940,  2954,  2968,  2982,  2998,  3010,  3022,  3034,  3048,  3057,
+    3068,  3079,  3089,  3099,  3110,  3119
 };
 #endif
 
@@ -5646,39 +5646,41 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
   case 258:
 #line 2911 "ast_c_grammar.y"
     {
+  /*I dont' know why this doesn't work right, but do note the hack to 
+    get the identifier node correct*/
      postfix_expression_node *anode;
-anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
+     anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     (*anode).char_lit_1="'('";
     (*anode).char_lit_2="')'";
-    (*anode).postfix_expression_node_1=(yyvsp[(1) - (3)].postfix_expression_val);
+    (*anode).postfix_expression_node_1 = 0; //was $1
     (*anode).token_1= 0;
     (*anode).expression_node_1= 0;
     (*anode).argument_expression_list_node_1= 0;
-    (*anode).identifier_node_1= 0;
+    (*anode).identifier_node_1= (*(*(yyvsp[(1) - (3)].postfix_expression_val)).primary_expression_node_1).identifier_node_1;
     (*anode).primary_expression_node_1= 0;
     (yyval.postfix_expression_val) = anode;
 }
     break;
 
   case 259:
-#line 2925 "ast_c_grammar.y"
+#line 2927 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     (*anode).char_lit_1="'('";
     (*anode).char_lit_2="')'";
-    (*anode).postfix_expression_node_1=(yyvsp[(1) - (4)].postfix_expression_val);
+    (*anode).postfix_expression_node_1=0;
     (*anode).argument_expression_list_node_1=(yyvsp[(3) - (4)].argument_expression_list_val);
     (*anode).token_1= 0;
     (*anode).expression_node_1= 0;
-    (*anode).identifier_node_1= 0;
+    (*anode).identifier_node_1= (*(*(yyvsp[(1) - (4)].postfix_expression_val)).primary_expression_node_1).identifier_node_1;
     (*anode).primary_expression_node_1= 0;
     (yyval.postfix_expression_val) = anode;
 }
     break;
 
   case 260:
-#line 2939 "ast_c_grammar.y"
+#line 2941 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
@@ -5695,7 +5697,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 261:
-#line 2953 "ast_c_grammar.y"
+#line 2955 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
@@ -5712,7 +5714,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 262:
-#line 2967 "ast_c_grammar.y"
+#line 2969 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
@@ -5729,7 +5731,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 263:
-#line 2981 "ast_c_grammar.y"
+#line 2983 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
@@ -5746,7 +5748,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 264:
-#line 2997 "ast_c_grammar.y"
+#line 2999 "ast_c_grammar.y"
     {
      primary_expression_node *anode;
 anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
@@ -5761,7 +5763,7 @@ anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
     break;
 
   case 265:
-#line 3009 "ast_c_grammar.y"
+#line 3011 "ast_c_grammar.y"
     {
      primary_expression_node *anode;
 anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
@@ -5776,7 +5778,7 @@ anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
     break;
 
   case 266:
-#line 3021 "ast_c_grammar.y"
+#line 3023 "ast_c_grammar.y"
     {
      primary_expression_node *anode;
 anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
@@ -5791,7 +5793,7 @@ anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
     break;
 
   case 267:
-#line 3033 "ast_c_grammar.y"
+#line 3035 "ast_c_grammar.y"
     {
      primary_expression_node *anode;
 anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
@@ -5806,7 +5808,7 @@ anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
     break;
 
   case 268:
-#line 3047 "ast_c_grammar.y"
+#line 3049 "ast_c_grammar.y"
     {
      argument_expression_list_node *anode;
 anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_node));
@@ -5818,7 +5820,7 @@ anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_
     break;
 
   case 269:
-#line 3056 "ast_c_grammar.y"
+#line 3058 "ast_c_grammar.y"
     {
      argument_expression_list_node *anode;
 anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_node));
@@ -5830,7 +5832,7 @@ anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_
     break;
 
   case 270:
-#line 3067 "ast_c_grammar.y"
+#line 3069 "ast_c_grammar.y"
     {
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
@@ -5844,7 +5846,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 271:
-#line 3078 "ast_c_grammar.y"
+#line 3080 "ast_c_grammar.y"
     {
      constant_node *anode;
      anode = (constant_node*) malloc(sizeof(constant_node));
@@ -5857,7 +5859,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 272:
-#line 3088 "ast_c_grammar.y"
+#line 3090 "ast_c_grammar.y"
     {
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
@@ -5870,7 +5872,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 273:
-#line 3098 "ast_c_grammar.y"
+#line 3100 "ast_c_grammar.y"
     {
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
@@ -5882,7 +5884,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 274:
-#line 3109 "ast_c_grammar.y"
+#line 3111 "ast_c_grammar.y"
     {
      string_node *anode;
 anode = (string_node*) malloc(sizeof(string_node));
@@ -5892,31 +5894,36 @@ anode = (string_node*) malloc(sizeof(string_node));
     break;
 
   case 275:
-#line 3118 "ast_c_grammar.y"
+#line 3120 "ast_c_grammar.y"
     {
-     identifier_node *anode;
-     anode = (identifier_node*) malloc(sizeof(identifier_node));
-     (*anode).token_1=(yyvsp[(1) - (1)].sval);
-     if(declMode)
+  identifier_node *anode;
+  anode = (identifier_node*) malloc(sizeof(identifier_node));
+  (*anode).token_1=(yyvsp[(1) - (1)].sval);
+  if(declMode)
        {
 	 (*anode).specs = 0;
 	 (*anode).ac_node = 0;
        }
-     else
-       {
-	 //get stuff symbol table and put in here
-	 //for future use!
-	 SymbolContent *sc = st.searchAll((yyvsp[(1) - (1)].sval));
-	 (*anode).specs = (*sc).specs;
-	 (*anode).ac_node = (*sc).ac_node;
-       }
-     (yyval.identifier_val) = anode;
+  else
+    {
+	 
+      //get stuff symbol table and put in here
+      //for future use!
+      SymbolContent *sc = st.searchAll((yyvsp[(1) - (1)].sval));
+      if (sc != 0)
+	{
+	  (*anode).specs = (*sc).specs;
+	  (*anode).ac_node = (*sc).ac_node;
+	}
+	 
+    }
+  (yyval.identifier_val) = anode;
 }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 5920 "y.tab.c"
+#line 5927 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -6130,7 +6137,7 @@ yyreturn:
 }
 
 
-#line 3140 "ast_c_grammar.y"
+#line 3147 "ast_c_grammar.y"
 
 
 #include <stdio.h>
@@ -7092,7 +7099,7 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
     /* standard declarations */
     if(aNode.identifier_node_1 != 0)
       {
-	rstring += "declare "+identifier_node_3ac(aNode.identifier_node_1)+" "+getTypeFromSpecInt((*aNode.identifier_node_1).specs)+"_size\n";
+	rstring += "declare "+identifier_node_3ac(aNode.identifier_node_1)+" | "+getTypeFromSpecInt((*aNode.identifier_node_1).specs)+"_size\n";
       }
     /* function definitions */
     else if (aNode.char_lit_1 == "'('")
@@ -7124,7 +7131,7 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
 	  }
 
 	std::string id = identifier_node_3ac((*current).identifier_node_1);
-	rstring += "declare "+id+" "+getTypeFromSpecInt((*(*current).identifier_node_1).specs)+"_size * "+intToStr(space)+"\n";
+	rstring += "declare "+id+" | "+getTypeFromSpecInt((*(*current).identifier_node_1).specs)+"_size * "+intToStr(space)+"\n";
       }
 
     return rstring;
@@ -7685,8 +7692,8 @@ std::string rstring = "";   if(aNode.cast_expression_node_1 != 0)
 	 }
        else
 	 {
-       rstring += getCurrentTemp()+" := "+unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
-       currentTemp++;
+	   rstring += getCurrentTemp()+" := "+unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
+	   currentTemp++;
 	 }
      }
 
@@ -7695,30 +7702,33 @@ return rstring;
 std::string unary_expression_node_3ac(unary_expression_node *ptr)
 {
     unary_expression_node aNode = *ptr;
-std::string rstring = "";   if(aNode.postfix_expression_node_1 != 0)
-    { rstring +=postfix_expression_node_3ac(aNode.postfix_expression_node_1);}
-   if(aNode.unary_expression_node_1 != 0)
-    { 
-      std::string op;
-      std::string token_1 = aNode.token_1;
-      if(token_1=="++")
-	{
-	  op = "+";
-	}
-      else
-	{
-	  op = "-";
-	}
+std::string rstring = "";  
+ if(aNode.postfix_expression_node_1 != 0)
+   { 
+     rstring += postfix_expression_node_3ac(aNode.postfix_expression_node_1);
+   }
+ if(aNode.unary_expression_node_1 != 0)
+   { 
+     std::string op;
+     std::string token_1 = aNode.token_1;
+     if(token_1=="++")
+       {
+	 op = "+";
+       }
+     else
+       {
+	 op = "-";
+       }
       
-      std::string id = unary_expression_node_3ac(aNode.unary_expression_node_1);
-      rstring+=id+" "+op+" 1\n";
-      rstring+=id+" := "+id+" "+op+" "+" 1";
+     std::string id = unary_expression_node_3ac(aNode.unary_expression_node_1);
+     rstring+=id+" "+op+" 1\n";
+     rstring+=id+" := "+id+" "+op+" "+" 1";
       
-      
-}
-   if(aNode.cast_expression_node_1 != 0)
-    { rstring +=cast_expression_node_3ac(aNode.cast_expression_node_1);}
-
+     
+   }
+ if(aNode.cast_expression_node_1 != 0)
+   { rstring +=cast_expression_node_3ac(aNode.cast_expression_node_1);}
+ 
 return rstring;
 }
 std::string unary_operator_node_3ac(unary_operator_node *ptr)
@@ -7827,6 +7837,13 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
       currentTemp++;
      
     }
+
+  /* function calls */
+  else if(aNode.char_lit_1 == "'('")
+    {
+      rstring += "funcall "+identifier_node_3ac(aNode.identifier_node_1);
+    }
+ 
   
 return rstring;
 }
