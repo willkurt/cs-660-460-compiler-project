@@ -7841,6 +7841,10 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
   /* function calls */
   else if(aNode.char_lit_1 == "'('")
     {
+      if(aNode.argument_expression_list_node_1 != 0)
+	{
+	  rstring += argument_expression_list_node_3ac(aNode.argument_expression_list_node_1);
+	}
       rstring += "funcall "+identifier_node_3ac(aNode.identifier_node_1);
     }
  
@@ -7864,10 +7868,18 @@ return rstring;
 std::string argument_expression_list_node_3ac(argument_expression_list_node *ptr)
 {
     argument_expression_list_node aNode = *ptr;
-std::string rstring = "";   if(aNode.assignment_expression_node_1 != 0)
-    { rstring +=assignment_expression_node_3ac(aNode.assignment_expression_node_1);}
-   if(aNode.argument_expression_list_node_1 != 0)
-    { rstring +=argument_expression_list_node_3ac(aNode.argument_expression_list_node_1);}
+    std::string rstring = "";   
+    if(aNode.argument_expression_list_node_1 != 0)
+      { 
+	rstring +=argument_expression_list_node_3ac(aNode.argument_expression_list_node_1);
+	rstring +=assignment_expression_node_3ac(aNode.assignment_expression_node_1);
+	rstring += "param = "+getLastTemp()+"\n";
+      }
+    else
+      {
+	rstring +=assignment_expression_node_3ac(aNode.assignment_expression_node_1);
+	rstring += "param = "+getLastTemp()+"\n";
+      }
 
 return rstring;
 }
