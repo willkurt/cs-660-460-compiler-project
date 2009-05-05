@@ -18,14 +18,18 @@ class Registers:
         
 
     def next_temp(self):
-        for k in self.temp_regs:
+        keys = self.temp_regs.keys()
+        keys.sort()
+        for k in keys:
             if(self.temp_regs[k]):
                 self.temp_regs[k] = False
                 return "$"+k
         return "no_reg"
 
     def next_saved_temp(self):
-        for k in self.saved_temp_regs:
+        keys = self.saved_temp_regs.keys()
+        keys.sort()
+        for k in keys:
             if(self.saved_temp_regs[k]):
                 self.saved_temp_regs[k] = False
                 return "$"+k
@@ -44,7 +48,9 @@ class Registers:
         
 
     def next_arg(self):
-        for k in self.arg_regs:
+        keys = self.arg_regs.keys()
+        keys.sort()
+        for k in keys:
             if(self.arg_regs[k]):
                 self.arg_regs[k] = False
             return "$"+k
@@ -104,8 +110,31 @@ class TAC_file:
             self.addresses.append(dest)
             return rstring
         elif("declare" in line):
-            rstring =  "#"+line+"\n"
+            rstring =  "#"+tac_line+"\n"
             return rstring
+        elif("param" in line):
+            rstring = "#"+tac_line+"\n"
+            reg = line.split("=")[1]
+            nextReg = self.regs.next_arg()
+            #move works in some cases
+            #I'm not sure all
+            rstring += "move "+nextReg+", "+reg
+            return rstring
+        elif("funcall" in line):
+            #free up all the args regs
+            for each in self.regs.arg_regs.keys():
+                self.regs.free_reg(each)
+            rstring = "#"+tac_line+"\n"
+            #special function to print ints
+            if("printi" in line):
+                #$a0 should be set
+                rstring += "li $v0, 1\n"
+                rstring += "syscall\n"
+            else:
+                pass
+            return rstring
+                
+                
 #addition and subtraction
         
         elif( '+' in line):
