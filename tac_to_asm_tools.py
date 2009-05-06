@@ -80,6 +80,7 @@ class TAC_file:
         self.asm_lines = []
         self.addresses = [] #stores registers that are actually addresses
         self.regs = Registers()
+        self.param_space = 0 #used to count up space for params
         #no need to keep an open file stream through all this
         in_file.close()
     
@@ -115,19 +116,18 @@ class TAC_file:
         elif("param" in line):
             rstring = "#"+tac_line+"\n"
             reg = line.split("=")[1]
-            nextReg = self.regs.next_arg()
-            #move works in some cases
-            #I'm not sure all
-            rstring += "move "+nextReg+", "+reg
+            reg = reg.strip("\n")
+            rstring += "sw "+reg+", "+str(self.param_space)+"($sp)"
+            self.param_space += 4 #assuming everying in our universe is an int
             return rstring
         elif("funcall" in line):
-            #free up all the args regs
-            for each in self.regs.arg_regs.keys():
-                self.regs.free_reg(each)
             rstring = "#"+tac_line+"\n"
+            param_size = self.param_space
+            self.param_space = 0
             #special function to print ints
             if("printi" in line):
-                #$a0 should be set
+                #$a0 should be set //change if using sp (which we will)
+                rstring += "lw $a0, 0($sp)\n"#should be the last word on the stack 
                 rstring += "li $v0, 1\n"
                 rstring += "syscall\n"
             else:
