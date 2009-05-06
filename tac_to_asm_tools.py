@@ -81,6 +81,7 @@ class TAC_file:
         self.addresses = [] #stores registers that are actually addresses
         self.regs = Registers()
         self.param_space = 0 #used to count up space for params
+        self.clean_up_stupid_zero_problem()
         #no need to keep an open file stream through all this
         in_file.close()
     
@@ -156,17 +157,54 @@ class TAC_file:
             op1,op2 = rest.split("+")
             oper = "add"
             rstring = "#"+line+"\n"
-            newReg = ""
-           
+            newReg1 = ""
+            newReg2 = ""
+            newReg3 = ""
             if(re.match(intp,op1)):
-                newReg = self.regs.next_saved_temp()
-                rstring += "li "+newReg+", "+op1+"\n"
-                op1 = newReg
-                self.regs.free_reg(newReg)
-           
+                newReg1 = self.regs.next_saved_temp()
+                rstring += "li "+newReg1+", "+op1+"\n"
+                op1 = newReg1
+            elif(op1 in self.addresses):
+                self.addresses.remove(op1)
+                newReg1 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg1+", "+op1+"\n"
+                op1 = newReg1
+            elif(not "$" in op1): #has to be a var
+                newReg1 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg1+", "+op1+"\n"
+                op1 = newReg1
             if(re.match(intp,op2)):
-                oper ="addi"
-            rstring += oper+" "+dest+", "+op1+", "+op2
+                oper = "addi"
+            elif(op2 in self.addresses):
+                self.addresses.remove(op2)
+                newReg2 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg2+", "+op2+"\n"
+                op2 = newReg2
+            elif(not "$" in op2): #has to be a var
+                newReg2 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg2+", "+op2+"\n"
+                op2 = newReg2
+           
+            elif(dest in self.addresses):
+                self.addresses.remove(dest)
+                newReg3 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg3+", ("+dest+")\n"
+                rstring += oper+" "+newReg3+", "+op1+", "+op2+"\n"
+                rstring += "sw "+newReg3+", "+dest
+            elif(not "$" in op2): #has to be a var
+                newReg3 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg3+", "+dest+"\n"
+                rstring += oper+" "+newReg3+", "+op1+", "+op2+"\n"
+                rstring += "sw "+newReg3+", "+dest
+            else:
+                rstring += oper+" "+dest+", "+op1+", "+op2
+            
+            if(newReg1 != ""):
+                self.regs.free_reg(newReg1)
+            if(newReg2 != ""):
+                self.regs.free_reg(newReg2)
+            if(newReg3 != ""):
+                self.regs.free_reg(newReg3)
             return rstring
         #pretty much the same for sub need to make the same fixes
         elif( '-' in line):
@@ -195,7 +233,7 @@ class TAC_file:
             elif(op1 in self.addresses):
                 self.addresses.remove(op1)
                 newReg1 = self.regs.next_saved_temp()
-                rstring += "lw "+newReg1+" ("+op1+")\n"
+                rstring += "lw "+newReg1+", ("+op1+")\n"
                 op1 = newReg1
             if(re.match(intp,op2)):
                 newReg2 = self.regs.next_saved_temp()
@@ -204,7 +242,7 @@ class TAC_file:
             elif(op2 in self.addresses):
                 self.addresses.remove(op2)
                 newReg2 = self.regs.next_saved_temp()
-                rstring += "lw "+newReg2+" ("+op2+")\n"
+                rstring += "lw "+newReg2+", ("+op2+")\n"
                 op2 = newReg2
             rstring += oper+" "+op1+", "+op2+"\n"
             #yep only worried about 32 bit multlo
@@ -367,7 +405,17 @@ class TAC_file:
             return rstring
         #if we fail to do anything return the tac_line
         return "#"+tac_line #comment out the lines not used
-    
+
+    def clean_up_stupid_zero_problem(self):
+        #there's this stupid problem with zeros not showing up
+        temp = []
+        for line in self.tac_lines:
+            if(":= \n" in line):
+                line = line.strip("\n")
+                line+= " 0\n"
+            temp.append(line)
+        self.tac_lines = temp
+
     """
     I'll be the first one to admit that this is a bit cheap
     BUT the only real trade-off is excessive use of memory
