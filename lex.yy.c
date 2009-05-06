@@ -1816,12 +1816,18 @@ YY_RULE_SETUP
   	}
   	else if(st.searchAll(yytext))
   	{
-  	std::cout << "using in narrower scope" << std::endl;
+	  /*std::cout << "using in narrower scope" << std::endl;*/
   	}
 	else
 	{
+	  int cmp1 = strcmp(yytext,"printi");
+	  int cmp2 = strcmp(yytext,"printn");
+	  if(!(cmp1 == 0 || cmp2 == 0)){
+	  
   	std::cout << "using undeclared variable" << std::endl;
   	undeclVar = true;
+	    }
+
   	}
   	}
   if(lexDebug)
@@ -1834,16 +1840,16 @@ YY_RULE_SETUP
 /*All else would be an error-note error token not working*/
 case 89:
 YY_RULE_SETUP
-#line 656 "new_c_grammar.lex"
+#line 662 "new_c_grammar.lex"
 {return(ERROR);}
 	YY_BREAK
 /*I have no idea if this works*/
 case 90:
 YY_RULE_SETUP
-#line 661 "new_c_grammar.lex"
+#line 667 "new_c_grammar.lex"
 ECHO;
 	YY_BREAK
-#line 1847 "lex.yy.c"
+#line 1853 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2841,7 +2847,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 661 "new_c_grammar.lex"
+#line 667 "new_c_grammar.lex"
 
 
 

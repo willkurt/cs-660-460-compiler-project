@@ -638,12 +638,18 @@ currentCharDepth += yyleng;return ('?'); }
   	}
   	else if(st.searchAll(yytext))
   	{
-  	std::cout << "using in narrower scope" << std::endl;
+	  /*std::cout << "using in narrower scope" << std::endl;*/
   	}
 	else
 	{
+	  int cmp1 = strcmp(yytext,"printi");
+	  int cmp2 = strcmp(yytext,"printn");
+	  if(!(cmp1 == 0 || cmp2 == 0)){
+	  
   	std::cout << "using undeclared variable" << std::endl;
   	undeclVar = true;
+	    }
+
   	}
   	}
   if(lexDebug)
