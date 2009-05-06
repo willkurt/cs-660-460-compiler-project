@@ -98,7 +98,7 @@ class TAC_file:
         """
         #need this because of issues with immediate values
         intp = '[0-9]+'
-
+        labelp = 'L[0-9]+:'
         line = tac_line.replace(" ","")
         line = line.replace(":=","=") #i didn't really need :=
 
@@ -113,6 +113,10 @@ class TAC_file:
         #these are all being removed
         elif("declare" in line):
             rstring =  "#"+tac_line+"\n"
+            return rstring
+        elif(re.match(labelp,line)):
+            rstring = "#"+tac_line+"\n"
+            rstring += line
             return rstring
         elif("function" in line):
             line = line.replace("function","")
@@ -387,6 +391,7 @@ class TAC_file:
             first,size = decl.split("|")
             size_value = eval(size) #sometimes I just love eval
             var = first.split(" ")[1]
+            decl.strip("\n")
             data_section += ".comm "+var+" "+str(size_value)+"   #"+decl+"\n"
         data_section += ".text\n"
         return data_section
