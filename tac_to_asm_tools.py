@@ -208,13 +208,58 @@ class TAC_file:
             return rstring
         #pretty much the same for sub need to make the same fixes
         elif( '-' in line):
-            rstring = "#"+tac_line
             dest,rest = line.split("=")
             op1,op2 = rest.split("-")
             oper = "sub"
-            if(re.match(intp,op1) or re.match(intp,op2)):
-                oper ="subi"
-            rstring += oper+" "+dest+", "+op1+", "+op2
+            rstring = "#"+line+"\n"
+            newReg1 = ""
+            newReg2 = ""
+            newReg3 = ""
+            if(re.match(intp,op1)):
+                newReg1 = self.regs.next_saved_temp()
+                rstring += "li "+newReg1+", "+op1+"\n"
+                op1 = newReg1
+            elif(op1 in self.addresses):
+                self.addresses.remove(op1)
+                newReg1 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg1+", "+op1+"\n"
+                op1 = newReg1
+            elif(not "$" in op1): #has to be a var
+                newReg1 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg1+", "+op1+"\n"
+                op1 = newReg1
+            if(re.match(intp,op2)):
+                oper = "subi"
+            elif(op2 in self.addresses):
+                self.addresses.remove(op2)
+                newReg2 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg2+", "+op2+"\n"
+                op2 = newReg2
+            elif(not "$" in op2): #has to be a var
+                newReg2 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg2+", "+op2+"\n"
+                op2 = newReg2
+           
+            elif(dest in self.addresses):
+                self.addresses.remove(dest)
+                newReg3 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg3+", ("+dest+")\n"
+                rstring += oper+" "+newReg3+", "+op1+", "+op2+"\n"
+                rstring += "sw "+newReg3+", "+dest
+            elif(not "$" in op2): #has to be a var
+                newReg3 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg3+", "+dest+"\n"
+                rstring += oper+" "+newReg3+", "+op1+", "+op2+"\n"
+                rstring += "sw "+newReg3+", "+dest
+            else:
+                rstring += oper+" "+dest+", "+op1+", "+op2
+            
+            if(newReg1 != ""):
+                self.regs.free_reg(newReg1)
+            if(newReg2 != ""):
+                self.regs.free_reg(newReg2)
+            if(newReg3 != ""):
+                self.regs.free_reg(newReg3)
             return rstring
 
 #multiplication division modulo        
@@ -252,15 +297,40 @@ class TAC_file:
             if(newReg2 != ""):
                 self.regs.free_reg(newReg2)
             return rstring
-#need to add previous correction to / and %
+#division
         elif( '/' in line):
             dest,rest = line.split("=")
             op1,op2 = rest.split("/")
+            op2 = op2.strip()
             oper = "div"
             rstring = "#"+tac_line
+            newReg1 = ""
+            newReg2 = ""
+            if(re.match(intp,op1)):
+                newReg1 = self.regs.next_saved_temp()
+                rstring += "li "+newReg1+", "+op1+"\n"
+                op1 = newReg1
+            elif(op1 in self.addresses):
+                self.addresses.remove(op1)
+                newReg1 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg1+", ("+op1+")\n"
+                op1 = newReg1
+            if(re.match(intp,op2)):
+                newReg2 = self.regs.next_saved_temp()
+                rstring += "li "+newReg2+", "+op2+"\n"
+                op2 = newReg2
+            elif(op2 in self.addresses):
+                self.addresses.remove(op2)
+                newReg2 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg2+", ("+op2+")\n"
+                op2 = newReg2
             rstring += oper+" "+op1+", "+op2+"\n"
             #yep only worried about 32 bit multlo
             rstring += "mflo "+dest
+            if(newReg1 != ""):
+                self.regs.free_reg(newReg1)
+            if(newReg2 != ""):
+                self.regs.free_reg(newReg2)
             return rstring
             
         #modulo is the same as div accept 
@@ -268,12 +338,39 @@ class TAC_file:
         elif( '%' in line):
             dest,rest = line.split("=")
             op1,op2 = rest.split("%")
+            op2 = op2.strip()
             oper = "div"
             rstring = "#"+tac_line
+            newReg1 = ""
+            newReg2 = ""
+            if(re.match(intp,op1)):
+                newReg1 = self.regs.next_saved_temp()
+                rstring += "li "+newReg1+", "+op1+"\n"
+                op1 = newReg1
+            elif(op1 in self.addresses):
+                self.addresses.remove(op1)
+                newReg1 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg1+", ("+op1+")\n"
+                op1 = newReg1
+            if(re.match(intp,op2)):
+                newReg2 = self.regs.next_saved_temp()
+                rstring += "li "+newReg2+", "+op2+"\n"
+                op2 = newReg2
+            elif(op2 in self.addresses):
+                self.addresses.remove(op2)
+                newReg2 = self.regs.next_saved_temp()
+                rstring += "lw "+newReg2+", ("+op2+")\n"
+                op2 = newReg2
             rstring += oper+" "+op1+", "+op2+"\n"
             #yep only worried about 32 bit multlo
             rstring += "mfhi "+dest
+            if(newReg1 != ""):
+                self.regs.free_reg(newReg1)
+            if(newReg2 != ""):
+                self.regs.free_reg(newReg2)
             return rstring
+
+
 
 #if statements
         elif("ifFalse" in line):
