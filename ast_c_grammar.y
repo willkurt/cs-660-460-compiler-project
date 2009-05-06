@@ -3123,6 +3123,12 @@ identifier
   (*anode).token_1=$1;
   if(declMode)
        {
+	 //I should be able to get this
+	 SymbolContent *sc = st.searchAll($1);
+	 if (sc != 0)
+	   {
+	     (*anode).lineno = (*sc).lineno;
+	   }
 	 (*anode).specs = 0;
 	 (*anode).ac_node = 0;
        }
@@ -3136,6 +3142,7 @@ identifier
 	{
 	  (*anode).specs = (*sc).specs;
 	  (*anode).ac_node = (*sc).ac_node;
+	  (*anode).lineno = (*sc).lineno;
 	}
 	 
     }
@@ -4333,7 +4340,7 @@ std::string selection_statement_node_3ac(selection_statement_node *ptr)
     rstring += "\ncondition end\n";
     rstring += "ifFalse "+getLastTemp()+" goto "+elseLabel+"\n";
     rstring += statement_node_3ac(aNode.statement_node_1);
-    rstring += "goto "+endLabel;
+    rstring += "goto "+endLabel+"\n";
     rstring += elseLabel+": \n";
     if(aNode.statement_node_2 != 0)
       {
@@ -4845,7 +4852,7 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
       rstring+=getCurrentTemp()+" := "+lastSum+" * "+getTypeFromSpecInt((*id).specs)+"_type\n";
       currentTemp++;
       
-      rstring+=getCurrentTemp()+" := "+(*id).token_1+" offset "+getLastTemp()+"\n";
+      rstring+=getCurrentTemp()+" := "+identifier_node_3ac(id)+" offset "+getLastTemp()+"\n";
       currentTemp++;
      
     }
@@ -4919,9 +4926,17 @@ return rstring;
 }
 std::string identifier_node_3ac(identifier_node *ptr)
 {
-    identifier_node aNode = *ptr;
-    std::string rstring = aNode.token_1;
-    return rstring;
+  /*
+    identifiers are all unique as they are a combination
+    of their original identifier and the line number they
+    are declared on, allows me to do a cheap way of handling 
+    declarations. The only downside is that I can't handle 
+    recursive functions... oh well :)
+   */
+  std::string rstring = "";
+  identifier_node aNode = *ptr;
+  rstring += aNode.token_1+intToStr(aNode.lineno);
+  return rstring;
 }
 
 

@@ -110,8 +110,15 @@ class TAC_file:
             rstring += "add "+dest+", "+dest+", "+offset
             self.addresses.append(dest)
             return rstring
+        #these are all being removed
         elif("declare" in line):
             rstring =  "#"+tac_line+"\n"
+            return rstring
+        elif("function" in line):
+            line = line.replace("function","")
+            rstring = "#"+tac_line+"\n"
+            if("main" in line):
+                rstring += "main:\n"
             return rstring
         elif("param" in line):
             rstring = "#"+tac_line+"\n"
@@ -130,8 +137,11 @@ class TAC_file:
                 rstring += "lw $a0, 0($sp)\n"#should be the last word on the stack 
                 rstring += "li $v0, 1\n"
                 rstring += "syscall\n"
-            else:
-                pass
+            #special function to print new line
+            elif("printn" in line):
+                rstring += "la $a0, newline\n"
+                rstring += "li $v0, 4\n"
+                rstring += "syscall\n"
             return rstring
                 
                 
@@ -354,6 +364,34 @@ class TAC_file:
         #if we fail to do anything return the tac_line
         return "#"+tac_line #comment out the lines not used
     
+    """
+    I'll be the first one to admit that this is a bit cheap
+    BUT the only real trade-off is excessive use of memory
+    and I can't really do general recursion properly
+
+    In the name of time and just getting it done this is the
+    best way.
+    """
+    def build_data_section(self):
+        data_section = ""
+        decl_list = []
+        #get the declarations
+        for each in self.tac_lines:
+            if ("declare" in each):
+                decl_list.append(each)
+        for each in decl_list:
+            self.tac_lines.remove(each)
+        data_section += ".data\n"
+        data_section += "newline: .asciiz \"\\n\" #for newline function\n"
+        for decl in decl_list:
+            first,size = decl.split("|")
+            size_value = eval(size) #sometimes I just love eval
+            var = first.split(" ")[1]
+            data_section += ".comm "+var+" "+str(size_value)+"   #"+decl+"\n"
+        data_section += ".text\n"
+        return data_section
+
+
     def to_asm(self):
         #make sure asm_lines is empty
         self.asm_lines = []
@@ -362,11 +400,14 @@ class TAC_file:
             
     def write_asm(self,file_name):
         self.replace_type_info()
+        data_section = self.build_data_section()
        # self.replace_all_temps()
         self.smarter_reg_allocation()
         self.to_asm()
         f = open(file_name,'w')
+        f.write(data_section)
         f.write("\n".join(self.asm_lines))
+        f.write("li $v0, 10\nsyscall") #to cleanly exist
         f.close()
 
 #some preprocessor stuff

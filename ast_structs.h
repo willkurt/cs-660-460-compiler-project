@@ -440,7 +440,7 @@ struct identifier_node {
   char *token_1;
   int specs;
   struct array_const_node *ac_node;
-  
+  int lineno;
 };
 
 struct array_const_node {
