@@ -142,6 +142,7 @@ class TAC_file:
                 #$a0 should be set //change if using sp (which we will)
                 rstring += "lw $a0, 0($sp)\n"#should be the last word on the stack 
                 rstring += "li $v0, 1\n"
+                rstring += "addiu $sp, $sp, 4\n" #needlessly used
                 rstring += "syscall\n"
             #special function to print new line
             elif("printn" in line):
@@ -161,6 +162,7 @@ class TAC_file:
             line = line.replace("function","")
             funcname, type = line.split("|")
             rstring = "#"+tac_line+"\n"
+            self.param_space = 0
             if("main" in line):
                 rstring += "main:\n"
             else:
@@ -176,9 +178,13 @@ class TAC_file:
             rstring =  "#"+tac_line+"\n"
             rstring += "lw "+newReg+", "+str(self.param_space)+"($sp)\n"
             rstring += "sw "+newReg+", "+var
+            self.param_space += 4 #assuming ints etc
             self.regs.free_reg(newReg)
-            return rstring                
-                
+            return rstring
+        elif("retaddress" in line):
+            rstring = "#"+tac_line+"\n"
+            rstring += "lw $ra, "+str(self.param_space)+"($sp)"
+            return rstring
 #addition and subtraction
         
         elif( '+' in line):

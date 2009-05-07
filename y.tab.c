@@ -7133,6 +7133,7 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
 	    rstring+="infuncon\n";
 	    rstring += parameter_type_list_node_3ac(aNode.parameter_type_list_node_1);
 	    rstring+="infuncoff\n";
+	    rstring+="retaddress\n";
 	  }
       }
     /* array declarations:
