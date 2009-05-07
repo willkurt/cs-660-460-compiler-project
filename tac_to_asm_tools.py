@@ -151,7 +151,10 @@ class TAC_file:
                 rstring += "syscall\n"
             else:
                 rstring += "sw $ra, "+str(self.stack_size)+"($sp)\n"
-                rstring += "jal "+funcname
+                rstring += "jal "+funcname+"\n"
+                if(":=" in line):
+                    reg = line.split(":=")
+                    rstring += "la "+reg+", $v0"
             return rstring
         elif("endfunction" in line):
             rstring = "#"+tac_line+"\n"
@@ -184,6 +187,11 @@ class TAC_file:
         elif("retaddress" in line):
             rstring = "#"+tac_line+"\n"
             rstring += "lw $ra, "+str(self.param_space)+"($sp)"
+            return rstring
+        elif("return" in line):
+            reg = line.replace("return","").strip("\n")
+            rstring = "#"+tac_line+"\n"
+            rstring += "la $v0, ("+reg+")\n"
             return rstring
 #addition and subtraction
         
