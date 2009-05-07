@@ -3909,7 +3909,7 @@ std::string function_definition_node_3ac(function_definition_node *ptr)
 	rstring +=compound_statement_node_3ac(aNode.compound_statement_node_1);
       }
     
-    rstring+="end function";
+    rstring+="end function\n";
     return rstring;
 }
 std::string declaration_node_3ac(declaration_node *ptr)
@@ -4127,7 +4127,7 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
       {
 	/* this declarator node should always have an identifier node*/
 	std::string funcId = identifier_node_3ac((*aNode.direct_declarator_node_1).identifier_node_1);
-	rstring += "function "+funcId+" "+getTypeFromSpecInt((*(*aNode.direct_declarator_node_1).identifier_node_1).specs)+"_size\n";
+	rstring += "function "+funcId+" | "+getTypeFromSpecInt((*(*aNode.direct_declarator_node_1).identifier_node_1).specs)+"_size\n";
 	if(aNode.identifier_list_node_1 != 0)
 	  {
 	   
@@ -4880,6 +4880,14 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
     {
       if(aNode.argument_expression_list_node_1 != 0)
 	{
+	  int argcount = 0;
+	  argument_expression_list_node *nextArg = aNode.argument_expression_list_node_1;
+	  while(nextArg != 0)
+	    {
+	      argcount++;
+	      nextArg = (*nextArg).argument_expression_list_node_1;
+	    }
+	  rstring += "argsno "+intToStr(argcount)+"\n";
 	  rstring += argument_expression_list_node_3ac(aNode.argument_expression_list_node_1);
 	}
       rstring += "funcall "+identifier_node_3ac(aNode.identifier_node_1);

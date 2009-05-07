@@ -81,6 +81,7 @@ class TAC_file:
         self.addresses = [] #stores registers that are actually addresses
         self.regs = Registers()
         self.param_space = 0 #used to count up space for params
+        self.stack_size = 0 #used for keeping track of stack size
         self.clean_up_stupid_zero_problem()
         #no need to keep an open file stream through all this
         in_file.close()
@@ -111,20 +112,19 @@ class TAC_file:
             rstring += "add "+dest+", "+dest+", "+offset
             self.addresses.append(dest)
             return rstring
-        #these are all being removed
-        elif("declare" in line):
-            rstring =  "#"+tac_line+"\n"
-            return rstring
+       
         elif(re.match(labelp,line)):
             rstring = "#"+tac_line+"\n"
             rstring += line
             return rstring
-        elif("function" in line):
-            line = line.replace("function","")
+        elif("argsno" in line):
+            self.param_space = 0 #we happen to know this
+            num = line.replace("argsno","")
+            self.stack_size = int(num)*4 # need space for return address
             rstring = "#"+tac_line+"\n"
-            if("main" in line):
-                rstring += "main:\n"
+            rstring += "addiu $sp, $sp, -"+str(self.stack_size)
             return rstring
+            
         elif("param" in line):
             rstring = "#"+tac_line+"\n"
             reg = line.split("=")[1]
@@ -132,10 +132,11 @@ class TAC_file:
             rstring += "sw "+reg+", "+str(self.param_space)+"($sp)"
             self.param_space += 4 #assuming everying in our universe is an int
             return rstring
+
         elif("funcall" in line):
             rstring = "#"+tac_line+"\n"
             param_size = self.param_space
-            self.param_space = 0
+            funcname = line.replace("funcall","")
             #special function to print ints
             if("printi" in line):
                 #$a0 should be set //change if using sp (which we will)
@@ -147,8 +148,36 @@ class TAC_file:
                 rstring += "la $a0, newline\n"
                 rstring += "li $v0, 4\n"
                 rstring += "syscall\n"
+            else:
+                rstring += "sw $ra, "+str(self.stack_size)+"($sp)\n"
+                rstring += "jal "+funcname
             return rstring
-                
+        elif("endfunction" in line):
+            rstring = "#"+tac_line+"\n"
+            rstring += "jr $ra\n"
+            return rstring
+
+        elif("function" in line):
+            line = line.replace("function","")
+            funcname, type = line.split("|")
+            rstring = "#"+tac_line+"\n"
+            if("main" in line):
+                rstring += "main:\n"
+            else:
+                rstring += funcname+":\n"
+                rstring += "lw $ra,"+str(self.param_space)+"\n"
+            return rstring
+
+        #these only exist for parameters
+        elif("declare" in line):
+            line = line.replace("declare","")
+            var, size = line.split("|")
+            newReg = self.regs.next_saved_temp()
+            rstring =  "#"+tac_line+"\n"
+            rstring += "lw "+newReg+", "+str(self.param_space)+"($sp)\n"
+            rstring += "sw "+newReg+", "+var
+            self.regs.free_reg(newReg)
+            return rstring                
                 
 #addition and subtraction
         
