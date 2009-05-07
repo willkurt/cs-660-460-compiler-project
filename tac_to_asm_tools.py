@@ -170,7 +170,6 @@ class TAC_file:
                 rstring += "main:\n"
             else:
                 rstring += funcname+":\n"
-                rstring += "lw $ra,"+str(self.param_space)+"\n"
             return rstring
 
         #these only exist for parameters
