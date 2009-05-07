@@ -585,6 +585,25 @@ class TAC_file:
         data_section += ".text\n"
         return data_section
 
+    #strips out solo temps used by funcall
+    #also I know this is definitely not efficient
+    def remove_solo_temps(self):
+        temp = []
+        for line in self.tac_lines:
+            if("funcall" in line):
+                count = 0;
+                target = line.split(":=")[0]
+                for each in self.tac_lines:
+                    if(target in line):
+                        count += count
+                if(count > 1):
+                    temp.append(line)
+                else:
+                    temp.append(line.split(":=")[1])
+            else:
+                temp.append(line)
+        self.tac_lines = temp
+                                
 
     def to_asm(self):
         #make sure asm_lines is empty
@@ -593,6 +612,7 @@ class TAC_file:
             self.asm_lines.append(self.line_to_asm(each))
             
     def write_asm(self,file_name):
+        self.remove_solo_temps()
         self.replace_type_info()
         data_section = self.build_data_section()
        # self.replace_all_temps()

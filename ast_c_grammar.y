@@ -4477,6 +4477,7 @@ std::string rstring = "";
 	 rstring += unary_expression_node_3ac(aNode.unary_expression_node_1)+"\n";
 	 rstring+=getLastTemp()+" "+op+" "+assmnt+"\n";
        }
+    
      else
        {
 	 rstring += assignment_expression_node_3ac(aNode.assignment_expression_node_1);
@@ -4891,7 +4892,8 @@ std::string postfix_expression_node_3ac(postfix_expression_node *ptr)
 	  rstring += "argsno "+intToStr(argcount)+"\n";
 	  rstring += argument_expression_list_node_3ac(aNode.argument_expression_list_node_1);
 	}
-      rstring += "funcall "+identifier_node_3ac(aNode.identifier_node_1);
+      rstring += getCurrentTemp()+" := funcall "+identifier_node_3ac(aNode.identifier_node_1);
+      currentTemp++;
     }
  
   
