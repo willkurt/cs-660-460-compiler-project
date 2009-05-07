@@ -6887,13 +6887,21 @@ std::string function_definition_node_3ac(function_definition_node *ptr)
     std::string rstring = "";   
     if(aNode.declaration_list_node_1 != 0)
       {
-      rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);}
+	rstring += "in funct def";
+      rstring +=declaration_list_node_3ac(aNode.declaration_list_node_1);
+      }
     if(aNode.declarator_node_1 != 0)
-      { rstring +=declarator_node_3ac(aNode.declarator_node_1);}
+      { 
+	rstring +=declarator_node_3ac(aNode.declarator_node_1);
+      }
     if(aNode.declaration_specifiers_node_1 != 0)
-      { rstring +=declaration_specifiers_node_3ac(aNode.declaration_specifiers_node_1);}
+      {
+	rstring +=declaration_specifiers_node_3ac(aNode.declaration_specifiers_node_1);
+      }
     if(aNode.compound_statement_node_1 != 0)
-      { rstring +=compound_statement_node_3ac(aNode.compound_statement_node_1);}
+      {
+	rstring +=compound_statement_node_3ac(aNode.compound_statement_node_1);
+      }
     
     rstring+="end function";
     return rstring;
@@ -7116,11 +7124,15 @@ std::string direct_declarator_node_3ac(direct_declarator_node *ptr)
 	rstring += "function "+funcId+" "+getTypeFromSpecInt((*(*aNode.direct_declarator_node_1).identifier_node_1).specs)+"_size\n";
 	if(aNode.identifier_list_node_1 != 0)
 	  {
-	   rstring+= identifier_list_node_3ac(aNode.identifier_list_node_1);
+	   
+	    rstring+= identifier_list_node_3ac(aNode.identifier_list_node_1);
+	    
 	  }
 	else if(aNode.parameter_type_list_node_1 != 0)
 	  {
+	    rstring+="infuncon\n";
 	    rstring += parameter_type_list_node_3ac(aNode.parameter_type_list_node_1);
+	    rstring+="infuncoff\n";
 	  }
       }
     /* array declarations:
@@ -7408,10 +7420,16 @@ std::string iteration_statement_node_3ac(iteration_statement_node *ptr)
 std::string jump_statement_node_3ac(jump_statement_node *ptr)
 {
     jump_statement_node aNode = *ptr;
-std::string rstring = "";   if(aNode.expression_node_1 != 0)
-    { rstring +=expression_node_3ac(aNode.expression_node_1);}
+    std::string rstring = "";   
+    if(aNode.expression_node_1 != 0)
+      { 
+	rstring +=expression_node_3ac(aNode.expression_node_1);
+	rstring += "return "+getLastTemp()+"\n";
+      }
    if(aNode.identifier_node_1 != 0)
-    { rstring +=identifier_node_3ac(aNode.identifier_node_1);}
+    {
+      rstring +=identifier_node_3ac(aNode.identifier_node_1);
+    }
 
 return rstring;
 }

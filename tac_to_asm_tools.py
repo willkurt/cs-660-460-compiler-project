@@ -523,12 +523,21 @@ class TAC_file:
     """
     def build_data_section(self):
         data_section = ""
+        remove = True
         decl_list = []
+        remove_list = []
         #get the declarations
         for each in self.tac_lines:
+            #param type decls will be assigned a value
+            if("infuncon" in each):
+                remove = False
+            if("infuncoff" in each):
+                remove = True
             if ("declare" in each):
                 decl_list.append(each)
-        for each in decl_list:
+                if(remove):
+                    remove_list.append(each)
+        for each in remove_list:
             self.tac_lines.remove(each)
         data_section += ".data\n"
         data_section += "newline: .asciiz \"\\n\" #for newline function\n"
