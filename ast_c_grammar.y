@@ -16,6 +16,14 @@ extern bool declMode;
 extern bool undeclVar;
 extern bool redeclVar;
 
+
+//Used to output error message
+extern FILE* yyout;
+extern FILE* yyin;
+extern FILE* ip;
+extern char buffer[500];
+
+
 /* this is used for generating 3ac */
  int currentTemp = 0;
  int currentLabel = 0;
