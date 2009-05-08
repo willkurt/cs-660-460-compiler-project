@@ -77,6 +77,7 @@ class TAC_file:
     def __init__(self,filename):
         in_file = open(filename,'r')
         self.tac_lines = in_file.readlines()
+        print self.tac_lines[-1]
         self.asm_lines = []
         self.addresses = [] #stores registers that are actually addresses
         self.regs = Registers()
@@ -150,7 +151,7 @@ class TAC_file:
                 rstring += "li $v0, 4\n"
                 rstring += "syscall\n"
             else:
-                rstring += "sw $ra, "+str(self.stack_size)+"($sp)\n"
+                #rstring += "sw $ra, "+str(self.stack_size)+"($sp)\n"
                 rstring += "jal "+funcname+"\n"
                 if(":=" in line):
                     reg = line.split(":=")
@@ -185,7 +186,7 @@ class TAC_file:
             return rstring
         elif("retaddress" in line):
             rstring = "#"+tac_line+"\n"
-            rstring += "lw $ra, "+str(self.param_space)+"($sp)"
+           # rstring += "lw $ra, "+str(self.param_space)+"($sp)"
             return rstring
         elif("return" in line):
             reg = line.replace("return","").strip("\n")
