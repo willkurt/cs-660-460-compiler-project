@@ -77,7 +77,7 @@ class TAC_file:
     def __init__(self,filename):
         in_file = open(filename,'r')
         self.tac_lines = in_file.readlines()
-        print self.tac_lines[-1]
+        self.inmain = False #used to track when we enter main
         self.asm_lines = []
         self.addresses = [] #stores registers that are actually addresses
         self.regs = Registers()
@@ -159,7 +159,11 @@ class TAC_file:
             return rstring
         elif("endfunction" in line):
             rstring = "#"+tac_line+"\n"
-            rstring += "jr $ra\n"
+            if(self.inmain):
+                rstring+="li $v0, 10\nsyscall" #to cleanly exist
+                self.inmain = False
+            else:
+                rstring += "jr $ra\n"
             return rstring
 
         elif("function" in line):
@@ -168,6 +172,7 @@ class TAC_file:
             rstring = "#"+tac_line+"\n"
             self.param_space = 0
             if("main" in line):
+                self.inmain = True
                 rstring += "main:\n"
             else:
                 rstring += funcname+":\n"
@@ -629,7 +634,7 @@ class TAC_file:
         f = open(file_name,'w')
         f.write(data_section)
         f.write("\n".join(self.asm_lines))
-        f.write("li $v0, 10\nsyscall") #to cleanly exist
+
         f.close()
 
 #some preprocessor stuff
