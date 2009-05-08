@@ -1,0 +1,191 @@
+function main2 | int_size
+declare mtable4 | int_size * 1000
+declare a5 | int_size
+declare b6 | int_size
+declare c7 | int_size
+declare result8 | int_size
+T0 := 
+a5 = T0
+L0:
+T1 := 10
+T2 := a5
+if T2 < T1 goto L2
+goto L3
+L2:
+T3 := 1
+goto L4
+L3:
+T3 := 0
+goto L4
+L4:
+ifFalse T3 goto L1
+T4 := 
+b6 = T4
+L5:
+T5 := 10
+T6 := b6
+if T6 < T5 goto L7
+goto L8
+L7:
+T7 := 1
+goto L9
+L8:
+T7 := 0
+goto L9
+L9:
+ifFalse T7 goto L6
+T8 := 
+c7 = T8
+L10:
+T9 := 10
+T10 := c7
+if T10 < T9 goto L12
+goto L13
+L12:
+T11 := 1
+goto L14
+L13:
+T11 := 0
+goto L14
+L14:
+ifFalse T11 goto L11
+T12 := a5
+T13 := b6
+T14 := T12 * T13
+T15 := c7
+T16 := T14 * T15
+T17 := c7
+T18 := 1 * T17
+T19 := 0 + T18
+T20 := b6
+T21 := 10 * T20
+T22 := T19 + T21
+T23 := a5
+T24 := 100 * T23
+T25 := T22 + T24
+T26 := T25 * int_type
+T27 := mtable4 offset T26
+
+T27 = T16
+T28 := 1
+T29 := c7
+T30 := T29 + T28
+c7 = T30
+ goto L10
+L11:
+T31 := 1
+T32 := b6
+T33 := T32 + T31
+b6 = T33
+ goto L5
+L6:
+T34 := 1
+T35 := a5
+T36 := T35 + T34
+a5 = T36
+ goto L0
+L1:
+T37 := 6
+T38 := 1 * T37
+T39 := 0 + T38
+T40 := 5
+T41 := 10 * T40
+T42 := T39 + T41
+T43 := 2
+T44 := 100 * T43
+T45 := T42 + T44
+T46 := T45 * int_type
+T47 := mtable4 offset T46
+
+result8 = T47
+argsno 1
+T48 := result8
+param = T48
+T49 := funcall printi1852404336
+T50 := funcall printn1852404336
+T51 := 2
+T52 := 1 * T51
+T53 := 0 + T52
+T54 := 6
+T55 := 10 * T54
+T56 := T53 + T55
+T57 := 5
+T58 := 100 * T57
+T59 := T56 + T58
+T60 := T59 * int_type
+T61 := mtable4 offset T60
+
+result8 = T61
+argsno 1
+T62 := result8
+param = T62
+T63 := funcall printi1852404336
+T64 := funcall printn1852404336
+T65 := 5
+T66 := 1 * T65
+T67 := 0 + T66
+T68 := 3
+T69 := 10 * T68
+T70 := T67 + T69
+T71 := 4
+T72 := 100 * T71
+T73 := T70 + T72
+T74 := T73 * int_type
+T75 := mtable4 offset T74
+
+result8 = T75
+argsno 1
+T76 := result8
+param = T76
+T77 := funcall printi1852404336
+T78 := funcall printn1852404336
+T79 := 6
+T80 := 1 * T79
+T81 := 0 + T80
+T82 := 5
+T83 := 10 * T82
+T84 := T81 + T83
+T85 := 2
+T86 := 100 * T85
+T87 := T84 + T86
+T88 := T87 * int_type
+T89 := mtable4 offset T88
+
+T90 := 2
+T91 := 1 * T90
+T92 := 0 + T91
+T93 := 6
+T94 := 10 * T93
+T95 := T92 + T94
+T96 := 5
+T97 := 100 * T96
+T98 := T95 + T97
+T99 := T98 * int_type
+T100 := mtable4 offset T99
+
+T101 := T89 * T100
+result8 = T101
+argsno 1
+T102 := result8
+param = T102
+T103 := funcall printi1852404336
+T104 := funcall printn1852404336
+T105 := 7
+T106 := 1 * T105
+T107 := 0 + T106
+T108 := 1
+T109 := 10 * T108
+T110 := T107 + T109
+T111 := 1
+T112 := 100 * T111
+T113 := T110 + T112
+T114 := T113 * int_type
+T115 := mtable4 offset T114
+
+result8 = T115
+argsno 1
+T116 := result8
+param = T116
+T117 := funcall printi1852404336
+T118 := funcall printn1852404336
+end function

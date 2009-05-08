@@ -1,0 +1,20 @@
+function main1 | int_size
+declare x3 | int_size
+
+T0 := 2
+x3 := T0
+declare y4 | int_size
+
+T1 := 10
+y4 := T1
+declare result5 | int_size
+T2 := y4
+T3 := x3
+T4 := T3 + T2
+result5 = T4
+argsno 1
+T5 := result5
+param = T5
+T6 := funcall printi1852404336
+T7 := funcall printn1852404336
+end function

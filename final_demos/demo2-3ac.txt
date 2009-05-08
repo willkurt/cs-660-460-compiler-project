@@ -1,0 +1,42 @@
+function main1 | int_size
+declare x3 | int_size
+
+T0 := 5
+x3 := T0
+declare y4 | int_size
+
+T1 := 17
+y4 := T1
+declare result5 | int_size
+T2 := y4
+T3 := x3
+T4 := T2 / T3
+result5 = T4
+argsno 1
+T5 := result5
+param = T5
+T6 := funcall printi1852404336
+T7 := funcall printn1852404336
+T8 := y4
+T9 := x3
+T10 := T8 % T9
+result5 = T10
+argsno 1
+T11 := result5
+param = T11
+T12 := funcall printi1852404336
+T13 := funcall printn1852404336
+T14 := y4
+T15 := x3
+T16 := T14 / T15
+T17 := y4
+T18 := x3
+T19 := T17 % T18
+T20 := T19 + T16
+result5 = T20
+argsno 1
+T21 := result5
+param = T21
+T22 := funcall printi1852404336
+T23 := funcall printn1852404336
+end function

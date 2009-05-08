@@ -1,0 +1,132 @@
+function main3 | int_size
+declare sieve5 | int_size * 101
+declare x6 | int_size
+declare result7 | int_size
+T0 := 2
+x6 = T0
+L0:
+T1 := 101
+T2 := x6
+if T2 < T1 goto L2
+goto L3
+L2:
+T3 := 1
+goto L4
+L3:
+T3 := 0
+goto L4
+L4:
+ifFalse T3 goto L1
+declare num10 | int_size
+
+T4 := x6
+num10 := T4
+declare m11 | int_size
+
+T5 := 2
+m11 := T5
+L5:
+T6 := 101
+T7 := num10
+if T7 < T6 goto L7
+goto L8
+L7:
+T8 := 1
+goto L9
+L8:
+T8 := 0
+goto L9
+L9:
+ifFalse T8 goto L6
+T9 := x6
+T10 := m11
+T11 := T9 * T10
+num10 = T11
+T12 := 1
+T13 := num10
+T14 := 1 * T13
+T15 := 0 + T14
+T16 := T15 * int_type
+T17 := sieve5 offset T16
+
+T17 = T12
+T18 := 1
+T19 := m11
+T20 := T19 + T18
+m11 = T20
+goto L5
+L6:
+T21 := 1
+T22 := x6
+T23 := T22 + T21
+x6 = T23
+ goto L0
+L1:
+T24 := 13
+T25 := 1 * T24
+T26 := 0 + T25
+T27 := T26 * int_type
+T28 := sieve5 offset T27
+
+result7 = T28
+argsno 1
+T29 := result7
+param = T29
+T30 := funcall printi1852404336
+T31 := 17
+T32 := 1 * T31
+T33 := 0 + T32
+T34 := T33 * int_type
+T35 := sieve5 offset T34
+
+result7 = T35
+argsno 1
+T36 := result7
+param = T36
+T37 := funcall printi1852404336
+T38 := 22
+T39 := 1 * T38
+T40 := 0 + T39
+T41 := T40 * int_type
+T42 := sieve5 offset T41
+
+result7 = T42
+argsno 1
+T43 := result7
+param = T43
+T44 := funcall printi1852404336
+T45 := 23
+T46 := 1 * T45
+T47 := 0 + T46
+T48 := T47 * int_type
+T49 := sieve5 offset T48
+
+result7 = T49
+argsno 1
+T50 := result7
+param = T50
+T51 := funcall printi1852404336
+T52 := 97
+T53 := 1 * T52
+T54 := 0 + T53
+T55 := T54 * int_type
+T56 := sieve5 offset T55
+
+result7 = T56
+argsno 1
+T57 := result7
+param = T57
+T58 := funcall printi1852404336
+T59 := 99
+T60 := 1 * T59
+T61 := 0 + T60
+T62 := T61 * int_type
+T63 := sieve5 offset T62
+
+result7 = T63
+argsno 1
+T64 := result7
+param = T64
+T65 := funcall printi1852404336
+T66 := funcall printn1852404336
+end function

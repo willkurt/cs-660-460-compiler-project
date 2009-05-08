@@ -1,0 +1,65 @@
+function main3 | int_size
+declare x5 | int_size
+
+T0 := 5
+x5 := T0
+declare y6 | int_size
+
+T1 := 17
+y6 := T1
+declare result7 | int_size
+
+condition start
+T2 := y6
+T3 := x5
+if T3 < T2 goto L2
+goto L3
+L2:
+T4 := 1
+goto L4
+L3:
+T4 := 0
+goto L4
+L4:
+
+condition end
+ifFalse T4 goto L0
+T5 := y6
+result7 = T5
+argsno 1
+T6 := result7
+param = T6
+T7 := funcall printi1852404336
+T8 := funcall printn1852404336
+goto L1
+L0: 
+goto L1
+L1: 
+
+condition start
+T9 := y6
+T10 := 18
+if T10 > T9 goto L7
+goto L8
+L7:
+T11 := 1
+goto L9
+L8:
+T11 := 0
+goto L9
+L9:
+
+condition end
+ifFalse T11 goto L5
+T12 := x5
+result7 = T12
+argsno 1
+T13 := result7
+param = T13
+T14 := funcall printi1852404336
+T15 := funcall printn1852404336
+goto L6
+L5: 
+goto L6
+L6: 
+end function
