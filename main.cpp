@@ -13,6 +13,13 @@ bool stDebug;
 bool parseDebug;
 bool declMode = true;
 
+
+//Used to output error message
+extern char buffer [500];
+extern FILE* yyin;
+extern FILE* yyout;
+FILE* ip;
+
 bool undeclVar = false;
 bool redeclVar = false;
 
@@ -28,7 +35,6 @@ extern std::string ast_3ac(ast_root *ptr);
 /*debug outputs we're worried about initially are:
  * -d with l or s or p (for lexer, symboltable, parser)
  *
- * debug for symbol table and parser not implemented ... yet :)
  */
 
 int main(int argc, char* argv[])
@@ -63,7 +69,25 @@ int main(int argc, char* argv[])
 	{
 	  parseDebug = true;
 	}
+      if(argc >= 3)
+	{
+	  if(argv[2] != NULL)
+	    {
+	      yyin = fopen(argv[2], "r");
+	      ip = fopen(argv[2], "r");
+	      fgets(buffer, 500, ip);
+	    }
+	  if(argc >= 4)
+	    {
+	      if(argv[3] != NULL)
+		{
+	      yyout = fopen(argv[3], "w+");
+		}
+	    }
+	}
     }   
+  
+   
 
   //some more testing
   //I actually just put this here to make sure it would compile
@@ -95,7 +119,14 @@ int yywrap()
   return(1);
 }
 
+void yyerror(const char *s)
+{
+fflush(yyout);
+printf("%*s%*s Line %i Error: %s\n", currentCharDepth, buffer, currentCharDepth, "^", lineCount, s);
+}
+/*
 void yyerror(const char *msg)
 {
   std::cout<< "the error at line "<< lineCount <<" around char "<< currentCharDepth  <<" makes me go Arrrrrg!!!!\n"<< "I couldn't take it any more once I saw "<<yytext<<std::endl;
 }
+*/
