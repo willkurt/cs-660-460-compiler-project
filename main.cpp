@@ -4,7 +4,7 @@
  */
 
 #include "c_grammar.h"
-#include "SymbolTable.hpp"
+#include "SymbolTable.cpp"
 #include <iostream>
 
 SymbolTable st;

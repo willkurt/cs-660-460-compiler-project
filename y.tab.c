@@ -219,6 +219,14 @@ extern bool declMode;
 extern bool undeclVar;
 extern bool redeclVar;
 
+
+//Used to output error message
+extern FILE* yyout;
+extern FILE* yyin;
+extern FILE* ip;
+extern char buffer[500];
+
+
 /* this is used for generating 3ac */
  int currentTemp = 0;
  int currentLabel = 0;
@@ -545,7 +553,7 @@ std::string identifier_node_3ac(identifier_node *ptr);
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 325 "ast_c_grammar.y"
+#line 333 "ast_c_grammar.y"
 {
   char* sval;
   float dval;
@@ -624,7 +632,7 @@ struct identifier_node *identifier_val;
 
  }
 /* Line 187 of yacc.c.  */
-#line 628 "y.tab.c"
+#line 636 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -637,7 +645,7 @@ struct identifier_node *identifier_val;
 
 
 /* Line 216 of yacc.c.  */
-#line 641 "y.tab.c"
+#line 649 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -1034,34 +1042,34 @@ static const yytype_int16 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   503,   503,   513,   524,   524,   532,   542,   542,   542,
-     552,   552,   552,   562,   562,   562,   572,   572,   572,   584,
-     584,   593,   595,   593,   825,   825,   833,   833,   843,   843,
-     853,   853,   863,   863,   873,   873,   883,   883,   893,   893,
-     905,   905,   912,   912,   919,   919,   926,   926,   933,   933,
-     942,   942,   951,   951,   960,   960,   969,   969,   978,   978,
-     987,   987,   996,   996,  1005,  1005,  1014,  1014,  1023,  1023,
-    1032,  1032,  1041,  1041,  1052,  1052,  1059,  1059,  1068,  1079,
-    1090,  1103,  1103,  1110,  1110,  1119,  1127,  1137,  1146,  1157,
-    1166,  1166,  1177,  1188,  1197,  1206,  1215,  1226,  1235,  1246,
-    1255,  1264,  1275,  1286,  1297,  1310,  1319,  1330,  1339,  1350,
-    1379,  1389,  1403,  1417,  1431,  1445,  1445,  1459,  1459,  1473,
-    1473,  1489,  1498,  1507,  1516,  1527,  1535,  1545,  1545,  1554,
-    1554,  1565,  1574,  1585,  1594,  1603,  1614,  1623,  1634,  1645,
-    1656,  1669,  1678,  1689,  1697,  1707,  1715,  1723,  1733,  1745,
-    1757,  1769,  1781,  1793,  1805,  1817,  1829,  1843,  1855,  1855,
-    1855,  1867,  1879,  1891,  1903,  1917,  1928,  1939,  1952,  1952,
-    1960,  1960,  1970,  1980,  1990,  2000,  2012,  2020,  2030,  2043,
-    2056,  2071,  2087,  2103,  2119,  2135,  2151,  2167,  2183,  2200,
-    2216,  2234,  2244,  2254,  2264,  2274,  2286,  2295,  2306,  2316,
-    2328,  2336,  2344,  2352,  2360,  2368,  2376,  2384,  2392,  2400,
-    2408,  2418,  2429,  2442,  2451,  2460,  2471,  2480,  2491,  2500,
-    2511,  2520,  2531,  2540,  2551,  2560,  2569,  2580,  2590,  2600,
-    2610,  2620,  2632,  2641,  2650,  2661,  2670,  2679,  2690,  2699,
-    2708,  2717,  2728,  2739,  2752,  2766,  2780,  2794,  2808,  2822,
-    2838,  2845,  2852,  2859,  2866,  2873,  2882,  2896,  2910,  2926,
-    2940,  2954,  2968,  2982,  2998,  3010,  3022,  3034,  3048,  3057,
-    3068,  3079,  3089,  3099,  3110,  3119
+       0,   511,   511,   521,   532,   532,   540,   550,   550,   550,
+     560,   560,   560,   570,   570,   570,   580,   580,   580,   592,
+     592,   601,   603,   601,   833,   833,   841,   841,   851,   851,
+     861,   861,   871,   871,   881,   881,   891,   891,   901,   901,
+     913,   913,   920,   920,   927,   927,   934,   934,   941,   941,
+     950,   950,   959,   959,   968,   968,   977,   977,   986,   986,
+     995,   995,  1004,  1004,  1013,  1013,  1022,  1022,  1031,  1031,
+    1040,  1040,  1049,  1049,  1060,  1060,  1067,  1067,  1076,  1087,
+    1098,  1111,  1111,  1118,  1118,  1127,  1135,  1145,  1154,  1165,
+    1174,  1174,  1185,  1196,  1205,  1214,  1223,  1234,  1243,  1254,
+    1263,  1272,  1283,  1294,  1305,  1318,  1327,  1338,  1347,  1358,
+    1387,  1397,  1411,  1425,  1439,  1453,  1453,  1467,  1467,  1481,
+    1481,  1497,  1506,  1515,  1524,  1535,  1543,  1553,  1553,  1562,
+    1562,  1573,  1582,  1593,  1602,  1611,  1622,  1631,  1642,  1653,
+    1664,  1677,  1686,  1697,  1705,  1715,  1723,  1731,  1741,  1753,
+    1765,  1777,  1789,  1801,  1813,  1825,  1837,  1851,  1863,  1863,
+    1863,  1875,  1887,  1899,  1911,  1925,  1936,  1947,  1960,  1960,
+    1968,  1968,  1978,  1988,  1998,  2008,  2020,  2028,  2038,  2051,
+    2064,  2079,  2095,  2111,  2127,  2143,  2159,  2175,  2191,  2208,
+    2224,  2242,  2252,  2262,  2272,  2282,  2294,  2303,  2314,  2324,
+    2336,  2344,  2352,  2360,  2368,  2376,  2384,  2392,  2400,  2408,
+    2416,  2426,  2437,  2450,  2459,  2468,  2479,  2488,  2499,  2508,
+    2519,  2528,  2539,  2548,  2559,  2568,  2577,  2588,  2598,  2608,
+    2618,  2628,  2640,  2649,  2658,  2669,  2678,  2687,  2698,  2707,
+    2716,  2725,  2736,  2747,  2760,  2774,  2788,  2802,  2816,  2830,
+    2846,  2853,  2860,  2867,  2874,  2881,  2890,  2904,  2918,  2934,
+    2948,  2962,  2976,  2990,  3006,  3018,  3030,  3042,  3056,  3065,
+    3076,  3087,  3097,  3107,  3118,  3127
 };
 #endif
 
@@ -2491,7 +2499,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 504 "ast_c_grammar.y"
+#line 512 "ast_c_grammar.y"
     {
      translation_unit_node *anode;
 anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
@@ -2504,7 +2512,7 @@ anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
     break;
 
   case 3:
-#line 514 "ast_c_grammar.y"
+#line 522 "ast_c_grammar.y"
     {
      translation_unit_node *anode;
 anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
@@ -2516,12 +2524,12 @@ anode = (translation_unit_node*) malloc(sizeof(translation_unit_node));
     break;
 
   case 4:
-#line 524 "ast_c_grammar.y"
+#line 532 "ast_c_grammar.y"
     {st.pop();}
     break;
 
   case 5:
-#line 525 "ast_c_grammar.y"
+#line 533 "ast_c_grammar.y"
     {
      external_declaration_node *anode;
 anode = (external_declaration_node*) malloc(sizeof(external_declaration_node));
@@ -2532,7 +2540,7 @@ anode = (external_declaration_node*) malloc(sizeof(external_declaration_node));
     break;
 
   case 6:
-#line 533 "ast_c_grammar.y"
+#line 541 "ast_c_grammar.y"
     {
      external_declaration_node *anode;
 anode = (external_declaration_node*) malloc(sizeof(external_declaration_node));
@@ -2543,17 +2551,17 @@ anode = (external_declaration_node*) malloc(sizeof(external_declaration_node));
     break;
 
   case 7:
-#line 542 "ast_c_grammar.y"
+#line 550 "ast_c_grammar.y"
     {st.push();}
     break;
 
   case 8:
-#line 542 "ast_c_grammar.y"
+#line 550 "ast_c_grammar.y"
     {st.pop();}
     break;
 
   case 9:
-#line 543 "ast_c_grammar.y"
+#line 551 "ast_c_grammar.y"
     {
      function_definition_node *anode;
 anode = (function_definition_node*) malloc(sizeof(function_definition_node));
@@ -2566,17 +2574,17 @@ anode = (function_definition_node*) malloc(sizeof(function_definition_node));
     break;
 
   case 10:
-#line 552 "ast_c_grammar.y"
+#line 560 "ast_c_grammar.y"
     {st.push();}
     break;
 
   case 11:
-#line 552 "ast_c_grammar.y"
+#line 560 "ast_c_grammar.y"
     {st.pop();}
     break;
 
   case 12:
-#line 553 "ast_c_grammar.y"
+#line 561 "ast_c_grammar.y"
     {
      function_definition_node *anode;
 anode = (function_definition_node*) malloc(sizeof(function_definition_node));
@@ -2589,17 +2597,17 @@ anode = (function_definition_node*) malloc(sizeof(function_definition_node));
     break;
 
   case 13:
-#line 562 "ast_c_grammar.y"
+#line 570 "ast_c_grammar.y"
     {st.push();}
     break;
 
   case 14:
-#line 562 "ast_c_grammar.y"
+#line 570 "ast_c_grammar.y"
     {st.pop();}
     break;
 
   case 15:
-#line 563 "ast_c_grammar.y"
+#line 571 "ast_c_grammar.y"
     {
      function_definition_node *anode;
 anode = (function_definition_node*) malloc(sizeof(function_definition_node));
@@ -2612,17 +2620,17 @@ anode = (function_definition_node*) malloc(sizeof(function_definition_node));
     break;
 
   case 16:
-#line 572 "ast_c_grammar.y"
+#line 580 "ast_c_grammar.y"
     {st.push();}
     break;
 
   case 17:
-#line 572 "ast_c_grammar.y"
+#line 580 "ast_c_grammar.y"
     {st.pop();}
     break;
 
   case 18:
-#line 573 "ast_c_grammar.y"
+#line 581 "ast_c_grammar.y"
     {
      function_definition_node *anode;
 anode = (function_definition_node*) malloc(sizeof(function_definition_node));
@@ -2635,12 +2643,12 @@ anode = (function_definition_node*) malloc(sizeof(function_definition_node));
     break;
 
   case 19:
-#line 584 "ast_c_grammar.y"
+#line 592 "ast_c_grammar.y"
     {declMode=false;}
     break;
 
   case 20:
-#line 585 "ast_c_grammar.y"
+#line 593 "ast_c_grammar.y"
     {
      declaration_node *anode;
 anode = (declaration_node*) malloc(sizeof(declaration_node));
@@ -2652,12 +2660,12 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
     break;
 
   case 21:
-#line 593 "ast_c_grammar.y"
+#line 601 "ast_c_grammar.y"
     {declMode = false;}
     break;
 
   case 22:
-#line 595 "ast_c_grammar.y"
+#line 603 "ast_c_grammar.y"
     {
       //we'll be using this to store most of the info about
       //the object
@@ -2879,7 +2887,7 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
     break;
 
   case 23:
-#line 815 "ast_c_grammar.y"
+#line 823 "ast_c_grammar.y"
     {
      declaration_node *anode;
 anode = (declaration_node*) malloc(sizeof(declaration_node));
@@ -2891,12 +2899,12 @@ anode = (declaration_node*) malloc(sizeof(declaration_node));
     break;
 
   case 24:
-#line 825 "ast_c_grammar.y"
+#line 833 "ast_c_grammar.y"
     {declMode=true;}
     break;
 
   case 25:
-#line 826 "ast_c_grammar.y"
+#line 834 "ast_c_grammar.y"
     {
      declaration_list_node *anode;
 anode = (declaration_list_node*) malloc(sizeof(declaration_list_node));
@@ -2907,12 +2915,12 @@ anode = (declaration_list_node*) malloc(sizeof(declaration_list_node));
     break;
 
   case 26:
-#line 833 "ast_c_grammar.y"
+#line 841 "ast_c_grammar.y"
     {declMode=true;}
     break;
 
   case 27:
-#line 834 "ast_c_grammar.y"
+#line 842 "ast_c_grammar.y"
     {
      declaration_list_node *anode;
 anode = (declaration_list_node*) malloc(sizeof(declaration_list_node));
@@ -2923,12 +2931,12 @@ anode = (declaration_list_node*) malloc(sizeof(declaration_list_node));
     break;
 
   case 28:
-#line 843 "ast_c_grammar.y"
+#line 851 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 29:
-#line 844 "ast_c_grammar.y"
+#line 852 "ast_c_grammar.y"
     {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -2941,12 +2949,12 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     break;
 
   case 30:
-#line 853 "ast_c_grammar.y"
+#line 861 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 31:
-#line 854 "ast_c_grammar.y"
+#line 862 "ast_c_grammar.y"
     {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -2959,12 +2967,12 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     break;
 
   case 32:
-#line 863 "ast_c_grammar.y"
+#line 871 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 33:
-#line 864 "ast_c_grammar.y"
+#line 872 "ast_c_grammar.y"
     {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -2977,12 +2985,12 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     break;
 
   case 34:
-#line 873 "ast_c_grammar.y"
+#line 881 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 35:
-#line 874 "ast_c_grammar.y"
+#line 882 "ast_c_grammar.y"
     {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -2995,12 +3003,12 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     break;
 
   case 36:
-#line 883 "ast_c_grammar.y"
+#line 891 "ast_c_grammar.y"
     {declMode=true;}
     break;
 
   case 37:
-#line 884 "ast_c_grammar.y"
+#line 892 "ast_c_grammar.y"
     {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -3013,12 +3021,12 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     break;
 
   case 38:
-#line 893 "ast_c_grammar.y"
+#line 901 "ast_c_grammar.y"
     {declMode=true;}
     break;
 
   case 39:
-#line 894 "ast_c_grammar.y"
+#line 902 "ast_c_grammar.y"
     {
      declaration_specifiers_node *anode;
 anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node));
@@ -3031,12 +3039,12 @@ anode = (declaration_specifiers_node*) malloc(sizeof(declaration_specifiers_node
     break;
 
   case 40:
-#line 905 "ast_c_grammar.y"
+#line 913 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 41:
-#line 906 "ast_c_grammar.y"
+#line 914 "ast_c_grammar.y"
     {
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
@@ -3046,12 +3054,12 @@ anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_no
     break;
 
   case 42:
-#line 912 "ast_c_grammar.y"
+#line 920 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 43:
-#line 913 "ast_c_grammar.y"
+#line 921 "ast_c_grammar.y"
     {
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
@@ -3061,12 +3069,12 @@ anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_no
     break;
 
   case 44:
-#line 919 "ast_c_grammar.y"
+#line 927 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 45:
-#line 920 "ast_c_grammar.y"
+#line 928 "ast_c_grammar.y"
     {
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
@@ -3076,12 +3084,12 @@ anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_no
     break;
 
   case 46:
-#line 926 "ast_c_grammar.y"
+#line 934 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 47:
-#line 927 "ast_c_grammar.y"
+#line 935 "ast_c_grammar.y"
     {
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
@@ -3091,12 +3099,12 @@ anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_no
     break;
 
   case 48:
-#line 933 "ast_c_grammar.y"
+#line 941 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 49:
-#line 934 "ast_c_grammar.y"
+#line 942 "ast_c_grammar.y"
     {
      storage_class_specifier_node *anode;
 anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_node));
@@ -3106,12 +3114,12 @@ anode = (storage_class_specifier_node*) malloc(sizeof(storage_class_specifier_no
     break;
 
   case 50:
-#line 942 "ast_c_grammar.y"
+#line 950 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 51:
-#line 943 "ast_c_grammar.y"
+#line 951 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3123,12 +3131,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 52:
-#line 951 "ast_c_grammar.y"
+#line 959 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 53:
-#line 952 "ast_c_grammar.y"
+#line 960 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3140,12 +3148,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 54:
-#line 960 "ast_c_grammar.y"
+#line 968 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 55:
-#line 961 "ast_c_grammar.y"
+#line 969 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3157,12 +3165,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 56:
-#line 969 "ast_c_grammar.y"
+#line 977 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 57:
-#line 970 "ast_c_grammar.y"
+#line 978 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3174,12 +3182,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 58:
-#line 978 "ast_c_grammar.y"
+#line 986 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 59:
-#line 979 "ast_c_grammar.y"
+#line 987 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3191,12 +3199,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 60:
-#line 987 "ast_c_grammar.y"
+#line 995 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 61:
-#line 988 "ast_c_grammar.y"
+#line 996 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3208,12 +3216,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 62:
-#line 996 "ast_c_grammar.y"
+#line 1004 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 63:
-#line 997 "ast_c_grammar.y"
+#line 1005 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3225,12 +3233,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 64:
-#line 1005 "ast_c_grammar.y"
+#line 1013 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 65:
-#line 1006 "ast_c_grammar.y"
+#line 1014 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3242,12 +3250,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 66:
-#line 1014 "ast_c_grammar.y"
+#line 1022 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 67:
-#line 1015 "ast_c_grammar.y"
+#line 1023 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3259,12 +3267,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 68:
-#line 1023 "ast_c_grammar.y"
+#line 1031 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 69:
-#line 1024 "ast_c_grammar.y"
+#line 1032 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3276,12 +3284,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 70:
-#line 1032 "ast_c_grammar.y"
+#line 1040 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 71:
-#line 1033 "ast_c_grammar.y"
+#line 1041 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3293,12 +3301,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 72:
-#line 1041 "ast_c_grammar.y"
+#line 1049 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 73:
-#line 1042 "ast_c_grammar.y"
+#line 1050 "ast_c_grammar.y"
     {
      type_specifier_node *anode;
 anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
@@ -3310,12 +3318,12 @@ anode = (type_specifier_node*) malloc(sizeof(type_specifier_node));
     break;
 
   case 74:
-#line 1052 "ast_c_grammar.y"
+#line 1060 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 75:
-#line 1053 "ast_c_grammar.y"
+#line 1061 "ast_c_grammar.y"
     {
      type_qualifier_node *anode;
 anode = (type_qualifier_node*) malloc(sizeof(type_qualifier_node));
@@ -3325,12 +3333,12 @@ anode = (type_qualifier_node*) malloc(sizeof(type_qualifier_node));
     break;
 
   case 76:
-#line 1059 "ast_c_grammar.y"
+#line 1067 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 77:
-#line 1060 "ast_c_grammar.y"
+#line 1068 "ast_c_grammar.y"
     {
      type_qualifier_node *anode;
 anode = (type_qualifier_node*) malloc(sizeof(type_qualifier_node));
@@ -3340,7 +3348,7 @@ anode = (type_qualifier_node*) malloc(sizeof(type_qualifier_node));
     break;
 
   case 78:
-#line 1069 "ast_c_grammar.y"
+#line 1077 "ast_c_grammar.y"
     {
      struct_or_union_specifier_node *anode;
 anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifier_node));
@@ -3354,7 +3362,7 @@ anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifie
     break;
 
   case 79:
-#line 1080 "ast_c_grammar.y"
+#line 1088 "ast_c_grammar.y"
     {
      struct_or_union_specifier_node *anode;
 anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifier_node));
@@ -3368,7 +3376,7 @@ anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifie
     break;
 
   case 80:
-#line 1091 "ast_c_grammar.y"
+#line 1099 "ast_c_grammar.y"
     {
      struct_or_union_specifier_node *anode;
 anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifier_node));
@@ -3382,12 +3390,12 @@ anode = (struct_or_union_specifier_node*) malloc(sizeof(struct_or_union_specifie
     break;
 
   case 81:
-#line 1103 "ast_c_grammar.y"
+#line 1111 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 82:
-#line 1104 "ast_c_grammar.y"
+#line 1112 "ast_c_grammar.y"
     {
      struct_or_union_node *anode;
 anode = (struct_or_union_node*) malloc(sizeof(struct_or_union_node));
@@ -3397,12 +3405,12 @@ anode = (struct_or_union_node*) malloc(sizeof(struct_or_union_node));
     break;
 
   case 83:
-#line 1110 "ast_c_grammar.y"
+#line 1118 "ast_c_grammar.y"
     {declMode = true;}
     break;
 
   case 84:
-#line 1111 "ast_c_grammar.y"
+#line 1119 "ast_c_grammar.y"
     {
      struct_or_union_node *anode;
 anode = (struct_or_union_node*) malloc(sizeof(struct_or_union_node));
@@ -3412,7 +3420,7 @@ anode = (struct_or_union_node*) malloc(sizeof(struct_or_union_node));
     break;
 
   case 85:
-#line 1120 "ast_c_grammar.y"
+#line 1128 "ast_c_grammar.y"
     {
      struct_declaration_list_node *anode;
 anode = (struct_declaration_list_node*) malloc(sizeof(struct_declaration_list_node));
@@ -3423,7 +3431,7 @@ anode = (struct_declaration_list_node*) malloc(sizeof(struct_declaration_list_no
     break;
 
   case 86:
-#line 1128 "ast_c_grammar.y"
+#line 1136 "ast_c_grammar.y"
     {
      struct_declaration_list_node *anode;
 anode = (struct_declaration_list_node*) malloc(sizeof(struct_declaration_list_node));
@@ -3434,7 +3442,7 @@ anode = (struct_declaration_list_node*) malloc(sizeof(struct_declaration_list_no
     break;
 
   case 87:
-#line 1138 "ast_c_grammar.y"
+#line 1146 "ast_c_grammar.y"
     {
      init_declarator_list_node *anode;
 anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
@@ -3446,7 +3454,7 @@ anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
     break;
 
   case 88:
-#line 1147 "ast_c_grammar.y"
+#line 1155 "ast_c_grammar.y"
     {
      init_declarator_list_node *anode;
 anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
@@ -3458,7 +3466,7 @@ anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
     break;
 
   case 89:
-#line 1158 "ast_c_grammar.y"
+#line 1166 "ast_c_grammar.y"
     {
       init_declarator_node *anode;
       anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
@@ -3470,12 +3478,12 @@ anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
     break;
 
   case 90:
-#line 1166 "ast_c_grammar.y"
+#line 1174 "ast_c_grammar.y"
     {declMode = false;}
     break;
 
   case 91:
-#line 1167 "ast_c_grammar.y"
+#line 1175 "ast_c_grammar.y"
     {
   init_declarator_node *anode;
   anode = (init_declarator_node*) malloc(sizeof(init_declarator_node));
@@ -3487,7 +3495,7 @@ anode = (init_declarator_list_node*) malloc(sizeof(init_declarator_list_node));
     break;
 
   case 92:
-#line 1178 "ast_c_grammar.y"
+#line 1186 "ast_c_grammar.y"
     {
      struct_declaration_node *anode;
 anode = (struct_declaration_node*) malloc(sizeof(struct_declaration_node));
@@ -3499,7 +3507,7 @@ anode = (struct_declaration_node*) malloc(sizeof(struct_declaration_node));
     break;
 
   case 93:
-#line 1189 "ast_c_grammar.y"
+#line 1197 "ast_c_grammar.y"
     {
      specifier_qualifier_list_node *anode;
 anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
@@ -3511,7 +3519,7 @@ anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_
     break;
 
   case 94:
-#line 1198 "ast_c_grammar.y"
+#line 1206 "ast_c_grammar.y"
     {
      specifier_qualifier_list_node *anode;
 anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
@@ -3523,7 +3531,7 @@ anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_
     break;
 
   case 95:
-#line 1207 "ast_c_grammar.y"
+#line 1215 "ast_c_grammar.y"
     {
      specifier_qualifier_list_node *anode;
 anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
@@ -3535,7 +3543,7 @@ anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_
     break;
 
   case 96:
-#line 1216 "ast_c_grammar.y"
+#line 1224 "ast_c_grammar.y"
     {
      specifier_qualifier_list_node *anode;
 anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_node));
@@ -3547,7 +3555,7 @@ anode = (specifier_qualifier_list_node*) malloc(sizeof(specifier_qualifier_list_
     break;
 
   case 97:
-#line 1227 "ast_c_grammar.y"
+#line 1235 "ast_c_grammar.y"
     {
      struct_declarator_list_node *anode;
 anode = (struct_declarator_list_node*) malloc(sizeof(struct_declarator_list_node));
@@ -3559,7 +3567,7 @@ anode = (struct_declarator_list_node*) malloc(sizeof(struct_declarator_list_node
     break;
 
   case 98:
-#line 1236 "ast_c_grammar.y"
+#line 1244 "ast_c_grammar.y"
     {
      struct_declarator_list_node *anode;
 anode = (struct_declarator_list_node*) malloc(sizeof(struct_declarator_list_node));
@@ -3571,7 +3579,7 @@ anode = (struct_declarator_list_node*) malloc(sizeof(struct_declarator_list_node
     break;
 
   case 99:
-#line 1247 "ast_c_grammar.y"
+#line 1255 "ast_c_grammar.y"
     {
      struct_declarator_node *anode;
 anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
@@ -3583,7 +3591,7 @@ anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
     break;
 
   case 100:
-#line 1256 "ast_c_grammar.y"
+#line 1264 "ast_c_grammar.y"
     {
      struct_declarator_node *anode;
 anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
@@ -3595,7 +3603,7 @@ anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
     break;
 
   case 101:
-#line 1265 "ast_c_grammar.y"
+#line 1273 "ast_c_grammar.y"
     {
      struct_declarator_node *anode;
 anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
@@ -3607,7 +3615,7 @@ anode = (struct_declarator_node*) malloc(sizeof(struct_declarator_node));
     break;
 
   case 102:
-#line 1276 "ast_c_grammar.y"
+#line 1284 "ast_c_grammar.y"
     {
      enum_specifier_node *anode;
 anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
@@ -3621,7 +3629,7 @@ anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
     break;
 
   case 103:
-#line 1287 "ast_c_grammar.y"
+#line 1295 "ast_c_grammar.y"
     {
      enum_specifier_node *anode;
 anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
@@ -3635,7 +3643,7 @@ anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
     break;
 
   case 104:
-#line 1298 "ast_c_grammar.y"
+#line 1306 "ast_c_grammar.y"
     {
      enum_specifier_node *anode;
 anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
@@ -3649,7 +3657,7 @@ anode = (enum_specifier_node*) malloc(sizeof(enum_specifier_node));
     break;
 
   case 105:
-#line 1311 "ast_c_grammar.y"
+#line 1319 "ast_c_grammar.y"
     {
      enumerator_list_node *anode;
 anode = (enumerator_list_node*) malloc(sizeof(enumerator_list_node));
@@ -3661,7 +3669,7 @@ anode = (enumerator_list_node*) malloc(sizeof(enumerator_list_node));
     break;
 
   case 106:
-#line 1320 "ast_c_grammar.y"
+#line 1328 "ast_c_grammar.y"
     {
      enumerator_list_node *anode;
 anode = (enumerator_list_node*) malloc(sizeof(enumerator_list_node));
@@ -3673,7 +3681,7 @@ anode = (enumerator_list_node*) malloc(sizeof(enumerator_list_node));
     break;
 
   case 107:
-#line 1331 "ast_c_grammar.y"
+#line 1339 "ast_c_grammar.y"
     {
      enumerator_node *anode;
 anode = (enumerator_node*) malloc(sizeof(enumerator_node));
@@ -3685,7 +3693,7 @@ anode = (enumerator_node*) malloc(sizeof(enumerator_node));
     break;
 
   case 108:
-#line 1340 "ast_c_grammar.y"
+#line 1348 "ast_c_grammar.y"
     {
      enumerator_node *anode;
 anode = (enumerator_node*) malloc(sizeof(enumerator_node));
@@ -3697,7 +3705,7 @@ anode = (enumerator_node*) malloc(sizeof(enumerator_node));
     break;
 
   case 109:
-#line 1351 "ast_c_grammar.y"
+#line 1359 "ast_c_grammar.y"
     {
      declarator_node *anode;
      anode = (declarator_node*) malloc(sizeof(declarator_node));
@@ -3729,7 +3737,7 @@ anode = (enumerator_node*) malloc(sizeof(enumerator_node));
     break;
 
   case 110:
-#line 1380 "ast_c_grammar.y"
+#line 1388 "ast_c_grammar.y"
     {
      declarator_node *anode;
 anode = (declarator_node*) malloc(sizeof(declarator_node));
@@ -3740,7 +3748,7 @@ anode = (declarator_node*) malloc(sizeof(declarator_node));
     break;
 
   case 111:
-#line 1390 "ast_c_grammar.y"
+#line 1398 "ast_c_grammar.y"
     {
       direct_declarator_node *anode;
       anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
@@ -3757,7 +3765,7 @@ anode = (declarator_node*) malloc(sizeof(declarator_node));
     break;
 
   case 112:
-#line 1404 "ast_c_grammar.y"
+#line 1412 "ast_c_grammar.y"
     {
       direct_declarator_node *anode;
       anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
@@ -3774,7 +3782,7 @@ anode = (declarator_node*) malloc(sizeof(declarator_node));
     break;
 
   case 113:
-#line 1418 "ast_c_grammar.y"
+#line 1426 "ast_c_grammar.y"
     {
       direct_declarator_node *anode;
       anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
@@ -3791,7 +3799,7 @@ anode = (declarator_node*) malloc(sizeof(declarator_node));
     break;
 
   case 114:
-#line 1432 "ast_c_grammar.y"
+#line 1440 "ast_c_grammar.y"
     {
       direct_declarator_node *anode;
       anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
@@ -3808,12 +3816,12 @@ anode = (declarator_node*) malloc(sizeof(declarator_node));
     break;
 
   case 115:
-#line 1445 "ast_c_grammar.y"
+#line 1453 "ast_c_grammar.y"
     {st.push();}
     break;
 
   case 116:
-#line 1446 "ast_c_grammar.y"
+#line 1454 "ast_c_grammar.y"
     {
       direct_declarator_node *anode;
       anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
@@ -3830,12 +3838,12 @@ anode = (declarator_node*) malloc(sizeof(declarator_node));
     break;
 
   case 117:
-#line 1459 "ast_c_grammar.y"
+#line 1467 "ast_c_grammar.y"
     {st.push();}
     break;
 
   case 118:
-#line 1460 "ast_c_grammar.y"
+#line 1468 "ast_c_grammar.y"
     {
       direct_declarator_node *anode;
       anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
@@ -3852,12 +3860,12 @@ anode = (declarator_node*) malloc(sizeof(declarator_node));
     break;
 
   case 119:
-#line 1473 "ast_c_grammar.y"
+#line 1481 "ast_c_grammar.y"
     {st.push();}
     break;
 
   case 120:
-#line 1474 "ast_c_grammar.y"
+#line 1482 "ast_c_grammar.y"
     {
       direct_declarator_node *anode;
       anode = (direct_declarator_node*) malloc(sizeof(direct_declarator_node));
@@ -3874,7 +3882,7 @@ anode = (declarator_node*) malloc(sizeof(declarator_node));
     break;
 
   case 121:
-#line 1490 "ast_c_grammar.y"
+#line 1498 "ast_c_grammar.y"
     {
      pointer_node *anode;
 anode = (pointer_node*) malloc(sizeof(pointer_node));
@@ -3886,7 +3894,7 @@ anode = (pointer_node*) malloc(sizeof(pointer_node));
     break;
 
   case 122:
-#line 1499 "ast_c_grammar.y"
+#line 1507 "ast_c_grammar.y"
     {
      pointer_node *anode;
 anode = (pointer_node*) malloc(sizeof(pointer_node));
@@ -3898,7 +3906,7 @@ anode = (pointer_node*) malloc(sizeof(pointer_node));
     break;
 
   case 123:
-#line 1508 "ast_c_grammar.y"
+#line 1516 "ast_c_grammar.y"
     {
      pointer_node *anode;
 anode = (pointer_node*) malloc(sizeof(pointer_node));
@@ -3910,7 +3918,7 @@ anode = (pointer_node*) malloc(sizeof(pointer_node));
     break;
 
   case 124:
-#line 1517 "ast_c_grammar.y"
+#line 1525 "ast_c_grammar.y"
     {
      pointer_node *anode;
 anode = (pointer_node*) malloc(sizeof(pointer_node));
@@ -3922,7 +3930,7 @@ anode = (pointer_node*) malloc(sizeof(pointer_node));
     break;
 
   case 125:
-#line 1528 "ast_c_grammar.y"
+#line 1536 "ast_c_grammar.y"
     {
      type_qualifier_list_node *anode;
 anode = (type_qualifier_list_node*) malloc(sizeof(type_qualifier_list_node));
@@ -3933,7 +3941,7 @@ anode = (type_qualifier_list_node*) malloc(sizeof(type_qualifier_list_node));
     break;
 
   case 126:
-#line 1536 "ast_c_grammar.y"
+#line 1544 "ast_c_grammar.y"
     {
      type_qualifier_list_node *anode;
 anode = (type_qualifier_list_node*) malloc(sizeof(type_qualifier_list_node));
@@ -3944,12 +3952,12 @@ anode = (type_qualifier_list_node*) malloc(sizeof(type_qualifier_list_node));
     break;
 
   case 127:
-#line 1545 "ast_c_grammar.y"
+#line 1553 "ast_c_grammar.y"
     {declMode=false;}
     break;
 
   case 128:
-#line 1546 "ast_c_grammar.y"
+#line 1554 "ast_c_grammar.y"
     {
      parameter_type_list_node *anode;
 anode = (parameter_type_list_node*) malloc(sizeof(parameter_type_list_node));
@@ -3961,12 +3969,12 @@ anode = (parameter_type_list_node*) malloc(sizeof(parameter_type_list_node));
     break;
 
   case 129:
-#line 1554 "ast_c_grammar.y"
+#line 1562 "ast_c_grammar.y"
     {declMode=false;}
     break;
 
   case 130:
-#line 1555 "ast_c_grammar.y"
+#line 1563 "ast_c_grammar.y"
     {
      parameter_type_list_node *anode;
 anode = (parameter_type_list_node*) malloc(sizeof(parameter_type_list_node));
@@ -3978,7 +3986,7 @@ anode = (parameter_type_list_node*) malloc(sizeof(parameter_type_list_node));
     break;
 
   case 131:
-#line 1566 "ast_c_grammar.y"
+#line 1574 "ast_c_grammar.y"
     {
      parameter_list_node *anode;
 anode = (parameter_list_node*) malloc(sizeof(parameter_list_node));
@@ -3990,7 +3998,7 @@ anode = (parameter_list_node*) malloc(sizeof(parameter_list_node));
     break;
 
   case 132:
-#line 1575 "ast_c_grammar.y"
+#line 1583 "ast_c_grammar.y"
     {
      parameter_list_node *anode;
 anode = (parameter_list_node*) malloc(sizeof(parameter_list_node));
@@ -4002,7 +4010,7 @@ anode = (parameter_list_node*) malloc(sizeof(parameter_list_node));
     break;
 
   case 133:
-#line 1586 "ast_c_grammar.y"
+#line 1594 "ast_c_grammar.y"
     {
      parameter_declaration_node *anode;
 anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node));
@@ -4014,7 +4022,7 @@ anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node))
     break;
 
   case 134:
-#line 1595 "ast_c_grammar.y"
+#line 1603 "ast_c_grammar.y"
     {
      parameter_declaration_node *anode;
 anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node));
@@ -4026,7 +4034,7 @@ anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node))
     break;
 
   case 135:
-#line 1604 "ast_c_grammar.y"
+#line 1612 "ast_c_grammar.y"
     {
      parameter_declaration_node *anode;
 anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node));
@@ -4038,7 +4046,7 @@ anode = (parameter_declaration_node*) malloc(sizeof(parameter_declaration_node))
     break;
 
   case 136:
-#line 1615 "ast_c_grammar.y"
+#line 1623 "ast_c_grammar.y"
     {
      identifier_list_node *anode;
 anode = (identifier_list_node*) malloc(sizeof(identifier_list_node));
@@ -4050,7 +4058,7 @@ anode = (identifier_list_node*) malloc(sizeof(identifier_list_node));
     break;
 
   case 137:
-#line 1624 "ast_c_grammar.y"
+#line 1632 "ast_c_grammar.y"
     {
      identifier_list_node *anode;
 anode = (identifier_list_node*) malloc(sizeof(identifier_list_node));
@@ -4062,7 +4070,7 @@ anode = (identifier_list_node*) malloc(sizeof(identifier_list_node));
     break;
 
   case 138:
-#line 1635 "ast_c_grammar.y"
+#line 1643 "ast_c_grammar.y"
     {
      initializer_node *anode;
 anode = (initializer_node*) malloc(sizeof(initializer_node));
@@ -4076,7 +4084,7 @@ anode = (initializer_node*) malloc(sizeof(initializer_node));
     break;
 
   case 139:
-#line 1646 "ast_c_grammar.y"
+#line 1654 "ast_c_grammar.y"
     {
      initializer_node *anode;
 anode = (initializer_node*) malloc(sizeof(initializer_node));
@@ -4090,7 +4098,7 @@ anode = (initializer_node*) malloc(sizeof(initializer_node));
     break;
 
   case 140:
-#line 1657 "ast_c_grammar.y"
+#line 1665 "ast_c_grammar.y"
     {
      initializer_node *anode;
 anode = (initializer_node*) malloc(sizeof(initializer_node));
@@ -4104,7 +4112,7 @@ anode = (initializer_node*) malloc(sizeof(initializer_node));
     break;
 
   case 141:
-#line 1670 "ast_c_grammar.y"
+#line 1678 "ast_c_grammar.y"
     {
      initializer_list_node *anode;
 anode = (initializer_list_node*) malloc(sizeof(initializer_list_node));
@@ -4116,7 +4124,7 @@ anode = (initializer_list_node*) malloc(sizeof(initializer_list_node));
     break;
 
   case 142:
-#line 1679 "ast_c_grammar.y"
+#line 1687 "ast_c_grammar.y"
     {
      initializer_list_node *anode;
 anode = (initializer_list_node*) malloc(sizeof(initializer_list_node));
@@ -4128,7 +4136,7 @@ anode = (initializer_list_node*) malloc(sizeof(initializer_list_node));
     break;
 
   case 143:
-#line 1690 "ast_c_grammar.y"
+#line 1698 "ast_c_grammar.y"
     {
      type_name_node *anode;
 anode = (type_name_node*) malloc(sizeof(type_name_node));
@@ -4139,7 +4147,7 @@ anode = (type_name_node*) malloc(sizeof(type_name_node));
     break;
 
   case 144:
-#line 1698 "ast_c_grammar.y"
+#line 1706 "ast_c_grammar.y"
     {
      type_name_node *anode;
 anode = (type_name_node*) malloc(sizeof(type_name_node));
@@ -4150,7 +4158,7 @@ anode = (type_name_node*) malloc(sizeof(type_name_node));
     break;
 
   case 145:
-#line 1708 "ast_c_grammar.y"
+#line 1716 "ast_c_grammar.y"
     {
      abstract_declarator_node *anode;
 anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
@@ -4161,7 +4169,7 @@ anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
     break;
 
   case 146:
-#line 1716 "ast_c_grammar.y"
+#line 1724 "ast_c_grammar.y"
     {
      abstract_declarator_node *anode;
 anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
@@ -4172,7 +4180,7 @@ anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
     break;
 
   case 147:
-#line 1724 "ast_c_grammar.y"
+#line 1732 "ast_c_grammar.y"
     {
      abstract_declarator_node *anode;
 anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
@@ -4183,7 +4191,7 @@ anode = (abstract_declarator_node*) malloc(sizeof(abstract_declarator_node));
     break;
 
   case 148:
-#line 1734 "ast_c_grammar.y"
+#line 1742 "ast_c_grammar.y"
     {
      direct_abstract_declarator_node *anode;
 anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
@@ -4198,7 +4206,7 @@ anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declara
     break;
 
   case 149:
-#line 1746 "ast_c_grammar.y"
+#line 1754 "ast_c_grammar.y"
     {
      direct_abstract_declarator_node *anode;
 anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
@@ -4213,7 +4221,7 @@ anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declara
     break;
 
   case 150:
-#line 1758 "ast_c_grammar.y"
+#line 1766 "ast_c_grammar.y"
     {
      direct_abstract_declarator_node *anode;
 anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
@@ -4228,7 +4236,7 @@ anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declara
     break;
 
   case 151:
-#line 1770 "ast_c_grammar.y"
+#line 1778 "ast_c_grammar.y"
     {
      direct_abstract_declarator_node *anode;
 anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
@@ -4243,7 +4251,7 @@ anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declara
     break;
 
   case 152:
-#line 1782 "ast_c_grammar.y"
+#line 1790 "ast_c_grammar.y"
     {
      direct_abstract_declarator_node *anode;
 anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
@@ -4258,7 +4266,7 @@ anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declara
     break;
 
   case 153:
-#line 1794 "ast_c_grammar.y"
+#line 1802 "ast_c_grammar.y"
     {
      direct_abstract_declarator_node *anode;
 anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
@@ -4273,7 +4281,7 @@ anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declara
     break;
 
   case 154:
-#line 1806 "ast_c_grammar.y"
+#line 1814 "ast_c_grammar.y"
     {
      direct_abstract_declarator_node *anode;
 anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
@@ -4288,7 +4296,7 @@ anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declara
     break;
 
   case 155:
-#line 1818 "ast_c_grammar.y"
+#line 1826 "ast_c_grammar.y"
     {
      direct_abstract_declarator_node *anode;
 anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
@@ -4303,7 +4311,7 @@ anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declara
     break;
 
   case 156:
-#line 1830 "ast_c_grammar.y"
+#line 1838 "ast_c_grammar.y"
     {
      direct_abstract_declarator_node *anode;
 anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declarator_node));
@@ -4318,7 +4326,7 @@ anode = (direct_abstract_declarator_node*) malloc(sizeof(direct_abstract_declara
     break;
 
   case 157:
-#line 1844 "ast_c_grammar.y"
+#line 1852 "ast_c_grammar.y"
     {
      statement_node *anode;
 anode = (statement_node*) malloc(sizeof(statement_node));
@@ -4333,17 +4341,17 @@ anode = (statement_node*) malloc(sizeof(statement_node));
     break;
 
   case 158:
-#line 1855 "ast_c_grammar.y"
+#line 1863 "ast_c_grammar.y"
     {st.push();}
     break;
 
   case 159:
-#line 1855 "ast_c_grammar.y"
+#line 1863 "ast_c_grammar.y"
     {st.pop();}
     break;
 
   case 160:
-#line 1856 "ast_c_grammar.y"
+#line 1864 "ast_c_grammar.y"
     {
      statement_node *anode;
 anode = (statement_node*) malloc(sizeof(statement_node));
@@ -4358,7 +4366,7 @@ anode = (statement_node*) malloc(sizeof(statement_node));
     break;
 
   case 161:
-#line 1868 "ast_c_grammar.y"
+#line 1876 "ast_c_grammar.y"
     {
      statement_node *anode;
 anode = (statement_node*) malloc(sizeof(statement_node));
@@ -4373,7 +4381,7 @@ anode = (statement_node*) malloc(sizeof(statement_node));
     break;
 
   case 162:
-#line 1880 "ast_c_grammar.y"
+#line 1888 "ast_c_grammar.y"
     {
      statement_node *anode;
 anode = (statement_node*) malloc(sizeof(statement_node));
@@ -4388,7 +4396,7 @@ anode = (statement_node*) malloc(sizeof(statement_node));
     break;
 
   case 163:
-#line 1892 "ast_c_grammar.y"
+#line 1900 "ast_c_grammar.y"
     {
      statement_node *anode;
 anode = (statement_node*) malloc(sizeof(statement_node));
@@ -4403,7 +4411,7 @@ anode = (statement_node*) malloc(sizeof(statement_node));
     break;
 
   case 164:
-#line 1904 "ast_c_grammar.y"
+#line 1912 "ast_c_grammar.y"
     {
      statement_node *anode;
 anode = (statement_node*) malloc(sizeof(statement_node));
@@ -4418,7 +4426,7 @@ anode = (statement_node*) malloc(sizeof(statement_node));
     break;
 
   case 165:
-#line 1918 "ast_c_grammar.y"
+#line 1926 "ast_c_grammar.y"
     {
      labeled_statement_node *anode;
 anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
@@ -4432,7 +4440,7 @@ anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
     break;
 
   case 166:
-#line 1929 "ast_c_grammar.y"
+#line 1937 "ast_c_grammar.y"
     {
      labeled_statement_node *anode;
 anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
@@ -4446,7 +4454,7 @@ anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
     break;
 
   case 167:
-#line 1940 "ast_c_grammar.y"
+#line 1948 "ast_c_grammar.y"
     {
      labeled_statement_node *anode;
 anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
@@ -4460,12 +4468,12 @@ anode = (labeled_statement_node*) malloc(sizeof(labeled_statement_node));
     break;
 
   case 168:
-#line 1952 "ast_c_grammar.y"
+#line 1960 "ast_c_grammar.y"
     {declMode = false;}
     break;
 
   case 169:
-#line 1953 "ast_c_grammar.y"
+#line 1961 "ast_c_grammar.y"
     {
      expression_statement_node *anode;
 anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
@@ -4476,12 +4484,12 @@ anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
     break;
 
   case 170:
-#line 1960 "ast_c_grammar.y"
+#line 1968 "ast_c_grammar.y"
     {declMode = false;}
     break;
 
   case 171:
-#line 1961 "ast_c_grammar.y"
+#line 1969 "ast_c_grammar.y"
     {
      expression_statement_node *anode;
 anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
@@ -4492,7 +4500,7 @@ anode = (expression_statement_node*) malloc(sizeof(expression_statement_node));
     break;
 
   case 172:
-#line 1971 "ast_c_grammar.y"
+#line 1979 "ast_c_grammar.y"
     {
      compound_statement_node *anode;
 anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
@@ -4505,7 +4513,7 @@ anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
     break;
 
   case 173:
-#line 1981 "ast_c_grammar.y"
+#line 1989 "ast_c_grammar.y"
     {
      compound_statement_node *anode;
 anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
@@ -4518,7 +4526,7 @@ anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
     break;
 
   case 174:
-#line 1991 "ast_c_grammar.y"
+#line 1999 "ast_c_grammar.y"
     {
      compound_statement_node *anode;
 anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
@@ -4531,7 +4539,7 @@ anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
     break;
 
   case 175:
-#line 2001 "ast_c_grammar.y"
+#line 2009 "ast_c_grammar.y"
     {
      compound_statement_node *anode;
 anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
@@ -4544,7 +4552,7 @@ anode = (compound_statement_node*) malloc(sizeof(compound_statement_node));
     break;
 
   case 176:
-#line 2013 "ast_c_grammar.y"
+#line 2021 "ast_c_grammar.y"
     {
      statement_list_node *anode;
 anode = (statement_list_node*) malloc(sizeof(statement_list_node));
@@ -4555,7 +4563,7 @@ anode = (statement_list_node*) malloc(sizeof(statement_list_node));
     break;
 
   case 177:
-#line 2021 "ast_c_grammar.y"
+#line 2029 "ast_c_grammar.y"
     {
      statement_list_node *anode;
 anode = (statement_list_node*) malloc(sizeof(statement_list_node));
@@ -4566,7 +4574,7 @@ anode = (statement_list_node*) malloc(sizeof(statement_list_node));
     break;
 
   case 178:
-#line 2031 "ast_c_grammar.y"
+#line 2039 "ast_c_grammar.y"
     {
      selection_statement_node *anode;
 anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
@@ -4582,7 +4590,7 @@ anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
     break;
 
   case 179:
-#line 2044 "ast_c_grammar.y"
+#line 2052 "ast_c_grammar.y"
     {
      selection_statement_node *anode;
 anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
@@ -4598,7 +4606,7 @@ anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
     break;
 
   case 180:
-#line 2057 "ast_c_grammar.y"
+#line 2065 "ast_c_grammar.y"
     {
      selection_statement_node *anode;
 anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
@@ -4614,7 +4622,7 @@ anode = (selection_statement_node*) malloc(sizeof(selection_statement_node));
     break;
 
   case 181:
-#line 2072 "ast_c_grammar.y"
+#line 2080 "ast_c_grammar.y"
     {
      iteration_statement_node *anode;
 anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
@@ -4633,7 +4641,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     break;
 
   case 182:
-#line 2088 "ast_c_grammar.y"
+#line 2096 "ast_c_grammar.y"
     {
      iteration_statement_node *anode;
 anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
@@ -4652,7 +4660,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     break;
 
   case 183:
-#line 2104 "ast_c_grammar.y"
+#line 2112 "ast_c_grammar.y"
     {
      iteration_statement_node *anode;
 anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
@@ -4671,7 +4679,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     break;
 
   case 184:
-#line 2120 "ast_c_grammar.y"
+#line 2128 "ast_c_grammar.y"
     {
      iteration_statement_node *anode;
 anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
@@ -4690,7 +4698,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     break;
 
   case 185:
-#line 2136 "ast_c_grammar.y"
+#line 2144 "ast_c_grammar.y"
     {
      iteration_statement_node *anode;
 anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
@@ -4709,7 +4717,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     break;
 
   case 186:
-#line 2152 "ast_c_grammar.y"
+#line 2160 "ast_c_grammar.y"
     {
      iteration_statement_node *anode;
 anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
@@ -4728,7 +4736,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     break;
 
   case 187:
-#line 2168 "ast_c_grammar.y"
+#line 2176 "ast_c_grammar.y"
     {
      iteration_statement_node *anode;
 anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
@@ -4747,7 +4755,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     break;
 
   case 188:
-#line 2184 "ast_c_grammar.y"
+#line 2192 "ast_c_grammar.y"
     {
      iteration_statement_node *anode;
 anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
@@ -4767,7 +4775,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     break;
 
   case 189:
-#line 2201 "ast_c_grammar.y"
+#line 2209 "ast_c_grammar.y"
     {
      iteration_statement_node *anode;
 anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
@@ -4786,7 +4794,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     break;
 
   case 190:
-#line 2217 "ast_c_grammar.y"
+#line 2225 "ast_c_grammar.y"
     {
      iteration_statement_node *anode;
 anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
@@ -4805,7 +4813,7 @@ anode = (iteration_statement_node*) malloc(sizeof(iteration_statement_node));
     break;
 
   case 191:
-#line 2235 "ast_c_grammar.y"
+#line 2243 "ast_c_grammar.y"
     {
      jump_statement_node *anode;
 anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
@@ -4818,7 +4826,7 @@ anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
     break;
 
   case 192:
-#line 2245 "ast_c_grammar.y"
+#line 2253 "ast_c_grammar.y"
     {
      jump_statement_node *anode;
 anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
@@ -4831,7 +4839,7 @@ anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
     break;
 
   case 193:
-#line 2255 "ast_c_grammar.y"
+#line 2263 "ast_c_grammar.y"
     {
      jump_statement_node *anode;
 anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
@@ -4844,7 +4852,7 @@ anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
     break;
 
   case 194:
-#line 2265 "ast_c_grammar.y"
+#line 2273 "ast_c_grammar.y"
     {
      jump_statement_node *anode;
 anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
@@ -4857,7 +4865,7 @@ anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
     break;
 
   case 195:
-#line 2275 "ast_c_grammar.y"
+#line 2283 "ast_c_grammar.y"
     {
      jump_statement_node *anode;
 anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
@@ -4870,7 +4878,7 @@ anode = (jump_statement_node*) malloc(sizeof(jump_statement_node));
     break;
 
   case 196:
-#line 2287 "ast_c_grammar.y"
+#line 2295 "ast_c_grammar.y"
     {
      expression_node *anode;
 anode = (expression_node*) malloc(sizeof(expression_node));
@@ -4882,7 +4890,7 @@ anode = (expression_node*) malloc(sizeof(expression_node));
     break;
 
   case 197:
-#line 2296 "ast_c_grammar.y"
+#line 2304 "ast_c_grammar.y"
     {
      expression_node *anode;
 anode = (expression_node*) malloc(sizeof(expression_node));
@@ -4894,7 +4902,7 @@ anode = (expression_node*) malloc(sizeof(expression_node));
     break;
 
   case 198:
-#line 2307 "ast_c_grammar.y"
+#line 2315 "ast_c_grammar.y"
     {
      assignment_expression_node *anode;
 anode = (assignment_expression_node*) malloc(sizeof(assignment_expression_node));
@@ -4907,7 +4915,7 @@ anode = (assignment_expression_node*) malloc(sizeof(assignment_expression_node))
     break;
 
   case 199:
-#line 2317 "ast_c_grammar.y"
+#line 2325 "ast_c_grammar.y"
     {
      assignment_expression_node *anode;
 anode = (assignment_expression_node*) malloc(sizeof(assignment_expression_node));
@@ -4920,7 +4928,7 @@ anode = (assignment_expression_node*) malloc(sizeof(assignment_expression_node))
     break;
 
   case 200:
-#line 2329 "ast_c_grammar.y"
+#line 2337 "ast_c_grammar.y"
     {
      assignment_operator_node *anode;
 anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
@@ -4931,17 +4939,6 @@ anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
     break;
 
   case 201:
-#line 2337 "ast_c_grammar.y"
-    {
-     assignment_operator_node *anode;
-anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
-    (*anode).token_1=(yyvsp[(1) - (1)].sval);
-    (*anode).char_lit_1= "";
-    (yyval.assignment_operator_val) = anode;
-}
-    break;
-
-  case 202:
 #line 2345 "ast_c_grammar.y"
     {
      assignment_operator_node *anode;
@@ -4952,7 +4949,7 @@ anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
 }
     break;
 
-  case 203:
+  case 202:
 #line 2353 "ast_c_grammar.y"
     {
      assignment_operator_node *anode;
@@ -4963,7 +4960,7 @@ anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
 }
     break;
 
-  case 204:
+  case 203:
 #line 2361 "ast_c_grammar.y"
     {
      assignment_operator_node *anode;
@@ -4974,7 +4971,7 @@ anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
 }
     break;
 
-  case 205:
+  case 204:
 #line 2369 "ast_c_grammar.y"
     {
      assignment_operator_node *anode;
@@ -4985,7 +4982,7 @@ anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
 }
     break;
 
-  case 206:
+  case 205:
 #line 2377 "ast_c_grammar.y"
     {
      assignment_operator_node *anode;
@@ -4996,7 +4993,7 @@ anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
 }
     break;
 
-  case 207:
+  case 206:
 #line 2385 "ast_c_grammar.y"
     {
      assignment_operator_node *anode;
@@ -5007,7 +5004,7 @@ anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
 }
     break;
 
-  case 208:
+  case 207:
 #line 2393 "ast_c_grammar.y"
     {
      assignment_operator_node *anode;
@@ -5018,7 +5015,7 @@ anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
 }
     break;
 
-  case 209:
+  case 208:
 #line 2401 "ast_c_grammar.y"
     {
      assignment_operator_node *anode;
@@ -5029,7 +5026,7 @@ anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
 }
     break;
 
-  case 210:
+  case 209:
 #line 2409 "ast_c_grammar.y"
     {
      assignment_operator_node *anode;
@@ -5040,8 +5037,19 @@ anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
 }
     break;
 
+  case 210:
+#line 2417 "ast_c_grammar.y"
+    {
+     assignment_operator_node *anode;
+anode = (assignment_operator_node*) malloc(sizeof(assignment_operator_node));
+    (*anode).token_1=(yyvsp[(1) - (1)].sval);
+    (*anode).char_lit_1= "";
+    (yyval.assignment_operator_val) = anode;
+}
+    break;
+
   case 211:
-#line 2419 "ast_c_grammar.y"
+#line 2427 "ast_c_grammar.y"
     {
      conditional_expression_node *anode;
 anode = (conditional_expression_node*) malloc(sizeof(conditional_expression_node));
@@ -5055,7 +5063,7 @@ anode = (conditional_expression_node*) malloc(sizeof(conditional_expression_node
     break;
 
   case 212:
-#line 2430 "ast_c_grammar.y"
+#line 2438 "ast_c_grammar.y"
     {
      conditional_expression_node *anode;
 anode = (conditional_expression_node*) malloc(sizeof(conditional_expression_node));
@@ -5069,7 +5077,7 @@ anode = (conditional_expression_node*) malloc(sizeof(conditional_expression_node
     break;
 
   case 213:
-#line 2443 "ast_c_grammar.y"
+#line 2451 "ast_c_grammar.y"
     {
      constant_expression_node *anode;
 anode = (constant_expression_node*) malloc(sizeof(constant_expression_node));
@@ -5079,7 +5087,7 @@ anode = (constant_expression_node*) malloc(sizeof(constant_expression_node));
     break;
 
   case 214:
-#line 2452 "ast_c_grammar.y"
+#line 2460 "ast_c_grammar.y"
     {
      logical_or_expression_node *anode;
 anode = (logical_or_expression_node*) malloc(sizeof(logical_or_expression_node));
@@ -5091,7 +5099,7 @@ anode = (logical_or_expression_node*) malloc(sizeof(logical_or_expression_node))
     break;
 
   case 215:
-#line 2461 "ast_c_grammar.y"
+#line 2469 "ast_c_grammar.y"
     {
      logical_or_expression_node *anode;
 anode = (logical_or_expression_node*) malloc(sizeof(logical_or_expression_node));
@@ -5103,7 +5111,7 @@ anode = (logical_or_expression_node*) malloc(sizeof(logical_or_expression_node))
     break;
 
   case 216:
-#line 2472 "ast_c_grammar.y"
+#line 2480 "ast_c_grammar.y"
     {
      logical_and_expression_node *anode;
 anode = (logical_and_expression_node*) malloc(sizeof(logical_and_expression_node));
@@ -5115,7 +5123,7 @@ anode = (logical_and_expression_node*) malloc(sizeof(logical_and_expression_node
     break;
 
   case 217:
-#line 2481 "ast_c_grammar.y"
+#line 2489 "ast_c_grammar.y"
     {
      logical_and_expression_node *anode;
 anode = (logical_and_expression_node*) malloc(sizeof(logical_and_expression_node));
@@ -5127,7 +5135,7 @@ anode = (logical_and_expression_node*) malloc(sizeof(logical_and_expression_node
     break;
 
   case 218:
-#line 2492 "ast_c_grammar.y"
+#line 2500 "ast_c_grammar.y"
     {
      inclusive_or_expression_node *anode;
 anode = (inclusive_or_expression_node*) malloc(sizeof(inclusive_or_expression_node));
@@ -5139,7 +5147,7 @@ anode = (inclusive_or_expression_node*) malloc(sizeof(inclusive_or_expression_no
     break;
 
   case 219:
-#line 2501 "ast_c_grammar.y"
+#line 2509 "ast_c_grammar.y"
     {
      inclusive_or_expression_node *anode;
 anode = (inclusive_or_expression_node*) malloc(sizeof(inclusive_or_expression_node));
@@ -5151,7 +5159,7 @@ anode = (inclusive_or_expression_node*) malloc(sizeof(inclusive_or_expression_no
     break;
 
   case 220:
-#line 2512 "ast_c_grammar.y"
+#line 2520 "ast_c_grammar.y"
     {
      exclusive_or_expression_node *anode;
 anode = (exclusive_or_expression_node*) malloc(sizeof(exclusive_or_expression_node));
@@ -5163,7 +5171,7 @@ anode = (exclusive_or_expression_node*) malloc(sizeof(exclusive_or_expression_no
     break;
 
   case 221:
-#line 2521 "ast_c_grammar.y"
+#line 2529 "ast_c_grammar.y"
     {
      exclusive_or_expression_node *anode;
 anode = (exclusive_or_expression_node*) malloc(sizeof(exclusive_or_expression_node));
@@ -5175,7 +5183,7 @@ anode = (exclusive_or_expression_node*) malloc(sizeof(exclusive_or_expression_no
     break;
 
   case 222:
-#line 2532 "ast_c_grammar.y"
+#line 2540 "ast_c_grammar.y"
     {
      and_expression_node *anode;
 anode = (and_expression_node*) malloc(sizeof(and_expression_node));
@@ -5187,7 +5195,7 @@ anode = (and_expression_node*) malloc(sizeof(and_expression_node));
     break;
 
   case 223:
-#line 2541 "ast_c_grammar.y"
+#line 2549 "ast_c_grammar.y"
     {
      and_expression_node *anode;
 anode = (and_expression_node*) malloc(sizeof(and_expression_node));
@@ -5199,7 +5207,7 @@ anode = (and_expression_node*) malloc(sizeof(and_expression_node));
     break;
 
   case 224:
-#line 2552 "ast_c_grammar.y"
+#line 2560 "ast_c_grammar.y"
     {
      equality_expression_node *anode;
 anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
@@ -5211,7 +5219,7 @@ anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
     break;
 
   case 225:
-#line 2561 "ast_c_grammar.y"
+#line 2569 "ast_c_grammar.y"
     {
      equality_expression_node *anode;
 anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
@@ -5223,7 +5231,7 @@ anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
     break;
 
   case 226:
-#line 2570 "ast_c_grammar.y"
+#line 2578 "ast_c_grammar.y"
     {
      equality_expression_node *anode;
 anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
@@ -5235,7 +5243,7 @@ anode = (equality_expression_node*) malloc(sizeof(equality_expression_node));
     break;
 
   case 227:
-#line 2581 "ast_c_grammar.y"
+#line 2589 "ast_c_grammar.y"
     {
      relational_expression_node *anode;
 anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
@@ -5248,7 +5256,7 @@ anode = (relational_expression_node*) malloc(sizeof(relational_expression_node))
     break;
 
   case 228:
-#line 2591 "ast_c_grammar.y"
+#line 2599 "ast_c_grammar.y"
     {
      relational_expression_node *anode;
 anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
@@ -5261,7 +5269,7 @@ anode = (relational_expression_node*) malloc(sizeof(relational_expression_node))
     break;
 
   case 229:
-#line 2601 "ast_c_grammar.y"
+#line 2609 "ast_c_grammar.y"
     {
      relational_expression_node *anode;
 anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
@@ -5274,7 +5282,7 @@ anode = (relational_expression_node*) malloc(sizeof(relational_expression_node))
     break;
 
   case 230:
-#line 2611 "ast_c_grammar.y"
+#line 2619 "ast_c_grammar.y"
     {
      relational_expression_node *anode;
 anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
@@ -5287,7 +5295,7 @@ anode = (relational_expression_node*) malloc(sizeof(relational_expression_node))
     break;
 
   case 231:
-#line 2621 "ast_c_grammar.y"
+#line 2629 "ast_c_grammar.y"
     {
      relational_expression_node *anode;
 anode = (relational_expression_node*) malloc(sizeof(relational_expression_node));
@@ -5300,7 +5308,7 @@ anode = (relational_expression_node*) malloc(sizeof(relational_expression_node))
     break;
 
   case 232:
-#line 2633 "ast_c_grammar.y"
+#line 2641 "ast_c_grammar.y"
     {
      shift_expression_node *anode;
 anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
@@ -5312,7 +5320,7 @@ anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
     break;
 
   case 233:
-#line 2642 "ast_c_grammar.y"
+#line 2650 "ast_c_grammar.y"
     {
      shift_expression_node *anode;
 anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
@@ -5324,7 +5332,7 @@ anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
     break;
 
   case 234:
-#line 2651 "ast_c_grammar.y"
+#line 2659 "ast_c_grammar.y"
     {
      shift_expression_node *anode;
 anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
@@ -5336,7 +5344,7 @@ anode = (shift_expression_node*) malloc(sizeof(shift_expression_node));
     break;
 
   case 235:
-#line 2662 "ast_c_grammar.y"
+#line 2670 "ast_c_grammar.y"
     {
      additive_expression_node *anode;
 anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
@@ -5348,7 +5356,7 @@ anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
     break;
 
   case 236:
-#line 2671 "ast_c_grammar.y"
+#line 2679 "ast_c_grammar.y"
     {
      additive_expression_node *anode;
 anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
@@ -5360,7 +5368,7 @@ anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
     break;
 
   case 237:
-#line 2680 "ast_c_grammar.y"
+#line 2688 "ast_c_grammar.y"
     {
      additive_expression_node *anode;
 anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
@@ -5372,7 +5380,7 @@ anode = (additive_expression_node*) malloc(sizeof(additive_expression_node));
     break;
 
   case 238:
-#line 2691 "ast_c_grammar.y"
+#line 2699 "ast_c_grammar.y"
     {
      multiplicative_expression_node *anode;
 anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
@@ -5384,7 +5392,7 @@ anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expressio
     break;
 
   case 239:
-#line 2700 "ast_c_grammar.y"
+#line 2708 "ast_c_grammar.y"
     {
      multiplicative_expression_node *anode;
 anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
@@ -5396,7 +5404,7 @@ anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expressio
     break;
 
   case 240:
-#line 2709 "ast_c_grammar.y"
+#line 2717 "ast_c_grammar.y"
     {
      multiplicative_expression_node *anode;
 anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
@@ -5408,7 +5416,7 @@ anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expressio
     break;
 
   case 241:
-#line 2718 "ast_c_grammar.y"
+#line 2726 "ast_c_grammar.y"
     {
      multiplicative_expression_node *anode;
 anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expression_node));
@@ -5420,7 +5428,7 @@ anode = (multiplicative_expression_node*) malloc(sizeof(multiplicative_expressio
     break;
 
   case 242:
-#line 2729 "ast_c_grammar.y"
+#line 2737 "ast_c_grammar.y"
     {
      cast_expression_node *anode;
 anode = (cast_expression_node*) malloc(sizeof(cast_expression_node));
@@ -5434,7 +5442,7 @@ anode = (cast_expression_node*) malloc(sizeof(cast_expression_node));
     break;
 
   case 243:
-#line 2740 "ast_c_grammar.y"
+#line 2748 "ast_c_grammar.y"
     {
      cast_expression_node *anode;
 anode = (cast_expression_node*) malloc(sizeof(cast_expression_node));
@@ -5448,7 +5456,7 @@ anode = (cast_expression_node*) malloc(sizeof(cast_expression_node));
     break;
 
   case 244:
-#line 2753 "ast_c_grammar.y"
+#line 2761 "ast_c_grammar.y"
     {
      unary_expression_node *anode;
 anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
@@ -5465,7 +5473,7 @@ anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
     break;
 
   case 245:
-#line 2767 "ast_c_grammar.y"
+#line 2775 "ast_c_grammar.y"
     {
      unary_expression_node *anode;
 anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
@@ -5482,7 +5490,7 @@ anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
     break;
 
   case 246:
-#line 2781 "ast_c_grammar.y"
+#line 2789 "ast_c_grammar.y"
     {
      unary_expression_node *anode;
 anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
@@ -5499,7 +5507,7 @@ anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
     break;
 
   case 247:
-#line 2795 "ast_c_grammar.y"
+#line 2803 "ast_c_grammar.y"
     {
      unary_expression_node *anode;
 anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
@@ -5516,7 +5524,7 @@ anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
     break;
 
   case 248:
-#line 2809 "ast_c_grammar.y"
+#line 2817 "ast_c_grammar.y"
     {
      unary_expression_node *anode;
 anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
@@ -5533,7 +5541,7 @@ anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
     break;
 
   case 249:
-#line 2823 "ast_c_grammar.y"
+#line 2831 "ast_c_grammar.y"
     {
      unary_expression_node *anode;
 anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
@@ -5550,7 +5558,7 @@ anode = (unary_expression_node*) malloc(sizeof(unary_expression_node));
     break;
 
   case 250:
-#line 2839 "ast_c_grammar.y"
+#line 2847 "ast_c_grammar.y"
     {
      unary_operator_node *anode;
 anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
@@ -5560,7 +5568,7 @@ anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
     break;
 
   case 251:
-#line 2846 "ast_c_grammar.y"
+#line 2854 "ast_c_grammar.y"
     {
      unary_operator_node *anode;
 anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
@@ -5570,7 +5578,7 @@ anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
     break;
 
   case 252:
-#line 2853 "ast_c_grammar.y"
+#line 2861 "ast_c_grammar.y"
     {
      unary_operator_node *anode;
 anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
@@ -5580,7 +5588,7 @@ anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
     break;
 
   case 253:
-#line 2860 "ast_c_grammar.y"
+#line 2868 "ast_c_grammar.y"
     {
      unary_operator_node *anode;
 anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
@@ -5590,7 +5598,7 @@ anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
     break;
 
   case 254:
-#line 2867 "ast_c_grammar.y"
+#line 2875 "ast_c_grammar.y"
     {
      unary_operator_node *anode;
 anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
@@ -5600,7 +5608,7 @@ anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
     break;
 
   case 255:
-#line 2874 "ast_c_grammar.y"
+#line 2882 "ast_c_grammar.y"
     {
      unary_operator_node *anode;
 anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
@@ -5610,7 +5618,7 @@ anode = (unary_operator_node*) malloc(sizeof(unary_operator_node));
     break;
 
   case 256:
-#line 2883 "ast_c_grammar.y"
+#line 2891 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
@@ -5627,7 +5635,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 257:
-#line 2897 "ast_c_grammar.y"
+#line 2905 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
@@ -5644,7 +5652,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 258:
-#line 2911 "ast_c_grammar.y"
+#line 2919 "ast_c_grammar.y"
     {
   /*I dont' know why this doesn't work right, but do note the hack to 
     get the identifier node correct*/
@@ -5663,7 +5671,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 259:
-#line 2927 "ast_c_grammar.y"
+#line 2935 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
@@ -5680,7 +5688,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 260:
-#line 2941 "ast_c_grammar.y"
+#line 2949 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
@@ -5697,7 +5705,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 261:
-#line 2955 "ast_c_grammar.y"
+#line 2963 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
@@ -5714,7 +5722,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 262:
-#line 2969 "ast_c_grammar.y"
+#line 2977 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
@@ -5731,7 +5739,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 263:
-#line 2983 "ast_c_grammar.y"
+#line 2991 "ast_c_grammar.y"
     {
      postfix_expression_node *anode;
 anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
@@ -5748,7 +5756,7 @@ anode = (postfix_expression_node*) malloc(sizeof(postfix_expression_node));
     break;
 
   case 264:
-#line 2999 "ast_c_grammar.y"
+#line 3007 "ast_c_grammar.y"
     {
      primary_expression_node *anode;
 anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
@@ -5763,7 +5771,7 @@ anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
     break;
 
   case 265:
-#line 3011 "ast_c_grammar.y"
+#line 3019 "ast_c_grammar.y"
     {
      primary_expression_node *anode;
 anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
@@ -5778,7 +5786,7 @@ anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
     break;
 
   case 266:
-#line 3023 "ast_c_grammar.y"
+#line 3031 "ast_c_grammar.y"
     {
      primary_expression_node *anode;
 anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
@@ -5793,7 +5801,7 @@ anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
     break;
 
   case 267:
-#line 3035 "ast_c_grammar.y"
+#line 3043 "ast_c_grammar.y"
     {
      primary_expression_node *anode;
 anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
@@ -5808,7 +5816,7 @@ anode = (primary_expression_node*) malloc(sizeof(primary_expression_node));
     break;
 
   case 268:
-#line 3049 "ast_c_grammar.y"
+#line 3057 "ast_c_grammar.y"
     {
      argument_expression_list_node *anode;
 anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_node));
@@ -5820,7 +5828,7 @@ anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_
     break;
 
   case 269:
-#line 3058 "ast_c_grammar.y"
+#line 3066 "ast_c_grammar.y"
     {
      argument_expression_list_node *anode;
 anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_node));
@@ -5832,7 +5840,7 @@ anode = (argument_expression_list_node*) malloc(sizeof(argument_expression_list_
     break;
 
   case 270:
-#line 3069 "ast_c_grammar.y"
+#line 3077 "ast_c_grammar.y"
     {
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
@@ -5846,7 +5854,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 271:
-#line 3080 "ast_c_grammar.y"
+#line 3088 "ast_c_grammar.y"
     {
      constant_node *anode;
      anode = (constant_node*) malloc(sizeof(constant_node));
@@ -5859,7 +5867,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 272:
-#line 3090 "ast_c_grammar.y"
+#line 3098 "ast_c_grammar.y"
     {
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
@@ -5872,7 +5880,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 273:
-#line 3100 "ast_c_grammar.y"
+#line 3108 "ast_c_grammar.y"
     {
      constant_node *anode;
 anode = (constant_node*) malloc(sizeof(constant_node));
@@ -5884,7 +5892,7 @@ anode = (constant_node*) malloc(sizeof(constant_node));
     break;
 
   case 274:
-#line 3111 "ast_c_grammar.y"
+#line 3119 "ast_c_grammar.y"
     {
      string_node *anode;
 anode = (string_node*) malloc(sizeof(string_node));
@@ -5894,7 +5902,7 @@ anode = (string_node*) malloc(sizeof(string_node));
     break;
 
   case 275:
-#line 3120 "ast_c_grammar.y"
+#line 3128 "ast_c_grammar.y"
     {
   identifier_node *anode;
   anode = (identifier_node*) malloc(sizeof(identifier_node));
@@ -5930,7 +5938,7 @@ anode = (string_node*) malloc(sizeof(string_node));
 
 
 /* Line 1267 of yacc.c.  */
-#line 5934 "y.tab.c"
+#line 5942 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -6144,7 +6152,7 @@ yyreturn:
 }
 
 
-#line 3154 "ast_c_grammar.y"
+#line 3162 "ast_c_grammar.y"
 
 
 #include <stdio.h>

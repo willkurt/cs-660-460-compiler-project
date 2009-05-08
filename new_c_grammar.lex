@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include "y.tab.h"
 #include <errno.h>
+#include "stdlib.h"
 
 
 extern int errno;
@@ -29,6 +30,13 @@ int lineCount = 0;
 int currentCharDepth = 0;
 
 char** yytext2;
+
+//Used to output error message
+extern FILE* yyout;
+extern FILE* yyin;
+extern FILE* ip;
+char buffer[500];
+int eofFlag = 0;
 
 extern bool undeclVar;
 extern bool redeclVar;
@@ -85,7 +93,30 @@ cppcomment "//".*"\n"
                   if(parseDebug){
 		                   parseDebugOut<<"***end ln: "<<lineCount<<"*****\n";
 		                }
-                  lineCount++;currentCharDepth = 0;}
+                  lineCount++;currentCharDepth = 0;
+               //LEAVE ALL THESE COMMENTS TO SEE THE ERROR MESSAGE
+               //UNCOMMENT ONE SET TO SEE IT SEGFAULT AFTER READING FROM FILE
+			//FANCY TRY
+			/*if(!eofFlag)
+			{
+                if(fgets(buffer, 500, ip) == NULL)
+                 {
+                   strcpy(buffer, "\n");
+                   if(feof(ip))
+                   {
+                    eofFlag = 1;
+                   }
+                 }
+                std::cout<< "Hey " << buffer;
+                fputs (buffer, yyout);
+                std::cout<< "  Hey2 ";*/
+               //OLD TRY
+               if(fgets(buffer, 500, ip) == NULL)
+               {
+                  strcpy(buffer, "\n");
+               }
+                fputs (buffer, yyout);
+}
 [ \t]+ 		{
 currentCharDepth += yyleng;/* Do nothing for whitespace other than increment char counter */}
 "auto"		{
